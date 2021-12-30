@@ -8,13 +8,19 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "axios": "^0.24.0",
+    "mongoose": "^6.1.4",
     "next": "12.0.7",
+    "next-iron-session": "^4.2.0",
     "react": "17.0.2",
-    "react-dom": "17.0.2"
+    "react-dom": "17.0.2",
+    "react-query": "^3.34.7",
+    "secure-password": "^4.0.0"
   },
   "devDependencies": {
     "@types/node": "17.0.1",
     "@types/react": "17.0.37",
+    "@types/secure-password": "^3.1.1",
     "autoprefixer": "^10.4.0",
     "eslint": "8.5.0",
     "eslint-config-next": "12.0.7",
