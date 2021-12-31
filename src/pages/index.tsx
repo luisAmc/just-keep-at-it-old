@@ -21,7 +21,13 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
     };
   }
 
-  return { props: {} };
+  return {
+    redirect: {
+      destination: '/auth/login',
+      permanent: false
+    },
+    props: {}
+  };
 }
 
 export { Home as default } from '../components/Home';

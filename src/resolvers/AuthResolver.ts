@@ -5,6 +5,15 @@ export async function me() {
   return response.data;
 }
 
+export type LoginInput = {
+  username: string;
+  password: string;
+};
+
+export async function login(input: LoginInput) {
+  return await axios.post('/auth/login', input);
+}
+
 export type SignUpInput = {
   name: string;
   username: string;

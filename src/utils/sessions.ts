@@ -95,7 +95,7 @@ export async function resolveSession({
 
     session = await SessionModel.findOne({ _id: sessionID }).populate(
       'user',
-      'name username permissions'
+      'name username'
     );
 
     if (session) {
