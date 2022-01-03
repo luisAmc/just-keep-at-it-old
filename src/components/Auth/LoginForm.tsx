@@ -12,8 +12,9 @@ import { Message } from '../ui/Message';
 import { SubmitButton } from '../ui/SubmitButton';
 
 const loginSchema = object().shape({
-  username: string().required('Ingrese el usuario.'),
+  username: string().trim().required('Ingrese el usuario.'),
   password: string()
+    .trim()
     .min(6, 'El tamaño mínimo de la conrtaseña es seis caracteres.')
     .required('Ingrese la contraseña.')
 });

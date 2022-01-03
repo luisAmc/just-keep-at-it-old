@@ -1,9 +1,12 @@
 import { LoginInput } from 'src/resolvers/AuthResolver';
 import { authenticateUser } from 'src/utils/auth';
+import dbConnect from 'src/utils/dbConnect';
 import withSession, { createSession } from 'src/utils/sessions';
 
 export default withSession(async (req, res) => {
   const { method } = req;
+
+  await dbConnect();
 
   switch (method) {
     case 'POST': {

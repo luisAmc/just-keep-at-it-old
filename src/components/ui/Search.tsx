@@ -12,45 +12,46 @@ interface Props {
   formatOptionLabel?: any;
 }
 
-export const Search = forwardRef(
-  (
-    {
-      label,
-      name,
-      hideLabel = false,
-      options,
-      autoFocus = false,
-      ...props
-    }: Props,
-    ref
-  ) => {
-    const { control } = useFormContext();
+export const Search = forwardRef(function Search(
+  {
+    label,
+    name,
+    hideLabel = false,
+    options,
+    autoFocus = false,
+    ...props
+  }: Props,
+  ref
+) {
+  const { control } = useFormContext();
 
-    return (
-      <Controller
-        control={control}
-        name={name}
-        render={({ field }) => (
-          <ControlledSearch
-            label={label}
-            hideLabel={hideLabel}
-            options={options}
-            autoFocus={autoFocus}
-            {...props}
-            {...field}
-          />
-        )}
-      />
-    );
-  }
-);
+  return (
+    <Controller
+      control={control}
+      name={name}
+      render={({ field }) => (
+        <ControlledSearch
+          label={label}
+          hideLabel={hideLabel}
+          options={options}
+          autoFocus={autoFocus}
+          {...props}
+          {...field}
+        />
+      )}
+    />
+  );
+});
 
 interface ControlledSearchProps extends Props {
   onChange: (arg0: any) => void;
 }
 
 const ControlledSearch = forwardRef<HTMLSelectElement, ControlledSearchProps>(
-  ({ label, hideLabel, options, onChange, ...props }, ref) => {
+  function ControlledSearch(
+    { label, hideLabel, options, onChange, ...props },
+    ref
+  ) {
     const style = {
       option: (base) => ({
         ...base,

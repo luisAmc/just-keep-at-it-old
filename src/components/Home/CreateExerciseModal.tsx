@@ -18,11 +18,11 @@ import { RadioButton, RadioGroup } from '../ui/RadioButton';
 import { SubmitButton } from '../ui/SubmitButton';
 
 const createExerciseSchema = object().shape({
-  name: string().required('Ingrese el nombre.'),
-  type: string().required('Seleccione el tipo.'),
+  name: string().trim().required('Ingrese el nombre.'),
+  type: string().trim().required('Seleccione el tipo.'),
   muscleGroup: string().when('type', {
     is: (type: string) => type === EXERCISE_TYPE.STRENGTH,
-    then: string().required('Seleccione una opción.')
+    then: string().trim().required('Seleccione una opción.')
   })
 });
 

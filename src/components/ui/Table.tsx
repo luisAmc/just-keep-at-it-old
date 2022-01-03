@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import { ReactNode, useMemo, useState } from 'react';
+import { ReactNode, useState } from 'react';
 
 export function TableHeader({
   label,
@@ -74,10 +74,7 @@ export function Table<T>({
   itemsPerPage?: number;
   children: (items: T, i: number) => ReactNode;
 }) {
-  const maxPage = useMemo(() => {
-    Math.floor(values.length / itemsPerPage);
-  }, [values, itemsPerPage]);
-
+  const maxPage = Math.floor(values.length / itemsPerPage);
   const [currentPage, setCurrentPage] = useState(0);
 
   return (
@@ -98,10 +95,41 @@ export function Table<T>({
       </table>
 
       {/* Pagination */}
-      {/* <nav>
-        <div></div>
-        <div></div>
-      </nav> */}
+      <nav className='bg-white px-4 py-3 flex items-center justify-between border-t border-stone-200 sm:px-6'>
+        <div className='hidden sm:block'>
+          <p className='text-sm text-stone-700'>
+            Mostrándo{' '}
+            <span className='font-medium'>
+              {currentPage * itemsPerPage + 1}
+            </span>{' '}
+            to{' '}
+            <span className='font-medium'>
+              {currentPage * itemsPerPage + itemsPerPage}
+            </span>{' '}
+            de <span className='font-medium'>{values.length}</span>
+          </p>
+        </div>
+
+        <div className='flex-1 flex justify-between sm:justify-end'>
+          <button
+            type='button'
+            disabled={currentPage === 0}
+            onClick={() => setCurrentPage(currentPage - 1)}
+            className='relative inline-flex items-center px-4 py-2 border border-stone-300 text-sm font-medium rounded-md text-stone-700 bg-white hover:bg-stone-50 disabled:opacity-50 disabled:cursor-default'
+          >
+            Anterior
+          </button>
+          
+          <button
+            type='button'
+            disabled={currentPage >= maxPage}
+            onClick={() => setCurrentPage(currentPage + 1)}
+            className='ml-3 relative inline-flex items-center px-4 py-2 border border-stone-300 text-sm font-medium rounded-md text-stone-700 bg-white hover:bg-stone-50 disabled:opacity-50 disabled:cursor-default'
+          >
+            Siguiente
+          </button>
+        </div>
+      </nav>
     </div>
   );
 }

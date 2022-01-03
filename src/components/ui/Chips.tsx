@@ -30,7 +30,7 @@ export function Chips({ single = false, label, name, options }: ChipProps) {
   );
 }
 
-const ControlledChips = forwardRef(function (
+const ControlledChips = forwardRef(function ControlledChips(
   {
     label,
     options,

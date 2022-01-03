@@ -1,11 +1,14 @@
 import { PlusCircleIcon } from '@heroicons/react/outline';
 import { useQuery } from 'react-query';
 import { ExerciseType } from 'src/models/Exercise';
+import { WorkoutType } from 'src/models/Workout';
 import {
   EXERCISE_TYPE,
   getExercises,
   MUSCLE_GROUP
 } from 'src/resolvers/ExercisesResolver';
+import { getWorkouts } from 'src/resolvers/WorkoutsResolvers';
+import { formatDate } from 'src/utils/transforms';
 import { useModal } from '../ui/Modal';
 import { Pill } from '../ui/Pill';
 import { Table, TableDataCell, TableHeader, TableRow } from '../ui/Table';
@@ -27,6 +30,10 @@ export function Home({ data }: Props) {
   const exercisesQuery = useQuery<{
     exercises: (ExerciseType & { id: string })[];
   }>('exercises', () => getExercises(), { refetchOnWindowFocus: false });
+
+  const workoutsQuery = useQuery<{
+    workouts: (WorkoutType & { id: string; createdAt: Date })[];
+  }>('workouts', () => getWorkouts(), { refetchOnWindowFocus: false });
 
   return (
     <div className='h-screen max-w-2xl w-full mx-auto flex items-center justify-center'>
@@ -57,9 +64,31 @@ export function Home({ data }: Props) {
           </button>
         </div>
 
+        {workoutsQuery.data && (
+          <Table
+            values={workoutsQuery.data.workouts}
+            header={
+              <>
+                <TableHeader label='#' />
+                <TableHeader label='Nombre' />
+                <TableHeader label='Creado el' className='text-right' />
+              </>
+            }
+          >
+            {(workout, i) => (
+              <TableRow key={workout.id}>
+                <TableDataCell>{i + 1}</TableDataCell>
+                <TableDataCell>{workout.name}</TableDataCell>
+                <TableDataCell className='text-right'>
+                  {formatDate(workout.createdAt)}
+                </TableDataCell>
+              </TableRow>
+            )}
+          </Table>
+        )}
+
         {exercisesQuery.data && (
           <Table
-            itemsPerPage={30}
             values={exercisesQuery.data.exercises ?? []}
             header={
               <>

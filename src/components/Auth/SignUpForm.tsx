@@ -12,18 +12,21 @@ import { Message } from '../ui/Message';
 import { SubmitButton } from '../ui/SubmitButton';
 
 const signUpSchema = object().shape({
-  name: string().required('Ingrese el nombre.'),
-  username: string().required('Ingrese el nombre de usuario.'),
+  name: string().trim().required('Ingrese el nombre.'),
+  username: string().trim().required('Ingrese el nombre de usuario.'),
   password: string()
+    .trim()
     .min(6, 'El tamaño mínimo de la conrtaseña es seis caracteres.')
     .required('Ingrese la contraseña.'),
-  confirmPassword: string().test(
-    'does-password-match',
-    'Las contraseñas no coinciden.',
-    function (value) {
-      return this.parent.password === value;
-    }
-  )
+  confirmPassword: string()
+    .trim()
+    .test(
+      'does-password-match',
+      'Las contraseñas no coinciden.',
+      function (value) {
+        return this.parent.password === value;
+      }
+    )
 });
 
 export function SignUpForm() {

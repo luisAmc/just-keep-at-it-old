@@ -3,6 +3,11 @@ import { CheckIcon, SelectorIcon } from '@heroicons/react/outline';
 import clsx from 'clsx';
 import { forwardRef, Fragment, useState } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
+import {
+  getMuscleGroupLabel,
+  MUSCLE_GROUP
+} from 'src/resolvers/ExercisesResolver';
+import { FieldError } from './Form';
 import { Pill } from './Pill';
 
 interface SelectProps {
@@ -18,50 +23,51 @@ interface SelectProps {
   hideLabel?: boolean;
 }
 
-export const Select = forwardRef(
-  ({ label, name, onChange, options, ...props }: SelectProps, ref) => {
-    const { control } = useFormContext();
+export const Select = forwardRef(function Select(
+  { label, name, onChange, options, ...props }: SelectProps,
+  ref
+) {
+  const { control } = useFormContext();
 
-    return (
-      <Controller
-        control={control}
-        name={name}
-        render={({ field }) => (
-          <ControlledSelect
-            {...field}
-            label={label}
-            options={options}
-            {...props}
-          />
-        )}
-      />
-    );
-  }
-);
+  return (
+    <Controller
+      control={control}
+      name={name}
+      render={({ field }) => (
+        <ControlledSelect
+          {...field}
+          label={label}
+          options={options}
+          {...props}
+        />
+      )}
+    />
+  );
+});
 
 interface ControlledSelectProps extends SelectProps {
   value: any;
   onChange: (option: any) => void;
 }
 
-const ControlledSelect = forwardRef(
-  (
-    {
-      label,
-      options,
-      value: selected,
-      hideLabel,
-      ...props
-    }: ControlledSelectProps,
-    ref
-  ) => {
-    const [query, setQuery] = useState('');
+const ControlledSelect = forwardRef(function ControlledSelect(
+  {
+    label,
+    options,
+    value: selected,
+    hideLabel,
+    ...props
+  }: ControlledSelectProps,
+  ref
+) {
+  const [query, setQuery] = useState('');
 
-    const availableOptions = options.filter((option) =>
-      option.label.toLowerCase().includes(query.toLowerCase())
-    );
+  const availableOptions = options.filter((option) =>
+    option.label.toLowerCase().includes(query.toLowerCase())
+  );
 
-    return (
+  return (
+    <>
       <Listbox value={selected} onChange={props.onChange}>
         {({ open }) => (
           <>
@@ -75,11 +81,17 @@ const ControlledSelect = forwardRef(
               <Listbox.Button className='bg-white relative w-full border border-gray-300 rounded-md shadow-sm pl-3 pr-10 py-2 text-left cursor-default focus:outline-none focus:ring-1 focus:ring-brand-500 focus:border-brand-500'>
                 <div className='flex items-center space-x-2'>
                   <span className='block truncate'>
-                    {selected ? selected.label : 'Seleccione una opción...'}
-                    {/* {selected} */}
+                    {selected && selected.label
+                      ? selected.label
+                      : 'Seleccione una opción...'}
                   </span>
                   {selected && selected.muscleGroup && (
-                    <Pill text={selected.muscleGroup} />
+                    <Pill
+                      variant={selected.muscleGroup as MUSCLE_GROUP}
+                      text={getMuscleGroupLabel(
+                        selected.muscleGroup as MUSCLE_GROUP
+                      )}
+                    />
                   )}
                 </div>
 
@@ -144,7 +156,12 @@ const ControlledSelect = forwardRef(
                                 </span>
 
                                 {option.muscleGroup && (
-                                  <Pill text={option.muscleGroup} />
+                                  <Pill
+                                    variant={option.muscleGroup as MUSCLE_GROUP}
+                                    text={getMuscleGroupLabel(
+                                      option.muscleGroup as MUSCLE_GROUP
+                                    )}
+                                  />
                                 )}
                               </div>
 
@@ -168,6 +185,8 @@ const ControlledSelect = forwardRef(
           </>
         )}
       </Listbox>
-    );
-  }
-);
+
+      <FieldError name={props.name} />
+    </>
+  );
+});

@@ -1,8 +1,11 @@
 import Session from 'src/models/Session';
+import dbConnect from 'src/utils/dbConnect';
 import withSession, { IRON_SESSION_ID_KEY } from 'src/utils/sessions';
 
 export default withSession(async (req, res) => {
   const { method } = req;
+
+  await dbConnect();
 
   switch (method) {
     case 'GET': {

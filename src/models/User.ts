@@ -1,9 +1,12 @@
 import mongoose from 'mongoose';
+import { WorkoutDocument } from './Workout';
 
 interface UserType {
   username: string;
   name: string;
   hashedPassword?: Buffer;
+
+  workouts: WorkoutDocument[];
 }
 
 export interface UserDocument extends UserType, mongoose.Document {
@@ -15,7 +18,9 @@ const UserSchema = new mongoose.Schema(
   {
     username: { type: String, required: true, unique: true },
     name: { type: String, required: true },
-    hashedPassword: { type: Buffer }
+    hashedPassword: { type: Buffer },
+
+    workouts: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Workout' }]
   },
   { timestamps: true }
 );
