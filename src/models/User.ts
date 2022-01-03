@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 
-export interface UserType {
+interface UserType {
   username: string;
   name: string;
   hashedPassword?: Buffer;

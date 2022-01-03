@@ -6,7 +6,6 @@ export function SubmitButton({ children, ...props }: Props) {
   return (
     <Button
       type='submit'
-      disabled={!formState.isValid || formState.isSubmitting}
       {...props}
     >
       {formState.isSubmitting && (

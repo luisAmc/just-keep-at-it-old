@@ -19,7 +19,6 @@ interface UseYupFormProps extends UseFormProps {
 export const useYupForm = ({ schema, ...formConfig }: UseYupFormProps) => {
   return useForm({
     ...formConfig,
-    mode: 'all',
     resolver: yupResolver(schema)
   });
 };

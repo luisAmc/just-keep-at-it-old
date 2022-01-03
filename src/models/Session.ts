@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 import User, { UserDocument } from './User';
 
-export interface SessionType {
+interface SessionType {
   expiresAt: Date;
   user: UserDocument;
 }
