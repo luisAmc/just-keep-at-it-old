@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 body {
-  @apply bg-stone-50 text-stone-900 font-sans antialiased;
+  @apply bg-sky-50/75 text-stone-900 font-sans antialiased;
 }
 
 form {

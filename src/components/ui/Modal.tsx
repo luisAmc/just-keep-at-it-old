@@ -24,9 +24,17 @@ export interface Props {
   size?: 'md' | 'lg' | 'xl' | '2xl' | '3xl' | '4xl' | '5xl';
   onClose: () => void;
   children: ReactNode;
+  bg?: string;
 }
 
-export function Modal({ title, open, onClose, children, size = 'xl' }: Props) {
+export function Modal({
+  title,
+  open,
+  onClose,
+  children,
+  size = 'xl',
+  bg = 'bg-white'
+}: Props) {
   return (
     <Transition.Root show={open} as={Fragment}>
       <Dialog
@@ -80,12 +88,12 @@ export function Modal({ title, open, onClose, children, size = 'xl' }: Props) {
                 }
               )}
             >
-              <div className='bg-white rounded-lg'>
+              <div className={clsx('rounded-lg', bg)}>
                 <div className='flex items-center justify-between p-6 pt-8 w-full'>
                   <Dialog.Title as='h2' className='text-3xl'>
                     {title}
                   </Dialog.Title>
-                  
+
                   <button
                     type='button'
                     className='rounded-md hover:text-brand-600 focus:outline-none'

@@ -5,6 +5,11 @@ export enum WORKOUT_STATUS {
   DONE = 'done'
 }
 
+export async function getWorkout(workoutId: string) {
+  const response = await axios.get(`/workouts/${workoutId}`);
+  return response.data;
+}
+
 export async function getWorkouts() {
   const response = await axios.get('/workouts');
   return response.data;

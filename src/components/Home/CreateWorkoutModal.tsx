@@ -9,7 +9,10 @@ import {
   EXERCISE_TYPE,
   MUSCLE_GROUP
 } from 'src/resolvers/ExercisesResolver';
-import { createWorkout, CreateWorkoutInput } from 'src/resolvers/WorkoutsResolvers';
+import {
+  createWorkout,
+  CreateWorkoutInput
+} from 'src/resolvers/WorkoutsResolvers';
 import { array, object, string } from 'yup';
 import { Form, useYupForm } from '../ui/Form';
 import { Input } from '../ui/Input';
@@ -148,27 +151,5 @@ export function CreateWorkoutModal({ open, onClose }: Props) {
         <SubmitButton>Crear Entrenamiento</SubmitButton>
       </Form>
     </Modal>
-  );
-}
-
-type CustomOptionLabelProps = {
-  label: string;
-  value: string;
-  type: EXERCISE_TYPE;
-  muscleGroup: MUSCLE_GROUP;
-};
-
-function CustomOptionLabel({
-  label,
-  value,
-  type,
-  muscleGroup
-}: CustomOptionLabelProps) {
-  return (
-    <div className='flex items-center space-x-4 px-4 py-2'>
-      <Pill text={type === EXERCISE_TYPE.AEROBIC ? 'Aerobico' : 'Fuerza'} />
-      <div>{label}</div>
-      <div>{muscleGroup}</div>
-    </div>
   );
 }

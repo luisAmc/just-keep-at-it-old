@@ -1,4 +1,7 @@
-export function formatDate(givenDate: string | Date) {
+export function formatDate(
+  givenDate: string | Date,
+  size: 'short' | 'medium' = 'short'
+) {
   if (givenDate == null || isNaN(Date.parse(givenDate.toString()))) {
     return '-';
   }
@@ -6,7 +9,7 @@ export function formatDate(givenDate: string | Date) {
   const date = new Date(givenDate);
 
   const options: Intl.DateTimeFormatOptions = {
-    dateStyle: 'short'
+    dateStyle: size
   };
 
   const intlDate = new Intl.DateTimeFormat('es-HN', options).format(date);

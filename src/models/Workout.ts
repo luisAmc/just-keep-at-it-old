@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 import { WORKOUT_STATUS } from 'src/resolvers/WorkoutsResolvers';
-import { DoneExerciseDocument } from './DoneExercise';
-import { ExerciseDocument } from './Exercise';
+import DoneExercise, { DoneExerciseDocument } from './DoneExercise';
+import Exercise, { ExerciseDocument } from './Exercise';
 import { UserDocument } from './User';
 
 export interface WorkoutType {
@@ -24,9 +24,9 @@ export interface WorkoutDocument extends WorkoutType, mongoose.Document {
 const WorkoutSchema = new mongoose.Schema(
   {
     name: { type: String, required: true },
-    exercises: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Exercise' }],
+    exercises: [{ type: mongoose.Schema.Types.ObjectId, ref: Exercise }],
     doneExercises: [
-      { type: mongoose.Schema.Types.ObjectId, ref: 'DoneExercise' }
+      { type: mongoose.Schema.Types.ObjectId, ref: DoneExercise }
     ],
 
     status: {
@@ -40,9 +40,21 @@ const WorkoutSchema = new mongoose.Schema(
   },
   {
     timestamps: true,
+    toObject: {
+      virtuals: true,
+      versionKey: false,
+      transform: (_, ret) => {
+        ret.id = ret._id;
+        delete ret._id;
+      }
+    },
     toJSON: {
       virtuals: true,
-      versionKey: false
+      versionKey: false,
+      transform: (_, ret) => {
+        ret.id = ret._id;
+        delete ret._id;
+      }
     }
   }
 );

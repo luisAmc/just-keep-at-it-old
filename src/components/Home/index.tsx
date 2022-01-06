@@ -1,18 +1,16 @@
 import { PlusCircleIcon } from '@heroicons/react/outline';
+import { useRouter } from 'next/router';
+import { useEffect } from 'react';
 import { useQuery } from 'react-query';
-import { ExerciseType } from 'src/models/Exercise';
 import { WorkoutType } from 'src/models/Workout';
-import {
-  EXERCISE_TYPE,
-  getExercises,
-  MUSCLE_GROUP
-} from 'src/resolvers/ExercisesResolver';
-import { getWorkouts } from 'src/resolvers/WorkoutsResolvers';
+import { getWorkouts, WORKOUT_STATUS } from 'src/resolvers/WorkoutsResolvers';
 import { formatDate } from 'src/utils/transforms';
+import { Container } from '../ui/Container';
 import { useModal } from '../ui/Modal';
 import { Pill } from '../ui/Pill';
 import { Table, TableDataCell, TableHeader, TableRow } from '../ui/Table';
-import { CreateExerciseModal } from './CreateExerciseModal';
+import { WorkoutCard } from '../Workout/WorkoutCard';
+import { WorkoutDetailsModal } from '../Workout/WorkoutDetailsModal';
 import { CreateWorkoutModal } from './CreateWorkoutModal';
 
 type Props = {
@@ -23,118 +21,103 @@ type Props = {
   };
 };
 
-export function Home({ data }: Props) {
-  const createWorkout = useModal();
-  const createExercise = useModal();
+interface Workout extends WorkoutType {
+  _id: string;
+  createdAt: Date;
+}
 
-  const exercisesQuery = useQuery<{
-    exercises: (ExerciseType & { id: string })[];
-  }>('exercises', () => getExercises(), { refetchOnWindowFocus: false });
+export function Home({ data }: Props) {
+  const router = useRouter();
+
+  const { workoutId } = router.query;
+
+  const createWorkout = useModal();
+  const workoutDetails = useModal();
 
   const workoutsQuery = useQuery<{
-    workouts: (WorkoutType & { id: string; createdAt: Date })[];
+    workouts: Workout[];
   }>('workouts', () => getWorkouts(), { refetchOnWindowFocus: false });
 
+  useEffect(() => {
+    if (workoutId) {
+      workoutDetails.open();
+    } else {
+      workoutDetails.close();
+    }
+  }, [workoutId]);
+
   return (
-    <div className='h-screen max-w-2xl w-full mx-auto flex items-center justify-center'>
-      <div className='flex flex-col space-y-4'>
-        <div className='grid grid-cols-2 gap-4'>
-          <button
-            onClick={createExercise.open}
-            className='rounded-lg p-4 w-56 h-60 bg-zinc-200 hover:bg-opacity-75 transition-all ease-in-out'
-          >
-            <div className='flex flex-col space-y-4 items-center justify-center'>
-              <PlusCircleIcon className='w-16 h-16 text-stone-700' />
-              <p className='text-center text-stone-700 font-semibold'>
-                Añadir un nuevo ejercicio
-              </p>
-            </div>
-          </button>
-
-          <button
-            onClick={createWorkout.open}
-            className='rounded-lg p-4 w-56 h-60 bg-zinc-200 hover:bg-opacity-75 transition-all ease-in-out'
-          >
-            <div className='flex flex-col space-y-4 items-center justify-center'>
-              <PlusCircleIcon className='w-16 h-16 text-stone-700' />
-              <p className='text-center text-stone-700 font-semibold'>
-                Añadir un nuevo entrenamiento
-              </p>
-            </div>
-          </button>
-        </div>
-
+    <div className='h-screen max-w-5xl w-full mx-auto flex sm:pt-12'>
+      <div className='flex w-full flex-col space-y-8 sm:space-y-1'>
         {workoutsQuery.data && (
-          <Table
-            values={workoutsQuery.data.workouts}
-            header={
-              <>
-                <TableHeader label='#' />
-                <TableHeader label='Nombre' />
-                <TableHeader label='Creado el' className='text-right' />
-              </>
-            }
-          >
-            {(workout, i) => (
-              <TableRow key={workout.id}>
-                <TableDataCell>{i + 1}</TableDataCell>
-                <TableDataCell>{workout.name}</TableDataCell>
-                <TableDataCell className='text-right'>
-                  {formatDate(workout.createdAt)}
-                </TableDataCell>
-              </TableRow>
-            )}
-          </Table>
-        )}
+          <>
+            <Container size='5xl' title='Últimos entrenamientos creados'>
+              <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4'>
+                <button
+                  onClick={createWorkout.open}
+                  className='w-full sm:max-w-xs p-6 rounded-lg shadow-sm border border-dashed border-stone-300 bg-stone-50 hover:bg-white hover:border-stone-500 group transition-all ease-in-out'
+                >
+                  <div className='flex flex-col space-y-4 items-center justify-center text-stone-400 group-hover:text-stone-500'>
+                    <PlusCircleIcon className='w-12 h-12' />
+                    <p className='text-center font-medium'>
+                      Añadir un nuevo entrenamiento
+                    </p>
+                  </div>
+                </button>
 
-        {exercisesQuery.data && (
-          <Table
-            values={exercisesQuery.data.exercises ?? []}
-            header={
-              <>
-                <TableHeader label='#' />
-                <TableHeader label='Nombre' />
-                <TableHeader label='Tipo' className='text-center' />
-                <TableHeader label='Grupo múscular' className='text-center' />
-              </>
-            }
-          >
-            {(exercise, i) => (
-              <TableRow key={exercise.id}>
-                <TableDataCell>{i + 1}</TableDataCell>
-                <TableDataCell>{exercise.name}</TableDataCell>
-                <TableDataCell className='text-center'>
-                  <Pill
-                    variant={exercise.type}
-                    text={
-                      exercise.type === EXERCISE_TYPE.AEROBIC
-                        ? 'Aerobico'
-                        : 'Fuerza'
-                    }
-                  />
-                </TableDataCell>
-                <TableDataCell className='text-center'>
-                  <Pill
-                    variant={exercise.muscleGroup}
-                    text={
-                      {
-                        [MUSCLE_GROUP.ARMS]: 'Brazos',
-                        [MUSCLE_GROUP.CHEST]: 'Pecho',
-                        [MUSCLE_GROUP.BACK]: 'Espalda',
-                        [MUSCLE_GROUP.LEGS]: 'Piernas',
-                        [MUSCLE_GROUP.SHOULDERS]: 'Hombros'
-                      }[exercise.muscleGroup]
-                    }
-                  />
-                </TableDataCell>
-              </TableRow>
-            )}
-          </Table>
+                {workoutsQuery.data.workouts.length > 0 && (
+                  <WorkoutCard workout={workoutsQuery.data.workouts[0]} />
+                )}
+
+                {workoutsQuery.data.workouts.length > 1 && (
+                  <WorkoutCard workout={workoutsQuery.data.workouts[1]} />
+                )}
+              </div>
+            </Container>
+
+            <Container size='5xl' title='Últimos entrenamientos'>
+              <Table
+                values={workoutsQuery.data.workouts}
+                header={
+                  <>
+                    <TableHeader label='#' />
+                    <TableHeader label='Nombre' />
+                    <TableHeader label='Ejercicios' />
+                    <TableHeader label='Estado' className='text-center' />
+                    <TableHeader label='Creado el' className='text-right' />
+                  </>
+                }
+              >
+                {(workout, i) => (
+                  <TableRow key={workout._id}>
+                    <TableDataCell>{i + 1}</TableDataCell>
+                    <TableDataCell>{workout.name}</TableDataCell>
+                    <TableDataCell>
+                      {workout.exercises.length} ejercicios
+                    </TableDataCell>
+                    <TableDataCell className='text-center'>
+                      <Pill
+                        variant={workout.status}
+                        text={
+                          workout.status === WORKOUT_STATUS.DRAFTED
+                            ? 'Borrador'
+                            : 'Completado'
+                        }
+                      />
+                    </TableDataCell>
+                    <TableDataCell className='text-right'>
+                      {formatDate(workout.createdAt)}
+                    </TableDataCell>
+                  </TableRow>
+                )}
+              </Table>
+            </Container>
+          </>
         )}
       </div>
 
-      <CreateExerciseModal {...createExercise.props} />
       <CreateWorkoutModal {...createWorkout.props} />
+      <WorkoutDetailsModal {...workoutDetails.props} />
     </div>
   );
 }

@@ -78,7 +78,7 @@ export function Table<T>({
   const [currentPage, setCurrentPage] = useState(0);
 
   return (
-    <div className='shadow overflow-visible border-b border-gray-200 sm:rounded-lg'>
+    <div className='shadow overflow-hidden border-b border-gray-200 sm:rounded-lg'>
       <table className='min-w-full divide-y divide-gray-200'>
         <thead className='bg-gray-50'>
           <tr className='flex flex-col sm:table-row'>{header}</tr>
@@ -90,7 +90,7 @@ export function Table<T>({
               currentPage * itemsPerPage,
               currentPage * itemsPerPage + itemsPerPage
             )
-            .map((node, i) => children(node, i))}
+            .map((node, i) => children(node, i + currentPage * itemsPerPage))}
         </tbody>
       </table>
 
@@ -119,10 +119,10 @@ export function Table<T>({
           >
             Anterior
           </button>
-          
+
           <button
             type='button'
-            disabled={currentPage >= maxPage}
+            disabled={currentPage >= maxPage - 1}
             onClick={() => setCurrentPage(currentPage + 1)}
             className='ml-3 relative inline-flex items-center px-4 py-2 border border-stone-300 text-sm font-medium rounded-md text-stone-700 bg-white hover:bg-stone-50 disabled:opacity-50 disabled:cursor-default'
           >

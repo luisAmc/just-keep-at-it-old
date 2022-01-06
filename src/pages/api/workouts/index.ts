@@ -9,7 +9,10 @@ export default withSession(async (req, res) => {
   switch (method) {
     case 'GET': {
       try {
-        const workouts = await Workout.find().sort('createdAt');
+        const workouts = await Workout.find()
+          .populate('exercises', 'name type muscleGroup')
+          .sort('-createdAt')
+          .lean();
 
         return res.json({ workouts });
       } catch (err) {
