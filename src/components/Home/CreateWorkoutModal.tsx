@@ -4,11 +4,7 @@ import { useMemo, useState } from 'react';
 import { FieldValues, useFieldArray } from 'react-hook-form';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { ExerciseType } from 'src/models/Exercise';
-import {
-  getExercises,
-  EXERCISE_TYPE,
-  MUSCLE_GROUP
-} from 'src/resolvers/ExercisesResolver';
+import { getExercises } from 'src/resolvers/ExercisesResolver';
 import {
   createWorkout,
   CreateWorkoutInput
@@ -18,7 +14,6 @@ import { Form, useYupForm } from '../ui/Form';
 import { Input } from '../ui/Input';
 import { Message } from '../ui/Message';
 import { Modal, Props as ModalProps } from '../ui/Modal';
-import { Pill } from '../ui/Pill';
 import { Select } from '../ui/Select';
 import { SubmitButton } from '../ui/SubmitButton';
 

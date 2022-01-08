@@ -15,11 +15,31 @@ export async function getWorkouts() {
   return response.data;
 }
 
-export type CreateWorkoutInput = {
+export interface CreateWorkoutInput {
   name: string;
   exercises: string[];
-};
+}
 
 export async function createWorkout(input: CreateWorkoutInput) {
   return await axios.post('/workouts', input);
+}
+
+export type ExerciseDone = {
+  id: string;
+  sets: {
+    mins?: number;
+    lbs?: number;
+    reps?: number;
+  }[];
+};
+
+export interface GetWorkoutDoneInput {
+  exercises: ExerciseDone[];
+}
+
+export async function getWorkoutDone(
+  workoutId: string,
+  input: GetWorkoutDoneInput
+) {
+  return await axios.put(`/workouts/${workoutId}/get-it-done`, input);
 }

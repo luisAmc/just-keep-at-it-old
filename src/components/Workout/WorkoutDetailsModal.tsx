@@ -1,3 +1,4 @@
+import { SparklesIcon } from '@heroicons/react/outline';
 import { useRouter } from 'next/router';
 import { useQuery } from 'react-query';
 import { WorkoutType } from 'src/models/Workout';
@@ -10,6 +11,7 @@ import { formatDate } from 'src/utils/transforms';
 import { Button } from '../ui/Button';
 import { Modal, Props as ModalProps } from '../ui/Modal';
 import { Pill } from '../ui/Pill';
+import { Shimmer } from './Shimmer';
 
 interface Props extends Omit<ModalProps, 'title' | 'children'> {}
 
@@ -42,6 +44,8 @@ export function WorkoutDetailsModal({ open, onClose }: Props) {
   return (
     <Modal title='Detalles' open={open} onClose={handleClose}>
       <div className='flex flex-col space-y-4'>
+        {isLoading && <Shimmer />}
+
         {data && (
           <>
             <header className='flex items-center justify-between'>
@@ -98,7 +102,10 @@ export function WorkoutDetailsModal({ open, onClose }: Props) {
               </p>
             </footer>
 
-            <Button href={`/workouts/${data.id}/get-it-done`}>¡Realizar!</Button>
+            <Button href={`/workouts/${data.id}/get-it-done`}>
+              <span>Comenzar</span>
+              <SparklesIcon className='ml-2 w-4 h-4' />
+            </Button>
           </>
         )}
       </div>

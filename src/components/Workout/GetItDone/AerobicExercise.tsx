@@ -6,14 +6,18 @@ import {
   SparklesIcon
 } from '@heroicons/react/outline';
 import { useFieldArray, useFormContext, useWatch } from 'react-hook-form';
-import { ExerciseDocument } from 'src/models/Exercise';
 import clsx from 'clsx';
 
-export function AerobicExercise({ exercise }: { exercise: ExerciseDocument }) {
+interface AerobicExerciseProps {
+  exerciseId: number;
+  name: string;
+}
+
+export function AerobicExercise({ exerciseId, name }: AerobicExerciseProps) {
   const { control } = useFormContext();
   const sets = useFieldArray({
     control,
-    name: `exercises.${exercise._id}.sets`
+    name: `aerobics.${exerciseId}.sets`
   });
 
   return (
@@ -27,17 +31,17 @@ export function AerobicExercise({ exercise }: { exercise: ExerciseDocument }) {
                 open && 'rounded-b-none bg-aerobic-300'
               )}
             >
-              <span>{exercise.name}</span>
+              <span>{name}</span>
               <ChevronUpIcon
                 className={clsx('w-5 h-5', open && 'transform rotate-180')}
               />
             </Disclosure.Button>
             <Disclosure.Panel className='flex flex-col space-y-4 divide-y divide-aerobic-400 px-3 py-2 t-0 rounded-lg rounded-t-none bg-aerobic-300'>
-              {sets.fields.map((field, index) => (
+              {sets.fields.map((field, setIndex) => (
                 <TimeSet
                   key={field.id}
-                  setId={index}
-                  exerciseId={exercise._id}
+                  exerciseId={exerciseId}
+                  setId={setIndex}
                 />
               ))}
 
@@ -73,18 +77,18 @@ export function AerobicExercise({ exercise }: { exercise: ExerciseDocument }) {
 }
 
 interface TimeSetProps {
+  exerciseId: number;
   setId: number;
-  exerciseId: string;
 }
 
-function TimeSet({ setId, exerciseId }: TimeSetProps) {
+function TimeSet({ exerciseId, setId }: TimeSetProps) {
   const { control, setValue } = useFormContext();
 
-  const SET_ID = `exercises.${exerciseId}.sets.${setId}.mins`;
-  const reps: number = useWatch({ control, name: SET_ID });
+  const SET_ID = `aerobics.${exerciseId}.sets.${setId}.mins`;
+  const mins: number = useWatch({ control, name: SET_ID });
 
   function handleRepsChange(amount: number) {
-    const updatedValue = reps + amount;
+    const updatedValue = mins + amount;
     setValue(SET_ID, updatedValue > 0 ? updatedValue : 0);
   }
 
@@ -94,7 +98,7 @@ function TimeSet({ setId, exerciseId }: TimeSetProps) {
         <div className='flex flex-col-reverse sm:flex-row items-center justify-evenly space-y-reverse space-y-4 sm:space-y-0 sm:space-x-4'>
           <button
             type='button'
-            disabled={reps === 0}
+            disabled={mins === 0}
             className='flex items-center space-x-1 p-2 text-sm rounded-full disabled:opacity-30 bg-aerobic-400 hover:bg-aerobic-500 disabled:hover:bg-aerobic-400'
             onClick={() => handleRepsChange(-5)}
           >
@@ -104,7 +108,7 @@ function TimeSet({ setId, exerciseId }: TimeSetProps) {
 
           <button
             type='button'
-            disabled={reps === 0}
+            disabled={mins === 0}
             className='p-4 rounded-full disabled:opacity-30 bg-aerobic-400 hover:bg-aerobic-500 disabled:hover:bg-aerobic-400'
             onClick={() => handleRepsChange(-1)}
           >
@@ -113,7 +117,7 @@ function TimeSet({ setId, exerciseId }: TimeSetProps) {
         </div>
 
         <span>
-          <span className='text-3xl font-medium'>{reps}</span>
+          <span className='text-3xl font-medium'>{mins}</span>
           <span className='ml-1'>mins</span>
         </span>
 

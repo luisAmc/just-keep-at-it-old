@@ -15,15 +15,15 @@ import { Pill } from '../ui/Pill';
 function getMuscleGroupColor(muscleGroup: MUSCLE_GROUP | string) {
   switch (muscleGroup) {
     case MUSCLE_GROUP.ARMS:
-      return 'bg-rose-500/90';
+      return 'bg-arms-500/90';
     case MUSCLE_GROUP.CHEST:
-      return 'bg-blue-500/90';
+      return `bg-chest-500/90`;
     case MUSCLE_GROUP.BACK:
-      return 'bg-emerald-500/90';
+      return 'bg-back-500/90';
     case MUSCLE_GROUP.LEGS:
-      return 'bg-red-500/90';
+      return 'bg-legs-500/90';
     case MUSCLE_GROUP.SHOULDERS:
-      return 'bg-yellow-500/90';
+      return 'bg-shoulders-500/90';
     default:
       return 'bg-white';
   }
@@ -61,7 +61,7 @@ export function WorkoutCard({ workout }: { workout: Workout }) {
 
     setMostUse(mostUse.type);
     setTypes(Object.keys(count));
-  }, []);
+  }, [workout.exercises]);
 
   function handleClick() {
     router.push(

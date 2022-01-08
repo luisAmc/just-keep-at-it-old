@@ -44,7 +44,7 @@ export function Home({ data }: Props) {
     } else {
       workoutDetails.close();
     }
-  }, [workoutId]);
+  }, [workoutId, workoutDetails]);
 
   return (
     <div className='h-screen max-w-5xl w-full mx-auto flex sm:pt-12'>

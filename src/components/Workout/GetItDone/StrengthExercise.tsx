@@ -3,18 +3,21 @@ import {
   ChevronUpIcon,
   MinusIcon,
   PlusIcon,
-  SparklesIcon,
-  TrashIcon
+  SparklesIcon
 } from '@heroicons/react/outline';
 import { useFieldArray, useFormContext, useWatch } from 'react-hook-form';
-import { ExerciseDocument } from 'src/models/Exercise';
 import clsx from 'clsx';
 
-export function StrengthExercise({ exercise }: { exercise: ExerciseDocument }) {
+interface StrengthExerciseProps {
+  exerciseId: number;
+  name: string;
+}
+
+export function StrengthExercise({ exerciseId, name }: StrengthExerciseProps) {
   const { control } = useFormContext();
   const sets = useFieldArray({
     control,
-    name: `exercises.${exercise._id}.sets`
+    name: `strengths.${exerciseId}.sets`
   });
 
   return (
@@ -28,7 +31,7 @@ export function StrengthExercise({ exercise }: { exercise: ExerciseDocument }) {
                 open && 'rounded-b-none bg-strength-300'
               )}
             >
-              <span>{exercise.name}</span>
+              <span>{name}</span>
 
               <div className='flex items-center space-x-2'>
                 {sets.fields.length > 0 && (
@@ -47,7 +50,7 @@ export function StrengthExercise({ exercise }: { exercise: ExerciseDocument }) {
                 <RepetitionSet
                   key={field.id}
                   setId={index}
-                  exerciseId={exercise._id}
+                  exerciseId={exerciseId}
                 />
               ))}
 
@@ -83,14 +86,14 @@ export function StrengthExercise({ exercise }: { exercise: ExerciseDocument }) {
 }
 
 interface RepetitionSetProps {
+  exerciseId: number;
   setId: number;
-  exerciseId: string;
 }
 
-function RepetitionSet({ setId, exerciseId }: RepetitionSetProps) {
+function RepetitionSet({ exerciseId, setId }: RepetitionSetProps) {
   const { control, setValue } = useFormContext();
 
-  const SET_ID = `exercises.${exerciseId}.sets.${setId}`;
+  const SET_ID = `strengths.${exerciseId}.sets.${setId}`;
   const set: { reps: number; lbs: number } = useWatch({
     control,
     name: SET_ID
