@@ -8,9 +8,11 @@ export default withSession(async (req, res) => {
   switch (method) {
     case 'GET': {
       try {
-        const workout = await Workout.findById(workoutId)
-          .populate('exercises')
-          .populate('doneExercises');
+        const workout = await Workout.findById(workoutId).populate({
+          path: 'workoutExercises',
+          select: 'exercise',
+          populate: { path: 'exercise' }
+        });
 
         return res.json(workout);
       } catch (err) {

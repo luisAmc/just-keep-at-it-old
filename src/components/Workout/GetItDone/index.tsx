@@ -71,17 +71,17 @@ export function GetItDone() {
   const [error, setError] = useState('');
 
   useEffect(() => {
-    if (data && data.exercises.length > 0) {
+    if (data && data.workoutExercises.length > 0) {
       let aerobics = [];
       let strengths = [];
 
-      for (const exercise of data.exercises) {
+      for (const workoutExercise of data.workoutExercises) {
         const exerciseData = {
-          id: exercise._id,
-          name: exercise.name
+          id: workoutExercise.exercise._id,
+          name: workoutExercise.exercise.name
         };
 
-        if (exercise.type === EXERCISE_TYPE.AEROBIC) {
+        if (workoutExercise.exercise.type === EXERCISE_TYPE.AEROBIC) {
           aerobics.push(exerciseData);
         } else {
           strengths.push(exerciseData);
@@ -102,7 +102,7 @@ export function GetItDone() {
       (exercise) => exercise.sets.length > 0
     );
 
-    const exercises: ExerciseDone[] = [];
+    const workoutExercises: ExerciseDone[] = [];
     for (const exercise of exercisesWithSets) {
       // Because we don't allow the remove of sets on use, there can be empty sets. We remove those.
       const nonEmptySets = exercise.sets.filter((set: Record<string, number>) =>
@@ -110,12 +110,12 @@ export function GetItDone() {
       );
 
       if (nonEmptySets.length > 0) {
-        exercises.push({ id: exercise.id, sets: nonEmptySets });
+        workoutExercises.push({ id: exercise.id, sets: nonEmptySets });
       }
     }
 
-    if (exercises.length > 0) {
-      await getItDoneMutation.mutateAsync({ exercises });
+    if (workoutExercises.length > 0) {
+      await getItDoneMutation.mutateAsync({ workoutExercises });
     }
   }
 
@@ -137,7 +137,7 @@ export function GetItDone() {
 
               <div className='flex items-center space-x-2'>
                 <div className='text-sm font-medium'>
-                  {data.exercises.length} ejercicios
+                  {data.workoutExercises.length} ejercicios
                 </div>
 
                 <span>&middot;</span>
@@ -153,29 +153,33 @@ export function GetItDone() {
               </div>
             </header>
 
-            <section className='flex flex-col space-y-2'>
-              <div className='flex flex-col space-y-2 px-2 py-2 rounded-lg bg-aerobic-200 '>
-                {aerobics.fields.map((field: FieldArrayItem, index) => (
-                  <AerobicExercise
-                    key={field.key}
-                    exerciseId={index}
-                    name={field.name}
-                  />
-                ))}
-              </div>
-            </section>
+            {aerobics.fields.length > 0 && (
+              <section className='flex flex-col space-y-2'>
+                <div className='flex flex-col space-y-2 px-2 py-2 rounded-lg bg-aerobic-200 '>
+                  {aerobics.fields.map((field: FieldArrayItem, index) => (
+                    <AerobicExercise
+                      key={field.key}
+                      exerciseId={index}
+                      name={field.name}
+                    />
+                  ))}
+                </div>
+              </section>
+            )}
 
-            <section className='flex flex-col space-y-2'>
-              <div className='flex flex-col space-y-2 px-2 py-2 rounded-lg bg-strength-200 '>
-                {strengths.fields.map((field: FieldArrayItem, index) => (
-                  <StrengthExercise
-                    key={field.key}
-                    exerciseId={index}
-                    name={field.name}
-                  />
-                ))}
-              </div>
-            </section>
+            {strengths.fields.length > 0 && (
+              <section className='flex flex-col space-y-2'>
+                <div className='flex flex-col space-y-2 px-2 py-2 rounded-lg bg-strength-200 '>
+                  {strengths.fields.map((field: FieldArrayItem, index) => (
+                    <StrengthExercise
+                      key={field.key}
+                      exerciseId={index}
+                      name={field.name}
+                    />
+                  ))}
+                </div>
+              </section>
+            )}
 
             <footer className='flex justify-end text-sm'>
               <p>

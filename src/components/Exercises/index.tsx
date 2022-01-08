@@ -16,7 +16,7 @@ export function Exercises() {
   const createModal = useModal();
 
   const { data, isLoading } = useQuery<{
-    exercises: (ExerciseType & { id: string })[];
+    exercises: (ExerciseType & { _id: string })[];
   }>('exercises', () => getExercises());
 
   return (
@@ -41,7 +41,7 @@ export function Exercises() {
               }
             >
               {(exercise, i) => (
-                <TableRow key={exercise.id}>
+                <TableRow key={exercise._id}>
                   <TableDataCell>{i + 1}</TableDataCell>
                   <TableDataCell>{exercise.name}</TableDataCell>
                   <TableDataCell className='text-center'>

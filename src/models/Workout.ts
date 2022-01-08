@@ -1,13 +1,11 @@
 import mongoose from 'mongoose';
 import { WORKOUT_STATUS } from 'src/resolvers/WorkoutsResolvers';
-import DoneExercise, { DoneExerciseDocument } from './DoneExercise';
-import Exercise, { ExerciseDocument } from './Exercise';
 import { UserDocument } from './User';
+import WorkoutExercise, { WorkoutExerciseDocument } from './WorkoutExercise';
 
 export interface WorkoutType {
   name: string;
-  exercises: ExerciseDocument[];
-  doneExercises: DoneExerciseDocument[];
+  workoutExercises: WorkoutExerciseDocument[];
 
   status: WORKOUT_STATUS;
 
@@ -24,10 +22,7 @@ export interface WorkoutDocument extends WorkoutType, mongoose.Document {
 const WorkoutSchema = new mongoose.Schema(
   {
     name: { type: String, required: true },
-    exercises: [{ type: mongoose.Schema.Types.ObjectId, ref: Exercise }],
-    doneExercises: [
-      { type: mongoose.Schema.Types.ObjectId, ref: DoneExercise }
-    ],
+    workoutExercises: [{ type: mongoose.Schema.Types.ObjectId, ref: WorkoutExercise }],
 
     status: {
       type: String,
@@ -38,25 +33,7 @@ const WorkoutSchema = new mongoose.Schema(
 
     createdBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }
   },
-  {
-    timestamps: true,
-    toObject: {
-      virtuals: true,
-      versionKey: false,
-      transform: (_, ret) => {
-        ret.id = ret._id;
-        delete ret._id;
-      }
-    },
-    toJSON: {
-      virtuals: true,
-      versionKey: false,
-      transform: (_, ret) => {
-        ret.id = ret._id;
-        delete ret._id;
-      }
-    }
-  }
+  { timestamps: true }
 );
 
 export default (mongoose.models.Workout as mongoose.Model<WorkoutDocument>) ||

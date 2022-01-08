@@ -17,24 +17,24 @@ export async function getWorkouts() {
 
 export interface CreateWorkoutInput {
   name: string;
-  exercises: string[];
+  workoutExercises: string[];
 }
 
 export async function createWorkout(input: CreateWorkoutInput) {
   return await axios.post('/workouts', input);
 }
 
-export type ExerciseDone = {
+export interface ExerciseDone {
   id: string;
   sets: {
     mins?: number;
     lbs?: number;
     reps?: number;
   }[];
-};
+}
 
 export interface GetWorkoutDoneInput {
-  exercises: ExerciseDone[];
+  workoutExercises: ExerciseDone[];
 }
 
 export async function getWorkoutDone(

@@ -41,14 +41,17 @@ export function WorkoutCard({ workout }: { workout: Workout }) {
   const [mostUse, setMostUse] = useState('');
 
   useEffect(() => {
-    const strengthExercises = workout.exercises.filter(
-      (exercise) => exercise.type === EXERCISE_TYPE.STRENGTH
+    const strengthExercises = workout.workoutExercises.filter(
+      (workoutExercise) =>
+        workoutExercise.exercise.type === EXERCISE_TYPE.STRENGTH
     );
 
     let count = {};
-    for (const exercise of strengthExercises) {
-      count[exercise.muscleGroup] = count[exercise.muscleGroup]
-        ? count[exercise.muscleGroup] + 1
+    for (const workoutExercises of strengthExercises) {
+      count[workoutExercises.exercise.muscleGroup] = count[
+        workoutExercises.exercise.muscleGroup
+      ]
+        ? count[workoutExercises.exercise.muscleGroup] + 1
         : 1;
     }
 
@@ -61,7 +64,7 @@ export function WorkoutCard({ workout }: { workout: Workout }) {
 
     setMostUse(mostUse.type);
     setTypes(Object.keys(count));
-  }, [workout.exercises]);
+  }, [workout.workoutExercises]);
 
   function handleClick() {
     router.push(
@@ -95,7 +98,7 @@ export function WorkoutCard({ workout }: { workout: Workout }) {
         </header>
 
         <main className='flex flex-col items-center space-y-4'>
-          <div className='text-xl'>{workout.exercises.length} ejercicios</div>
+          <div className='text-xl'>{workout.workoutExercises.length} ejercicios</div>
 
           <div className='flex items-center justify-center space-x-2'>
             {types.map((type) => (

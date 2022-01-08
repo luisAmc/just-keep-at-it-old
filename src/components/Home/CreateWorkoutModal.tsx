@@ -74,20 +74,20 @@ export function CreateWorkoutModal({ open, onClose }: Props) {
     schema: createWorkoutSchema,
     defaultValues: {
       name: '',
-      exercises: [{}]
+      workoutExercises: [{}]
     }
   });
   const [error, setError] = useState('');
 
-  const exercises = useFieldArray({
+  const workoutExercises = useFieldArray({
     control: form.control,
-    name: 'exercises'
+    name: 'workoutExercises'
   });
 
   async function onSubmit(values: FieldValues) {
     await createMutation.mutateAsync({
       name: values.name,
-      exercises: values.exercises.map(
+      workoutExercises: values.workoutExercises.map(
         (exercise: { value: string }) => exercise.value
       )
     });
@@ -108,21 +108,21 @@ export function CreateWorkoutModal({ open, onClose }: Props) {
           <h3 className='text-lg'>Ejercicios</h3>
 
           <div className='flex flex-col space-y-4'>
-            {exercises.fields.map((field, index) => (
+            {workoutExercises.fields.map((field, index) => (
               <div key={field.id} className='flex items-center space-x-2'>
                 <div className='w-full'>
                   <Select
-                    {...form.register(`exercises.${index}`)}
+                    {...form.register(`workoutExercises.${index}`)}
                     hideLabel
                     options={exerciseOptions}
                     label='Ejercicio'
                   />
                 </div>
 
-                {exercises.fields.length > 1 && (
+                {workoutExercises.fields.length > 1 && (
                   <button
                     className='p-2.5 rounded-full hover:bg-brand-100'
-                    onClick={() => exercises.remove(index)}
+                    onClick={() => workoutExercises.remove(index)}
                   >
                     <TrashIcon className='w-4 h-4' />
                   </button>
@@ -135,7 +135,7 @@ export function CreateWorkoutModal({ open, onClose }: Props) {
         <button
           type='button'
           className='w-full border border-dashed border-brand-600 rounded-lg hover:bg-brand-50/40 hover:border-brand-500'
-          onClick={() => exercises.append({ value: '', label: '' })}
+          onClick={() => workoutExercises.append({ value: '', label: '' })}
         >
           <div className='py-2 flex items-center justify-center space-x-2 text-brand-600'>
             <PlusIcon className='w-4 h-4' />

@@ -93,7 +93,7 @@ export function Home({ data }: Props) {
                     <TableDataCell>{i + 1}</TableDataCell>
                     <TableDataCell>{workout.name}</TableDataCell>
                     <TableDataCell>
-                      {workout.exercises.length} ejercicios
+                      {workout.workoutExercises.length} ejercicios
                     </TableDataCell>
                     <TableDataCell className='text-center'>
                       <Pill
