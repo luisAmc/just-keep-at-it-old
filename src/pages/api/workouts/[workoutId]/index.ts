@@ -10,7 +10,7 @@ export default withSession(async (req, res) => {
       try {
         const workout = await Workout.findById(workoutId).populate({
           path: 'workoutExercises',
-          select: 'exercise',
+          select: 'exercise sets',
           populate: { path: 'exercise' }
         });
 

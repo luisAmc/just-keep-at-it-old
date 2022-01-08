@@ -3,7 +3,7 @@ import { AxiosError } from 'axios';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { useFieldArray } from 'react-hook-form';
-import { useMutation, useQuery } from 'react-query';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { Message } from 'src/components/ui/Message';
 import { WorkoutType } from 'src/models/Workout';
 import { EXERCISE_TYPE } from 'src/resolvers/ExercisesResolver';
@@ -35,11 +35,16 @@ type FieldArrayItem = Record<'key' | 'id' | 'name', string>;
 
 export function GetItDone() {
   const router = useRouter();
+  const queryClient = useQueryClient();
 
   const getItDoneMutation = useMutation(
     (input: GetWorkoutDoneInput) =>
       getWorkoutDone(router.query.workoutId as string, input),
     {
+      onSuccess: () => {
+        queryClient.invalidateQueries('workout');
+        queryClient.invalidateQueries('workouts');
+      },
       onError: (err: AxiosError) => {
         setError(err?.response?.data);
       }
@@ -77,8 +82,9 @@ export function GetItDone() {
 
       for (const workoutExercise of data.workoutExercises) {
         const exerciseData = {
-          id: workoutExercise.exercise._id,
-          name: workoutExercise.exercise.name
+          id: workoutExercise._id,
+          name: workoutExercise.exercise.name,
+          sets: workoutExercise.sets
         };
 
         if (workoutExercise.exercise.type === EXERCISE_TYPE.AEROBIC) {
@@ -128,6 +134,15 @@ export function GetItDone() {
           text={error}
         />
 
+        {data && data.status === WORKOUT_STATUS.DONE && (
+          <Message type='info' title='¡Sigue así!'>
+            <p>
+              Finalizaste este entrenamiento el{' '}
+              <span className='font-bold'>{formatDate(data.doneAt)}</span>.
+            </p>
+          </Message>
+        )}
+
         {isLoading && <Shimmer />}
 
         {data && (
@@ -161,6 +176,7 @@ export function GetItDone() {
                       key={field.key}
                       exerciseId={index}
                       name={field.name}
+                      editable={data.status === WORKOUT_STATUS.DRAFTED}
                     />
                   ))}
                 </div>
@@ -175,6 +191,7 @@ export function GetItDone() {
                       key={field.key}
                       exerciseId={index}
                       name={field.name}
+                      editable={data.status === WORKOUT_STATUS.DRAFTED}
                     />
                   ))}
                 </div>
@@ -183,14 +200,16 @@ export function GetItDone() {
 
             <footer className='flex justify-end text-sm'>
               <p>
-                Creado el <span>{formatDate(data.createdAt, 'medium')}</span>
+                Creado el <span>{formatDate(data.createdAt)}</span>
               </p>
             </footer>
 
-            <SubmitButton>
-              <span>Finalizar</span>
-              <CheckIcon className='ml-2 w-4 h-4' />
-            </SubmitButton>
+            {data.status === WORKOUT_STATUS.DRAFTED && (
+              <SubmitButton>
+                <span>Finalizar</span>
+                <CheckIcon className='ml-2 w-4 h-4' />
+              </SubmitButton>
+            )}
           </>
         )}
       </Form>

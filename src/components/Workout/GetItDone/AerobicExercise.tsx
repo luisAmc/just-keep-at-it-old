@@ -11,9 +11,14 @@ import clsx from 'clsx';
 interface AerobicExerciseProps {
   exerciseId: number;
   name: string;
+  editable: boolean;
 }
 
-export function AerobicExercise({ exerciseId, name }: AerobicExerciseProps) {
+export function AerobicExercise({
+  exerciseId,
+  name,
+  editable
+}: AerobicExerciseProps) {
   const { control } = useFormContext();
   const sets = useFieldArray({
     control,
@@ -42,32 +47,34 @@ export function AerobicExercise({ exerciseId, name }: AerobicExerciseProps) {
                   key={field.id}
                   exerciseId={exerciseId}
                   setId={setIndex}
+                  editable={editable}
                 />
               ))}
 
-              {sets.fields.length === 0 ? (
-                <button
-                  type='button'
-                  className='flex flex-col items-center justify-center py-8 text-aerobic-500 border-2 border-dashed border-aerobic-400 group hover:border-aerobic-500 rounded-lg'
-                  onClick={() => sets.append({ mins: 0 })}
-                >
-                  <SparklesIcon className='w-10 h-10 group-hover:text-aerobic-600' />
-                  <span className='font-semibold group-hover:text-aerobic-600'>
-                    Comenzar
-                  </span>
-                </button>
-              ) : (
-                <button
-                  type='button'
-                  className='w-full border border-dashed rounded-lg bg-aerobic-600 border-aerobic-600 hover:bg-aerobic-500'
-                  onClick={() => sets.append({ mins: 0 })}
-                >
-                  <div className='py-2 flex items-center justify-center space-x-2 text-white'>
-                    <PlusIcon className='w-4 h-4' />
-                    <span>Añadir un set más</span>
-                  </div>
-                </button>
-              )}
+              {editable &&
+                (sets.fields.length === 0 ? (
+                  <button
+                    type='button'
+                    className='flex flex-col items-center justify-center py-8 text-aerobic-500 border-2 border-dashed border-aerobic-400 group hover:border-aerobic-500 rounded-lg'
+                    onClick={() => sets.append({ mins: 0 })}
+                  >
+                    <SparklesIcon className='w-10 h-10 group-hover:text-aerobic-600' />
+                    <span className='font-semibold group-hover:text-aerobic-600'>
+                      Comenzar
+                    </span>
+                  </button>
+                ) : (
+                  <button
+                    type='button'
+                    className='w-full border border-dashed rounded-lg bg-aerobic-600 border-aerobic-600 hover:bg-aerobic-500'
+                    onClick={() => sets.append({ mins: 0 })}
+                  >
+                    <div className='py-2 flex items-center justify-center space-x-2 text-white'>
+                      <PlusIcon className='w-4 h-4' />
+                      <span>Añadir un set más</span>
+                    </div>
+                  </button>
+                ))}
             </Disclosure.Panel>
           </>
         )}
@@ -79,9 +86,10 @@ export function AerobicExercise({ exerciseId, name }: AerobicExerciseProps) {
 interface TimeSetProps {
   exerciseId: number;
   setId: number;
+  editable: boolean;
 }
 
-function TimeSet({ exerciseId, setId }: TimeSetProps) {
+function TimeSet({ exerciseId, setId, editable }: TimeSetProps) {
   const { control, setValue } = useFormContext();
 
   const SET_ID = `aerobics.${exerciseId}.sets.${setId}.mins`;
@@ -95,49 +103,53 @@ function TimeSet({ exerciseId, setId }: TimeSetProps) {
   return (
     <div className='pt-2 flex flex-col space-y-4 border-aerobic-800/20'>
       <div className='flex items-center justify-evenly space-x-4'>
-        <div className='flex flex-col-reverse sm:flex-row items-center justify-evenly space-y-reverse space-y-4 sm:space-y-0 sm:space-x-4'>
-          <button
-            type='button'
-            disabled={mins === 0}
-            className='flex items-center space-x-1 p-2 text-sm rounded-full disabled:opacity-30 bg-aerobic-400 hover:bg-aerobic-500 disabled:hover:bg-aerobic-400'
-            onClick={() => handleRepsChange(-5)}
-          >
-            <MinusIcon className='w-4 h-4' />
-            <span>5</span>
-          </button>
+        {editable && (
+          <div className='flex flex-col-reverse sm:flex-row items-center justify-evenly space-y-reverse space-y-4 sm:space-y-0 sm:space-x-4'>
+            <button
+              type='button'
+              disabled={mins === 0}
+              className='flex items-center space-x-1 p-2 text-sm rounded-full disabled:opacity-30 bg-aerobic-400 hover:bg-aerobic-500 disabled:hover:bg-aerobic-400'
+              onClick={() => handleRepsChange(-5)}
+            >
+              <MinusIcon className='w-4 h-4' />
+              <span>5</span>
+            </button>
 
-          <button
-            type='button'
-            disabled={mins === 0}
-            className='p-4 rounded-full disabled:opacity-30 bg-aerobic-400 hover:bg-aerobic-500 disabled:hover:bg-aerobic-400'
-            onClick={() => handleRepsChange(-1)}
-          >
-            <MinusIcon className='w-4 h-4' />
-          </button>
-        </div>
+            <button
+              type='button'
+              disabled={mins === 0}
+              className='p-4 rounded-full disabled:opacity-30 bg-aerobic-400 hover:bg-aerobic-500 disabled:hover:bg-aerobic-400'
+              onClick={() => handleRepsChange(-1)}
+            >
+              <MinusIcon className='w-4 h-4' />
+            </button>
+          </div>
+        )}
 
         <span>
           <span className='text-3xl font-medium'>{mins}</span>
           <span className='ml-1'>mins</span>
         </span>
 
-        <div className='flex flex-col sm:flex-row items-center justify-evenly space-y-4 sm:space-y-0 sm:space-x-4'>
-          <button
-            type='button'
-            className='p-4 rounded-full bg-aerobic-400 hover:bg-aerobic-500 disabled:hover:bg-aerobic-400'
-            onClick={() => handleRepsChange(1)}
-          >
-            <PlusIcon className='w-4 h-4' />
-          </button>
-          <button
-            type='button'
-            className='flex items-center space-x-1 p-2 text-sm rounded-full bg-aerobic-400 hover:bg-aerobic-500 disabled:hover:bg-aerobic-400'
-            onClick={() => handleRepsChange(5)}
-          >
-            <PlusIcon className='w-4 h-4' />
-            <span>5</span>
-          </button>
-        </div>
+        {editable && (
+          <div className='flex flex-col sm:flex-row items-center justify-evenly space-y-4 sm:space-y-0 sm:space-x-4'>
+            <button
+              type='button'
+              className='p-4 rounded-full bg-aerobic-400 hover:bg-aerobic-500 disabled:hover:bg-aerobic-400'
+              onClick={() => handleRepsChange(1)}
+            >
+              <PlusIcon className='w-4 h-4' />
+            </button>
+            <button
+              type='button'
+              className='flex items-center space-x-1 p-2 text-sm rounded-full bg-aerobic-400 hover:bg-aerobic-500 disabled:hover:bg-aerobic-400'
+              onClick={() => handleRepsChange(5)}
+            >
+              <PlusIcon className='w-4 h-4' />
+              <span>5</span>
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );

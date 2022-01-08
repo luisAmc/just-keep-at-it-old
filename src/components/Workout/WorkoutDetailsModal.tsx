@@ -108,7 +108,7 @@ export function WorkoutDetailsModal({ open, onClose }: Props) {
 
             <footer className='flex justify-end text-sm'>
               <p>
-                Creado el <span>{formatDate(data.createdAt, 'medium')}</span>
+                Creado el <span>{formatDate(data.createdAt)}</span>
               </p>
             </footer>
 
