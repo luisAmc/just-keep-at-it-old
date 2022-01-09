@@ -22,6 +22,7 @@ export function Exercises() {
   return (
     <div>
       <Container
+        size='2xl'
         title='Ejercicios'
         action={<Button onClick={createModal.open}>Nuevo Ejercicio</Button>}
       >

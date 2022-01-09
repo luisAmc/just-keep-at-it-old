@@ -74,7 +74,7 @@ export function Table<T>({
   itemsPerPage?: number;
   children: (items: T, i: number) => ReactNode;
 }) {
-  const maxPage = Math.floor(values.length / itemsPerPage);
+  const maxPage = Math.ceil(values.length / itemsPerPage) - 1;
   const [currentPage, setCurrentPage] = useState(0);
 
   return (
@@ -104,7 +104,9 @@ export function Table<T>({
             </span>{' '}
             to{' '}
             <span className='font-medium'>
-              {currentPage * itemsPerPage + itemsPerPage}
+              {currentPage * itemsPerPage + itemsPerPage > values.length
+                ? values.length
+                : currentPage * itemsPerPage + itemsPerPage}
             </span>{' '}
             de <span className='font-medium'>{values.length}</span>
           </p>
@@ -122,7 +124,7 @@ export function Table<T>({
 
           <button
             type='button'
-            disabled={currentPage >= maxPage - 1}
+            disabled={currentPage === maxPage}
             onClick={() => setCurrentPage(currentPage + 1)}
             className='ml-3 relative inline-flex items-center px-4 py-2 border border-stone-300 text-sm font-medium rounded-md text-stone-700 bg-white hover:bg-stone-50 disabled:opacity-50 disabled:cursor-default'
           >
