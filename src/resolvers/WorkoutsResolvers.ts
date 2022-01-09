@@ -24,6 +24,10 @@ export async function createWorkout(input: CreateWorkoutInput) {
   return await axios.post('/workouts', input);
 }
 
+export async function duplicateWorkout(workoutId: string) {
+  return await axios.post(`/workouts/${workoutId}/duplicate`);
+}
+
 export interface ExerciseDone {
   id: string;
   sets: {
