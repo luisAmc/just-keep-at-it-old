@@ -1,8 +1,5 @@
-import { AxiosError } from 'axios';
-import { useState } from 'react';
 import { FieldValues } from 'react-hook-form';
-import { useMutation } from 'react-query';
-import { login, LoginInput } from 'src/resolvers/AuthResolver';
+import { graphql, useMutation } from 'relay-hooks';
 import { useAuthRedirect } from 'src/utils/useAuthRedirect';
 import { object, string } from 'yup';
 import { Container } from '../ui/Container';
@@ -10,6 +7,7 @@ import { Form, useYupForm } from '../ui/Form';
 import { Input } from '../ui/Input';
 import { Message } from '../ui/Message';
 import { SubmitButton } from '../ui/SubmitButton';
+import { LoginFormMutation } from './__generated__/LoginFormMutation.graphql';
 
 const loginSchema = object().shape({
   username: string().trim().required('Ingrese el usuario.'),
@@ -22,22 +20,31 @@ const loginSchema = object().shape({
 export function LoginForm() {
   const authRedirect = useAuthRedirect();
 
-  const loginMutation = useMutation((input: LoginInput) => login(input), {
-    onSuccess: () => {
-      authRedirect();
-    },
-    onError: (error: AxiosError) => {
-      setError(error?.response?.data);
+  const [login, loginResult] = useMutation<LoginFormMutation>(
+    graphql`
+      mutation LoginFormMutation($input: LoginInput!) {
+        login(input: $input) {
+          id
+        }
+      }
+    `,
+    {
+      onCompleted() {
+        authRedirect();
+      }
     }
-  });
+  );
 
   const form = useYupForm({ schema: loginSchema });
-  const [error, setError] = useState('');
 
   async function onSubmit(values: FieldValues) {
-    await loginMutation.mutateAsync({
-      username: values.username,
-      password: values.password
+    login({
+      variables: {
+        input: {
+          username: values.username,
+          password: values.password
+        }
+      }
     });
   }
 
@@ -48,7 +55,7 @@ export function LoginForm() {
           <Message
             type='error'
             title='Ocurrio un error al tratar de ingresar.'
-            text={error}
+            text={loginResult.error?.message}
           />
 
           <Input

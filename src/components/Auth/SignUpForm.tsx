@@ -1,8 +1,6 @@
-import { AxiosError } from 'axios';
-import { useState } from 'react';
 import { FieldValues } from 'react-hook-form';
-import { useMutation } from 'react-query';
-import { signUp, SignUpInput } from 'src/resolvers/AuthResolver';
+import { useMutation } from 'relay-hooks';
+import { graphql } from 'relay-hooks';
 import { useAuthRedirect } from 'src/utils/useAuthRedirect';
 import { object, string } from 'yup';
 import { Container } from '../ui/Container';
@@ -10,6 +8,7 @@ import { Form, useYupForm } from '../ui/Form';
 import { Input } from '../ui/Input';
 import { Message } from '../ui/Message';
 import { SubmitButton } from '../ui/SubmitButton';
+import { SignUpFormMutation } from './__generated__/SignUpFormMutation.graphql';
 
 const signUpSchema = object().shape({
   name: string().trim().required('Ingrese el nombre.'),
@@ -32,23 +31,32 @@ const signUpSchema = object().shape({
 export function SignUpForm() {
   const authRedirect = useAuthRedirect();
 
-  const signUpMutation = useMutation((input: SignUpInput) => signUp(input), {
-    onSuccess: () => {
-      authRedirect();
-    },
-    onError: (error: AxiosError) => {
-      setError(error?.response?.data);
+  const [signUp, signUpResult] = useMutation<SignUpFormMutation>(
+    graphql`
+      mutation SignUpFormMutation($input: SignUpInput!) {
+        signUp(input: $input) {
+          id
+        }
+      }
+    `,
+    {
+      onCompleted() {
+        authRedirect();
+      }
     }
-  });
+  );
 
   const form = useYupForm({ schema: signUpSchema });
-  const [error, setError] = useState('');
 
   async function onSubmit(values: FieldValues) {
-    await signUpMutation.mutateAsync({
-      name: values.name,
-      username: values.username,
-      password: values.password
+    signUp({
+      variables: {
+        input: {
+          name: values.name,
+          username: values.username,
+          password: values.password
+        }
+      }
     });
   }
 
@@ -59,7 +67,7 @@ export function SignUpForm() {
           <Message
             type='error'
             title='Ocurrio un error al tratar de crear el usuario.'
-            text={error}
+            text={signUpResult.error?.message}
           />
 
           <Input

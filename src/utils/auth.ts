@@ -1,7 +1,6 @@
 import SecurePassword from 'secure-password';
-import User from 'src/models/User';
 import { ValidationError } from 'src/resolvers/errors';
-import dbConnect from './dbConnect';
+import { db } from './prisma';
 
 const securePassword = new SecurePassword();
 
@@ -19,9 +18,7 @@ export async function verifyPassword(hashedPassword: Buffer, password: string) {
 }
 
 export async function authenticateUser(username: string, password: string) {
-  await dbConnect();
-
-  const user = await User.findOne({ username });
+  const user = await db.user.findFirst({ where: { username } });
 
   if (!user || !user.hashedPassword) {
     throw new ValidationError('Usuario no encontrado.', {
@@ -37,7 +34,12 @@ export async function authenticateUser(username: string, password: string) {
 
     case SecurePassword.VALID_NEEDS_REHASH:
       const improvedHash = await hashPassword(password);
-      await User.updateOne({ _id: user._id }, { hashedPassword: improvedHash });
+
+      await db.user.update({
+        where: { id: user.id },
+        data: { hashedPassword: improvedHash }
+      });
+
       break;
 
     default:
