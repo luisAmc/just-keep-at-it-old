@@ -69,7 +69,7 @@ export function Table<T>({
   children
 }: {
   header: ReactNode;
-  values: T[];
+  values: readonly T[];
   paginated?: boolean;
   itemsPerPage?: number;
   children: (items: T, i: number) => ReactNode;

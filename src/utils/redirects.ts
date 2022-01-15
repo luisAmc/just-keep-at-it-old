@@ -40,10 +40,10 @@ export async function authenticatedRoute(
 
   return {
     props: {
-      user: {
-        name: session.user.name,
-        username: session.user.username
-      }
+      // user: {
+        // name: session.user.name,
+        // username: session.user.username
+      // }
     }
   };
 }

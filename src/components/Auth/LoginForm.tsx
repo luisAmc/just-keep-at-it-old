@@ -3,6 +3,7 @@ import { graphql, useMutation } from 'relay-hooks';
 import { useAuthRedirect } from 'src/utils/useAuthRedirect';
 import { object, string } from 'yup';
 import { Container } from '../ui/Container';
+import { ErrorMessage } from '../ui/ErrorMessage';
 import { Form, useYupForm } from '../ui/Form';
 import { Input } from '../ui/Input';
 import { Message } from '../ui/Message';
@@ -37,6 +38,8 @@ export function LoginForm() {
 
   const form = useYupForm({ schema: loginSchema });
 
+  console.dir(loginResult);
+
   async function onSubmit(values: FieldValues) {
     login({
       variables: {
@@ -52,10 +55,9 @@ export function LoginForm() {
     <div className='h-screen'>
       <Container title='Ingresar'>
         <Form form={form} onSubmit={onSubmit}>
-          <Message
-            type='error'
+          <ErrorMessage
             title='Ocurrio un error al tratar de ingresar.'
-            text={loginResult.error?.message}
+            error={loginResult.error}
           />
 
           <Input

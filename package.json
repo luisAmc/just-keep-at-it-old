@@ -8,6 +8,7 @@
     "typecheck": "tsc --noEmit",
     "lint": "next lint",
     "relay": "relay-compiler",
+    "postinstall": "prisma generate",
     "generate-schema": "ts-node --transpile-only -r tsconfig-paths/register src/pages/api/graphql.ts"
   },
   "dependencies": {

@@ -9,8 +9,8 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
       props: {
         data: {
           me: {
-            name: session.user.name,
-            username: session.user.username
+            // name: session.user.name,
+            // username: session.user.username
           }
         }
       }

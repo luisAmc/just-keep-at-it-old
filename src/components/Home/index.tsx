@@ -2,9 +2,9 @@ import { PlusCircleIcon } from '@heroicons/react/outline';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import { useQuery } from 'react-query';
-import { WorkoutType } from 'src/models/Workout';
 import { getWorkouts, WORKOUT_STATUS } from 'src/resolvers/WorkoutsResolvers';
 import { formatDate } from 'src/utils/transforms';
+import { Button } from '../ui/Button';
 import { Container } from '../ui/Container';
 import { useModal } from '../ui/Modal';
 import { Pill } from '../ui/Pill';
@@ -21,35 +21,36 @@ type Props = {
   };
 };
 
-interface Workout extends WorkoutType {
-  _id: string;
-  createdAt: Date;
-}
+// interface Workout extends WorkoutType {
+//   _id: string;
+//   createdAt: Date;
+// }
 
 export function Home({ data }: Props) {
-  const router = useRouter();
+  // const router = useRouter();
 
-  const { workoutId } = router.query;
+  // const { workoutId } = router.query;
 
-  const createWorkout = useModal();
-  const workoutDetails = useModal();
+  // const createWorkout = useModal();
+  // const workoutDetails = useModal();
 
-  const workoutsQuery = useQuery<{
-    workouts: Workout[];
-  }>('workouts', () => getWorkouts(), { refetchOnWindowFocus: false });
+  // const workoutsQuery = useQuery<{
+  //   workouts: Workout[];
+  // }>('workouts', () => getWorkouts(), { refetchOnWindowFocus: false });
 
-  useEffect(() => {
-    if (workoutId) {
-      workoutDetails.open();
-    } else {
-      workoutDetails.close();
-    }
-  }, [workoutId, workoutDetails]);
+  // useEffect(() => {
+  //   if (workoutId) {
+  //     workoutDetails.open();
+  //   } else {
+  //     workoutDetails.close();
+  //   }
+  // }, [workoutId, workoutDetails]);
 
   return (
     <div className='h-screen max-w-5xl w-full mx-auto flex sm:pt-12'>
       <div className='flex w-full flex-col space-y-8 sm:space-y-1'>
-        {workoutsQuery.data && (
+        <Button href='/exercises'>Ejercicios</Button>
+        {/* {workoutsQuery.data && (
           <>
             <Container size='5xl' title='Últimos entrenamientos creados'>
               <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4'>
@@ -113,11 +114,11 @@ export function Home({ data }: Props) {
               </Table>
             </Container>
           </>
-        )}
+        )} */}
       </div>
 
-      <CreateWorkoutModal {...createWorkout.props} />
-      <WorkoutDetailsModal {...workoutDetails.props} />
+      {/* <CreateWorkoutModal {...createWorkout.props} />
+      <WorkoutDetailsModal {...workoutDetails.props} /> */}
     </div>
   );
 }
