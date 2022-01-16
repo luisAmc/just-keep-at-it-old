@@ -1,6 +1,6 @@
 import { GetServerSidePropsContext } from 'next';
 import { graphql, useQuery } from 'relay-hooks';
-import { Home } from 'src/components/Home';
+import { Home, HomeShimmer } from 'src/components/Home';
 import { resolveSession } from 'src/utils/sessions';
 import { homePageQuery } from './__generated__/homePageQuery.graphql';
 
@@ -34,7 +34,7 @@ export default function HomePage() {
   );
 
   if (isLoading || !data) {
-    return <p>Cargando...</p>;
+    return <HomeShimmer />;
   }
 
   return <Home workouts={data.workouts} />;

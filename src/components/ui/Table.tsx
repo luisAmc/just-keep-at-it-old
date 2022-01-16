@@ -138,12 +138,12 @@ export function Table<T>({
 
 export function TableShimmer() {
   return (
-    <div className='animate-pulse flex items-center space-x-4 p-4 border sm:rounded-lg'>
+    <div className='animate-pulse flex items-center space-x-4 p-4'>
       <div className='flex flex-col w-full'>
         <div className='w-full h-4 rounded-full bg-gray-300'></div>
         <div className='flex-1 space-y-4'>
           {Array.from({ length: 3 }).map((_, i) => (
-            <div key={'table-shimmer-row-' + i} className='flex mt-2 space-x-4'>
+            <div key={'table-shimmer-row-' + i} className='flex mt-4 space-x-4'>
               <div className='h-4 w-1/12 rounded-full bg-gray-300'></div>
               <div className='h-4 w-4/12 rounded-full bg-gray-300'></div>
               <div className='h-4 w-3/12 rounded-full bg-gray-300'></div>
@@ -151,6 +151,13 @@ export function TableShimmer() {
               <div className='h-4 w-1/12 rounded-full bg-gray-300'></div>
             </div>
           ))}
+          <div className='flex mt-4 space-x-4 justify-between'>
+            <div className='h-4 w-44 rounded-full bg-gray-300'></div>
+            <div className='flex items-center space-x-4'>
+              <div className='h-4 w-24 rounded-full bg-gray-300'></div>
+              <div className='h-4 w-24 rounded-full bg-gray-300'></div>
+            </div>
+          </div>
         </div>
       </div>
     </div>

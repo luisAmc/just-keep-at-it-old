@@ -217,3 +217,53 @@ export function Workout({ workout }: Props) {
     </Container>
   );
 }
+
+export function WorkoutShimmer() {
+  return (
+    <div className='mt-8 animate-pulse p-4 border rounded-lg max-w-xl mx-auto'>
+      <div className='flex flex-col space-y-4'>
+        <div className='flex items-center mb-2'>
+          <div className='bg-neutral-200 w-6 h-6 mr-2 rounded-full'></div>
+          <div className='bg-neutral-300 w-32 h-6 rounded-xl'></div>
+        </div>
+
+        <div className='flex items-center justify-between'>
+          <div className='bg-neutral-300 w-32 h-6 rounded-xl'></div>
+          <div className='flex items-center justify-center space-x-2'>
+            <div className='bg-neutral-300 w-20 h-4 rounded-xl'></div>
+            <span className='text-neutral-400'>&middot;</span>
+            <div className='bg-neutral-300 w-14 h-4 rounded-xl'></div>
+          </div>
+        </div>
+
+        <div className='flex flex-col space-y-4 border rounded-lg p-4'>
+          <div className='flex items-center justify-between gap-8'>
+            <div className='bg-neutral-300 w-5/6 h-4 rounded-lg'></div>
+            <div className='bg-neutral-300 w-1/6 h-4 rounded-lg'></div>
+          </div>
+        </div>
+
+        <div className='flex flex-col space-y-4 border rounded-lg p-4'>
+          <div className='flex items-center justify-between gap-8'>
+            <div className='bg-neutral-300 w-5/6 h-4 rounded-lg'></div>
+            <div className='bg-neutral-300 w-1/6 h-4 rounded-lg'></div>
+          </div>
+          <div className='flex items-center justify-between gap-8'>
+            <div className='bg-neutral-300 w-5/6 h-4 rounded-lg'></div>
+            <div className='bg-neutral-300 w-1/6 h-4 rounded-lg'></div>
+          </div>
+          <div className='flex items-center justify-between gap-8'>
+            <div className='bg-neutral-300 w-5/6 h-4 rounded-lg'></div>
+            <div className='bg-neutral-300 w-1/6 h-4 rounded-lg'></div>
+          </div>
+        </div>
+
+        <div className='flex justify-end'>
+          <div className='mx- bg-neutral-300 w-36 h-4 rounded-lg'></div>
+        </div>
+
+        <div className='bg-neutral-300 w-full h-5 rounded-lg'></div>
+      </div>
+    </div>
+  );
+}
