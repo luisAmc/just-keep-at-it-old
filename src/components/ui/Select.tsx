@@ -1,14 +1,11 @@
-import { Listbox, Transition } from '@headlessui/react';
 import { CheckIcon, SelectorIcon } from '@heroicons/react/outline';
-import clsx from 'clsx';
-import { forwardRef, Fragment, useState } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
-import {
-  getMuscleGroupLabel,
-  MUSCLE_GROUP
-} from 'src/resolvers/ExercisesResolver';
 import { FieldError } from './Form';
+import { forwardRef, Fragment, useState } from 'react';
+import { Listbox, Transition } from '@headlessui/react';
+import { MuscleGroup } from '@prisma/client';
 import { Pill } from './Pill';
+import clsx from 'clsx';
 
 interface SelectProps {
   label: string;
@@ -87,9 +84,9 @@ const ControlledSelect = forwardRef(function ControlledSelect(
                   </span>
                   {selected && selected.muscleGroup && (
                     <Pill
-                      variant={selected.muscleGroup as MUSCLE_GROUP}
+                      variant={selected.muscleGroup as MuscleGroup}
                       text={getMuscleGroupLabel(
-                        selected.muscleGroup as MUSCLE_GROUP
+                        selected.muscleGroup as MuscleGroup
                       )}
                     />
                   )}
@@ -157,9 +154,9 @@ const ControlledSelect = forwardRef(function ControlledSelect(
 
                                 {option.muscleGroup && (
                                   <Pill
-                                    variant={option.muscleGroup as MUSCLE_GROUP}
+                                    variant={option.muscleGroup as MuscleGroup}
                                     text={getMuscleGroupLabel(
-                                      option.muscleGroup as MUSCLE_GROUP
+                                      option.muscleGroup as MuscleGroup
                                     )}
                                   />
                                 )}
@@ -190,3 +187,20 @@ const ControlledSelect = forwardRef(function ControlledSelect(
     </>
   );
 });
+
+function getMuscleGroupLabel(muscleGroup: MuscleGroup) {
+  switch (muscleGroup) {
+    case MuscleGroup.ARMS:
+      return 'Brazos';
+    case MuscleGroup.CHEST:
+      return 'Pecho';
+    case MuscleGroup.BACK:
+      return 'Espalda';
+    case MuscleGroup.LEGS:
+      return 'Piernas';
+    case MuscleGroup.SHOULDERS:
+      return 'Hombros';
+    default:
+      return '';
+  }
+}

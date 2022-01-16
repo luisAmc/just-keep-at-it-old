@@ -4,6 +4,11 @@ input CreateExerciseInput {
   type: String!
 }
 
+input CreateWorkoutInput {
+  name: String!
+  workoutExercises: [ExerciseOptionInput!]!
+}
+
 scalar DateTime
 
 type Exercise {
@@ -13,6 +18,10 @@ type Exercise {
   type: String!
 }
 
+input ExerciseOptionInput {
+  id: String!
+}
+
 input LoginInput {
   password: String!
   username: String!
@@ -20,6 +29,7 @@ input LoginInput {
 
 type Mutation {
   createExercise(input: CreateExerciseInput!): Exercise!
+  createWorkout(input: CreateWorkoutInput!): Workout!
   login(input: LoginInput!): User!
   signUp(input: SignUpInput!): User!
 }
@@ -27,6 +37,7 @@ type Mutation {
 type Query {
   exercises: [Exercise!]!
   hello(name: String!): String!
+  workouts: [Workout!]!
 }
 
 input SignUpInput {
@@ -39,4 +50,26 @@ type User {
   id: ID!
   name: String!
   username: String!
+}
+
+type Workout {
+  craetedAt: DateTime!
+  doneAt: DateTime!
+  id: ID!
+  name: String!
+  status: String!
+  workoutExercises: [WorkoutExercise!]!
+}
+
+type WorkoutExercise {
+  exercise: Exercise!
+  id: ID!
+  sets: [WorkoutSet!]!
+}
+
+type WorkoutSet {
+  id: ID!
+  lbs: Int
+  mins: Int
+  reps: Int
 }

@@ -38,8 +38,6 @@ export function LoginForm() {
 
   const form = useYupForm({ schema: loginSchema });
 
-  console.dir(loginResult);
-
   async function onSubmit(values: FieldValues) {
     login({
       variables: {

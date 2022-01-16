@@ -1,6 +1,6 @@
 import { Chips } from '../ui/Chips';
 import { Container } from '../ui/Container';
-import { CreateExerciseModalMutation } from './__generated__/CreateExerciseModalMutation.graphql';
+import { CreateExerciseMutation } from './__generated__/CreateExerciseMutation.graphql';
 import { ErrorMessage } from '../ui/ErrorMessage';
 import { ExerciseType, MuscleGroup } from '@prisma/client';
 import { FieldValues, useWatch } from 'react-hook-form';
@@ -25,9 +25,9 @@ export function CreateExercise() {
   const router = useRouter();
 
   const [createExercise, createExerciseResult] =
-    useMutation<CreateExerciseModalMutation>(
+    useMutation<CreateExerciseMutation>(
       graphql`
-        mutation CreateExerciseModalMutation($input: CreateExerciseInput!) {
+        mutation CreateExerciseMutation($input: CreateExerciseInput!) {
           createExercise(input: $input) {
             id
             name
@@ -37,9 +37,6 @@ export function CreateExercise() {
         }
       `,
       {
-        updater(store) {
-          store.invalidateStore();
-        },
         onCompleted() {
           router.push('/exercises');
         }

@@ -34,8 +34,6 @@ builder.mutationField('login', (t) =>
 
       await createSession(req, user);
 
-      console.log({ user });
-
       return user;
     }
   })

@@ -4,8 +4,6 @@ interface Props {
 }
 
 export function ErrorMessage({ title, error }: Props) {
-  console.log({ error });
-
   if (!error) return null;
 
   return (

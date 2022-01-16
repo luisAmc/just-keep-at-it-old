@@ -12,7 +12,6 @@ export async function verifyPassword(hashedPassword: Buffer, password: string) {
   try {
     return await securePassword.verify(Buffer.from(password), hashedPassword);
   } catch (error) {
-    console.log(error);
     return SecurePassword.INVALID;
   }
 }

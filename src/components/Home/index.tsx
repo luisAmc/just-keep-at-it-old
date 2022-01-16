@@ -1,32 +1,22 @@
-import { PlusCircleIcon } from '@heroicons/react/outline';
-import { useRouter } from 'next/router';
-import { useEffect } from 'react';
-import { useQuery } from 'react-query';
-import { getWorkouts, WORKOUT_STATUS } from 'src/resolvers/WorkoutsResolvers';
-import { formatDate } from 'src/utils/transforms';
+import { graphql, useQuery } from 'relay-hooks';
 import { Button } from '../ui/Button';
-import { Container } from '../ui/Container';
-import { useModal } from '../ui/Modal';
-import { Pill } from '../ui/Pill';
-import { Table, TableDataCell, TableHeader, TableRow } from '../ui/Table';
-import { WorkoutCard } from '../Workout/WorkoutCard';
-import { WorkoutDetailsModal } from '../Workout/WorkoutDetailsModal';
-import { CreateWorkoutModal } from './CreateWorkoutModal';
+import { HomeQuery } from './__generated__/HomeQuery.graphql';
 
-type Props = {
-  data?: {
-    me?: {
-      username: 'string';
-    };
-  };
-};
-
-// interface Workout extends WorkoutType {
-//   _id: string;
-//   createdAt: Date;
-// }
-
-export function Home({ data }: Props) {
+export function Home() {
+  const { data } = useQuery<HomeQuery>(
+    graphql`
+      query HomeQuery {
+        workouts {
+          id
+          name
+          workoutExercises {
+            id
+          }
+        }
+      }
+    `,
+    {}
+  );
   // const router = useRouter();
 
   // const { workoutId } = router.query;
@@ -50,6 +40,7 @@ export function Home({ data }: Props) {
     <div className='h-screen max-w-5xl w-full mx-auto flex sm:pt-12'>
       <div className='flex w-full flex-col space-y-8 sm:space-y-1'>
         <Button href='/exercises'>Ejercicios</Button>
+        <Button href='/workouts/create'>Crear Rutina</Button>
         {/* {workoutsQuery.data && (
           <>
             <Container size='5xl' title='Últimos entrenamientos creados'>

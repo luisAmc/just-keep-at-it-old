@@ -1,27 +1,16 @@
 import { PlusIcon, TrashIcon } from '@heroicons/react/outline';
-import { AxiosError } from 'axios';
-import { useMemo, useState } from 'react';
+import { useRouter } from 'next/router';
+import { useMemo } from 'react';
 import { FieldValues, useFieldArray } from 'react-hook-form';
-import { useMutation, useQuery, useQueryClient } from 'react-query';
-import { ExerciseType } from 'src/models/Exercise';
-import { getExercises } from 'src/resolvers/ExercisesResolver';
-import {
-  createWorkout,
-  CreateWorkoutInput
-} from 'src/resolvers/WorkoutsResolvers';
+import { graphql, useMutation, useQuery } from 'relay-hooks';
 import { array, object, string } from 'yup';
+import { Container } from '../ui/Container';
+import { ErrorMessage } from '../ui/ErrorMessage';
 import { Form, useYupForm } from '../ui/Form';
 import { Input } from '../ui/Input';
-import { Message } from '../ui/Message';
-import { Modal, Props as ModalProps } from '../ui/Modal';
 import { Select } from '../ui/Select';
 import { SubmitButton } from '../ui/SubmitButton';
-
-interface Props extends Omit<ModalProps, 'title' | 'children'> {}
-
-interface Exercise extends ExerciseType {
-  id: string;
-}
+import { CreateWorkoutQuery } from './__generated__/CreateWorkoutQuery.graphql';
 
 const createWorkoutSchema = object().shape({
   name: string().trim().required('Ingrese el nombre.'),
@@ -30,29 +19,41 @@ const createWorkoutSchema = object().shape({
     .min(1, 'Seleccione al menos un ejercicio.')
 });
 
-export function CreateWorkoutModal({ open, onClose }: Props) {
-  const queryClient = useQueryClient();
+export function CreateWorkout() {
+  const router = useRouter();
 
-  const createMutation = useMutation(
-    (input: CreateWorkoutInput) => createWorkout(input),
-    {
-      onSuccess: () => {
-        queryClient.invalidateQueries('workouts');
-        form.reset();
-        onClose();
-      },
-      onError: (error: AxiosError) => {
-        setError(error?.response?.data);
+  const { data } = useQuery<CreateWorkoutQuery>(
+    graphql`
+      query CreateWorkoutQuery {
+        exercises {
+          id
+          name
+          type
+          muscleGroup
+        }
       }
-    }
+    `,
+    {}
   );
 
-  const { data, isLoading } = useQuery<{ exercises: Exercise[] }>(
-    'exercises',
-    () => getExercises(),
+  const [createWorkout, createWorkoutResult] = useMutation(
+    graphql`
+      mutation CreateWorkoutMutation($input: CreateWorkoutInput!) {
+        createWorkout(input: $input) {
+          id
+          name
+          status
+          workoutExercises {
+            exercise {
+              name
+            }
+          }
+        }
+      }
+    `,
     {
-      onError: (err: AxiosError) => {
-        setError(err?.response?.data);
+      onCompleted() {
+        router.push('/');
       }
     }
   );
@@ -63,7 +64,7 @@ export function CreateWorkoutModal({ open, onClose }: Props) {
         value: exercise.id,
         label: exercise.name,
         type: exercise.type,
-        muscleGroup: exercise.muscleGroup
+        muscleGroup: exercise.muscleGroup || ''
       }));
     }
 
@@ -77,7 +78,6 @@ export function CreateWorkoutModal({ open, onClose }: Props) {
       workoutExercises: [{}]
     }
   });
-  const [error, setError] = useState('');
 
   const workoutExercises = useFieldArray({
     control: form.control,
@@ -85,21 +85,26 @@ export function CreateWorkoutModal({ open, onClose }: Props) {
   });
 
   async function onSubmit(values: FieldValues) {
-    await createMutation.mutateAsync({
-      name: values.name,
-      workoutExercises: values.workoutExercises.map(
-        (exercise: { value: string }) => exercise.value
-      )
+    createWorkout({
+      variables: {
+        input: {
+          name: values.name,
+          workoutExercises: values.workoutExercises.map(
+            (exercise: { value: string }) => ({
+              id: exercise.value
+            })
+          )
+        }
+      }
     });
   }
 
   return (
-    <Modal title='Crear Entrenamiento' open={open} onClose={onClose}>
+    <Container href='/' title='Crear Rutina' size='xl'>
       <Form form={form} onSubmit={onSubmit}>
-        <Message
-          type='error'
-          title='Ocurrio un error al tratar de obtener los ejercicios.'
-          text={error}
+        <ErrorMessage
+          title='Ocurrio un error al tratar de crear la rutina.'
+          error={createWorkoutResult.error}
         />
 
         <Input {...form.register('name')} label='Nombre' />
@@ -143,8 +148,8 @@ export function CreateWorkoutModal({ open, onClose }: Props) {
           </div>
         </button>
 
-        <SubmitButton>Crear Entrenamiento</SubmitButton>
+        <SubmitButton>Crear Rutina</SubmitButton>
       </Form>
-    </Modal>
+    </Container>
   );
 }

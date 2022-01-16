@@ -1,3 +1,98 @@
-import { builder } from "../builder";
+import { db } from 'src/utils/prisma';
+import { builder } from '../builder';
 
-// builder.prismaObject
+builder.prismaObject('WorkoutSet', {
+  findUnique: (workoutSet) => ({ id: workoutSet.id }),
+  fields: (t) => ({
+    id: t.exposeID('id'),
+    mins: t.exposeInt('mins', { nullable: true }),
+    lbs: t.exposeInt('lbs', { nullable: true }),
+    reps: t.exposeInt('reps', { nullable: true })
+  })
+});
+
+builder.prismaObject('WorkoutExercise', {
+  findUnique: (workoutExercise) => ({ id: workoutExercise.id }),
+  fields: (t) => ({
+    id: t.exposeID('id'),
+    exercise: t.relation('exercise', {
+      resolve: (query, workoutExercise) => {
+        return db.exercise.findUnique({
+          ...query,
+          where: { id: workoutExercise.exerciseId },
+          rejectOnNotFound: true
+        });
+      }
+    }),
+    sets: t.relation('sets', {
+      resolve: (query, workoutExercise) =>
+        db.workoutSet.findMany({
+          ...query,
+          where: { workoutExerciseId: workoutExercise.id }
+        })
+    })
+  })
+});
+
+builder.prismaObject('Workout', {
+  findUnique: (workout) => ({ id: workout.id }),
+  fields: (t) => ({
+    id: t.exposeID('id'),
+    name: t.exposeString('name'),
+    status: t.exposeString('status'),
+    doneAt: t.expose('doneAt', { type: 'DateTime' }),
+    craetedAt: t.expose('createdAt', { type: 'DateTime' }),
+    workoutExercises: t.relation('workoutExercises', {
+      resolve: (query, workout) =>
+        db.workoutExercise.findMany({
+          ...query,
+          where: { workoutId: workout.id }
+        })
+    })
+  })
+});
+
+builder.queryField('workouts', (t) =>
+  t.prismaField({
+    type: ['Workout'],
+    resolve: (query, _parent, _args, { session }) =>
+      db.workout.findMany({ ...query, where: { userId: session!.userId } })
+  })
+);
+
+const ExerciseOptionInput = builder.inputType('ExerciseOptionInput', {
+  fields: (t) => ({ id: t.string() })
+});
+
+const CreateWorkoutInput = builder.inputType('CreateWorkoutInput', {
+  fields: (t) => ({
+    name: t.string(),
+    workoutExercises: t.field({ type: [ExerciseOptionInput] })
+  })
+});
+
+builder.mutationField('createWorkout', (t) =>
+  t.prismaField({
+    type: 'Workout',
+    args: {
+      input: t.arg({ type: CreateWorkoutInput })
+    },
+    resolve: async (query, _parent, { input }, { session }) => {
+      const workout = await db.workout.create({
+        ...query,
+        data: {
+          userId: session!.userId,
+          name: input.name,
+          workoutExercises: {
+            create: input.workoutExercises.map((exercise) => ({
+              userId: session!.userId,
+              exerciseId: exercise.id
+            }))
+          }
+        }
+      });
+
+      return workout;
+    }
+  })
+);
