@@ -51,7 +51,7 @@ export function Exercises() {
                   <TableDataCell>{exercise.name}</TableDataCell>
                   <TableDataCell className='text-center'>
                     <Pill
-                      variant={exercise.type as keyof typeof ExerciseType}
+                      variant={exercise.type as ExerciseType}
                       text={
                         exercise.type === ExerciseType.AEROBIC
                           ? 'Aerobico'
@@ -60,21 +60,22 @@ export function Exercises() {
                     />
                   </TableDataCell>
                   <TableDataCell className='text-center'>
-                    <Pill
-                      variant={exercise.muscleGroup as keyof typeof MuscleGroup}
-                      text={
-                        {
-                          [MuscleGroup.ARMS]: 'Brazos',
-                          [MuscleGroup.CHEST]: 'Pecho',
-                          [MuscleGroup.BACK]: 'Espalda',
-                          [MuscleGroup.LEGS]: 'Piernas',
-                          [MuscleGroup.SHOULDERS]: 'Hombros'
-                        }[
-                          (exercise.muscleGroup as keyof typeof MuscleGroup) ??
-                            ''
-                        ]
-                      }
-                    />
+                    {exercise.muscleGroup ? (
+                      <Pill
+                        variant={exercise.muscleGroup as MuscleGroup}
+                        text={
+                          {
+                            [MuscleGroup.ARMS]: 'Brazos',
+                            [MuscleGroup.CHEST]: 'Pecho',
+                            [MuscleGroup.BACK]: 'Espalda',
+                            [MuscleGroup.LEGS]: 'Piernas',
+                            [MuscleGroup.SHOULDERS]: 'Hombros'
+                          }[(exercise.muscleGroup as MuscleGroup) ?? '']
+                        }
+                      />
+                    ) : (
+                      '-'
+                    )}
                   </TableDataCell>
                 </TableRow>
               )}

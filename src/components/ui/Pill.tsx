@@ -1,8 +1,8 @@
-import { ExerciseType, MuscleGroup } from '@prisma/client';
+import { ExerciseType, MuscleGroup, WorkoutStatus } from '@prisma/client';
 import clsx from 'clsx';
 
 interface Props {
-  variant?: ExerciseType | MuscleGroup;
+  variant?: ExerciseType | MuscleGroup | WorkoutStatus;
   text: string;
 }
 
@@ -20,9 +20,9 @@ export function Pill({ variant = ExerciseType.AEROBIC, text }: Props) {
           'bg-back-100 text-back-800': variant === MuscleGroup.BACK,
           'bg-legs-100 text-legs-800': variant === MuscleGroup.LEGS,
           'bg-shoulders-100 text-shoulders-800':
-            variant === MuscleGroup.SHOULDERS
-          // 'bg-slate-100 text-slate-800': variant === WorkoutStatus.DRAFTED,
-          // 'bg-green-100 text-green-800': variant === WorkoutStatus.DONE
+            variant === MuscleGroup.SHOULDERS,
+          'bg-slate-100 text-slate-800': variant === WorkoutStatus.DRAFTED,
+          'bg-green-100 text-green-800': variant === WorkoutStatus.DONE
         }
       )}
     >

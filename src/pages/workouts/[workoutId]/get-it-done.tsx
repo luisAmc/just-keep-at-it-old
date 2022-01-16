@@ -3,4 +3,4 @@ import { authenticatedRoute } from 'src/utils/redirects';
 
 export const getServerSideProps: GetServerSideProps = authenticatedRoute;
 
-export { GetItDone as default } from 'src/components/Workout/GetItDone';
+export { GetItDone as default } from 'src/components/Workouts/GetItDone';

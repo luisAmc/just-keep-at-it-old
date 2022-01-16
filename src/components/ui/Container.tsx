@@ -1,7 +1,7 @@
 import { ChevronLeftIcon } from '@heroicons/react/outline';
+import { ReactNode } from 'react';
 import clsx from 'clsx';
 import Link from 'next/link';
-import { ReactNode } from 'react';
 
 interface Props {
   href?: string;
@@ -9,6 +9,7 @@ interface Props {
   action?: ReactNode;
   children: ReactNode;
   size?: 'lg' | 'xl' | '2xl' | '3xl' | '4xl' | '5xl';
+  fill?: boolean;
 }
 
 export function Container({
@@ -16,12 +17,14 @@ export function Container({
   title,
   action,
   children,
-  size = 'lg'
+  size = 'lg',
+  fill = true
 }: Props) {
   return (
     <div
       className={clsx(
-        'h-full sm:h-auto sm:my-8 w-full mx-auto sm:rounded-xl shadow-lg bg-white p-6',
+        'sm:h-auto sm:my-8 w-full mx-auto sm:rounded-xl shadow-lg bg-white p-6',
+        fill && 'h-screen',
         {
           'sm:max-w-lg': size === 'lg',
           'sm:max-w-xl': size === 'xl',

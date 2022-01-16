@@ -6,6 +6,7 @@ import { Listbox, Transition } from '@headlessui/react';
 import { MuscleGroup } from '@prisma/client';
 import { Pill } from './Pill';
 import clsx from 'clsx';
+import { getMuscleGroupLabel } from 'src/utils/transforms';
 
 interface SelectProps {
   label: string;
@@ -187,20 +188,3 @@ const ControlledSelect = forwardRef(function ControlledSelect(
     </>
   );
 });
-
-function getMuscleGroupLabel(muscleGroup: MuscleGroup) {
-  switch (muscleGroup) {
-    case MuscleGroup.ARMS:
-      return 'Brazos';
-    case MuscleGroup.CHEST:
-      return 'Pecho';
-    case MuscleGroup.BACK:
-      return 'Espalda';
-    case MuscleGroup.LEGS:
-      return 'Piernas';
-    case MuscleGroup.SHOULDERS:
-      return 'Hombros';
-    default:
-      return '';
-  }
-}

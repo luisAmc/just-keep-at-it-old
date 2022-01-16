@@ -1,19 +1,15 @@
 import { GetServerSidePropsContext } from 'next';
+import { graphql, useQuery } from 'relay-hooks';
+import { Home } from 'src/components/Home';
 import { resolveSession } from 'src/utils/sessions';
+import { homePageQuery } from './__generated__/homePageQuery.graphql';
 
 export async function getServerSideProps(ctx: GetServerSidePropsContext) {
   const session = await resolveSession(ctx);
 
   if (session) {
     return {
-      props: {
-        data: {
-          me: {
-            // name: session.user.name,
-            // username: session.user.username
-          }
-        }
-      }
+      props: {}
     };
   }
 
@@ -26,4 +22,22 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
   };
 }
 
-export { Home as default } from 'src/components/Home';
+export default function HomePage() {
+  const { data, isLoading } = useQuery<homePageQuery>(
+    graphql`
+      query homePageQuery {
+        workouts {
+          ...Home_workout
+        }
+      }
+    `
+  );
+
+  if (isLoading || !data) {
+    return <p>Cargando...</p>;
+  }
+
+  return <Home workouts={data.workouts} />;
+}
+
+// export default Home;

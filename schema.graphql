@@ -34,9 +34,16 @@ type Mutation {
   signUp(input: SignUpInput!): User!
 }
 
+interface Node {
+  id: ID!
+}
+
 type Query {
   exercises: [Exercise!]!
   hello(name: String!): String!
+  node(id: ID!): Node
+  nodes(ids: [ID!]!): [Node]!
+  workout(id: ID!): Workout!
   workouts: [Workout!]!
 }
 
@@ -52,9 +59,9 @@ type User {
   username: String!
 }
 
-type Workout {
-  craetedAt: DateTime!
-  doneAt: DateTime!
+type Workout implements Node {
+  createdAt: DateTime!
+  doneAt: DateTime
   id: ID!
   name: String!
   status: String!

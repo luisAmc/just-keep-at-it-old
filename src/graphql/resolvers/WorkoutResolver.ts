@@ -34,14 +34,16 @@ builder.prismaObject('WorkoutExercise', {
   })
 });
 
-builder.prismaObject('Workout', {
-  findUnique: (workout) => ({ id: workout.id }),
+builder.prismaNode('Workout', {
+  // findUnique: (workout) => ({ id: workout.id }),
+  findUnique: (id) => ({ id }),
+  id: { resolve: (workout) => workout.id },
   fields: (t) => ({
-    id: t.exposeID('id'),
+    // id: t.exposeID('id'),
     name: t.exposeString('name'),
     status: t.exposeString('status'),
-    doneAt: t.expose('doneAt', { type: 'DateTime' }),
-    craetedAt: t.expose('createdAt', { type: 'DateTime' }),
+    doneAt: t.expose('doneAt', { nullable: true, type: 'DateTime' }),
+    createdAt: t.expose('createdAt', { type: 'DateTime' }),
     workoutExercises: t.relation('workoutExercises', {
       resolve: (query, workout) =>
         db.workoutExercise.findMany({
@@ -52,11 +54,31 @@ builder.prismaObject('Workout', {
   })
 });
 
+builder.queryField('workout', (t) =>
+  t.prismaField({
+    type: 'Workout',
+    args: { id: t.arg.globalID({ required: true }) },
+    resolve: (query, _parent, { id }) => {
+      return db.workout.findFirst({
+        ...query,
+        where: { id: id.id },
+        rejectOnNotFound: true
+      });
+    }
+  })
+);
+
 builder.queryField('workouts', (t) =>
   t.prismaField({
     type: ['Workout'],
     resolve: (query, _parent, _args, { session }) =>
-      db.workout.findMany({ ...query, where: { userId: session!.userId } })
+      db.workout.findMany({
+        ...query,
+        where: { userId: session!.userId },
+        orderBy: {
+          createdAt: 'desc'
+        }
+      })
   })
 );
 

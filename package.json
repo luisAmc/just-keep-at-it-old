@@ -9,7 +9,8 @@
     "lint": "next lint",
     "relay": "relay-compiler",
     "postinstall": "prisma generate",
-    "generate-schema": "ts-node --transpile-only -r tsconfig-paths/register src/pages/api/graphql.ts"
+    "generate-schema": "ts-node --transpile-only -r tsconfig-paths/register src/pages/api/graphql.ts",
+    "clean:codegen": "trash \"./src/**/__generated__/**\""
   },
   "dependencies": {
     "@giraphql/core": "^2.23.0",
@@ -42,6 +43,7 @@
   "devDependencies": {
     "@types/node": "17.0.1",
     "@types/react": "17.0.37",
+    "@types/react-relay": "^13.0.0",
     "@types/relay-runtime": "^13.0.0",
     "@types/secure-password": "^3.1.1",
     "autoprefixer": "^10.4.0",
@@ -54,6 +56,7 @@
     "relay-compiler": "^13.0.1",
     "relay-compiler-language-typescript": "^15.0.0",
     "tailwindcss": "^3.0.7",
+    "trash-cli": "^5.0.0",
     "ts-node": "^10.4.0",
     "tsconfig-paths": "^3.12.0",
     "typescript": "4.5.4"

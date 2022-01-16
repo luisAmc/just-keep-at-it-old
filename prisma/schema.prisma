@@ -82,7 +82,7 @@ model WorkoutExercise {
 
 enum WorkoutStatus {
   DRAFTED
-  NONE
+  DONE
 }
 
 model Workout {
