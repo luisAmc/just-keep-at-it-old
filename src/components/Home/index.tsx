@@ -128,7 +128,7 @@ export function Home({ workouts }: Props) {
                       </TableDataCell>
                       <TableDataCell>
                         <Link href={`/workouts/${workout.id}`} passHref>
-                          <div className='hover:bg-brand-100 hover:text-brand-700 w-10 h-10 flex items-center justify-center rounded-full'>
+                          <div className='hover:bg-brand-100 hover:cursor-pointer hover:text-brand-700 w-10 h-10 flex items-center justify-center rounded-full'>
                             <ZoomInIcon className='w-4 h-4' />
                           </div>
                         </Link>

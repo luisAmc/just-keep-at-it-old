@@ -4,6 +4,10 @@ input CreateExerciseInput {
   type: String!
 }
 
+type CreateExerciseResult {
+  exercise: Exercise!
+}
+
 input CreateWorkoutInput {
   name: String!
   workoutExercises: [ExerciseOptionInput!]!
@@ -22,7 +26,7 @@ input DoneWorkoutExerciseSetInput {
   reps: Int
 }
 
-type Exercise {
+type Exercise implements Node {
   id: ID!
   muscleGroup: String
   name: String!
@@ -47,7 +51,7 @@ input LoginInput {
 }
 
 type Mutation {
-  createExercise(input: CreateExerciseInput!): Exercise!
+  createExercise(input: CreateExerciseInput!): CreateExerciseResult!
   createWorkout(input: CreateWorkoutInput!): Workout!
   getWorkoutDone(data: GetItDoneInput!, workoutId: ID!): GetWorkoutDoneResult!
   login(input: LoginInput!): User!

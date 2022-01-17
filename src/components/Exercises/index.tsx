@@ -1,24 +1,27 @@
 import { ExerciseType, MuscleGroup } from '@prisma/client';
-import { graphql, useQuery } from 'relay-hooks';
+import { useFragment } from 'react-relay';
+import { graphql } from 'relay-hooks';
 import { Button } from '../ui/Button';
 import { Container } from '../ui/Container';
 import { Pill } from '../ui/Pill';
 import { Table, TableDataCell, TableHeader, TableRow } from '../ui/Table';
-import { ExercisesQuery } from './__generated__/ExercisesQuery.graphql';
+import { Exercises_exercise$key } from './__generated__/Exercises_exercise.graphql';
 
-export function Exercises() {
-  const { data, isLoading, error } = useQuery<ExercisesQuery>(
+interface Props {
+  exercises: Exercises_exercise$key;
+}
+
+export function Exercises({ exercises }: Props) {
+  const data = useFragment(
     graphql`
-      query ExercisesQuery {
-        exercises {
-          id
-          name
-          type
-          muscleGroup
-        }
+      fragment Exercises_exercise on Exercise @relay(plural: true) {
+        id
+        name
+        type
+        muscleGroup
       }
     `,
-    {}
+    exercises
   );
 
   return (
@@ -30,12 +33,12 @@ export function Exercises() {
         action={<Button href='/exercises/create'>Nuevo Ejercicio</Button>}
       >
         {data &&
-          (data.exercises.length === 0 ? (
+          (data.length === 0 ? (
             <p>No se han creado ejercicios.</p>
           ) : (
             <Table
               itemsPerPage={10}
-              values={data.exercises}
+              values={data}
               header={
                 <>
                   <TableHeader label='#' />

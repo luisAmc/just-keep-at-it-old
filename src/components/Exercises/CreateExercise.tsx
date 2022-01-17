@@ -29,14 +29,24 @@ export function CreateExercise() {
       graphql`
         mutation CreateExerciseMutation($input: CreateExerciseInput!) {
           createExercise(input: $input) {
-            id
-            name
-            type
-            muscleGroup
+            exercise {
+              ...Exercises_exercise
+            }
           }
         }
       `,
       {
+        updater(store) {
+          const exercise = store
+            .getRootField('createExercise')
+            .getLinkedRecord('exercise');
+
+          const exercises = store.getRoot()?.getLinkedRecords('exercises');
+
+          exercises?.unshift(exercise);
+
+          store.getRoot().setLinkedRecords(exercises, 'exercises');
+        },
         onCompleted() {
           router.push('/exercises');
         }
