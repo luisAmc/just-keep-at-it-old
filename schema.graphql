@@ -11,6 +11,17 @@ input CreateWorkoutInput {
 
 scalar DateTime
 
+input DoneWorkoutExerciseInput {
+  id: String!
+  sets: [DoneWorkoutExerciseSetInput!]!
+}
+
+input DoneWorkoutExerciseSetInput {
+  lbs: Int
+  mins: Int
+  reps: Int
+}
+
 type Exercise {
   id: ID!
   muscleGroup: String
@@ -22,6 +33,14 @@ input ExerciseOptionInput {
   id: String!
 }
 
+input GetItDoneInput {
+  workoutExercises: [DoneWorkoutExerciseInput!]!
+}
+
+type GetWorkoutDoneResult {
+  workout: Workout!
+}
+
 input LoginInput {
   password: String!
   username: String!
@@ -30,6 +49,7 @@ input LoginInput {
 type Mutation {
   createExercise(input: CreateExerciseInput!): Exercise!
   createWorkout(input: CreateWorkoutInput!): Workout!
+  getWorkoutDone(data: GetItDoneInput!, workoutId: ID!): GetWorkoutDoneResult!
   login(input: LoginInput!): User!
   signUp(input: SignUpInput!): User!
 }

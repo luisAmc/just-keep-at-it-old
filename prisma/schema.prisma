@@ -57,14 +57,14 @@ model Exercise {
 }
 
 model WorkoutSet {
-  id                String           @id @default(dbgenerated()) @map("_id") @db.ObjectId
+  id                String          @id @default(dbgenerated()) @map("_id") @db.ObjectId
   mins              Int?
   lbs               Int?
   reps              Int?
-  createdAt         DateTime         @default(now()) @db.Date
-  updatedAt         DateTime         @updatedAt @db.Date
-  workoutExercise   WorkoutExercise? @relation(fields: [workoutExerciseId], references: [id])
-  workoutExerciseId String?          @db.ObjectId
+  createdAt         DateTime        @default(now()) @db.Date
+  updatedAt         DateTime        @updatedAt @db.Date
+  workoutExercise   WorkoutExercise @relation(fields: [workoutExerciseId], references: [id])
+  workoutExerciseId String          @db.ObjectId
 }
 
 model WorkoutExercise {

@@ -3,6 +3,7 @@ import ScopeAuthPlugin from '@giraphql/plugin-scope-auth';
 import RelayPlugin from '@giraphql/plugin-relay';
 import PrismaPlugin from '@giraphql/plugin-prisma';
 import type PrismaTypes from '@giraphql/plugin-prisma/generated';
+import SimpleObjectsPlugin from '@giraphql/plugin-simple-objects';
 import { db } from 'src/utils/prisma';
 import { IncomingMessage, OutgoingMessage } from 'http';
 import { Session } from '@prisma/client';
@@ -39,7 +40,7 @@ export const builder = new SchemaBuilder<{
     DateTime: { Input: Date; Output: Date };
   };
 }>({
-  plugins: [RelayPlugin, PrismaPlugin, ScopeAuthPlugin],
+  plugins: [RelayPlugin, PrismaPlugin, ScopeAuthPlugin, SimpleObjectsPlugin],
   authScopes: async ({ session }) => ({
     public: true,
     user: !!session,

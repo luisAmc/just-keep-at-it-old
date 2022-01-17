@@ -91,51 +91,53 @@ export function Home({ workouts }: Props) {
               </div>
             </Container>
 
-            <Container size='5xl' title='Últimos entrenamientos'>
-              <Table
-                values={data}
-                header={
-                  <>
-                    <TableHeader label='#' />
-                    <TableHeader label='Nombre' />
-                    <TableHeader label='Ejercicios' />
-                    <TableHeader label='Estado' className='text-center' />
-                    <TableHeader label='Creado el' className='text-right' />
-                    <TableHeader label='' className='sm:w-5' />
-                  </>
-                }
-              >
-                {(workout, i) => (
-                  <TableRow key={workout.id}>
-                    <TableDataCell>{i + 1}</TableDataCell>
-                    <TableDataCell>{workout.name}</TableDataCell>
-                    <TableDataCell>
-                      {workout.workoutExercises.length} ejercicios
-                    </TableDataCell>
-                    <TableDataCell className='text-center'>
-                      <Pill
-                        variant={workout.status as WorkoutStatus}
-                        text={
-                          workout.status === WorkoutStatus.DRAFTED
-                            ? 'Borrador'
-                            : 'Completado'
-                        }
-                      />
-                    </TableDataCell>
-                    <TableDataCell className='text-right'>
-                      {formatDate(workout.createdAt)}
-                    </TableDataCell>
-                    <TableDataCell>
-                      <Link href={`/workouts/${workout.id}`} passHref>
-                        <div className='hover:bg-brand-100 hover:text-brand-700 w-10 h-10 flex items-center justify-center rounded-full'>
-                          <ZoomInIcon className='w-4 h-4' />
-                        </div>
-                      </Link>
-                    </TableDataCell>
-                  </TableRow>
-                )}
-              </Table>
-            </Container>
+            {data.length > 0 && (
+              <Container size='5xl' title='Últimos entrenamientos'>
+                <Table
+                  values={data}
+                  header={
+                    <>
+                      <TableHeader label='#' />
+                      <TableHeader label='Nombre' />
+                      <TableHeader label='Ejercicios' />
+                      <TableHeader label='Estado' className='text-center' />
+                      <TableHeader label='Creado el' className='text-right' />
+                      <TableHeader label='' className='sm:w-5' />
+                    </>
+                  }
+                >
+                  {(workout, i) => (
+                    <TableRow key={workout.id}>
+                      <TableDataCell>{i + 1}</TableDataCell>
+                      <TableDataCell>{workout.name}</TableDataCell>
+                      <TableDataCell>
+                        {workout.workoutExercises.length} ejercicios
+                      </TableDataCell>
+                      <TableDataCell className='text-center'>
+                        <Pill
+                          variant={workout.status as WorkoutStatus}
+                          text={
+                            workout.status === WorkoutStatus.DRAFTED
+                              ? 'Borrador'
+                              : 'Completado'
+                          }
+                        />
+                      </TableDataCell>
+                      <TableDataCell className='text-right'>
+                        {formatDate(workout.createdAt)}
+                      </TableDataCell>
+                      <TableDataCell>
+                        <Link href={`/workouts/${workout.id}`} passHref>
+                          <div className='hover:bg-brand-100 hover:text-brand-700 w-10 h-10 flex items-center justify-center rounded-full'>
+                            <ZoomInIcon className='w-4 h-4' />
+                          </div>
+                        </Link>
+                      </TableDataCell>
+                    </TableRow>
+                  )}
+                </Table>
+              </Container>
+            )}
           </>
         )}
       </div>
@@ -151,7 +153,10 @@ export function HomeShimmer() {
           <div className='w-52 h-4 rounded-full bg-gray-300 mb-4'></div>
           <div className='grid md:grid-cols-2 lg:grid-cols-3 gap-4'>
             {Array.from({ length: 3 }).map((_, i) => (
-              <div key={i} className='border rounded-lg h-40 flex flex-col justify-center p-4 space-y-4'>
+              <div
+                key={i}
+                className='border rounded-lg h-40 flex flex-col justify-center p-4 space-y-4'
+              >
                 <div className='flex items-center justify-between'>
                   <div className='bg-neutral-300 h-4 w-32 rounded-lg'></div>
                   <div className='bg-neutral-300 h-4 w-20 rounded-lg'></div>

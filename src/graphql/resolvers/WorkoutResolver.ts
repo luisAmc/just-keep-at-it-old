@@ -1,3 +1,4 @@
+import { WorkoutStatus } from '@prisma/client';
 import { db } from 'src/utils/prisma';
 import { builder } from '../builder';
 
@@ -34,7 +35,7 @@ builder.prismaObject('WorkoutExercise', {
   })
 });
 
-builder.prismaNode('Workout', {
+const WorkoutRef = builder.prismaNode('Workout', {
   // findUnique: (workout) => ({ id: workout.id }),
   findUnique: (id) => ({ id }),
   id: { resolve: (workout) => workout.id },
@@ -115,6 +116,71 @@ builder.mutationField('createWorkout', (t) =>
       });
 
       return workout;
+    }
+  })
+);
+
+const GetItDoneInput = builder.inputType('GetItDoneInput', {
+  fields: (t) => ({
+    workoutExercises: t.field({
+      type: [
+        builder.inputType('DoneWorkoutExerciseInput', {
+          fields: (t) => ({
+            id: t.string(),
+            sets: t.field({
+              type: [
+                builder.inputType('DoneWorkoutExerciseSetInput', {
+                  fields: (t) => ({
+                    mins: t.int({ required: false }),
+                    lbs: t.int({ required: false }),
+                    reps: t.int({ required: false })
+                  })
+                })
+              ]
+            })
+          })
+        })
+      ]
+    })
+  })
+});
+
+const GetWorkoutDoneResult = builder.simpleObject('GetWorkoutDoneResult', {
+  fields: (t) => ({
+    workout: t.field({ type: WorkoutRef })
+  })
+});
+
+builder.mutationField('getWorkoutDone', (t) =>
+  t.field({
+    type: GetWorkoutDoneResult,
+    args: {
+      workoutId: t.arg.globalID({ required: true }),
+      data: t.arg({ type: GetItDoneInput })
+    },
+    resolve: async (_parent, { workoutId, data }) => {
+      for (const doneExercise of data.workoutExercises) {
+        for (const exerciseSet of doneExercise.sets) {
+          await db.workoutSet.create({
+            data: {
+              workoutExerciseId: doneExercise.id,
+              mins: exerciseSet.mins,
+              lbs: exerciseSet.lbs,
+              reps: exerciseSet.reps
+            }
+          });
+        }
+      }
+
+      return {
+        workout: await db.workout.update({
+          where: { id: workoutId.id },
+          data: {
+            status: WorkoutStatus.DONE,
+            doneAt: new Date()
+          }
+        })
+      };
     }
   })
 );
