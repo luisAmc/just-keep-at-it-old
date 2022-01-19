@@ -6,8 +6,10 @@ import {
 import { WorkoutStatus } from '@prisma/client';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+import { useState } from 'react';
 import { useFragment } from 'react-relay';
 import { graphql } from 'relay-hooks';
+import { uploadFile } from 'src/utils/imageUpload';
 import { formatDate } from 'src/utils/transforms';
 import { ButtonOrLink } from '../ui/ButtonOrLink';
 import { Container } from '../ui/Container';
@@ -22,10 +24,17 @@ import {
 import { WorkoutCard } from '../Workouts/WorkoutCard';
 import { Home_workout$key } from './__generated__/Home_workout.graphql';
 
+export const query = graphql`
+  query HomeQuery {
+    workouts {
+      ...Home_workout
+    }
+  }
+`;
+
 interface Props {
   workouts: Home_workout$key;
 }
-
 export function Home({ workouts }: Props) {
   const router = useRouter();
 
@@ -49,9 +58,27 @@ export function Home({ workouts }: Props) {
     workouts
   );
 
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+
+  // async function startUpload() {
+  //   const fileUrl = await uploadFile(selectedFile!);
+
+  //   console.log({ fileUrl });
+  // }
+
   return (
     <div className='h-screen max-w-5xl w-full mx-auto flex sm:pt-12'>
       <div className='flex w-full flex-col space-y-1 sm:space-y-0'>
+        {/* <Container>
+          <input
+            type='file'
+            onChange={(e) => setSelectedFile(e.target.files?.[0] ?? null)}
+          />
+          <button className='border px-3 py-2' onClick={() => startUpload()}>
+            Subit
+          </button>
+        </Container> */}
+
         {data && (
           <>
             <Container

@@ -1,8 +1,8 @@
 import { GetServerSideProps } from 'next';
-import { graphql, useQuery } from 'relay-hooks';
-import { GetItDone } from 'src/components/Workouts/GetItDone';
+import { useQuery } from 'relay-hooks';
+import { GetItDone, query } from 'src/components/Workouts/GetItDone';
+import { GetItDoneQuery } from 'src/components/Workouts/GetItDone/__generated__/GetItDoneQuery.graphql';
 import { WorkoutShimmer } from 'src/components/Workouts/Workout';
-import { getItDoneQuery } from './__generated__/getItDoneQuery.graphql';
 
 export const getServerSideProps: GetServerSideProps = async (req) => {
   return {
@@ -15,16 +15,7 @@ interface Props {
 }
 
 export default function GetItDonePage({ id }: Props) {
-  const { data, isLoading } = useQuery<getItDoneQuery>(
-    graphql`
-      query getItDoneQuery($id: ID!) {
-        workout(id: $id) {
-          ...GetItDone_workout
-        }
-      }
-    `,
-    { id }
-  );
+  const { data, isLoading } = useQuery<GetItDoneQuery>(query, { id });
 
   if (isLoading || !data) {
     return <WorkoutShimmer />;

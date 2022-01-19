@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<3ab56b8e9621ad3d2790cb6270be2f78>>
+ * @generated SignedSource<<e6e9e43cacc5397adadeeafb238af071>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -10,19 +10,19 @@
 
 import { ConcreteRequest, Query } from 'relay-runtime';
 import { FragmentRefs } from "relay-runtime";
-export type getItDoneQuery$variables = {
+export type GetItDoneQuery$variables = {
   id: string;
 };
-export type getItDoneQueryVariables = getItDoneQuery$variables;
-export type getItDoneQuery$data = {
+export type GetItDoneQueryVariables = GetItDoneQuery$variables;
+export type GetItDoneQuery$data = {
   readonly workout: {
     readonly " $fragmentSpreads": FragmentRefs<"GetItDone_workout">;
   };
 };
-export type getItDoneQueryResponse = getItDoneQuery$data;
-export type getItDoneQuery = {
-  variables: getItDoneQueryVariables;
-  response: getItDoneQuery$data;
+export type GetItDoneQueryResponse = GetItDoneQuery$data;
+export type GetItDoneQuery = {
+  variables: GetItDoneQueryVariables;
+  response: GetItDoneQuery$data;
 };
 
 const node: ConcreteRequest = (function(){
@@ -59,7 +59,7 @@ return {
     "argumentDefinitions": (v0/*: any*/),
     "kind": "Fragment",
     "metadata": null,
-    "name": "getItDoneQuery",
+    "name": "GetItDoneQuery",
     "selections": [
       {
         "alias": null,
@@ -85,7 +85,7 @@ return {
   "operation": {
     "argumentDefinitions": (v0/*: any*/),
     "kind": "Operation",
-    "name": "getItDoneQuery",
+    "name": "GetItDoneQuery",
     "selections": [
       {
         "alias": null,
@@ -196,16 +196,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "079c640b573268d6bf2dcc388f4a12e0",
+    "cacheID": "c4cc5518e31b671f22fc77bf8d6e5a24",
     "id": null,
     "metadata": {},
-    "name": "getItDoneQuery",
+    "name": "GetItDoneQuery",
     "operationKind": "query",
-    "text": "query getItDoneQuery(\n  $id: ID!\n) {\n  workout(id: $id) {\n    ...GetItDone_workout\n    id\n  }\n}\n\nfragment GetItDone_workout on Workout {\n  id\n  name\n  status\n  createdAt\n  doneAt\n  workoutExercises {\n    id\n    sets {\n      id\n      mins\n      lbs\n      reps\n    }\n    exercise {\n      id\n      name\n      type\n      muscleGroup\n    }\n  }\n}\n"
+    "text": "query GetItDoneQuery(\n  $id: ID!\n) {\n  workout(id: $id) {\n    ...GetItDone_workout\n    id\n  }\n}\n\nfragment GetItDone_workout on Workout {\n  id\n  name\n  status\n  createdAt\n  doneAt\n  workoutExercises {\n    id\n    sets {\n      id\n      mins\n      lbs\n      reps\n    }\n    exercise {\n      id\n      name\n      type\n      muscleGroup\n    }\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "d5e828295e2ce8dcf66031d809242dee";
+(node as any).hash = "ea7eac492b3913c0c9bf8564e55f1ec0";
 
 export default node;

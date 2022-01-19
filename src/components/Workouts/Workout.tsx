@@ -9,6 +9,14 @@ import { Pill } from '../ui/Pill';
 import { Workout_workout$key } from './__generated__/Workout_workout.graphql';
 import clsx from 'clsx';
 
+export const query = graphql`
+  query WorkoutIdQuery($id: ID!) {
+    workout(id: $id) {
+      ...Workout_workout
+    }
+  }
+`;
+
 interface Props {
   workout: Workout_workout$key;
 }

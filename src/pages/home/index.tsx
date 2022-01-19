@@ -1,8 +1,8 @@
 import { GetServerSidePropsContext } from 'next';
-import { graphql, useQuery } from 'relay-hooks';
-import { Home, HomeShimmer } from 'src/components/Home';
+import { useQuery } from 'relay-hooks';
+import { Home, HomeShimmer, query } from 'src/components/Home';
+import { HomeQuery } from 'src/components/Home/__generated__/HomeQuery.graphql';
 import { resolveSession } from 'src/utils/sessions';
-import { homePageQuery } from './__generated__/homePageQuery.graphql';
 
 export async function getServerSideProps(ctx: GetServerSidePropsContext) {
   const session = await resolveSession(ctx);
@@ -23,15 +23,7 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
 }
 
 export default function HomePage() {
-  const { data, isLoading } = useQuery<homePageQuery>(
-    graphql`
-      query homePageQuery {
-        workouts {
-          ...Home_workout
-        }
-      }
-    `
-  );
+  const { data, isLoading } = useQuery<HomeQuery>(query);
 
   if (isLoading || !data) {
     return <HomeShimmer />;

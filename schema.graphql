@@ -52,6 +52,7 @@ input LoginInput {
 
 type Mutation {
   createExercise(input: CreateExerciseInput!): CreateExerciseResult!
+  createUploadURL(ext: String!): UploadURL!
   createWorkout(input: CreateWorkoutInput!): Workout!
   getWorkoutDone(data: GetItDoneInput!, workoutId: ID!): GetWorkoutDoneResult!
   login(input: LoginInput!): User!
@@ -75,6 +76,11 @@ input SignUpInput {
   name: String!
   password: String!
   username: String!
+}
+
+type UploadURL {
+  key: String!
+  url: String!
 }
 
 type User {

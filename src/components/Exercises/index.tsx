@@ -7,6 +7,14 @@ import { Pill } from '../ui/Pill';
 import { Table, TableDataCell, TableHeader, TableRow } from '../ui/Table';
 import { Exercises_exercise$key } from './__generated__/Exercises_exercise.graphql';
 
+export const query = graphql`
+  query ExercisesQuery {
+    exercises {
+      ...Exercises_exercise
+    }
+  }
+`;
+
 interface Props {
   exercises: Exercises_exercise$key;
 }

@@ -13,6 +13,8 @@
     "clean:codegen": "trash \"./src/**/__generated__/**\""
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.47.0",
+    "@aws-sdk/s3-request-presigner": "^3.47.0",
     "@giraphql/core": "^2.23.0",
     "@giraphql/plugin-prisma": "^0.14.0",
     "@giraphql/plugin-relay": "^2.19.0",

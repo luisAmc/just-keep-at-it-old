@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<a7c28689b73cb33b6c56028e6f1c30eb>>
+ * @generated SignedSource<<9660cf2b2c4599b45b5915430b0afa06>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -10,17 +10,17 @@
 
 import { ConcreteRequest, Query } from 'relay-runtime';
 import { FragmentRefs } from "relay-runtime";
-export type homePageQuery$variables = {};
-export type homePageQueryVariables = homePageQuery$variables;
-export type homePageQuery$data = {
+export type HomeQuery$variables = {};
+export type HomeQueryVariables = HomeQuery$variables;
+export type HomeQuery$data = {
   readonly workouts: ReadonlyArray<{
     readonly " $fragmentSpreads": FragmentRefs<"Home_workout">;
   }>;
 };
-export type homePageQueryResponse = homePageQuery$data;
-export type homePageQuery = {
-  variables: homePageQueryVariables;
-  response: homePageQuery$data;
+export type HomeQueryResponse = HomeQuery$data;
+export type HomeQuery = {
+  variables: HomeQueryVariables;
+  response: HomeQuery$data;
 };
 
 const node: ConcreteRequest = (function(){
@@ -36,7 +36,7 @@ return {
     "argumentDefinitions": [],
     "kind": "Fragment",
     "metadata": null,
-    "name": "homePageQuery",
+    "name": "HomeQuery",
     "selections": [
       {
         "alias": null,
@@ -62,7 +62,7 @@ return {
   "operation": {
     "argumentDefinitions": [],
     "kind": "Operation",
-    "name": "homePageQuery",
+    "name": "HomeQuery",
     "selections": [
       {
         "alias": null,
@@ -138,16 +138,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "cd09fd213c5ae6de30f430e9220f5135",
+    "cacheID": "a939b6504a80d26abc0f91b22459b94d",
     "id": null,
     "metadata": {},
-    "name": "homePageQuery",
+    "name": "HomeQuery",
     "operationKind": "query",
-    "text": "query homePageQuery {\n  workouts {\n    ...Home_workout\n    id\n  }\n}\n\nfragment Home_workout on Workout {\n  id\n  name\n  status\n  createdAt\n  workoutExercises {\n    exercise {\n      id\n      type\n      muscleGroup\n    }\n    id\n  }\n  ...WorkoutCard_workout\n}\n\nfragment WorkoutCard_workout on Workout {\n  id\n  name\n  status\n  createdAt\n  workoutExercises {\n    exercise {\n      type\n      muscleGroup\n      id\n    }\n    id\n  }\n}\n"
+    "text": "query HomeQuery {\n  workouts {\n    ...Home_workout\n    id\n  }\n}\n\nfragment Home_workout on Workout {\n  id\n  name\n  status\n  createdAt\n  workoutExercises {\n    exercise {\n      id\n      type\n      muscleGroup\n    }\n    id\n  }\n  ...WorkoutCard_workout\n}\n\nfragment WorkoutCard_workout on Workout {\n  id\n  name\n  status\n  createdAt\n  workoutExercises {\n    exercise {\n      type\n      muscleGroup\n      id\n    }\n    id\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "3b6d0304d49dc2352af463ff250feb88";
+(node as any).hash = "1839b3df2b83bba30756f480b392ff68";
 
 export default node;

@@ -17,6 +17,14 @@ import { StrengthExercise } from './StrengthExercise';
 import { GetItDoneMutation } from './__generated__/GetItDoneMutation.graphql';
 import { GetItDone_workout$key } from './__generated__/GetItDone_workout.graphql';
 
+export const query = graphql`
+  query GetItDoneQuery($id: ID!) {
+    workout(id: $id) {
+      ...GetItDone_workout
+    }
+  }
+`;
+
 const getItDoneSchema = object();
 
 interface Props {
