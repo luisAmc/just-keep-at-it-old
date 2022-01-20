@@ -1,37 +1,52 @@
-import { useQuery } from 'react-query';
-import { ExerciseType } from 'src/models/Exercise';
-import {
-  EXERCISE_TYPE,
-  getExercises,
-  MUSCLE_GROUP
-} from 'src/resolvers/ExercisesResolver';
-import { CreateExerciseModal } from '../Home/CreateExerciseModal';
+import { ExerciseType, MuscleGroup } from '@prisma/client';
+import { useFragment } from 'react-relay';
+import { graphql } from 'relay-hooks';
 import { Button } from '../ui/Button';
 import { Container } from '../ui/Container';
-import { useModal } from '../ui/Modal';
 import { Pill } from '../ui/Pill';
 import { Table, TableDataCell, TableHeader, TableRow } from '../ui/Table';
+import { Exercises_exercise$key } from './__generated__/Exercises_exercise.graphql';
 
-export function Exercises() {
-  const createModal = useModal();
+export const query = graphql`
+  query ExercisesQuery {
+    exercises {
+      ...Exercises_exercise
+    }
+  }
+`;
 
-  const { data, isLoading } = useQuery<{
-    exercises: (ExerciseType & { _id: string })[];
-  }>('exercises', () => getExercises());
+interface Props {
+  exercises: Exercises_exercise$key;
+}
+
+export function Exercises({ exercises }: Props) {
+  const data = useFragment(
+    graphql`
+      fragment Exercises_exercise on Exercise @relay(plural: true) {
+        id
+        name
+        type
+        muscleGroup
+      }
+    `,
+    exercises
+  );
 
   return (
     <div>
       <Container
+        href='/'
         size='2xl'
         title='Ejercicios'
-        action={<Button onClick={createModal.open}>Nuevo Ejercicio</Button>}
+        action={<Button href='/exercises/create'>Nuevo Ejercicio</Button>}
       >
         {data &&
-          (data.exercises.length === 0 ? (
+          (data.length === 0 ? (
             <p>No se han creado ejercicios.</p>
           ) : (
             <Table
-              values={data.exercises ?? []}
+              itemsPerPage={10}
+              values={data}
               header={
                 <>
                   <TableHeader label='#' />
@@ -42,40 +57,42 @@ export function Exercises() {
               }
             >
               {(exercise, i) => (
-                <TableRow key={exercise._id}>
+                <TableRow key={exercise.id}>
                   <TableDataCell>{i + 1}</TableDataCell>
                   <TableDataCell>{exercise.name}</TableDataCell>
                   <TableDataCell className='text-center'>
                     <Pill
-                      variant={exercise.type}
+                      variant={exercise.type as ExerciseType}
                       text={
-                        exercise.type === EXERCISE_TYPE.AEROBIC
+                        exercise.type === ExerciseType.AEROBIC
                           ? 'Aerobico'
                           : 'Fuerza'
                       }
                     />
                   </TableDataCell>
                   <TableDataCell className='text-center'>
-                    <Pill
-                      variant={exercise.muscleGroup}
-                      text={
-                        {
-                          [MUSCLE_GROUP.ARMS]: 'Brazos',
-                          [MUSCLE_GROUP.CHEST]: 'Pecho',
-                          [MUSCLE_GROUP.BACK]: 'Espalda',
-                          [MUSCLE_GROUP.LEGS]: 'Piernas',
-                          [MUSCLE_GROUP.SHOULDERS]: 'Hombros'
-                        }[exercise.muscleGroup]
-                      }
-                    />
+                    {exercise.muscleGroup ? (
+                      <Pill
+                        variant={exercise.muscleGroup as MuscleGroup}
+                        text={
+                          {
+                            [MuscleGroup.ARMS]: 'Brazos',
+                            [MuscleGroup.CHEST]: 'Pecho',
+                            [MuscleGroup.BACK]: 'Espalda',
+                            [MuscleGroup.LEGS]: 'Piernas',
+                            [MuscleGroup.SHOULDERS]: 'Hombros'
+                          }[(exercise.muscleGroup as MuscleGroup) ?? '']
+                        }
+                      />
+                    ) : (
+                      '-'
+                    )}
                   </TableDataCell>
                 </TableRow>
               )}
             </Table>
           ))}
       </Container>
-
-      <CreateExerciseModal {...createModal.props} />
     </div>
   );
 }

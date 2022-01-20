@@ -3,6 +3,7 @@ import { resolveSession } from 'src/utils/sessions';
 
 export async function getServerSideProps(ctx: GetServerSidePropsContext) {
   const session = await resolveSession(ctx);
+  
 
   if (session) {
     return {
@@ -12,10 +13,10 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
       },
       props: {
         data: {
-          me: {
-            name: session.user.name,
-            username: session.user.username
-          }
+          // me: {
+          //   name: session.user.name,
+          //   username: session.user.username
+          // }
         }
       }
     };

@@ -1,18 +1,8 @@
-import {
-  GetServerSidePropsContext,
-  NextApiRequest,
-  NextApiResponse
-} from 'next';
-import {
-  applySession,
-  Session,
-  SessionOptions,
-  withIronSession
-} from 'next-iron-session';
-import { UserDocument } from 'src/models/User';
-import SessionModel, { SessionDocument } from 'src/models/Session';
+import { GetServerSidePropsContext } from 'next';
 import { IncomingMessage } from 'http';
-import dbConnect from './dbConnect';
+import { applySession, SessionOptions } from 'next-iron-session';
+import { Session, User } from '@prisma/client';
+import { db } from './prisma';
 
 if (!process.env.COOKIE_SECRET) {
   console.warn(
@@ -24,14 +14,11 @@ if (!process.env.COOKIE_SECRET) {
 // The session will automatically renew when there's < 25% of it validity period
 const SESSION_TTL = 1 * 24 * 3600 * 1000;
 
-export const IRON_SESSION_ID_KEY = 'sessionID';
+const IRON_SESSION_ID_KEY = 'sessionID';
 
-export type NextIronRequest = NextApiRequest & { session: Session };
-
-export type NextIronHandler = (
-  req: NextIronRequest,
-  res: NextApiResponse
-) => void | Promise<void>;
+interface ReqWithSession extends IncomingMessage {
+  session: import('next-iron-session').Session;
+}
 
 const sessionOptions: SessionOptions = {
   password: [{ id: 1, password: process.env.COOKIE_SECRET as string }],
@@ -45,36 +32,33 @@ const sessionOptions: SessionOptions = {
   }
 };
 
-const withSession = (handler: NextIronHandler) =>
-  withIronSession(handler, sessionOptions);
-
-export default withSession;
-
-export async function createSession(req: NextIronRequest, user: UserDocument) {
-  const session = new SessionModel({
-    user: user._id,
-    expiresAt: Date.now() + SESSION_TTL
+export async function createSession(req: IncomingMessage, user: User) {
+  const session = await db.session.create({
+    data: {
+      userId: user.id,
+      expiresAt: new Date(Date.now() + SESSION_TTL)
+    }
   });
 
-  await session.save();
+  const sessionID = session.id;
 
-  req.session.set(IRON_SESSION_ID_KEY, session.id);
-  await req.session.save();
+  const reqWithSession = req as unknown as ReqWithSession;
+  reqWithSession.session.set(IRON_SESSION_ID_KEY, sessionID);
+
+  await reqWithSession.session.save();
 
   return session;
 }
 
-export async function removeSession(req: IncomingMessage) {
-  const ironReq = req as unknown as NextIronRequest;
+export async function removeSession(req: IncomingMessage, session: Session) {
+  const reqWithSession = req as unknown as ReqWithSession;
 
-  const sessionID = ironReq.session.get(IRON_SESSION_ID_KEY);
+  await db.session.delete({ where: { id: session.id } });
 
-  await SessionModel.deleteOne({ _id: sessionID });
-
-  ironReq.session.destroy();
+  reqWithSession.session.destroy();
 }
 
-const sessionCache = new WeakMap<IncomingMessage, SessionDocument | null>();
+const sessionCache = new WeakMap<IncomingMessage, Session | null>();
 export async function resolveSession({
   req,
   res
@@ -85,30 +69,31 @@ export async function resolveSession({
 
   await applySession(req, res, sessionOptions);
 
-  let session: SessionDocument | null = null;
+  let session: Session | null = null;
 
-  const ironReq = req as unknown as NextIronRequest;
-  const sessionID = ironReq.session.get(IRON_SESSION_ID_KEY);
+  const reqWithSession = req as unknown as ReqWithSession;
+  const sessionID = reqWithSession.session.get(IRON_SESSION_ID_KEY);
 
   if (sessionID) {
-    await dbConnect();
-
-    session = await SessionModel.findOne({ _id: sessionID }).populate(
-      'user',
-      'name username'
-    );
+    session = await db.session.findFirst({
+      where: { id: sessionID, expiresAt: { gte: new Date() } }
+    });
 
     if (session) {
       const shouldRefreshSession =
         Date.now() - session.expiresAt.getTime() < 0.75 * SESSION_TTL;
 
       if (shouldRefreshSession) {
-        await SessionModel.updateOne(
-          { _id: session._id },
-          { expiresAt: new Date(Date.now() + SESSION_TTL) }
-        );
+        await db.session.update({
+          where: {
+            id: session.id
+          },
+          data: {
+            expiresAt: new Date(Date.now() + SESSION_TTL)
+          }
+        });
 
-        await ironReq.session.save();
+        await reqWithSession.session.save();
       }
     }
   }

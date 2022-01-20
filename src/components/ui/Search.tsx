@@ -53,12 +53,12 @@ const ControlledSearch = forwardRef<HTMLSelectElement, ControlledSearchProps>(
     ref
   ) {
     const style = {
-      option: (base) => ({
+      option: (base: any) => ({
         ...base,
         margin: 0,
         padding: 0
       }),
-      menuPortal: (base) => ({ ...base, zIndex: 9999 })
+      menuPortal: (base: any) => ({ ...base, zIndex: 9999 })
     };
 
     return (
