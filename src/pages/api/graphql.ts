@@ -61,6 +61,12 @@ interface GraphQLRequest {
 }
 
 const handler: NextApiHandler = async (req, res) => {
+  if (req.method === 'POST' && req.headers['x-csrf-trick'] !== 'justKeepAtIt') {
+    res.status(400);
+    res.end('Missing CSRF verification.');
+    return;
+  }
+
   const session = await resolveSession({ req, res });
 
   // Create a generic Request object that can be consumed by Graphql Helix's API
@@ -73,7 +79,13 @@ const handler: NextApiHandler = async (req, res) => {
 
   // Determine whether we should render GraphiQL instead of returning an API response
   if (shouldRenderGraphiQL(request)) {
-    res.send(renderGraphiQL({ endpoint: '/api/graphql' }));
+    res.setHeader('Content-Type', 'text/html');
+    res.send(
+      renderGraphiQL({
+        endpoint: '/api/graphql',
+        headers: JSON.stringify({ 'X-CSRF-Trick': 'justKeepAtIt' })
+      })
+    );
   } else {
     // Extract the Graphql parameters from the request
     const { operationName, query, variables } = getGraphQLParameters(request);

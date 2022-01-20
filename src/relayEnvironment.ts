@@ -10,7 +10,8 @@ const fetchRelay: FetchFunction = async (operation, variables) => {
   const res = await fetch('/api/graphql', {
     method: 'POST',
     headers: {
-      'content-type': 'application/json'
+      'content-type': 'application/json',
+      'X-CSRF-Trick': 'justKeepAtIt'
     },
     body: JSON.stringify({
       query: operation.text,
