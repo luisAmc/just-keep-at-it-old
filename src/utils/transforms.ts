@@ -1,10 +1,8 @@
 import { MuscleGroup } from '@prisma/client';
-import format from 'date-fns/format';
-import es from 'date-fns/locale/es';
 
 export function formatDate(
-  givenDate: string | Date
-  // size: 'short' | 'medium' = 'short'
+  givenDate: string | Date,
+  size: 'short' | 'medium' = 'medium'
 ) {
   if (givenDate == null || isNaN(Date.parse(givenDate.toString()))) {
     return '-';
@@ -12,15 +10,13 @@ export function formatDate(
 
   const date = new Date(givenDate);
 
-  return format(date, 'PPPP', { locale: es });
+  const options: Intl.DateTimeFormatOptions = {
+    dateStyle: size
+  };
 
-  // const options: Intl.DateTimeFormatOptions = {
-  //   dateStyle: size
-  // };
+  const intlDate = new Intl.DateTimeFormat('es-HN', options).format(date);
 
-  // const intlDate = new Intl.DateTimeFormat('es-HN', options).format(date);
-
-  // return intlDate;
+  return intlDate;
 }
 
 export function getMuscleGroupLabel(muscleGroup: MuscleGroup) {

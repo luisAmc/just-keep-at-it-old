@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<f723383ebc1e8fdd2cdb99cf0f5e624f>>
+ * @generated SignedSource<<611dc6b4d6cc069efbf23fd120d737ef>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -11,10 +11,7 @@
 import { ConcreteRequest, Mutation } from 'relay-runtime';
 export type CreateWorkoutInput = {
   name: string;
-  workoutExercises: ReadonlyArray<ExerciseOptionInput>;
-};
-export type ExerciseOptionInput = {
-  id: string;
+  workoutExercises: ReadonlyArray<string>;
 };
 export type CreateWorkoutMutation$variables = {
   input: CreateWorkoutInput;

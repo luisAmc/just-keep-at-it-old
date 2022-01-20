@@ -2,12 +2,10 @@ import { ExerciseType, MuscleGroup } from '@prisma/client';
 import { db } from 'src/utils/prisma';
 import { builder } from '../builder';
 
-const ExerciseRef = builder.prismaNode('Exercise', {
-  // findUnique: (exercise) => ({ id: exercise.id }),
-  findUnique: (id) => ({ id }),
-  id: { resolve: (exercise) => exercise.id },
+const ExerciseRef = builder.prismaObject('Exercise', {
+  findUnique: (exercise) => ({ id: exercise.id }),
   fields: (t) => ({
-    // id: t.exposeID('id'),
+    id: t.exposeID('id'),
     name: t.exposeString('name'),
     type: t.exposeString('type'),
     muscleGroup: t.exposeString('muscleGroup', { nullable: true })
