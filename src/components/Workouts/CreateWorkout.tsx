@@ -10,6 +10,7 @@ import { Form, useYupForm } from '../ui/Form';
 import { Input } from '../ui/Input';
 import { Select } from '../ui/Select';
 import { SubmitButton } from '../ui/SubmitButton';
+import { CreateWorkoutMutation } from './__generated__/CreateWorkoutMutation.graphql';
 import { CreateWorkoutQuery } from './__generated__/CreateWorkoutQuery.graphql';
 
 const createWorkoutSchema = object().shape({
@@ -36,27 +37,37 @@ export function CreateWorkout() {
     {}
   );
 
-  const [createWorkout, createWorkoutResult] = useMutation(
-    graphql`
-      mutation CreateWorkoutMutation($input: CreateWorkoutInput!) {
-        createWorkout(input: $input) {
-          id
-          name
-          status
-          workoutExercises {
-            exercise {
-              name
+  const [createWorkout, createWorkoutResult] =
+    useMutation<CreateWorkoutMutation>(
+      graphql`
+        mutation CreateWorkoutMutation($input: CreateWorkoutInput!) {
+          createWorkout(input: $input) {
+            id
+            name
+            status
+            workoutExercises {
+              exercise {
+                name
+              }
             }
           }
         }
+      `,
+      {
+        updater(store) {
+          const workout = store.getRootField('createWorkout');
+
+          const workouts = store.getRoot()?.getLinkedRecords('workouts');
+
+          workouts?.unshift(workout!);
+
+          store.getRoot().setLinkedRecords(workouts, 'workouts');
+        },
+        onCompleted() {
+          router.push('/');
+        }
       }
-    `,
-    {
-      onCompleted() {
-        router.push('/');
-      }
-    }
-  );
+    );
 
   const exerciseOptions = useMemo(() => {
     if (data && data.exercises) {

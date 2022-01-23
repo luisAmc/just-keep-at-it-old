@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<52f4cb7e59d8a45b236fe3bceae1b773>>
+ * @generated SignedSource<<aed54a2c9e8ad9d7607bf3abfaf3c6a7>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -173,7 +173,7 @@ return {
                 "alias": null,
                 "args": null,
                 "kind": "ScalarField",
-                "name": "doneAt",
+                "name": "completedAt",
                 "storageKey": null
               },
               {
@@ -278,12 +278,12 @@ return {
     ]
   },
   "params": {
-    "cacheID": "e249932b89aa155ade14d0ef7a50f548",
+    "cacheID": "5873a6f0948321fbf3a6b3e712830fbc",
     "id": null,
     "metadata": {},
     "name": "GetItDoneMutation",
     "operationKind": "mutation",
-    "text": "mutation GetItDoneMutation(\n  $workoutId: ID!\n  $data: GetItDoneInput!\n) {\n  getWorkoutDone(workoutId: $workoutId, data: $data) {\n    workout {\n      id\n      ...GetItDone_workout\n    }\n  }\n}\n\nfragment GetItDone_workout on Workout {\n  id\n  name\n  status\n  createdAt\n  doneAt\n  workoutExercises {\n    id\n    sets {\n      id\n      mins\n      lbs\n      reps\n    }\n    exercise {\n      id\n      name\n      type\n      muscleGroup\n    }\n  }\n}\n"
+    "text": "mutation GetItDoneMutation(\n  $workoutId: ID!\n  $data: GetItDoneInput!\n) {\n  getWorkoutDone(workoutId: $workoutId, data: $data) {\n    workout {\n      id\n      ...GetItDone_workout\n    }\n  }\n}\n\nfragment GetItDone_workout on Workout {\n  id\n  name\n  status\n  createdAt\n  completedAt\n  workoutExercises {\n    id\n    sets {\n      id\n      mins\n      lbs\n      reps\n    }\n    exercise {\n      id\n      name\n      type\n      muscleGroup\n    }\n  }\n}\n"
   }
 };
 })();

@@ -1,6 +1,5 @@
 import { FieldValues } from 'react-hook-form';
-import { useMutation } from 'relay-hooks';
-import { graphql } from 'relay-hooks';
+import { graphql, useMutation } from 'relay-hooks';
 import { useAuthRedirect } from 'src/utils/useAuthRedirect';
 import { object, string } from 'yup';
 import { Container } from '../ui/Container';
@@ -11,7 +10,6 @@ import { SubmitButton } from '../ui/SubmitButton';
 import { SignUpFormMutation } from './__generated__/SignUpFormMutation.graphql';
 
 const signUpSchema = object().shape({
-  name: string().trim().required('Ingrese el nombre.'),
   username: string().trim().required('Ingrese el nombre de usuario.'),
   password: string()
     .trim()
@@ -52,7 +50,6 @@ export function SignUpForm() {
     signUp({
       variables: {
         input: {
-          name: values.name,
           username: values.username,
           password: values.password
         }
@@ -68,13 +65,6 @@ export function SignUpForm() {
             type='error'
             title='Ocurrio un error al tratar de crear el usuario.'
             text={signUpResult.error?.message}
-          />
-
-          <Input
-            {...form.register('name')}
-            autoFocus
-            label='Nombre'
-            autoComplete='name'
           />
 
           <Input

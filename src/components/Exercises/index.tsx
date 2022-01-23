@@ -33,66 +33,64 @@ export function Exercises({ exercises }: Props) {
   );
 
   return (
-    <div>
-      <Container
-        href='/'
-        size='2xl'
-        title='Ejercicios'
-        action={<Button href='/exercises/create'>Nuevo Ejercicio</Button>}
-      >
-        {data &&
-          (data.length === 0 ? (
-            <p>No se han creado ejercicios.</p>
-          ) : (
-            <Table
-              itemsPerPage={10}
-              values={data}
-              header={
-                <>
-                  <TableHeader label='#' />
-                  <TableHeader label='Nombre' />
-                  <TableHeader label='Tipo' className='text-center' />
-                  <TableHeader label='Grupo múscular' className='text-center' />
-                </>
-              }
-            >
-              {(exercise, i) => (
-                <TableRow key={exercise.id}>
-                  <TableDataCell>{i + 1}</TableDataCell>
-                  <TableDataCell>{exercise.name}</TableDataCell>
-                  <TableDataCell className='text-center'>
+    <Container
+      href='/'
+      size='2xl'
+      title='Ejercicios'
+      action={<Button href='/exercises/create'>Nuevo Ejercicio</Button>}
+    >
+      {data &&
+        (data.length === 0 ? (
+          <p>No se han creado ejercicios.</p>
+        ) : (
+          <Table
+            itemsPerPage={10}
+            values={data}
+            header={
+              <>
+                <TableHeader label='#' />
+                <TableHeader label='Nombre' />
+                <TableHeader label='Tipo' className='text-center' />
+                <TableHeader label='Grupo múscular' className='text-center' />
+              </>
+            }
+          >
+            {(exercise, i) => (
+              <TableRow key={exercise.id}>
+                <TableDataCell>{i + 1}</TableDataCell>
+                <TableDataCell>{exercise.name}</TableDataCell>
+                <TableDataCell className='text-center'>
+                  <Pill
+                    variant={exercise.type as ExerciseType}
+                    text={
+                      exercise.type === ExerciseType.AEROBIC
+                        ? 'Aerobico'
+                        : 'Fuerza'
+                    }
+                  />
+                </TableDataCell>
+                <TableDataCell className='text-center'>
+                  {exercise.muscleGroup ? (
                     <Pill
-                      variant={exercise.type as ExerciseType}
+                      variant={exercise.muscleGroup as MuscleGroup}
                       text={
-                        exercise.type === ExerciseType.AEROBIC
-                          ? 'Aerobico'
-                          : 'Fuerza'
+                        {
+                          [MuscleGroup.ARMS]: 'Brazos',
+                          [MuscleGroup.CHEST]: 'Pecho',
+                          [MuscleGroup.BACK]: 'Espalda',
+                          [MuscleGroup.LEGS]: 'Piernas',
+                          [MuscleGroup.SHOULDERS]: 'Hombros'
+                        }[(exercise.muscleGroup as MuscleGroup) ?? '']
                       }
                     />
-                  </TableDataCell>
-                  <TableDataCell className='text-center'>
-                    {exercise.muscleGroup ? (
-                      <Pill
-                        variant={exercise.muscleGroup as MuscleGroup}
-                        text={
-                          {
-                            [MuscleGroup.ARMS]: 'Brazos',
-                            [MuscleGroup.CHEST]: 'Pecho',
-                            [MuscleGroup.BACK]: 'Espalda',
-                            [MuscleGroup.LEGS]: 'Piernas',
-                            [MuscleGroup.SHOULDERS]: 'Hombros'
-                          }[(exercise.muscleGroup as MuscleGroup) ?? '']
-                        }
-                      />
-                    ) : (
-                      '-'
-                    )}
-                  </TableDataCell>
-                </TableRow>
-              )}
-            </Table>
-          ))}
-      </Container>
-    </div>
+                  ) : (
+                    '-'
+                  )}
+                </TableDataCell>
+              </TableRow>
+            )}
+          </Table>
+        ))}
+    </Container>
   );
 }

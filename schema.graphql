@@ -51,6 +51,7 @@ input LoginInput {
 }
 
 type Mutation {
+  copyDoneWorkout(workoutId: ID!): Workout!
   createExercise(input: CreateExerciseInput!): CreateExerciseResult!
   createUploadURL(ext: String!): UploadURL!
   createWorkout(input: CreateWorkoutInput!): Workout!
@@ -73,7 +74,6 @@ type Query {
 }
 
 input SignUpInput {
-  name: String!
   password: String!
   username: String!
 }
@@ -85,13 +85,12 @@ type UploadURL {
 
 type User {
   id: ID!
-  name: String!
   username: String!
 }
 
 type Workout implements Node {
+  completedAt: DateTime
   createdAt: DateTime!
-  doneAt: DateTime
   id: ID!
   name: String!
   status: String!

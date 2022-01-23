@@ -3,11 +3,14 @@ import { ClipboardCopyIcon, SparklesIcon } from '@heroicons/react/outline';
 import { Container } from '../ui/Container';
 import { ExerciseType, MuscleGroup, WorkoutStatus } from '@prisma/client';
 import { formatDate, getMuscleGroupLabel } from 'src/utils/transforms';
-import { graphql, useFragment } from 'react-relay';
 import { Message } from '../ui/Message';
 import { Pill } from '../ui/Pill';
 import { Workout_workout$key } from './__generated__/Workout_workout.graphql';
 import clsx from 'clsx';
+import { graphql, useFragment } from 'react-relay';
+import { useMutation } from 'relay-hooks';
+import Router from 'next/router';
+import { WorkoutCopyMutation } from './__generated__/WorkoutCopyMutation.graphql';
 
 export const query = graphql`
   query WorkoutIdQuery($id: ID!) {
@@ -29,7 +32,7 @@ export function Workout({ workout }: Props) {
         name
         status
         createdAt
-        doneAt
+        completedAt
         workoutExercises {
           id
           sets {
@@ -48,6 +51,30 @@ export function Workout({ workout }: Props) {
       }
     `,
     workout
+  );
+
+  const [copyDoneWorkout] = useMutation<WorkoutCopyMutation>(
+    graphql`
+      mutation WorkoutCopyMutation($workoutId: ID!) {
+        copyDoneWorkout(workoutId: $workoutId) {
+          ...Workout_workout
+        }
+      }
+    `,
+    {
+      updater(store) {
+        const workout = store.getRootField('copyDoneWorkout');
+
+        const workouts = store.getRoot()?.getLinkedRecords('workouts');
+
+        workouts?.unshift(workout!);
+
+        store.getRoot().setLinkedRecords(workouts, 'workouts');
+      },
+      onCompleted() {
+        Router.push('/');
+      }
+    }
   );
 
   const isDone = data.status === WorkoutStatus.DONE;
@@ -89,7 +116,7 @@ export function Workout({ workout }: Props) {
           <Message type='info' title='¡Sigue así!'>
             <p>
               Finalizaste este entrenamiento el{' '}
-              <span className='font-bold'>{formatDate(data.doneAt)}</span>.
+              <span className='font-bold'>{formatDate(data.completedAt)}</span>.
             </p>
           </Message>
         )}
@@ -216,7 +243,12 @@ export function Workout({ workout }: Props) {
           </Button>
         ) : (
           // <Button color='secondary' onClick={handleCopyClick}>
-          <Button color='secondary' onClick={() => {}}>
+          <Button
+            color='secondary'
+            onClick={() =>
+              copyDoneWorkout({ variables: { workoutId: data.id } })
+            }
+          >
             <ClipboardCopyIcon className='mr-2 w-4 h-4' />
             <span>Volver a hacer</span>
           </Button>

@@ -7,7 +7,6 @@ builder.prismaObject('User', {
   findUnique: (user) => ({ id: user.id }),
   fields: (t) => ({
     id: t.exposeID('id'),
-    name: t.exposeString('name'),
     username: t.exposeString('username')
   })
 });
@@ -41,7 +40,6 @@ builder.mutationField('login', (t) =>
 
 const SignUpInput = builder.inputType('SignUpInput', {
   fields: (t) => ({
-    name: t.string({}),
     username: t.string(),
     password: t.string()
   })
@@ -59,7 +57,6 @@ builder.mutationField('signUp', (t) =>
       const user = await db.user.create({
         ...query,
         data: {
-          name: input.name,
           username: input.username,
           hashedPassword: await hashPassword(input.password)
         }

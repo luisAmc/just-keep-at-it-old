@@ -1,5 +1,5 @@
 import SecurePassword from 'secure-password';
-import { ValidationError } from 'src/resolvers/errors';
+import { ValidationError } from 'src/graphql/errors';
 import { db } from './prisma';
 
 const securePassword = new SecurePassword();

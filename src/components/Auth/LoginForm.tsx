@@ -6,7 +6,6 @@ import { Container } from '../ui/Container';
 import { ErrorMessage } from '../ui/ErrorMessage';
 import { Form, useYupForm } from '../ui/Form';
 import { Input } from '../ui/Input';
-import { Message } from '../ui/Message';
 import { SubmitButton } from '../ui/SubmitButton';
 import { LoginFormMutation } from './__generated__/LoginFormMutation.graphql';
 
@@ -21,7 +20,7 @@ const loginSchema = object().shape({
 export function LoginForm() {
   const authRedirect = useAuthRedirect();
 
-  const [login, loginResult] = useMutation<LoginFormMutation>(
+  const [login, { error }] = useMutation<LoginFormMutation>(
     graphql`
       mutation LoginFormMutation($input: LoginInput!) {
         login(input: $input) {
@@ -55,7 +54,7 @@ export function LoginForm() {
         <Form form={form} onSubmit={onSubmit}>
           <ErrorMessage
             title='Ocurrio un error al tratar de ingresar.'
-            error={loginResult.error}
+            error={error?.source?.errors[0]}
           />
 
           <Input

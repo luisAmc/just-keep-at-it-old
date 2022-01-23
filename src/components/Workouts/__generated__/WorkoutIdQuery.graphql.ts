@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<b75357b9b76650903e1081437954c66f>>
+ * @generated SignedSource<<82c6c1119da0b6cc20d020835fa2bb45>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -115,7 +115,7 @@ return {
             "alias": null,
             "args": null,
             "kind": "ScalarField",
-            "name": "doneAt",
+            "name": "completedAt",
             "storageKey": null
           },
           {
@@ -196,12 +196,12 @@ return {
     ]
   },
   "params": {
-    "cacheID": "fb1056846f043f5cfe72781cdc5d20cb",
+    "cacheID": "22f6fed10686fc47d6a23aa33dbb54f7",
     "id": null,
     "metadata": {},
     "name": "WorkoutIdQuery",
     "operationKind": "query",
-    "text": "query WorkoutIdQuery(\n  $id: ID!\n) {\n  workout(id: $id) {\n    ...Workout_workout\n    id\n  }\n}\n\nfragment Workout_workout on Workout {\n  id\n  name\n  status\n  createdAt\n  doneAt\n  workoutExercises {\n    id\n    sets {\n      id\n      mins\n      lbs\n      reps\n    }\n    exercise {\n      id\n      name\n      type\n      muscleGroup\n    }\n  }\n}\n"
+    "text": "query WorkoutIdQuery(\n  $id: ID!\n) {\n  workout(id: $id) {\n    ...Workout_workout\n    id\n  }\n}\n\nfragment Workout_workout on Workout {\n  id\n  name\n  status\n  createdAt\n  completedAt\n  workoutExercises {\n    id\n    sets {\n      id\n      mins\n      lbs\n      reps\n    }\n    exercise {\n      id\n      name\n      type\n      muscleGroup\n    }\n  }\n}\n"
   }
 };
 })();

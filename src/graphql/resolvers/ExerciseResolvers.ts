@@ -15,9 +15,10 @@ const ExerciseRef = builder.prismaObject('Exercise', {
 builder.queryField('exercises', (t) =>
   t.prismaField({
     type: ['Exercise'],
-    resolve: (query) => {
+    resolve: (query, _parent, _args, { session }) => {
       return db.exercise.findMany({
         ...query,
+        where: { userId: session!.userId },
         orderBy: { createdAt: 'desc' }
       });
     }
@@ -44,13 +45,14 @@ builder.mutationField('createExercise', (t) =>
     args: {
       input: t.arg({ type: CreateExerciseInput })
     },
-    resolve: async (_parent, { input }) => {
+    resolve: async (_parent, { input }, { session }) => {
       const exercise = await db.exercise.create({
         data: {
           name: input.name,
           type: ExerciseType[input.type as keyof typeof ExerciseType],
           muscleGroup:
-            MuscleGroup[input.muscleGroup as keyof typeof MuscleGroup]
+            MuscleGroup[input.muscleGroup as keyof typeof MuscleGroup],
+          userId: session!.userId
         }
       });
 

@@ -41,7 +41,7 @@ export function GetItDone({ workout }: Props) {
         name
         status
         createdAt
-        doneAt
+        completedAt
         workoutExercises {
           id
           sets {
@@ -202,7 +202,7 @@ export function GetItDone({ workout }: Props) {
           <Message type='info' title='¡Sigue así!'>
             <p>
               Finalizaste este entrenamiento el{' '}
-              <span className='font-bold'>{formatDate(data.doneAt)}</span>.
+              <span className='font-bold'>{formatDate(data.completedAt)}</span>.
             </p>
           </Message>
         )}

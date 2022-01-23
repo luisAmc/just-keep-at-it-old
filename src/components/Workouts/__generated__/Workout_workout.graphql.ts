@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<051d3d356a0e316ca589197cc5a7a987>>
+ * @generated SignedSource<<decc75c725f1c033a1513841616aabf6>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -15,7 +15,7 @@ export type Workout_workout$data = {
   readonly name: string;
   readonly status: string;
   readonly createdAt: any;
-  readonly doneAt: any | null;
+  readonly completedAt: any | null;
   readonly workoutExercises: ReadonlyArray<{
     readonly id: string;
     readonly sets: ReadonlyArray<{
@@ -80,7 +80,7 @@ return {
       "alias": null,
       "args": null,
       "kind": "ScalarField",
-      "name": "doneAt",
+      "name": "completedAt",
       "storageKey": null
     },
     {
@@ -161,6 +161,6 @@ return {
 };
 })();
 
-(node as any).hash = "e95b2148742ae022f9707d7c3f6c9c2b";
+(node as any).hash = "a142c3714596ba224bc847c5a59d7dbd";
 
 export default node;

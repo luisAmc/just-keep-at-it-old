@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<2618647d1a4e7618eda20c98db77c757>>
+ * @generated SignedSource<<d41961dc9e5451a81b252340411165d2>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -8,21 +8,21 @@
 /* eslint-disable */
 // @ts-nocheck
 
-import { ConcreteRequest, Query } from 'relay-runtime';
+import { ConcreteRequest, Mutation } from 'relay-runtime';
 import { FragmentRefs } from "relay-runtime";
-export type GetItDoneQuery$variables = {
-  id: string;
+export type WorkoutCopyMutation$variables = {
+  workoutId: string;
 };
-export type GetItDoneQueryVariables = GetItDoneQuery$variables;
-export type GetItDoneQuery$data = {
-  readonly workout: {
-    readonly " $fragmentSpreads": FragmentRefs<"GetItDone_workout">;
+export type WorkoutCopyMutationVariables = WorkoutCopyMutation$variables;
+export type WorkoutCopyMutation$data = {
+  readonly copyDoneWorkout: {
+    readonly " $fragmentSpreads": FragmentRefs<"Workout_workout">;
   };
 };
-export type GetItDoneQueryResponse = GetItDoneQuery$data;
-export type GetItDoneQuery = {
-  variables: GetItDoneQueryVariables;
-  response: GetItDoneQuery$data;
+export type WorkoutCopyMutationResponse = WorkoutCopyMutation$data;
+export type WorkoutCopyMutation = {
+  variables: WorkoutCopyMutationVariables;
+  response: WorkoutCopyMutation$data;
 };
 
 const node: ConcreteRequest = (function(){
@@ -30,14 +30,14 @@ var v0 = [
   {
     "defaultValue": null,
     "kind": "LocalArgument",
-    "name": "id"
+    "name": "workoutId"
   }
 ],
 v1 = [
   {
     "kind": "Variable",
-    "name": "id",
-    "variableName": "id"
+    "name": "workoutId",
+    "variableName": "workoutId"
   }
 ],
 v2 = {
@@ -59,40 +59,40 @@ return {
     "argumentDefinitions": (v0/*: any*/),
     "kind": "Fragment",
     "metadata": null,
-    "name": "GetItDoneQuery",
+    "name": "WorkoutCopyMutation",
     "selections": [
       {
         "alias": null,
         "args": (v1/*: any*/),
         "concreteType": "Workout",
         "kind": "LinkedField",
-        "name": "workout",
+        "name": "copyDoneWorkout",
         "plural": false,
         "selections": [
           {
             "args": null,
             "kind": "FragmentSpread",
-            "name": "GetItDone_workout"
+            "name": "Workout_workout"
           }
         ],
         "storageKey": null
       }
     ],
-    "type": "Query",
+    "type": "Mutation",
     "abstractKey": null
   },
   "kind": "Request",
   "operation": {
     "argumentDefinitions": (v0/*: any*/),
     "kind": "Operation",
-    "name": "GetItDoneQuery",
+    "name": "WorkoutCopyMutation",
     "selections": [
       {
         "alias": null,
         "args": (v1/*: any*/),
         "concreteType": "Workout",
         "kind": "LinkedField",
-        "name": "workout",
+        "name": "copyDoneWorkout",
         "plural": false,
         "selections": [
           (v2/*: any*/),
@@ -196,16 +196,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "44b95473c21379e225944eecf1c5c5b9",
+    "cacheID": "7e9eb03a943213aaca9d6130463405a8",
     "id": null,
     "metadata": {},
-    "name": "GetItDoneQuery",
-    "operationKind": "query",
-    "text": "query GetItDoneQuery(\n  $id: ID!\n) {\n  workout(id: $id) {\n    ...GetItDone_workout\n    id\n  }\n}\n\nfragment GetItDone_workout on Workout {\n  id\n  name\n  status\n  createdAt\n  completedAt\n  workoutExercises {\n    id\n    sets {\n      id\n      mins\n      lbs\n      reps\n    }\n    exercise {\n      id\n      name\n      type\n      muscleGroup\n    }\n  }\n}\n"
+    "name": "WorkoutCopyMutation",
+    "operationKind": "mutation",
+    "text": "mutation WorkoutCopyMutation(\n  $workoutId: ID!\n) {\n  copyDoneWorkout(workoutId: $workoutId) {\n    ...Workout_workout\n    id\n  }\n}\n\nfragment Workout_workout on Workout {\n  id\n  name\n  status\n  createdAt\n  completedAt\n  workoutExercises {\n    id\n    sets {\n      id\n      mins\n      lbs\n      reps\n    }\n    exercise {\n      id\n      name\n      type\n      muscleGroup\n    }\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "ea7eac492b3913c0c9bf8564e55f1ec0";
+(node as any).hash = "91cd698c3434e656065bfeae3a630ae2";
 
 export default node;

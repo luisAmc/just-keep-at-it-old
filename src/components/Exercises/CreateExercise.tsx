@@ -5,12 +5,12 @@ import { ErrorMessage } from '../ui/ErrorMessage';
 import { ExerciseType, MuscleGroup } from '@prisma/client';
 import { FieldValues, useWatch } from 'react-hook-form';
 import { Form, useYupForm } from '../ui/Form';
-import { graphql, useMutation } from 'relay-hooks';
 import { Input } from '../ui/Input';
 import { object, string } from 'yup';
 import { RadioButton, RadioGroup } from '../ui/RadioButton';
 import { SubmitButton } from '../ui/SubmitButton';
 import { useRouter } from 'next/router';
+import { graphql, useMutation } from 'relay-hooks';
 
 const createExerciseSchema = object().shape({
   name: string().trim().required('Ingrese el nombre.'),

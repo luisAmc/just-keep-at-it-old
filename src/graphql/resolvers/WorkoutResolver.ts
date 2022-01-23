@@ -1,4 +1,5 @@
 import { WorkoutStatus } from '@prisma/client';
+import { query } from 'src/components/Exercises';
 import { db } from 'src/utils/prisma';
 import { builder } from '../builder';
 
@@ -43,7 +44,7 @@ const WorkoutRef = builder.prismaNode('Workout', {
     // id: t.exposeID('id'),
     name: t.exposeString('name'),
     status: t.exposeString('status'),
-    doneAt: t.expose('doneAt', { nullable: true, type: 'DateTime' }),
+    completedAt: t.expose('completedAt', { nullable: true, type: 'DateTime' }),
     createdAt: t.expose('createdAt', { type: 'DateTime' }),
     workoutExercises: t.relation('workoutExercises', {
       resolve: (query, workout) =>
@@ -177,10 +178,50 @@ builder.mutationField('getWorkoutDone', (t) =>
           where: { id: workoutId.id },
           data: {
             status: WorkoutStatus.DONE,
-            doneAt: new Date()
+            completedAt: new Date()
           }
         })
       };
+    }
+  })
+);
+
+builder.mutationField('copyDoneWorkout', (t) =>
+  t.prismaField({
+    type: 'Workout',
+    args: {
+      workoutId: t.arg.globalID({ required: true })
+    },
+    resolve: async (_query, _parent, { workoutId }, { session }) => {
+      const doneWorkout = await db.workout.findUnique({
+        where: { id: workoutId.id },
+        rejectOnNotFound: true
+      });
+
+      const workoutExercises = await db.workoutExercise.findMany({
+        where: { workoutId: doneWorkout!.id }
+      });
+
+      console.log({ doneWorkout, workoutExercises });
+
+      const workout = await db.workout.create({
+        data: {
+          userId: session!.userId,
+          name: doneWorkout.name,
+          workoutExercises: {
+            create: workoutExercises.map((workoutExercise) => {
+              console.log({ workoutExercise });
+
+              return {
+                userId: session!.userId,
+                exerciseId: workoutExercise.exerciseId
+              };
+            })
+          }
+        }
+      });
+
+      return workout;
     }
   })
 );
