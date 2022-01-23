@@ -20,7 +20,7 @@ const loginSchema = object().shape({
 export function LoginForm() {
   const authRedirect = useAuthRedirect();
 
-  const [login] = useMutation<LoginFormMutation>(
+  const [login, { error }] = useMutation<LoginFormMutation>(
     graphql`
       mutation LoginFormMutation($input: LoginInput!) {
         login(input: $input) {
