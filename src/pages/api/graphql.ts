@@ -12,13 +12,6 @@ import {
 } from 'graphql-helix';
 import 'src/graphql/resolvers';
 
-builder.queryField('hello', (t) =>
-  t.string({
-    args: { name: t.arg.string() },
-    resolve: (parent, { name }) => `Hola, ${name || 'Mundo'}!`
-  })
-);
-
 const schema = builder.toSchema({});
 
 fs.writeFileSync('./schema.graphql', printSchema(schema));
@@ -69,53 +62,58 @@ const handler: NextApiHandler = async (req, res) => {
 
   const session = await resolveSession({ req, res });
 
-  // Create a generic Request object that can be consumed by Graphql Helix's API
-  const request: GraphQLRequest = {
-    body: req.body,
-    headers: req.headers,
-    method: req.method ?? 'GET',
-    query: req.query
-  };
+  try {
+    // Create a generic Request object that can be consumed by Graphql Helix's API
+    const request: GraphQLRequest = {
+      body: req.body,
+      headers: req.headers,
+      method: req.method ?? 'GET',
+      query: req.query
+    };
 
-  // Determine whether we should render GraphiQL instead of returning an API response
-  if (shouldRenderGraphiQL(request)) {
-    res.setHeader('Content-Type', 'text/html');
-    res.send(
-      renderGraphiQL({
-        endpoint: '/api/graphql',
-        headers: JSON.stringify({ 'X-CSRF-Trick': 'justKeepAtIt' })
-      })
-    );
-  } else {
-    // Extract the Graphql parameters from the request
-    const { operationName, query, variables } = getGraphQLParameters(request);
+    // Determine whether we should render GraphiQL instead of returning an API response
+    if (shouldRenderGraphiQL(request)) {
+      res.setHeader('Content-Type', 'text/html');
+      res.send(
+        renderGraphiQL({
+          endpoint: '/api/graphql',
+          headers: JSON.stringify({ 'X-CSRF-Trick': 'justKeepAtIt' })
+        })
+      );
+    } else {
+      // Extract the Graphql parameters from the request
+      const { operationName, query, variables } = getGraphQLParameters(request);
 
-    // Validate and execute the query
-    const result = await processRequest<Context>({
-      operationName,
-      query,
-      variables,
-      request,
-      schema,
-      contextFactory: () => createGraphQLContext(req, res, session)
-    });
+      // Validate and execute the query
+      const result = await processRequest<Context>({
+        operationName,
+        query,
+        variables,
+        request,
+        schema,
+        contextFactory: () => createGraphQLContext(req, res, session)
+      });
 
-    // processRequest returns one of three types of results depending on how the server should respond
-    // 1) RESPONSE: a regular JSON payload
-    // 2) MULTIPART RESPONSE: a multipart response (when @stream or @defer directives are used)
-    // 3) PUSH: a stream of events to push back down the client for a subscription
-    // The "sendResult" is a NodeJS-only shortcut for handling all possible types of Graphql responses,
-    // See "Advanced Usage" below for more details and customizations available on that layer.
+      // processRequest returns one of three types of results depending on how the server should respond
+      // 1) RESPONSE: a regular JSON payload
+      // 2) MULTIPART RESPONSE: a multipart response (when @stream or @defer directives are used)
+      // 3) PUSH: a stream of events to push back down the client for a subscription
+      // The "sendResult" is a NodeJS-only shortcut for handling all possible types of Graphql responses,
+      // See "Advanced Usage" below for more details and customizations available on that layer.
 
-    if (result.type !== 'RESPONSE') {
-      throw new Error(`Unsupported response type: "${result.type}"`);
+      if (result.type !== 'RESPONSE') {
+        throw new Error(`Unsupported response type: "${result.type}"`);
+      }
+
+      // sendResult(result, res);
+
+      result.headers.forEach(({ name, value }) => res.setHeader(name, value));
+      res.status(result.status);
+      res.json(formatResult(result.payload));
     }
-
-    // sendResult(result, res);
-
-    result.headers.forEach(({ name, value }) => res.setHeader(name, value));
-    res.status(result.status);
-    res.json(formatResult(result.payload));
+  } catch (err) {
+    res.status(500);
+    res.end(String(err));
   }
 };
 

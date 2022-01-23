@@ -20,7 +20,7 @@ const loginSchema = object().shape({
 export function LoginForm() {
   const authRedirect = useAuthRedirect();
 
-  const [login, { error }] = useMutation<LoginFormMutation>(
+  const [login] = useMutation<LoginFormMutation>(
     graphql`
       mutation LoginFormMutation($input: LoginInput!) {
         login(input: $input) {
@@ -54,6 +54,7 @@ export function LoginForm() {
         <Form form={form} onSubmit={onSubmit}>
           <ErrorMessage
             title='Ocurrio un error al tratar de ingresar.'
+            // @ts-ignore
             error={error?.source?.errors[0]}
           />
 

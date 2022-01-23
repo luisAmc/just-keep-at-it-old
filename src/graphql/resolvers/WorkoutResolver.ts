@@ -202,21 +202,15 @@ builder.mutationField('copyDoneWorkout', (t) =>
         where: { workoutId: doneWorkout!.id }
       });
 
-      console.log({ doneWorkout, workoutExercises });
-
       const workout = await db.workout.create({
         data: {
           userId: session!.userId,
           name: doneWorkout.name,
           workoutExercises: {
-            create: workoutExercises.map((workoutExercise) => {
-              console.log({ workoutExercise });
-
-              return {
-                userId: session!.userId,
-                exerciseId: workoutExercise.exerciseId
-              };
-            })
+            create: workoutExercises.map((workoutExercise) => ({
+              userId: session!.userId,
+              exerciseId: workoutExercise.exerciseId
+            }))
           }
         }
       });
