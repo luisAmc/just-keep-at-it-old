@@ -9,7 +9,7 @@ import { Workout_workout$key } from './__generated__/Workout_workout.graphql';
 import clsx from 'clsx';
 import { graphql, useFragment } from 'react-relay';
 import { useMutation } from 'relay-hooks';
-import Router from 'next/router';
+import Router, { useRouter } from 'next/router';
 import { WorkoutCopyMutation } from './__generated__/WorkoutCopyMutation.graphql';
 
 export const query = graphql`
@@ -25,6 +25,8 @@ interface Props {
 }
 
 export function Workout({ workout }: Props) {
+  const router = useRouter();
+
   const data = useFragment(
     graphql`
       fragment Workout_workout on Workout {
@@ -237,7 +239,11 @@ export function Workout({ workout }: Props) {
         </footer>
 
         {data.status === WorkoutStatus.DRAFTED ? (
-          <Button href={`/workouts/${data.id}/get-it-done`}>
+          <Button
+            onClick={() => {
+              router.push(`/workouts/${data.id}/get-it-done`);
+            }}
+          >
             <span>Comenzar</span>
             <SparklesIcon className='ml-2 w-4 h-4' />
           </Button>

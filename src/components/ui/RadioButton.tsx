@@ -40,9 +40,7 @@ const ControlledRadioGroup = forwardRef(function ControlledRadioGroup(
 ) {
   return (
     <label>
-      <div className='font-medium text-gray-800 dark:text-gray-200 mb-1'>
-        {label}
-      </div>
+      <div className='font-medium text-gray-800 mb-1'>{label}</div>
       <HRadioGroup value={props.value} onChange={onChange}>
         <div className='bg-white rounded-md -space-y-px'>{children}</div>
       </HRadioGroup>

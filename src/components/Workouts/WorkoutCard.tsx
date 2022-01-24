@@ -10,12 +10,15 @@ import { useEffect, useState } from 'react';
 import clsx from 'clsx';
 import { graphql, useFragment } from 'react-relay';
 import { WorkoutCard_workout$key } from './__generated__/WorkoutCard_workout.graphql';
+import { useRouter } from 'next/router';
 
 interface Props {
   workout: WorkoutCard_workout$key;
 }
 
 export function WorkoutCard({ workout }: Props) {
+  const router = useRouter();
+
   const data = useFragment(
     graphql`
       fragment WorkoutCard_workout on Workout {
@@ -65,7 +68,9 @@ export function WorkoutCard({ workout }: Props) {
 
   return (
     <Button
-      href={`/workouts/${data.id}`}
+      onClick={() => {
+        router.push(`/workouts/${data.id}`);
+      }}
       className={clsx(
         'w-full sm:max-w-xs p-6 rounded-lg shadow-lg transition-all ease-in-out text-white hover:opacity-80',
         getMuscleGroupColor(mostUse)

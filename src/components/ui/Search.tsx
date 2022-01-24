@@ -64,7 +64,7 @@ const ControlledSearch = forwardRef<HTMLSelectElement, ControlledSearchProps>(
     return (
       <label>
         {!hideLabel && (
-          <div className='text-sm font-medium text-gray-800 dark:text-gray-200 mb-1'>
+          <div className='text-sm font-medium text-gray-800 mb-1'>
             {label}
           </div>
         )}

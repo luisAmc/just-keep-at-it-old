@@ -13,18 +13,15 @@ export function Message({ type, title, text, children }: Props) {
 
   return (
     <div
-      className={clsx(
-        'rounded-md dark:bg-opacity-10 border-2 border-opacity-50 p-4 space-y-1',
-        {
-          'bg-teal-50 border-teal-500': type === 'success',
-          'bg-yellow-50 border-yellow-500': type === 'warning',
-          'bg-red-50 border-red-500': type === 'error',
-          'bg-sky-50 border-sky-500': type === 'info'
-        }
-      )}
+      className={clsx('rounded-md border-2 border-opacity-50 p-4 space-y-1', {
+        'bg-teal-50 border-teal-500': type === 'success',
+        'bg-yellow-50 border-yellow-500': type === 'warning',
+        'bg-red-50 border-red-500': type === 'error',
+        'bg-sky-50 border-sky-500': type === 'info'
+      })}
     >
       <h3
-        className={clsx('text-sm font-medium dark:text-red-200', {
+        className={clsx('text-sm font-medium', {
           'text-teal-800': type === 'success',
           'text-yellow-800': type === 'warning',
           'text-red-800': type === 'error',
@@ -35,7 +32,7 @@ export function Message({ type, title, text, children }: Props) {
       </h3>
 
       <div
-        className={clsx('text-sm dark:text-red-200', {
+        className={clsx('text-sm', {
           'text-teal-700': type === 'success',
           'text-yellow-700': type === 'warning',
           'text-red-700': type === 'error',

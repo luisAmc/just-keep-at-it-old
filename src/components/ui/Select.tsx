@@ -70,7 +70,7 @@ const ControlledSelect = forwardRef(function ControlledSelect(
         {({ open }) => (
           <>
             {!hideLabel && (
-              <Listbox.Label className='text-sm font-medium text-gray-800 dark:text-gray-200 mb-1'>
+              <Listbox.Label className='text-sm font-medium text-gray-800 mb-1'>
                 {label}
               </Listbox.Label>
             )}

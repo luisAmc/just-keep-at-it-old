@@ -54,9 +54,7 @@ const ControlledChips = forwardRef(function ControlledChips(
 
   return (
     <label>
-      <div className='font-medium text-gray-800 dark:text-gray-200 mb-1'>
-        {label}
-      </div>
+      <div className='font-medium text-gray-800 mb-1'>{label}</div>
 
       <div className='flex flex-wrap gap-x-2 gap-y-4'>
         {options.map((chip) => (
