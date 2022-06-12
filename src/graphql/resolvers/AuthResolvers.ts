@@ -1,15 +1,7 @@
-import { db } from 'src/utils/prisma';
-import { builder } from '../builder';
 import { authenticateUser, hashPassword } from 'src/utils/auth';
+import { db } from 'src/utils/prisma';
 import { createSession } from 'src/utils/sessions';
-
-builder.prismaObject('User', {
-  findUnique: (user) => ({ id: user.id }),
-  fields: (t) => ({
-    id: t.exposeID('id'),
-    username: t.exposeString('username')
-  })
-});
+import { builder } from '../builder';
 
 const LoginInput = builder.inputType('LoginInput', {
   fields: (t) => ({
@@ -23,17 +15,17 @@ builder.mutationField('login', (t) =>
     type: 'User',
     skipTypeScopes: true,
     authScopes: {
-      unauthenticated: true
+        unauthenticated: true
     },
     args: {
-      input: t.arg({ type: LoginInput })
+        input: t.arg({type: LoginInput})
     },
-    resolve: async (_query, _root, { input }, { req }) => {
-      const user = await authenticateUser(input.username, input.password);
+    resolve: async (_query, _parent, {input}, {ironSession}) => {
+        const user = await authenticateUser(input.username, input.password);
 
-      await createSession(req, user);
+        await  createSession(ironSession, user);
 
-      return user;
+        return user
     }
   })
 );
@@ -53,7 +45,7 @@ builder.mutationField('signUp', (t) =>
       unauthenticated: true
     },
     args: { input: t.arg({ type: SignUpInput }) },
-    resolve: async (query, _root, { input }, { req }) => {
+    resolve: async (query, _parent, { input }, { ironSession }) => {
       const user = await db.user.create({
         ...query,
         data: {
@@ -62,7 +54,7 @@ builder.mutationField('signUp', (t) =>
         }
       });
 
-      await createSession(req, user);
+      await createSession(ironSession, user);
 
       return user;
     }

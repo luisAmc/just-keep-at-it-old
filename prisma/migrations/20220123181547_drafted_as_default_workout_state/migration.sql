@@ -1,2 +1,0 @@
--- AlterTable
-ALTER TABLE "Workout" ALTER COLUMN "status" SET DEFAULT E'DRAFTED';
