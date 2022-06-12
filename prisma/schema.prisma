@@ -20,7 +20,7 @@ model User {
   session          Session[]
   exercises        Exercise[]
   workoutExercises WorkoutExercise[]
-  workout          Workout[]
+  workouts          Workout[]
 }
 
 model Session {

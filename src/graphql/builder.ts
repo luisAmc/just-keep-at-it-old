@@ -4,7 +4,6 @@ import SchemaBuilder from '@pothos/core';
 import PrismaPlugin from '@pothos/plugin-prisma';
 import ScopeAuthPlugin from '@pothos/plugin-scope-auth';
 import SimpleObjectsPlugin from '@pothos/plugin-simple-objects';
-import RelayPlugin from '@pothos/plugin-relay';
 import type PrismaTypes from '@pothos/plugin-prisma/generated';
 import { db } from 'src/utils/prisma';
 import { IronSession } from 'iron-session';
@@ -39,16 +38,12 @@ export const builder = new SchemaBuilder<{
     DateTime: { Input: Date; Output: Date };
   };
 }>({
-  plugins: [RelayPlugin, PrismaPlugin, ScopeAuthPlugin, SimpleObjectsPlugin],
+  plugins: [PrismaPlugin, ScopeAuthPlugin, SimpleObjectsPlugin],
   authScopes: async ({ session }) => ({
     public: true,
     user: !!session,
     unauthenticated: !session
   }),
-  relayOptions: {
-    clientMutationId: 'omit',
-    cursorType: 'String'
-  },
   prisma: {
     client: db
   },

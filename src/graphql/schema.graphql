@@ -1,0 +1,25 @@
+scalar DateTime
+
+input LoginInput {
+  password: String!
+  username: String!
+}
+
+type Mutation {
+  login(input: LoginInput!): User!
+  signUp(input: SignUpInput!): User!
+}
+
+type Query {
+  me: User
+}
+
+input SignUpInput {
+  password: String!
+  username: String!
+}
+
+type User {
+  id: ID!
+  username: String!
+}

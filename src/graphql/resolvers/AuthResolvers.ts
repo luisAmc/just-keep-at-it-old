@@ -15,17 +15,17 @@ builder.mutationField('login', (t) =>
     type: 'User',
     skipTypeScopes: true,
     authScopes: {
-        unauthenticated: true
+      unauthenticated: true
     },
     args: {
-        input: t.arg({type: LoginInput})
+      input: t.arg({ type: LoginInput })
     },
-    resolve: async (_query, _parent, {input}, {ironSession}) => {
-        const user = await authenticateUser(input.username, input.password);
+    resolve: async (_query, _parent, { input }, { ironSession }) => {
+      const user = await authenticateUser(input.username, input.password);
 
-        await  createSession(ironSession, user);
+      await createSession(ironSession, user);
 
-        return user
+      return user;
     }
   })
 );
