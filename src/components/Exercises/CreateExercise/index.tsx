@@ -5,17 +5,17 @@ import { ExerciseType, MuscleGroup } from '@prisma/client';
 import { useRouter } from 'next/router';
 import { useWatch } from 'react-hook-form';
 import { object, string } from 'zod';
-import { Card } from '../shared/Card';
-import { ErrorMessage } from '../shared/ErrorMessage';
-import { ExerciseTypeSelector } from '../shared/ExerciseTypeSelector';
-import { Form, useZodForm } from '../shared/Form';
-import { Input } from '../shared/Input';
-import { MuscleGroupSelector } from '../shared/MuscleGroupSelector';
-import { SubmitButton } from '../shared/SubmitButton';
+import { Card } from '../../shared/Card';
+import { ErrorMessage } from '../../shared/ErrorMessage';
+import { ExerciseTypeSelector } from './ExerciseTypeSelector';
+import { Form, useZodForm } from '../../shared/Form';
+import { Input } from '../../shared/Input';
+import { MuscleGroupSelector } from './MuscleGroupSelector';
+import { SubmitButton } from '../../shared/SubmitButton';
 import {
   CreateExerciseMutation,
   CreateExerciseMutationVariables
-} from './__generated__/CreateExercise.generated';
+} from './__generated__/index.generated';
 
 const CreateExerciseSchema = object({
   name: string().min(1, 'Ingrese el nombre.'),

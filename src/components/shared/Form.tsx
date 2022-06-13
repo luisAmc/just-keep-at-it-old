@@ -38,7 +38,9 @@ export function FieldError({ name }: FieldErrorsProps) {
 
   if (!error) return null;
 
-  return <div className='text-sm text-red-500 font-semibold'>{error.message}</div>;
+  return (
+    <div className='text-sm text-red-500 font-semibold'>{error.message}</div>
+  );
 }
 
 interface Props<T extends FieldValues = any>

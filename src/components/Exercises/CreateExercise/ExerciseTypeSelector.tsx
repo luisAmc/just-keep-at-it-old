@@ -1,5 +1,5 @@
 import { ExerciseType } from '@prisma/client';
-import { FieldError } from './Form';
+import { FieldError } from '../../shared/Form';
 import { RadioGroup } from '@headlessui/react';
 import { useController } from 'react-hook-form';
 import clsx from 'clsx';

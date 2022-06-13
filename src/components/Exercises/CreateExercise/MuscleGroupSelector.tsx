@@ -1,4 +1,4 @@
-import { FieldError } from './Form';
+import { FieldError } from '../../shared/Form';
 import { MuscleGroup } from '@prisma/client';
 import { RadioGroup } from '@headlessui/react';
 import { useController } from 'react-hook-form';

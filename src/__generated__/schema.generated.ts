@@ -19,12 +19,21 @@ export type CreateExerciseInput = {
   type: Scalars['String'];
 };
 
+export type CreateWorkoutInput = {
+  name: Scalars['String'];
+  workoutExercises: Array<ExerciseOptionInput>;
+};
+
 export type Exercise = {
   __typename?: 'Exercise';
   id: Scalars['ID'];
   muscleGroup?: Maybe<Scalars['String']>;
   name: Scalars['String'];
   type: Scalars['String'];
+};
+
+export type ExerciseOptionInput = {
+  id: Scalars['String'];
 };
 
 export type LoginInput = {
@@ -35,6 +44,7 @@ export type LoginInput = {
 export type Mutation = {
   __typename?: 'Mutation';
   createExercise: Exercise;
+  createWorkout: Workout;
   login: User;
   signUp: User;
 };
@@ -42,6 +52,11 @@ export type Mutation = {
 
 export type MutationCreateExerciseArgs = {
   input: CreateExerciseInput;
+};
+
+
+export type MutationCreateWorkoutArgs = {
+  input: CreateWorkoutInput;
 };
 
 
@@ -69,4 +84,14 @@ export type User = {
   exercises: Array<Exercise>;
   id: Scalars['ID'];
   username: Scalars['String'];
+  workouts: Array<Workout>;
+};
+
+export type Workout = {
+  __typename?: 'Workout';
+  completedAt?: Maybe<Scalars['DateTime']>;
+  id: Scalars['ID'];
+  name: Scalars['String'];
+  status: Scalars['String'];
+  workoutExercisesCount: Scalars['Int'];
 };

@@ -1,4 +1,4 @@
-import * as Types from '../../../__generated__/schema.generated';
+import * as Types from '../../../../__generated__/schema.generated';
 
 export type CreateExerciseMutationVariables = Types.Exact<{
   input: Types.CreateExerciseInput;

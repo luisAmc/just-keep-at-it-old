@@ -7,30 +7,36 @@ import {
   ExercisesQueryVariables
 } from './__generated__/index.generated';
 
+export const ExerciseInfoFragment = gql`
+  fragment Exercises_exercise on Exercise {
+    id
+    name
+    type
+    muscleGroup
+  }
+`;
+
 export const query = gql`
   query ExercisesQuery {
     me {
       id
       exercises {
-        id
-        name
-        type
-        muscleGroup
+        ...Exercises_exercise
       }
     }
   }
+  ${ExerciseInfoFragment}
 `;
 
 export function Exercises() {
-  const { data, loading } = useQuery<ExercisesQuery, ExercisesQueryVariables>(
-    query
-  );
+  const { data } = useQuery<ExercisesQuery>(query);
 
   const exercises = data?.me?.exercises ?? [];
 
   return (
     <div className='mt-6'>
       <Card
+        href='/'
         title='Ejercicios'
         action={
           <Button href='/exercises/create'>
@@ -40,7 +46,9 @@ export function Exercises() {
         }
       >
         {exercises.length > 0 ? (
-          exercises.map((exercise) => <div>{exercise.name}</div>)
+          exercises.map((exercise) => (
+            <div key={exercise.id}>{exercise.name}</div>
+          ))
         ) : (
           <div>No se han creado ejercicios.</div>
         )}
