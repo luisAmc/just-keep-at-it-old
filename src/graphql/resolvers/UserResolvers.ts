@@ -27,6 +27,7 @@ builder.prismaObject('User', {
   fields: (t) => ({
     id: t.exposeID('id'),
     username: t.exposeString('username'),
-    exercises: t.relation('exercises')
+    exercises: t.relation('exercises'),
+    workouts: t.relation('workouts')
   })
 });
