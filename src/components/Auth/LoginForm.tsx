@@ -2,11 +2,11 @@ import { gql, useMutation } from '@apollo/client';
 import { CheckIcon } from '@heroicons/react/outline';
 import { useAuthRedirect } from 'src/utils/useAuthRedirect';
 import { object, string } from 'zod';
-import { Button } from '../shared/Button';
 import { Card } from '../shared/Card';
 import { ErrorMessage } from '../shared/ErrorMessage';
 import { Form, useZodForm } from '../shared/Form';
 import { Input } from '../shared/Input';
+import { Link } from '../shared/Link';
 import { SubmitButton } from '../shared/SubmitButton';
 import {
   LoginMutation,
@@ -41,10 +41,6 @@ export function LoginForm() {
   return (
     <div className='mt-6'>
       <Card title='Ingresar'>
-        <div className='flex justify-end'>
-          <Button href='/auth/signup'>Crear cuenta</Button>
-        </div>
-
         <Form
           form={form}
           onSubmit={(input) =>
@@ -73,6 +69,10 @@ export function LoginForm() {
             <span>Ingresar</span>
           </SubmitButton>
         </Form>
+
+        <div className='mt-4 flex justify-end'>
+          <Link href='/auth/signup'>Crear cuenta</Link>
+        </div>
       </Card>
     </div>
   );
