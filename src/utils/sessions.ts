@@ -1,5 +1,5 @@
-import { addSeconds, differenceInSeconds } from 'date-fns';
 import { db } from './prisma';
+import { addSeconds, differenceInSeconds } from 'date-fns';
 import { getIronSession, IronSession, IronSessionOptions } from 'iron-session';
 import { IncomingMessage, ServerResponse } from 'http';
 import { Session, User } from '@prisma/client';

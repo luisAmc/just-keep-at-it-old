@@ -1,7 +1,16 @@
 /** @type {import('tailwindcss').Config} */
 const colors = require('tailwindcss/colors');
 
-const brandColor = colors.blue;
+const brand = colors.sky;
+
+const aerobic = colors.teal;
+const strength = colors.pink;
+
+const arms = colors.indigo;
+const chest = colors.blue;
+const back = colors.emerald;
+const legs = colors.amber;
+const shoulders = colors.orange;
 
 module.exports = {
   content: [
@@ -12,7 +21,17 @@ module.exports = {
     extend: {
       colors: {
         ...colors,
-        brand: brandColor
+
+        brand,
+
+        aerobic,
+        strength,
+
+        arms,
+        chest,
+        back,
+        legs,
+        shoulders
       }
     }
   },

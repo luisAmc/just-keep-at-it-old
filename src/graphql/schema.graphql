@@ -1,4 +1,17 @@
+input CreateExerciseInput {
+  muscleGroup: String
+  name: String!
+  type: String!
+}
+
 scalar DateTime
+
+type Exercise {
+  id: ID!
+  muscleGroup: String
+  name: String!
+  type: String!
+}
 
 input LoginInput {
   password: String!
@@ -6,6 +19,7 @@ input LoginInput {
 }
 
 type Mutation {
+  createExercise(input: CreateExerciseInput!): Exercise!
   login(input: LoginInput!): User!
   signUp(input: SignUpInput!): User!
 }
@@ -20,6 +34,7 @@ input SignUpInput {
 }
 
 type User {
+  exercises: [Exercise!]!
   id: ID!
   username: String!
 }

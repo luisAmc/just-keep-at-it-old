@@ -26,6 +26,7 @@ builder.prismaObject('User', {
   findUnique: (user) => ({ id: user.id }),
   fields: (t) => ({
     id: t.exposeID('id'),
-    username: t.exposeString('username')
+    username: t.exposeString('username'),
+    exercises: t.relation('exercises')
   })
 });

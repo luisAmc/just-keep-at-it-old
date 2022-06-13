@@ -13,6 +13,20 @@ export type Scalars = {
   DateTime: string;
 };
 
+export type CreateExerciseInput = {
+  muscleGroup?: InputMaybe<Scalars['String']>;
+  name: Scalars['String'];
+  type: Scalars['String'];
+};
+
+export type Exercise = {
+  __typename?: 'Exercise';
+  id: Scalars['ID'];
+  muscleGroup?: Maybe<Scalars['String']>;
+  name: Scalars['String'];
+  type: Scalars['String'];
+};
+
 export type LoginInput = {
   password: Scalars['String'];
   username: Scalars['String'];
@@ -20,8 +34,14 @@ export type LoginInput = {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  createExercise: Exercise;
   login: User;
   signUp: User;
+};
+
+
+export type MutationCreateExerciseArgs = {
+  input: CreateExerciseInput;
 };
 
 
@@ -46,6 +66,7 @@ export type SignUpInput = {
 
 export type User = {
   __typename?: 'User';
+  exercises: Array<Exercise>;
   id: Scalars['ID'];
   username: Scalars['String'];
 };
