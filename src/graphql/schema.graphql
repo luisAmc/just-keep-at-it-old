@@ -35,7 +35,8 @@ type Mutation {
 }
 
 type Query {
-  me: User
+  viewer: User
+  workouts: [Workout!]!
 }
 
 input SignUpInput {
@@ -47,11 +48,13 @@ type User {
   exercises: [Exercise!]!
   id: ID!
   username: String!
-  workouts: [Workout!]!
+  workouts(limit: Int! = 3, offset: Int! = 0): [Workout!]!
 }
 
 type Workout {
   completedAt: DateTime
+  createdAt: DateTime!
+  heavyUseOf: String!
   id: ID!
   name: String!
   status: String!

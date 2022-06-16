@@ -1,7 +1,7 @@
 import { db } from 'src/utils/prisma';
 import { builder } from '../builder';
 
-builder.queryField('me', (t) =>
+builder.queryField('viewer', (t) =>
   t.prismaField({
     type: 'User',
     nullable: true,
@@ -28,6 +28,18 @@ builder.prismaObject('User', {
     id: t.exposeID('id'),
     username: t.exposeString('username'),
     exercises: t.relation('exercises'),
-    workouts: t.relation('workouts')
+    workouts: t.relation('workouts', {
+      args: {
+        offset: t.arg.int({ defaultValue: 0 }),
+        limit: t.arg.int({ defaultValue: 3 })
+      },
+      query: ({ offset, limit }) => ({
+        take: limit,
+        skip: offset,
+        orderBy: {
+          updatedAt: 'desc'
+        }
+      })
+    })
   })
 });

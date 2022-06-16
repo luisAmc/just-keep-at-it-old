@@ -19,7 +19,7 @@ import { useRouter } from 'next/router';
 
 export const query = gql`
   query CreateWorkoutQuery {
-    me {
+    viewer {
       id
       exercises {
         ...Exercises_exercise
@@ -80,6 +80,17 @@ export function CreateWorkout() {
       }
     `,
     {
+      update(cache, { data }) {
+        if (!data?.createWorkout) return;
+
+        cache.modify({
+          fields: {
+            workouts(existingWorkouts = []) {
+              return [data.createWorkout, ...existingWorkouts];
+            }
+          }
+        });
+      },
       onCompleted() {
         router.push('/workouts');
       }
@@ -91,7 +102,7 @@ export function CreateWorkout() {
     name: 'workoutExercises'
   });
 
-  const exercises = useExercises(data?.me?.exercises);
+  const exercises = useExercises(data?.viewer?.exercises);
 
   return (
     <Card title='Crear Rutina'>

@@ -71,7 +71,8 @@ export type MutationSignUpArgs = {
 
 export type Query = {
   __typename?: 'Query';
-  me?: Maybe<User>;
+  viewer?: Maybe<User>;
+  workouts: Array<Workout>;
 };
 
 export type SignUpInput = {
@@ -87,9 +88,17 @@ export type User = {
   workouts: Array<Workout>;
 };
 
+
+export type UserWorkoutsArgs = {
+  limit?: Scalars['Int'];
+  offset?: Scalars['Int'];
+};
+
 export type Workout = {
   __typename?: 'Workout';
   completedAt?: Maybe<Scalars['DateTime']>;
+  createdAt: Scalars['DateTime'];
+  heavyUseOf: Scalars['String'];
   id: Scalars['ID'];
   name: Scalars['String'];
   status: Scalars['String'];

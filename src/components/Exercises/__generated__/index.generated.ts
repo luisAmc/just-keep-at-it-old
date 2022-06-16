@@ -5,4 +5,4 @@ export type Exercises_Exercise = { __typename?: 'Exercise', id: string, name: st
 export type ExercisesQueryVariables = Types.Exact<{ [key: string]: never; }>;
 
 
-export type ExercisesQuery = { __typename?: 'Query', me?: { __typename?: 'User', id: string, exercises: Array<{ __typename?: 'Exercise', id: string, name: string, type: string, muscleGroup?: string | null }> } | null };
+export type ExercisesQuery = { __typename?: 'Query', viewer?: { __typename?: 'User', id: string, exercises: Array<{ __typename?: 'Exercise', id: string, name: string, type: string, muscleGroup?: string | null }> } | null };

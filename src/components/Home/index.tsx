@@ -1,14 +1,13 @@
 import { gql, useQuery } from '@apollo/client';
 import { LoginForm } from '../Auth/LoginForm';
-import { Button } from '../shared/Button';
+import { Dashboard } from '../Dashboard';
 import { HomeQuery } from './__generated__/index.generated';
 
 export const query = gql`
   query HomeQuery {
-    me {
+    viewer {
       id
       username
-      #   workouts
     }
   }
 `;
@@ -19,9 +18,9 @@ export function Home() {
   return (
     <div>
       {data &&
-        (data.me ? (
+        (data.viewer ? (
           <div>
-            <Button href='/workouts/create'>Crear Rutina</Button>
+            <Dashboard />
           </div>
         ) : (
           <LoginForm />

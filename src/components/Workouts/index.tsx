@@ -2,24 +2,15 @@ import { gql, useQuery } from '@apollo/client';
 import { PlusIcon } from '@heroicons/react/outline';
 import { Button } from '../shared/Button';
 import { Card } from '../shared/Card';
+import { WorkoutInfoFragment } from './ViewWorkout';
 import { WorkoutsQuery } from './__generated__/index.generated';
-
-export const WorkoutInfoFragment = gql`
-  fragment Workouts_workout on Workout {
-    id
-    name
-    status
-    completedAt
-    workoutExercisesCount
-  }
-`;
 
 export const query = gql`
   query WorkoutsQuery {
-    me {
+    viewer {
       id
       workouts {
-        ...Workouts_workout
+        ...ViewWorkout_workout
       }
     }
   }
@@ -29,7 +20,7 @@ export const query = gql`
 export function Workouts() {
   const { data } = useQuery<WorkoutsQuery>(query);
 
-  const workouts = data?.me?.workouts ?? [];
+  const workouts = data?.viewer?.workouts ?? [];
 
   return (
     <div className='mt-6'>

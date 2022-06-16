@@ -2,10 +2,7 @@ import { gql, useQuery } from '@apollo/client';
 import { PlusIcon } from '@heroicons/react/outline';
 import { Button } from '../shared/Button';
 import { Card } from '../shared/Card';
-import {
-  ExercisesQuery,
-  ExercisesQueryVariables
-} from './__generated__/index.generated';
+import { ExercisesQuery } from './__generated__/index.generated';
 
 export const ExerciseInfoFragment = gql`
   fragment Exercises_exercise on Exercise {
@@ -18,7 +15,7 @@ export const ExerciseInfoFragment = gql`
 
 export const query = gql`
   query ExercisesQuery {
-    me {
+    viewer {
       id
       exercises {
         ...Exercises_exercise

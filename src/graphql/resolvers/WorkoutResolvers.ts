@@ -1,3 +1,4 @@
+import { ExerciseType } from '@prisma/client';
 import { db } from 'src/utils/prisma';
 import { builder } from '../builder';
 
@@ -8,8 +9,41 @@ builder.prismaObject('Workout', {
     name: t.exposeString('name'),
     status: t.exposeString('status'),
     completedAt: t.expose('completedAt', { type: 'DateTime', nullable: true }),
+    createdAt: t.expose('createdAt', { type: 'DateTime' }),
     // workoutExercises: t.relation('workoutExercises')
-    workoutExercisesCount: t.relationCount('workoutExercises')
+    workoutExercisesCount: t.relationCount('workoutExercises'),
+    heavyUseOf: t.string({
+      select: {
+        workoutExercises: {
+          select: {
+            exercise: {
+              select: {
+                muscleGroup: true
+              }
+            }
+          }
+        }
+      },
+      resolve: (workout) => {
+        console.log('resolving to', workout);
+        let mostUse = { type: '', count: 0 };
+        let count: Record<string, number> = {};
+        for (const workoutExercise of workout.workoutExercises) {
+          const muscleGroup =
+            workoutExercise.exercise.muscleGroup ?? ExerciseType.AEROBIC;
+
+          count[muscleGroup] = count[muscleGroup] ? count[muscleGroup] + 1 : 1;
+        }
+
+        for (const type of Object.keys(count)) {
+          if (count[type] > mostUse.count) {
+            mostUse = { type, count: count[type] };
+          }
+        }
+
+        return mostUse.type;
+      }
+    })
   })
 });
 
@@ -42,6 +76,20 @@ builder.mutationField('createWorkout', (t) =>
               exerciseId: exercise.id
             }))
           }
+        }
+      });
+    }
+  })
+);
+
+builder.queryField('workouts', (t) =>
+  t.prismaField({
+    type: ['Workout'],
+    resolve: (query, _parent, _args, { session }) => {
+      return db.workout.findMany({
+        ...query,
+        where: {
+          userId: session!.userId
         }
       });
     }
