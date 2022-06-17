@@ -9,7 +9,7 @@ export const WorkoutInfoFragment = gql`
     completedAt
     createdAt
     workoutExercisesCount
-    heavyUseOf
+    bias
   }
 `;
 

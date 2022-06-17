@@ -1,17 +1,26 @@
 import { gql, useQuery } from '@apollo/client';
-import { PlusCircleIcon, PlusIcon } from '@heroicons/react/outline';
-import { MuscleGroup } from '@prisma/client';
+import { PlusCircleIcon } from '@heroicons/react/outline';
+import { WorkoutStatus } from '@prisma/client';
 import clsx from 'clsx';
+import {
+  useMuscleGroupColors,
+  useMuscleGroupName
+} from 'src/utils/muscleGroupBias';
+import { formatDate } from 'src/utils/transforms';
 import { Button } from '../shared/Button';
 import { Heading } from '../shared/Heading';
 import { Page } from '../shared/Page';
+import { Pill } from '../shared/Pill';
 import { WorkoutInfoFragment } from '../Workouts/ViewWorkout';
 import { DashboardQuery } from './__generated__/index.generated';
 
 const query = gql`
   query DashboardQuery {
-    workouts {
-      ...ViewWorkout_workout
+    viewer {
+      id
+      workouts {
+        ...ViewWorkout_workout
+      }
     }
   }
   ${WorkoutInfoFragment}
@@ -20,16 +29,16 @@ const query = gql`
 export function Dashboard() {
   const { data } = useQuery<DashboardQuery>(query);
 
-  const workouts = data?.workouts ?? [];
+  const workouts = data?.viewer?.workouts ?? [];
 
   return (
     <Page>
       <div className='flex flex-col'>
         <Heading>Últimas rutinas</Heading>
-        <div className='mt-4 grid grid-cols-4 gap-4'>
+        <div className='mt-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4'>
           <Button
             href='/workouts/create'
-            className='border-2 border-dashed border-gray-300 shadow-md hover:border-brand-500 flex flex-col items-center justify-center rounded-xl bg-white gap-4 text-brand-600'
+            className='border-2 border-dashed border-gray-300 py-6 shadow-md hover:border-brand-500 flex flex-col items-center justify-center rounded-xl bg-white gap-4 text-brand-600'
           >
             <div className='mx-auto flex items-center justify-center p-6 bg-brand-100 rounded-full'>
               <PlusCircleIcon className='w-8 h-8 text-brand-600' />
@@ -41,42 +50,38 @@ export function Dashboard() {
             <div
               key={workout.id}
               className={clsx(
-                'bg-white rounded-xl shadow-md p-6 cursor-pointer',
-                useMuscleGroupColors(workout.heavyUseOf)
+                'flex flex-col space-y-2 rounded-xl shadow-md p-6 cursor-pointer border-2 border-opacity-0 hover:border-opacity-100',
+                useMuscleGroupColors(workout.bias)
               )}
             >
-              <div>{workout.id}</div>
-              <div>{workout.name}</div>
-              <div>{workout.status}</div>
-              <div>{workout.workoutExercisesCount}</div>
-              <div>{workout.heavyUseOf}</div>
-              <div>{workout.createdAt}</div>
+              <div>
+                <Pill
+                  text={
+                    workout.status === WorkoutStatus.DONE
+                      ? 'Completado'
+                      : 'Pendiente'
+                  }
+                  color={
+                    workout.status === WorkoutStatus.DONE ? 'success' : 'mono'
+                  }
+                />
+              </div>
+              <div className='py-2 text-center font-semibold text-xl'>
+                {workout.name}
+              </div>
+              <div className='text-center'>
+                Bias en {useMuscleGroupName(workout.bias)}
+              </div>
+              <div className='flex items-center justify-between text-sm'>
+                <div>{formatDate(workout.createdAt, 'dd-LLLL-yy')}</div>
+                <div className='text-sm'>
+                  {workout.workoutExercisesCount} ejercicios
+                </div>
+              </div>
             </div>
           ))}
         </div>
       </div>
     </Page>
   );
-}
-
-function useMuscleGroupColors(muscleGroup: string) {
-  switch (muscleGroup) {
-    case MuscleGroup.ARMS:
-      return 'bg-arms-200 shadow-arms-400 text-arms-900';
-
-    case MuscleGroup.BACK:
-      return 'bg-back-200 shadow-back-400 text-back-900';
-
-    case MuscleGroup.CHEST:
-      return 'bg-chest-200 shadow-chest-400 text-chest-900';
-
-    case MuscleGroup.LEGS:
-      return 'bg-legs-200 shadow-legs-400 text-legs-900';
-
-    case MuscleGroup.SHOULDERS:
-      return 'bg-shoulders-200 shadow-shoulders-400 text-shoulders-900';
-
-    default:
-      return 'bg-aerobic-200 shadow-aerobic-400 text-aerobic-900';
-  }
 }

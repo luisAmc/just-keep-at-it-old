@@ -96,9 +96,9 @@ export type UserWorkoutsArgs = {
 
 export type Workout = {
   __typename?: 'Workout';
+  bias: Scalars['String'];
   completedAt?: Maybe<Scalars['DateTime']>;
   createdAt: Scalars['DateTime'];
-  heavyUseOf: Scalars['String'];
   id: Scalars['ID'];
   name: Scalars['String'];
   status: Scalars['String'];

@@ -12,7 +12,7 @@ builder.prismaObject('Workout', {
     createdAt: t.expose('createdAt', { type: 'DateTime' }),
     // workoutExercises: t.relation('workoutExercises')
     workoutExercisesCount: t.relationCount('workoutExercises'),
-    heavyUseOf: t.string({
+    bias: t.string({
       select: {
         workoutExercises: {
           select: {
@@ -25,7 +25,6 @@ builder.prismaObject('Workout', {
         }
       },
       resolve: (workout) => {
-        console.log('resolving to', workout);
         let mostUse = { type: '', count: 0 };
         let count: Record<string, number> = {};
         for (const workoutExercise of workout.workoutExercises) {
@@ -90,6 +89,9 @@ builder.queryField('workouts', (t) =>
         ...query,
         where: {
           userId: session!.userId
+        },
+        orderBy: {
+          createdAt: 'desc'
         }
       });
     }

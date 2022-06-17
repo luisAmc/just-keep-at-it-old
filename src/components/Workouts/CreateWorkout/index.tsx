@@ -16,6 +16,7 @@ import {
 } from './__generated__/index.generated';
 import { ErrorMessage } from 'src/components/shared/ErrorMessage';
 import { useRouter } from 'next/router';
+import { Page } from 'src/components/shared/Page';
 
 export const query = gql`
   query CreateWorkoutQuery {
@@ -105,73 +106,74 @@ export function CreateWorkout() {
   const exercises = useExercises(data?.viewer?.exercises);
 
   return (
-    <Card title='Crear Rutina'>
-      <Form
-        form={form}
-        onSubmit={(input) =>
-          createWorkout({
-            variables: {
-              input: {
-                name: input.name,
-                workoutExercises: input.workoutExercises.map((exercise) => ({
-                  id: exercise.value
-                }))
+    <Page>
+      <Card title='Crear Rutina'>
+        <Form
+          form={form}
+          onSubmit={(input) =>
+            createWorkout({
+              variables: {
+                input: {
+                  name: input.name,
+                  workoutExercises: input.workoutExercises.map((exercise) => ({
+                    id: exercise.value
+                  }))
+                }
               }
-            }
-          })
-        }
-      >
-        <ErrorMessage title='Error de creación' error={error} />
-
-        <Input {...form.register('name')} label='Nombre' />
-
-        <div className='flex flex-col space-y-4'>
-          <label>
-            <div className='font-medium text-gray-800 mb-1'>Ejercicios</div>
-
-            {workoutExercises.fields.map((field, index) => (
-              <div key={field.id} className='flex items-center space-x-2'>
-                <div className='w-full'>
-                  <SelectExercise
-                    name={`workoutExercises.${index}`}
-                    options={exercises}
-                  />
-                </div>
-
-                {workoutExercises.fields.length > 1 && (
-                  <button
-                    className='p-2.5 rounded-full hover:bg-brand-100'
-                    onClick={() => workoutExercises.remove(index)}
-                  >
-                    <TrashIcon className='w-4 h-4' />
-                  </button>
-                )}
-              </div>
-            ))}
-
-            <FieldError name='workoutExercises' />
-          </label>
-        </div>
-
-        <button
-          type='button'
-          className='w-full border border-dashed border-brand-600 rounded-lg hover:bg-brand-50/40 hover:border-brand-500'
-          onClick={(e) => {
-            e.preventDefault();
-            workoutExercises.append({ value: '', label: '' });
-          }}
+            })
+          }
         >
-          <div className='py-2 flex items-center justify-center space-x-2 text-brand-600'>
-            <PlusIcon className='w-4 h-4' />
-            <span>Añadir un ejercicio más</span>
-          </div>
-        </button>
+          <ErrorMessage title='Error de creación' error={error} />
 
-        <SubmitButton>
-          <CheckIcon className='w-6 h-6 mr-1' />
-          <span>Ingresar</span>
-        </SubmitButton>
-      </Form>
-    </Card>
+          <Input {...form.register('name')} label='Nombre' />
+
+          <div className='flex flex-col space-y-4'>
+            <label>
+              <div className='font-medium text-gray-800 mb-1'>Ejercicios</div>
+
+              {workoutExercises.fields.map((field, index) => (
+                <div key={field.id} className='flex items-center space-x-2'>
+                  <div className='w-full'>
+                    <SelectExercise
+                      name={`workoutExercises.${index}`}
+                      options={exercises}
+                    />
+                  </div>
+
+                  {workoutExercises.fields.length > 1 && (
+                    <button
+                      className='p-2.5 rounded-full hover:bg-brand-100'
+                      onClick={() => workoutExercises.remove(index)}
+                    >
+                      <TrashIcon className='w-4 h-4' />
+                    </button>
+                  )}
+                </div>
+              ))}
+
+              <FieldError name='workoutExercises' />
+            </label>
+          </div>
+
+          <button
+            type='button'
+            className='w-full border border-dashed border-brand-600 rounded-lg hover:bg-brand-50/40 hover:border-brand-500'
+            onClick={() => {
+              workoutExercises.append({ value: '', label: '' });
+            }}
+          >
+            <div className='py-2 flex items-center justify-center space-x-2 text-brand-600'>
+              <PlusIcon className='w-4 h-4' />
+              <span>Añadir un ejercicio más</span>
+            </div>
+          </button>
+
+          <SubmitButton>
+            <CheckIcon className='w-6 h-6 mr-1' />
+            <span>Ingresar</span>
+          </SubmitButton>
+        </Form>
+      </Card>
+    </Page>
   );
 }

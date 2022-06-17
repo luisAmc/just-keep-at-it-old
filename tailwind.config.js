@@ -1,7 +1,7 @@
 /** @type {import('tailwindcss').Config} */
 const colors = require('tailwindcss/colors');
 
-const brand = colors.sky;
+const brand = colors.rose;
 
 const aerobic = colors.teal;
 const strength = colors.pink;
