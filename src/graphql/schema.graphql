@@ -36,6 +36,7 @@ type Mutation {
 
 type Query {
   viewer: User
+  workout(id: ID!): Workout!
   workouts: [Workout!]!
 }
 
@@ -58,5 +59,19 @@ type Workout {
   id: ID!
   name: String!
   status: String!
+  workoutExercises: [WorkoutExercise!]!
   workoutExercisesCount: Int!
+}
+
+type WorkoutExercise {
+  exercise: Exercise!
+  id: ID!
+  sets: [WorkoutSet!]!
+}
+
+type WorkoutSet {
+  id: ID!
+  lbs: Int
+  mins: Int
+  reps: Int
 }

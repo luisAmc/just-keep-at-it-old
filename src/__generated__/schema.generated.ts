@@ -72,7 +72,13 @@ export type MutationSignUpArgs = {
 export type Query = {
   __typename?: 'Query';
   viewer?: Maybe<User>;
+  workout: Workout;
   workouts: Array<Workout>;
+};
+
+
+export type QueryWorkoutArgs = {
+  id: Scalars['ID'];
 };
 
 export type SignUpInput = {
@@ -102,5 +108,21 @@ export type Workout = {
   id: Scalars['ID'];
   name: Scalars['String'];
   status: Scalars['String'];
+  workoutExercises: Array<WorkoutExercise>;
   workoutExercisesCount: Scalars['Int'];
+};
+
+export type WorkoutExercise = {
+  __typename?: 'WorkoutExercise';
+  exercise: Exercise;
+  id: Scalars['ID'];
+  sets: Array<WorkoutSet>;
+};
+
+export type WorkoutSet = {
+  __typename?: 'WorkoutSet';
+  id: Scalars['ID'];
+  lbs?: Maybe<Scalars['Int']>;
+  mins?: Maybe<Scalars['Int']>;
+  reps?: Maybe<Scalars['Int']>;
 };

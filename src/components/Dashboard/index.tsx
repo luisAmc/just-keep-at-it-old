@@ -5,13 +5,15 @@ import clsx from 'clsx';
 import {
   useMuscleGroupColors,
   useMuscleGroupName
-} from 'src/utils/muscleGroupBias';
+} from 'src/components/Workouts/muscleGroupBias';
 import { formatDate } from 'src/utils/transforms';
 import { Button } from '../shared/Button';
 import { Heading } from '../shared/Heading';
+import { Link } from '../shared/Link';
 import { Page } from '../shared/Page';
 import { Pill } from '../shared/Pill';
 import { WorkoutInfoFragment } from '../Workouts/ViewWorkout';
+import { ViewWorkout_Workout } from '../Workouts/__generated__/ViewWorkout.generated';
 import { DashboardQuery } from './__generated__/index.generated';
 
 const query = gql`
@@ -46,42 +48,46 @@ export function Dashboard() {
 
             <p className='font-bold'>Crear una rutina</p>
           </Button>
+
           {workouts.map((workout) => (
-            <div
-              key={workout.id}
-              className={clsx(
-                'flex flex-col space-y-2 rounded-xl shadow-md p-6 cursor-pointer border-2 border-opacity-0 hover:border-opacity-100',
-                useMuscleGroupColors(workout.bias)
-              )}
-            >
-              <div>
-                <Pill
-                  text={
-                    workout.status === WorkoutStatus.DONE
-                      ? 'Completado'
-                      : 'Pendiente'
-                  }
-                  color={
-                    workout.status === WorkoutStatus.DONE ? 'success' : 'mono'
-                  }
-                />
-              </div>
-              <div className='py-2 text-center font-semibold text-xl'>
-                {workout.name}
-              </div>
-              <div className='text-center'>
-                Bias en {useMuscleGroupName(workout.bias)}
-              </div>
-              <div className='flex items-center justify-between text-sm'>
-                <div>{formatDate(workout.createdAt, 'dd-LLLL-yy')}</div>
-                <div className='text-sm'>
-                  {workout.workoutExercisesCount} ejercicios
-                </div>
-              </div>
-            </div>
+            <WorkoutCard key={workout.id} workout={workout} />
           ))}
         </div>
       </div>
     </Page>
+  );
+}
+
+function WorkoutCard({ workout }: { workout: ViewWorkout_Workout }) {
+  return (
+    <Link
+      href={`/workouts/${workout.id}`}
+      key={workout.id}
+      className={clsx(
+        'no-underline flex flex-col space-y-2 rounded-xl shadow-md p-6 cursor-pointer border-2 border-opacity-0 hover:border-opacity-100',
+        useMuscleGroupColors(workout.bias)
+      )}
+    >
+      <div>
+        <Pill
+          text={
+            workout.status === WorkoutStatus.DONE ? 'Completado' : 'Pendiente'
+          }
+          color={workout.status === WorkoutStatus.DONE ? 'success' : 'mono'}
+        />
+      </div>
+      <div className='py-2 text-center font-semibold text-xl'>
+        {workout.name}
+      </div>
+      <div className='text-center'>
+        Bias en {useMuscleGroupName(workout.bias)}
+      </div>
+      <div className='flex items-center justify-between text-sm'>
+        <div>{formatDate(workout.createdAt, 'dd-LLLL-yy')}</div>
+        <div className='text-sm'>
+          {workout.workoutExercisesCount} ejercicios
+        </div>
+      </div>
+    </Link>
   );
 }

@@ -10,7 +10,7 @@ builder.prismaObject('Workout', {
     status: t.exposeString('status'),
     completedAt: t.expose('completedAt', { type: 'DateTime', nullable: true }),
     createdAt: t.expose('createdAt', { type: 'DateTime' }),
-    // workoutExercises: t.relation('workoutExercises')
+    workoutExercises: t.relation('workoutExercises'),
     workoutExercisesCount: t.relationCount('workoutExercises'),
     bias: t.string({
       select: {
@@ -93,6 +93,22 @@ builder.queryField('workouts', (t) =>
         orderBy: {
           createdAt: 'desc'
         }
+      });
+    }
+  })
+);
+
+builder.queryField('workout', (t) =>
+  t.prismaField({
+    type: 'Workout',
+    args: {
+      id: t.arg.id()
+    },
+    resolve: (query, _parent, { id }, { session }) => {
+      return db.workout.findFirst({
+        ...query,
+        where: { id, userId: session?.userId },
+        rejectOnNotFound: true
       });
     }
   })

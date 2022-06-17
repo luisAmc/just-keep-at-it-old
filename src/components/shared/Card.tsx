@@ -18,7 +18,9 @@ export function Card({ href, title, size = 'md', children, action }: Props) {
       className={clsx(
         'mx-auto w-full border bg-white px-6 py-8 rounded-xl shadow-md',
         {
-          'max-w-md': size === 'md'
+          'max-w-md': size === 'md',
+          'max-w-lg': size === 'lg',
+          'max-w-xl': size === 'xl'
         }
       )}
     >
