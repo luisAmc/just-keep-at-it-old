@@ -2,7 +2,7 @@ import { gql, useQuery } from '@apollo/client';
 import { PlusIcon } from '@heroicons/react/outline';
 import { Button } from '../shared/Button';
 import { Card } from '../shared/Card';
-import { WorkoutInfoFragment } from './ViewWorkout';
+import { WorkoutInfoFragment } from './ViewWorkoutSlideOver';
 import { WorkoutsQuery } from './__generated__/index.generated';
 
 export const query = gql`
