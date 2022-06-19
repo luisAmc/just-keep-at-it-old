@@ -28,11 +28,21 @@ export function SlideOver({ open, onClose, title, children }: SlideOverProps) {
   return (
     <Transition.Root show={open} as={Fragment}>
       <Dialog as='div' className='relative z-10' onClose={onClose}>
-        <div className='fixed inset-0'></div>
+        <Transition.Child
+          as={Fragment}
+          enter='ease-out duration-300'
+          enterFrom='opacity-0'
+          enterTo='opacity-100'
+          leave='ease-in duration-200'
+          leaveFrom='opacity-100'
+          leaveTo='opacity-0'
+        >
+          <Dialog.Overlay className='fixed inset-0 bg-black/10 transition-opacity' />
+        </Transition.Child>
 
         <div className='fixed inset-0 overflow-hidden'>
           <div className='absolute inset-0 overflow-hidden'>
-            <div className='pointer-events-none fixed inset-y-0 right-0 flex max-w-full pl-10 sm:pl-16'>
+            <div className='pointer-events-none fixed inset-y-0 right-0 flex max-w-full'>
               <Transition.Child
                 as={Fragment}
                 enter='transform transition ease-in-out duration-500 sm:duration-700'

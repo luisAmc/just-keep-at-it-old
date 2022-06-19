@@ -56,7 +56,7 @@ export function LoginForm() {
         >
           <ErrorMessage title='Error de ingreso' error={error} />
 
-          <Input {...form.register('username')} label='Usuario' />
+          <Input {...form.register('username')} autoFocus label='Usuario' />
 
           <Input
             {...form.register('password')}
