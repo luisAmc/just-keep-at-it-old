@@ -14,10 +14,7 @@ import { Heading } from '../shared/Heading';
 import { Page } from '../shared/Page';
 import { Pill } from '../shared/Pill';
 import { useSlideOver } from '../shared/SlideOver';
-import {
-  ViewWorkoutSlideOver,
-  WorkoutInfoFragment
-} from '../Workouts/ViewWorkoutSlideOver';
+import { ViewWorkout, WorkoutInfoFragment } from '../Workouts/ViewWorkout';
 import { DashboardQuery } from './__generated__/index.generated';
 
 const query = gql`
@@ -116,7 +113,7 @@ export function Dashboard() {
         </div>
       </div>
 
-      <ViewWorkoutSlideOver {...workoutSlideOver.props} />
+      <ViewWorkout {...workoutSlideOver.props} />
     </Page>
   );
 }

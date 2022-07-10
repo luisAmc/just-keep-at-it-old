@@ -1,13 +1,13 @@
-import { gql, useQuery } from '@apollo/client';
-import { ExerciseType, WorkoutStatus } from '@prisma/client';
-import clsx from 'clsx';
-import { useRouter } from 'next/router';
-import { useMemo } from 'react';
 import { Button } from '../shared/Button';
+import { ExerciseType, WorkoutStatus } from '@prisma/client';
+import { gql, useQuery } from '@apollo/client';
 import { Heading } from '../shared/Heading';
 import { Pill } from '../shared/Pill';
 import { SlideOver, SlideOverProps } from '../shared/SlideOver';
-import { WorkoutQuery } from './__generated__/ViewWorkoutSlideOver.generated';
+import { useMemo } from 'react';
+import { useRouter } from 'next/router';
+import clsx from 'clsx';
+import { WorkoutQuery } from './__generated__/ViewWorkout.generated';
 
 interface Props extends Omit<SlideOverProps, 'title' | 'children'> {}
 
@@ -47,7 +47,7 @@ export const query = gql`
   ${WorkoutInfoFragment}
 `;
 
-export function ViewWorkoutSlideOver({ open, onClose }: Props) {
+export function ViewWorkout({ open, onClose }: Props) {
   const router = useRouter();
 
   const workoutId = router.query.workoutId as string;
@@ -79,6 +79,8 @@ export function ViewWorkoutSlideOver({ open, onClose }: Props) {
       ) ?? []
     );
   }, [data]);
+
+  const isDone = data?.workout.status === WorkoutStatus.DONE;
 
   return (
     <SlideOver open={open} onClose={handleClose} title='Rutina'>
@@ -114,11 +116,38 @@ export function ViewWorkoutSlideOver({ open, onClose }: Props) {
               {aerobicExercises.map((aerobicExercise) => (
                 <div
                   key={aerobicExercise.id}
-                  className={clsx('px-3 py-2 rounded-lg text-aerobic-900')}
+                  className={clsx(
+                    'px-3 py-2 rounded-lg text-aerobic-900',
+                    isDone && 'bg-aerobic-300'
+                  )}
                 >
                   <div className='flex items-center justify-between'>
                     <span>{aerobicExercise.exercise.name}</span>
+
+                    {isDone && (
+                      <span className='font-bold text-sm'>
+                        {aerobicExercise.sets.length} sets
+                      </span>
+                    )}
                   </div>
+
+                  {isDone && (
+                    <div className='flex flex-col space-y-4 divide-y divide-aerobic-400 px-3 py-2 t-0 rounded-lg rounded-t-none bg-aerobic-300'>
+                      {aerobicExercise.sets.map((set) => (
+                        <div
+                          key={set.id}
+                          className='flex items-center justify-center'
+                        >
+                          <span>
+                            <span className='text-3xl font-medium'>
+                              {set.mins}
+                            </span>
+                            <span className='ml-1'>mins</span>
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  )}
                 </div>
               ))}
             </div>
@@ -141,27 +170,23 @@ export function ViewWorkoutSlideOver({ open, onClose }: Props) {
 
           <div className='flex-auto'></div>
 
-          <div className='flex flex-col-reverse sm:grid sm:grid-cols-2 gap-2 border-t pt-4'>
+          {isDone ? (
             <Button variant='secondary' onClick={handleClose}>
               Cerrar
             </Button>
-            <Button>Comenzar</Button>
-          </div>
+          ) : (
+            <div className='flex flex-col-reverse sm:grid sm:grid-cols-2 gap-2 border-t pt-4'>
+              <Button variant='secondary' onClick={handleClose}>
+                Cerrar
+              </Button>
+
+              <Button href={`/workouts/${workoutId}/get-it-done`}>
+                Comenzar
+              </Button>
+            </div>
+          )}
         </div>
       )}
     </SlideOver>
   );
-}
-
-function useExerciseTypeColors(type: string) {
-  switch (type) {
-    case ExerciseType.AEROBIC:
-      return 'bg-aerobic-200';
-
-    case ExerciseType.STRENGTH:
-      return 'bg-strength-200';
-
-    default:
-      return '';
-  }
 }

@@ -1,4 +1,4 @@
-import { ExerciseType } from '@prisma/client';
+import { ExerciseType, WorkoutStatus } from '@prisma/client';
 import { db } from 'src/utils/prisma';
 import { builder } from '../builder';
 
@@ -110,6 +110,69 @@ builder.queryField('workout', (t) =>
         where: { id, userId: session?.userId },
         rejectOnNotFound: true
       });
+    }
+  })
+);
+
+const GetWorkoutDoneInput = builder.inputType('GetWorkoutDoneInput', {
+  fields: (t) => ({
+    workoutId: t.string(),
+    workoutExercies: t.field({
+      type: [
+        builder.inputType('DoneExerciseInput', {
+          fields: (t) => ({
+            id: t.string(),
+            sets: t.field({
+              type: [
+                builder.inputType('DoneExerciseSetInput', {
+                  fields: (t) => ({
+                    mins: t.int({ required: false }),
+                    lbs: t.int({ required: false }),
+                    reps: t.int({ required: false })
+                  })
+                })
+              ]
+            })
+          })
+        })
+      ]
+    })
+  })
+});
+
+builder.mutationField('getWorkoutDone', (t) =>
+  t.prismaField({
+    type: 'Workout',
+    args: {
+      input: t.arg({ type: GetWorkoutDoneInput })
+    },
+    resolve: async (_query, _parent, { input }, { session }) => {
+      const workout = await db.$transaction(async (db) => {
+        for (const exercise of input.workoutExercies) {
+          for (const set of exercise.sets) {
+            await db.workoutSet.create({
+              data: {
+                workoutExerciseId: exercise.id,
+                mins: set.mins,
+                lbs: set.lbs,
+                reps: set.reps
+              }
+            });
+          }
+        }
+
+        return db.workout.update({
+          where: {
+            id: input.workoutId
+          },
+          data: {
+            status: WorkoutStatus.DONE,
+            completedAt: new Date()
+          }
+        });
+      });
+
+      return workout;
     }
   })
 );

@@ -24,6 +24,17 @@ export type CreateWorkoutInput = {
   workoutExercises: Array<ExerciseOptionInput>;
 };
 
+export type DoneExerciseInput = {
+  id: Scalars['String'];
+  sets: Array<DoneExerciseSetInput>;
+};
+
+export type DoneExerciseSetInput = {
+  lbs?: InputMaybe<Scalars['Int']>;
+  mins?: InputMaybe<Scalars['Int']>;
+  reps?: InputMaybe<Scalars['Int']>;
+};
+
 export type Exercise = {
   __typename?: 'Exercise';
   id: Scalars['ID'];
@@ -36,6 +47,11 @@ export type ExerciseOptionInput = {
   id: Scalars['String'];
 };
 
+export type GetWorkoutDoneInput = {
+  workoutExercies: Array<DoneExerciseInput>;
+  workoutId: Scalars['String'];
+};
+
 export type LoginInput = {
   password: Scalars['String'];
   username: Scalars['String'];
@@ -45,6 +61,7 @@ export type Mutation = {
   __typename?: 'Mutation';
   createExercise: Exercise;
   createWorkout: Workout;
+  getWorkoutDone: Workout;
   login: User;
   signUp: User;
 };
@@ -57,6 +74,11 @@ export type MutationCreateExerciseArgs = {
 
 export type MutationCreateWorkoutArgs = {
   input: CreateWorkoutInput;
+};
+
+
+export type MutationGetWorkoutDoneArgs = {
+  input: GetWorkoutDoneInput;
 };
 
 
