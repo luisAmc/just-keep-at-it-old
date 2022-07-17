@@ -114,6 +114,7 @@ export type User = {
   id: Scalars['ID'];
   username: Scalars['String'];
   workouts: Array<Workout>;
+  workoutsCount: Scalars['Int'];
 };
 
 

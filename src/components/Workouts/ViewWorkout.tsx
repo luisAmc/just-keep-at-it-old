@@ -52,11 +52,6 @@ export function ViewWorkout({ open, onClose }: Props) {
 
   const workoutId = router.query.workoutId as string;
 
-  function handleClose() {
-    router.push({ pathname: '/', query: {} }, '/', { shallow: true });
-    onClose();
-  }
-
   const { data, loading, error } = useQuery<WorkoutQuery>(query, {
     variables: { id: router.query.workoutId },
     skip: !router.isReady || !workoutId
@@ -79,6 +74,11 @@ export function ViewWorkout({ open, onClose }: Props) {
       ) ?? []
     );
   }, [data]);
+
+  function handleClose() {
+    router.push({ pathname: '/', query: {} }, '/', { shallow: true });
+    onClose();
+  }
 
   const isDone = data?.workout.status === WorkoutStatus.DONE;
 

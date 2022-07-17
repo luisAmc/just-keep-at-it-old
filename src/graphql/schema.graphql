@@ -66,7 +66,8 @@ type User {
   exercises: [Exercise!]!
   id: ID!
   username: String!
-  workouts(limit: Int! = 3, offset: Int! = 0): [Workout!]!
+  workouts(limit: Int! = 8, offset: Int! = 0): [Workout!]!
+  workoutsCount: Int!
 }
 
 type Workout {

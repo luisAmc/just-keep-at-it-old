@@ -1,42 +1,42 @@
 import { AerobicExercise } from './AerobicExercise';
-import { object, array, number, record, z } from 'zod';
 import { Card } from 'src/components/shared/Card';
 import { CheckIcon } from '@heroicons/react/outline';
+import { ExerciseType, WorkoutStatus } from '@prisma/client';
 import { Form, useZodForm } from 'src/components/shared/Form';
+import { gql, useMutation, useQuery } from '@apollo/client';
 import { Heading } from 'src/components/shared/Heading';
+import { object, array, number, record, z } from 'zod';
 import { Page } from 'src/components/shared/Page';
 import { Pill } from 'src/components/shared/Pill';
 import { query } from '../ViewWorkout';
 import { StrengthExercise } from './StrengthExercise';
 import { SubmitButton } from 'src/components/shared/SubmitButton';
 import { useMemo } from 'react';
-import { gql, useMutation, useQuery } from '@apollo/client';
 import { useRouter } from 'next/router';
 import { WorkoutQuery } from '../__generated__/ViewWorkout.generated';
-import { ExerciseType, WorkoutStatus } from '@prisma/client';
 import {
   GetWorkoutDoneMutation,
   GetWorkoutDoneMutationVariables
 } from './__generated__/index.generated';
 
-const AerobicSetSchema = object({
-  mins: number()
-});
-
-const StrengthSetSchema = object({
-  lbs: number(),
-  reps: number()
-});
-
 const GetItDoneSchema = object({
   aerobics: record(
     object({
-      sets: array(AerobicSetSchema)
+      sets: array(
+        object({
+          mins: number()
+        })
+      )
     })
   ),
   strengths: record(
     object({
-      sets: array(StrengthSetSchema)
+      sets: array(
+        object({
+          lbs: number(),
+          reps: number()
+        })
+      )
     })
   )
 });
