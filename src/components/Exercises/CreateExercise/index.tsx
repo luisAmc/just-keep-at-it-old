@@ -1,6 +1,6 @@
 import { gql, useMutation } from '@apollo/client';
 import { Transition } from '@headlessui/react';
-import { CheckIcon } from '@heroicons/react/outline';
+import { CheckCircleIcon } from '@heroicons/react/solid';
 import { ExerciseType, MuscleGroup } from '@prisma/client';
 import { useRouter } from 'next/router';
 import { useWatch } from 'react-hook-form';
@@ -130,7 +130,7 @@ export function CreateExercise() {
           </Transition>
 
           <SubmitButton>
-            <CheckIcon className='w-6 h-6 mr-1' />
+            <CheckCircleIcon className='w-6 h-6 mr-1' />
             <span>Crear Ejercicio</span>
           </SubmitButton>
         </Form>

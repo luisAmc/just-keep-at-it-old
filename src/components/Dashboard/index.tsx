@@ -1,5 +1,5 @@
 import { gql, useQuery } from '@apollo/client';
-import { FireIcon, PlusCircleIcon } from '@heroicons/react/outline';
+import { FireIcon, FlagIcon, PlusCircleIcon } from '@heroicons/react/outline';
 import { Button } from '../shared/Button';
 import { Heading } from '../shared/Heading';
 import { Page } from '../shared/Page';
@@ -33,47 +33,56 @@ export function Dashboard() {
   const workouts = data?.viewer?.workouts ?? [];
 
   return (
-    <Page>
-      <div className='flex flex-col space-y-4 pb-4'>
-        <div className='flex items-center justify-between space-x-4'>
-          <Heading>Últimas rutinas</Heading>
+    <>
+      <Page>
+        <div className='flex flex-col space-y-4 pb-4'>
+          <div className='flex items-center justify-between space-x-4'>
+            <Heading>Últimas rutinas</Heading>
 
-          <Button href='/workouts/create'>
-            <PlusCircleIcon className='w-4 h-4 mr-1' />
-            <span>Nueva rutina</span>
-          </Button>
-        </div>
-
-        {!loading &&
-          (workouts.length === 0 ? (
-            <EmptyWorkouts />
-          ) : (
-            <div className='flex flex-col space-y-4'>
-              {workouts.map((workout) => (
-                <WorkoutCard key={workout.id} workout={workout} />
-              ))}
-            </div>
-          ))}
-
-        {!loading &&
-          data?.viewer?.workouts &&
-          data.viewer.workoutsCount > data.viewer.workouts.length && (
-            <Button
-              variant='secondary'
-              onClick={() =>
-                fetchMore({
-                  variables: {
-                    offset: data.viewer?.workouts.length,
-                    limit: 5
-                  }
-                })
-              }
-            >
-              <FireIcon className='w-4 h-4 mr-1' />
-              <span className='text-sm'>Ver más rutinas</span>
+            <Button href='/workouts/create' rounded>
+              <PlusCircleIcon className='w-4 h-4 mr-1' />
+              <span>Nueva rutina</span>
             </Button>
-          )}
+          </div>
+
+          {!loading &&
+            (workouts.length === 0 ? (
+              <EmptyWorkouts />
+            ) : (
+              <div className='flex flex-col space-y-4'>
+                {workouts.map((workout) => (
+                  <WorkoutCard key={workout.id} workout={workout} />
+                ))}
+              </div>
+            ))}
+
+          {!loading &&
+            data?.viewer?.workouts &&
+            data.viewer.workoutsCount > data.viewer.workouts.length && (
+              <Button
+                variant='secondary'
+                onClick={() =>
+                  fetchMore({
+                    variables: {
+                      offset: data.viewer?.workouts.length,
+                      limit: 5
+                    }
+                  })
+                }
+              >
+                <FireIcon className='w-4 h-4 mr-1' />
+                <span className='text-sm'>Ver más rutinas</span>
+              </Button>
+            )}
+        </div>
+      </Page>
+
+      <div className='fixed bottom-6 right-4'>
+        <Button href='/exercises' variant='secondary' rounded floating>
+          <FlagIcon className='w-4 h-4 mr-1' />
+          <span>Ver ejercicios</span>
+        </Button>
       </div>
-    </Page>
+    </>
   );
 }

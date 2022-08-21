@@ -2,7 +2,7 @@ import { object, string } from 'zod';
 import { Form, useZodForm } from '../shared/Form';
 import { Input } from '../shared/Input';
 import { SubmitButton } from '../shared/SubmitButton';
-import { CheckIcon } from '@heroicons/react/outline';
+import { CheckCircleIcon } from '@heroicons/react/solid';
 import { gql, useMutation } from '@apollo/client';
 import {
   SignUpFormMutation,
@@ -74,7 +74,7 @@ export function SignUpForm() {
           />
 
           <SubmitButton>
-            <CheckIcon className='w-6 h-6 mr-1' />
+            <CheckCircleIcon className='w-6 h-6 mr-1' />
             <span>Crear</span>
           </SubmitButton>
         </Form>

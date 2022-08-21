@@ -126,7 +126,7 @@ builder.mutationField('getWorkoutDone', (t) =>
     args: {
       input: t.arg({ type: GetWorkoutDoneInput })
     },
-    resolve: async (_query, _parent, { input }, { session }) => {
+    resolve: async (_query, _parent, { input }) => {
       const workout = await db.$transaction(async (db) => {
         for (const exercise of input.workoutExercises) {
           for (const set of exercise.sets) {
@@ -155,6 +155,46 @@ builder.mutationField('getWorkoutDone', (t) =>
       });
 
       return workout;
+    }
+  })
+);
+
+builder.mutationField('doItAgain', (t) =>
+  t.prismaField({
+    type: 'Workout',
+    args: {
+      workoutToCopyId: t.arg.id()
+    },
+    resolve: async (query, _parent, { workoutToCopyId }, { session }) => {
+      const workoutToCopy = await db.workout.findUniqueOrThrow({
+        where: {
+          id: workoutToCopyId
+        },
+        include: {
+          workoutExercises: {
+            select: { exerciseId: true }
+          }
+        }
+      });
+
+      return await db.workout.create({
+        ...query,
+        data: {
+          userId: session!.userId,
+          name: workoutToCopy.name,
+          workoutExercises: {
+            createMany: {
+              data: workoutToCopy.workoutExercises.map(
+                (workoutExercise, index) => ({
+                  index,
+                  userId: session!.userId,
+                  exerciseId: workoutExercise.exerciseId
+                })
+              )
+            }
+          }
+        }
+      });
     }
   })
 );

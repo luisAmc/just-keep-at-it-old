@@ -1,10 +1,11 @@
-import { CheckIcon, SelectorIcon } from '@heroicons/react/outline';
+import { SelectorIcon } from '@heroicons/react/outline';
 import { Combobox, Transition } from '@headlessui/react';
 import { FieldError } from '../../shared/Form';
 import { Fragment, useState } from 'react';
 import { useController } from 'react-hook-form';
 import clsx from 'clsx';
 import { MuscleGroup } from '@prisma/client';
+import { CheckCircleIcon } from '@heroicons/react/solid';
 
 function useMuscleGroupColors(muscleGroup: string) {
   switch (muscleGroup) {
@@ -124,7 +125,7 @@ export function SelectExercise({ label, name, options }: Props) {
                       </div>
 
                       <span className='absolute inset-y-0 right-0 flex items-center pr-4'>
-                        <CheckIcon
+                        <CheckCircleIcon
                           className={clsx(
                             'h-5 w-5',
                             isSelected ? 'text-white' : 'text-transparent'

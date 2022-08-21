@@ -1,13 +1,17 @@
 import { Button } from 'src/components/shared/Button';
 import { ChevronLeftIcon } from '@heroicons/react/outline';
 import { ExerciseType, WorkoutStatus } from '@prisma/client';
-import { gql, useQuery } from '@apollo/client';
+import { gql, useMutation, useQuery } from '@apollo/client';
 import { Heading } from 'src/components/shared/Heading';
 import { LightningBoltIcon } from '@heroicons/react/solid';
 import { Page } from 'src/components/shared/Page';
 import { useRouter } from 'next/router';
 import clsx from 'clsx';
-import { WorkoutQuery } from './__generated__/index.generated';
+import {
+  DoItAgainMutation,
+  DoItAgainMutationVariables,
+  WorkoutQuery
+} from './__generated__/index.generated';
 
 export const WorkoutInfoFragment = gql`
   fragment ViewWorkout_workout on Workout {
@@ -57,6 +61,24 @@ export const query = gql`
 export function ViewWorkout() {
   const router = useRouter();
 
+  const [doItAgain] = useMutation<
+    DoItAgainMutation,
+    DoItAgainMutationVariables
+  >(
+    gql`
+      mutation DoItAgainMutation($workoutToCopyId: ID!) {
+        doItAgain(workoutToCopyId: $workoutToCopyId) {
+          id
+        }
+      }
+    `,
+    {
+      onCompleted() {
+        router.push('/');
+      }
+    }
+  );
+
   const { data, loading, error } = useQuery<WorkoutQuery>(query, {
     variables: { id: router.query.workoutId },
     skip: !router.isReady
@@ -82,17 +104,26 @@ export function ViewWorkout() {
             <Heading>{workout.name}</Heading>
           </div>
 
-          <div className='flex flex-col space-y-3 p-2 rounded-lg bg-gray-100'>
+          <div
+            className={clsx(
+              'flex flex-col space-y-3 p-2 rounded-lg',
+              isDone ? 'bg-teal-100' : 'bg-gray-100'
+            )}
+          >
             {workout.workoutExercises.map((workoutExercise) => (
               <div
                 key={workoutExercise.id}
                 className={clsx(
-                  'px-3 py-2 rounded-lg text-gray-700',
-                  isDone && 'bg-gray-300'
+                  'px-3 py-2 rounded-lg',
+                  isDone
+                    ? 'text-teal-700 bg-teal-300'
+                    : 'text-gray-700 bg-gray-300'
                 )}
               >
                 <div className='flex items-center justify-between'>
-                  <h2 className='font-medium'>{workoutExercise.exercise.name}</h2>
+                  <h2 className='font-medium'>
+                    {workoutExercise.exercise.name}
+                  </h2>
 
                   {isDone && (
                     <span className='font-bold text-xs'>
@@ -129,7 +160,18 @@ export function ViewWorkout() {
           <div className='flex-auto'></div>
 
           {isDone ? (
-            <Button variant='secondary'>Volver a hacer</Button>
+            <Button
+              variant='secondary'
+              onClick={() =>
+                doItAgain({
+                  variables: {
+                    workoutToCopyId: router.query.workoutId as string
+                  }
+                })
+              }
+            >
+              Volver a hacer
+            </Button>
           ) : (
             <Button href={`/workouts/${workout.id}/get-it-done`}>
               <LightningBoltIcon className='w-4 h-4 mr-1' />

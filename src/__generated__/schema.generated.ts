@@ -63,6 +63,7 @@ export type Mutation = {
   __typename?: 'Mutation';
   createExercise: Exercise;
   createWorkout: Workout;
+  doItAgain: Workout;
   getWorkoutDone: Workout;
   login: User;
   signUp: User;
@@ -76,6 +77,11 @@ export type MutationCreateExerciseArgs = {
 
 export type MutationCreateWorkoutArgs = {
   input: CreateWorkoutInput;
+};
+
+
+export type MutationDoItAgainArgs = {
+  workoutToCopyId: Scalars['ID'];
 };
 
 

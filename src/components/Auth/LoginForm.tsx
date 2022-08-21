@@ -1,5 +1,5 @@
 import { gql, useMutation } from '@apollo/client';
-import { CheckIcon } from '@heroicons/react/outline';
+import { CheckCircleIcon } from '@heroicons/react/solid';
 import { useAuthRedirect } from 'src/utils/useAuthRedirect';
 import { object, string } from 'zod';
 import { Card } from '../shared/Card';
@@ -65,7 +65,7 @@ export function LoginForm() {
           />
 
           <SubmitButton>
-            <CheckIcon className='w-6 h-6 mr-1' />
+            <CheckCircleIcon className='w-6 h-6 mr-1' />
             <span>Ingresar</span>
           </SubmitButton>
         </Form>

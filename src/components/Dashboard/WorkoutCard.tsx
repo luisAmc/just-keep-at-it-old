@@ -1,5 +1,7 @@
-import Link from 'next/link';
 import { formatDate } from 'src/utils/transforms';
+import { WorkoutStatus } from '@prisma/client';
+import clsx from 'clsx';
+import Link from 'next/link';
 import { ViewWorkout_Workout } from '../Workouts/ViewWorkout/__generated__/index.generated';
 
 interface WorkoutCardProps {
@@ -7,9 +9,16 @@ interface WorkoutCardProps {
 }
 
 export function WorkoutCard({ workout }: WorkoutCardProps) {
+  const isDone = workout.status === WorkoutStatus.DONE;
+
   return (
     <Link href={`/workouts/${workout.id}`}>
-      <div className='px-5 py-4 bg-gray-100 rounded-md hover:cursor-pointer'>
+      <div
+        className={clsx(
+          'px-5 py-4 bg-gray-100 rounded-md hover:cursor-pointer',
+          isDone ? 'bg-teal-100' : 'bg-gray-100'
+        )}
+      >
         <div className='flex items-center justify-between'>
           <h2 className='font-medium'>{workout.name}</h2>
 

@@ -1,10 +1,5 @@
 import { gql, useMutation, useQuery } from '@apollo/client';
-import {
-  CheckIcon,
-  ChevronLeftIcon,
-  PlusIcon,
-  TrashIcon
-} from '@heroicons/react/outline';
+import { ChevronLeftIcon, PlusIcon, TrashIcon } from '@heroicons/react/outline';
 import { useFieldArray } from 'react-hook-form';
 import { array, object, string } from 'zod';
 import { ExerciseInfoFragment } from '../../Exercises';
@@ -23,6 +18,7 @@ import { useRouter } from 'next/router';
 import { Page } from 'src/components/shared/Page';
 import { Heading } from 'src/components/shared/Heading';
 import { Button } from 'src/components/shared/Button';
+import { CheckCircleIcon } from '@heroicons/react/solid';
 
 export const query = gql`
   query CreateWorkoutQuery {
@@ -99,7 +95,7 @@ export function CreateWorkout() {
         });
       },
       onCompleted() {
-        router.push('/workouts');
+        router.push('/');
       }
     }
   );
@@ -187,7 +183,7 @@ export function CreateWorkout() {
           <div className='flex-auto'></div>
 
           <SubmitButton>
-            <CheckIcon className='w-4 h-4 mr-1' />
+            <CheckCircleIcon className='w-4 h-4 mr-1' />
             <span>Ingresar</span>
           </SubmitButton>
         </Form>

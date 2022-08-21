@@ -1,4 +1,4 @@
-import { CheckIcon, ChevronLeftIcon } from '@heroicons/react/outline';
+import { ChevronLeftIcon } from '@heroicons/react/outline';
 import { Form, useZodForm } from 'src/components/shared/Form';
 import { gql, useMutation, useQuery } from '@apollo/client';
 import { Heading } from 'src/components/shared/Heading';
@@ -14,6 +14,7 @@ import {
 } from './__generated__/index.generated';
 import { Button } from 'src/components/shared/Button';
 import { ExerciseSetInput } from './ExerciseSetInput';
+import { CheckCircleIcon } from '@heroicons/react/solid';
 
 const numberShape = string().regex(/^\d*$/).transform(Number);
 
@@ -126,7 +127,7 @@ export function GetItDone() {
             <div className='flex-auto'></div>
 
             <SubmitButton>
-              <CheckIcon className='w-4 h-4 mr-1' />
+              <CheckCircleIcon className='w-4 h-4 mr-1' />
               <span>Completar</span>
             </SubmitButton>
           </Form>
