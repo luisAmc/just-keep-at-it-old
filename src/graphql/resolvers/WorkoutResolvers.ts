@@ -10,39 +10,14 @@ builder.prismaObject('Workout', {
     status: t.exposeString('status'),
     completedAt: t.expose('completedAt', { type: 'DateTime', nullable: true }),
     createdAt: t.expose('createdAt', { type: 'DateTime' }),
-    workoutExercises: t.relation('workoutExercises'),
-    workoutExercisesCount: t.relationCount('workoutExercises'),
-    bias: t.string({
-      select: {
-        workoutExercises: {
-          select: {
-            exercise: {
-              select: {
-                muscleGroup: true
-              }
-            }
-          }
+    workoutExercises: t.relation('workoutExercises', {
+      query: {
+        orderBy: {
+          index: 'asc'
         }
-      },
-      resolve: (workout) => {
-        let mostUse = { type: '', count: 0 };
-        let count: Record<string, number> = {};
-        for (const workoutExercise of workout.workoutExercises) {
-          const muscleGroup =
-            workoutExercise.exercise.muscleGroup ?? ExerciseType.AEROBIC;
-
-          count[muscleGroup] = count[muscleGroup] ? count[muscleGroup] + 1 : 1;
-        }
-
-        for (const type of Object.keys(count)) {
-          if (count[type] > mostUse.count) {
-            mostUse = { type, count: count[type] };
-          }
-        }
-
-        return mostUse.type;
       }
-    })
+    }),
+    workoutExercisesCount: t.relationCount('workoutExercises')
   })
 });
 
@@ -70,10 +45,13 @@ builder.mutationField('createWorkout', (t) =>
           userId: session!.userId,
           name: input.name,
           workoutExercises: {
-            create: input.workoutExercises.map((exercise) => ({
-              userId: session!.userId,
-              exerciseId: exercise.id
-            }))
+            createMany: {
+              data: input.workoutExercises.map((exercise, index) => ({
+                index: index,
+                userId: session!.userId,
+                exerciseId: exercise.id
+              }))
+            }
           }
         }
       });
@@ -127,6 +105,8 @@ const GetWorkoutDoneInput = builder.inputType('GetWorkoutDoneInput', {
                 builder.inputType('DoneExerciseSetInput', {
                   fields: (t) => ({
                     mins: t.int({ required: false }),
+                    distance: t.int({ required: false }),
+                    kcal: t.int({ required: false }),
                     lbs: t.int({ required: false }),
                     reps: t.int({ required: false })
                   })
@@ -153,9 +133,11 @@ builder.mutationField('getWorkoutDone', (t) =>
             await db.workoutSet.create({
               data: {
                 workoutExerciseId: exercise.id,
-                mins: set.mins,
-                lbs: set.lbs,
-                reps: set.reps
+                mins: set.mins ?? 0,
+                distance: set.distance ?? 0,
+                kcal: set.kcal ?? 0,
+                lbs: set.lbs ?? 0,
+                reps: set.reps ?? 0
               }
             });
           }

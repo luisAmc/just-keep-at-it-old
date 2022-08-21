@@ -30,6 +30,8 @@ export type DoneExerciseInput = {
 };
 
 export type DoneExerciseSetInput = {
+  distance?: InputMaybe<Scalars['Int']>;
+  kcal?: InputMaybe<Scalars['Int']>;
   lbs?: InputMaybe<Scalars['Int']>;
   mins?: InputMaybe<Scalars['Int']>;
   reps?: InputMaybe<Scalars['Int']>;
@@ -125,7 +127,6 @@ export type UserWorkoutsArgs = {
 
 export type Workout = {
   __typename?: 'Workout';
-  bias: Scalars['String'];
   completedAt?: Maybe<Scalars['DateTime']>;
   createdAt: Scalars['DateTime'];
   id: Scalars['ID'];
@@ -139,13 +140,17 @@ export type WorkoutExercise = {
   __typename?: 'WorkoutExercise';
   exercise: Exercise;
   id: Scalars['ID'];
+  index: Scalars['Int'];
   sets: Array<WorkoutSet>;
+  setsCount: Scalars['Int'];
 };
 
 export type WorkoutSet = {
   __typename?: 'WorkoutSet';
+  distance: Scalars['Int'];
   id: Scalars['ID'];
-  lbs?: Maybe<Scalars['Int']>;
-  mins?: Maybe<Scalars['Int']>;
-  reps?: Maybe<Scalars['Int']>;
+  kcal: Scalars['Int'];
+  lbs: Scalars['Int'];
+  mins: Scalars['Int'];
+  reps: Scalars['Int'];
 };

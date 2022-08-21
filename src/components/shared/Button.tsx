@@ -5,7 +5,7 @@ export interface Props extends ButtonOrLinkProps {
   variant?: 'primary' | 'secondary' | 'danger';
 }
 
-export function Button({ variant = 'primary', ...props }: Props) {
+export function Button({ variant = 'primary', type, ...props }: Props) {
   return (
     <ButtonOrLink
       className={clsx(
@@ -17,6 +17,7 @@ export function Button({ variant = 'primary', ...props }: Props) {
           'bg-red-500 text-white focus:ring-red-500': variant === 'danger'
         }
       )}
+      type={type || 'button'}
       {...props}
     />
   );

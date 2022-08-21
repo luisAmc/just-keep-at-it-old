@@ -1,0 +1,174 @@
+import { Button } from 'src/components/shared/Button';
+import { ChevronLeftIcon } from '@heroicons/react/outline';
+import { ExerciseType, WorkoutStatus } from '@prisma/client';
+import { gql, useQuery } from '@apollo/client';
+import { Heading } from 'src/components/shared/Heading';
+import { LightningBoltIcon } from '@heroicons/react/solid';
+import { Page } from 'src/components/shared/Page';
+import { useRouter } from 'next/router';
+import clsx from 'clsx';
+import { WorkoutQuery } from './__generated__/index.generated';
+
+export const WorkoutInfoFragment = gql`
+  fragment ViewWorkout_workout on Workout {
+    id
+    name
+    status
+    completedAt
+    createdAt
+    workoutExercisesCount
+    workoutExercises {
+      id
+      exercise {
+        id
+        name
+      }
+    }
+  }
+`;
+
+export const query = gql`
+  query WorkoutQuery($id: ID!) {
+    workout(id: $id) {
+      ...ViewWorkout_workout
+      workoutExercises {
+        id
+        exercise {
+          id
+          name
+          type
+        }
+        setsCount
+        sets {
+          id
+          mins
+          distance
+          kcal
+          lbs
+          reps
+        }
+      }
+    }
+  }
+  ${WorkoutInfoFragment}
+`;
+
+export function ViewWorkout() {
+  const router = useRouter();
+
+  const { data, loading, error } = useQuery<WorkoutQuery>(query, {
+    variables: { id: router.query.workoutId },
+    skip: !router.isReady
+  });
+
+  const workout = data?.workout ?? null;
+  const isDone = workout?.status === WorkoutStatus.DONE;
+
+  return (
+    <Page>
+      {loading && <div>Cargando...</div>}
+
+      {workout && (
+        <div className='h-full flex flex-col space-y-4'>
+          <div className='flex items-center space-x-4'>
+            <Button
+              className='rounded-full bg-brand-300 text-brand-700 p-2'
+              href='/'
+            >
+              <ChevronLeftIcon className='w-4 h-4' />
+            </Button>
+
+            <Heading>{workout.name}</Heading>
+          </div>
+
+          <div className='flex flex-col space-y-3 p-2 rounded-lg bg-gray-100'>
+            {workout.workoutExercises.map((workoutExercise) => (
+              <div
+                key={workoutExercise.id}
+                className={clsx(
+                  'px-3 py-2 rounded-lg text-gray-700',
+                  isDone && 'bg-gray-300'
+                )}
+              >
+                <div className='flex items-center justify-between'>
+                  <span>{workoutExercise.exercise.name}</span>
+
+                  {isDone && (
+                    <span className='font-bold text-xs'>
+                      {workoutExercise.setsCount} sets
+                    </span>
+                  )}
+                </div>
+
+                {isDone && (
+                  <div>
+                    {workoutExercise.sets.map((set) => (
+                      <div
+                        key={set.id}
+                        className='flex items-center justify-center'
+                      >
+                        {workoutExercise.exercise.type ===
+                        ExerciseType.AEROBIC ? (
+                          <AerobicSet mins={set.mins} />
+                        ) : (
+                          <StrengthSet lbs={set.lbs} reps={set.reps} />
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+
+          <div className='flex-auto'></div>
+
+          {isDone ? (
+            <Button variant='secondary'>Volver a hacer</Button>
+          ) : (
+            <Button href={`/workouts/${workout.id}/get-it-done`}>
+              <LightningBoltIcon className='w-4 h-4 mr-1' />
+              <span>Comenzar</span>
+            </Button>
+          )}
+        </div>
+      )}
+    </Page>
+  );
+}
+
+interface AerobicSetProps {
+  mins?: number | null;
+}
+
+function AerobicSet({ mins }: AerobicSetProps) {
+  return (
+    <div>
+      <span className='text-3xl font-medium'>{mins}</span>
+      <span className='ml-1'>mins</span>
+    </div>
+  );
+}
+
+interface StrengthSetProps {
+  lbs?: number | null;
+  reps?: number | null;
+}
+
+function StrengthSet({ lbs, reps }: StrengthSetProps) {
+  return (
+    <div className='flex items-center space-x-3'>
+      <span>
+        <span className='text-3xl font-medium'>{lbs}</span>
+        <span className='ml-1'>lbs</span>
+      </span>
+
+      <span>&#124;</span>
+
+      <span>
+        <span className='text-3xl font-medium'>{reps}</span>
+        <span className='ml-1'>reps</span>
+      </span>
+    </div>
+  );
+}

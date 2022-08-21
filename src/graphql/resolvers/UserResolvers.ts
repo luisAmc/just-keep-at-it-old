@@ -11,7 +11,7 @@ builder.prismaObject('User', {
     workouts: t.relation('workouts', {
       args: {
         offset: t.arg.int({ defaultValue: 0 }),
-        limit: t.arg.int({ defaultValue: 8 })
+        limit: t.arg.int({ defaultValue: 5 })
       },
       query: ({ offset, limit }) => ({
         take: limit,

@@ -1,10 +1,14 @@
 import { gql, useMutation, useQuery } from '@apollo/client';
-import { CheckIcon, PlusIcon, TrashIcon } from '@heroicons/react/outline';
+import {
+  CheckIcon,
+  ChevronLeftIcon,
+  PlusIcon,
+  TrashIcon
+} from '@heroicons/react/outline';
 import { useFieldArray } from 'react-hook-form';
 import { array, object, string } from 'zod';
 import { ExerciseInfoFragment } from '../../Exercises';
 import { Exercises_Exercise } from '../../Exercises/__generated__/index.generated';
-import { Card } from '../../shared/Card';
 import { FieldError, Form, useZodForm } from '../../shared/Form';
 import { Input } from '../../shared/Input';
 import { SelectExercise } from './SelectExercise';
@@ -17,6 +21,8 @@ import {
 import { ErrorMessage } from 'src/components/shared/ErrorMessage';
 import { useRouter } from 'next/router';
 import { Page } from 'src/components/shared/Page';
+import { Heading } from 'src/components/shared/Heading';
+import { Button } from 'src/components/shared/Button';
 
 export const query = gql`
   query CreateWorkoutQuery {
@@ -48,7 +54,7 @@ const CreateWorkoutSchema = object({
       value: string()
     })
   ).refine((data) => data.every((workoutExercise) => workoutExercise.value), {
-    message: 'Todos los selectores tiene que tener un valor seleccionado.'
+    message: 'Seleccione un valor en todos los campos.'
   })
 });
 
@@ -107,7 +113,18 @@ export function CreateWorkout() {
 
   return (
     <Page>
-      <Card title='Crear Rutina'>
+      <div className='h-full flex flex-col space-y-6'>
+        <div className='flex items-center space-x-4'>
+          <Button
+            className='rounded-full bg-brand-300 text-brand-700 p-2'
+            href='/'
+          >
+            <ChevronLeftIcon className='w-4 h-4' />
+          </Button>
+
+          <Heading>Crear rutina</Heading>
+        </div>
+
         <Form
           form={form}
           onSubmit={(input) =>
@@ -123,13 +140,13 @@ export function CreateWorkout() {
             })
           }
         >
-          <ErrorMessage title='Error de creación' error={error} />
+          <ErrorMessage title='Ocurrió un error...' error={error} />
 
           <Input {...form.register('name')} label='Nombre' />
 
-          <div className='flex flex-col space-y-4'>
+          <div>
             <label>
-              <div className='font-medium text-gray-800 mb-1'>Ejercicios</div>
+              <div>Ejercicios</div>
 
               {workoutExercises.fields.map((field, index) => (
                 <div key={field.id} className='flex items-center space-x-2'>
@@ -141,12 +158,12 @@ export function CreateWorkout() {
                   </div>
 
                   {workoutExercises.fields.length > 1 && (
-                    <button
-                      className='p-2.5 rounded-full hover:bg-brand-100'
+                    <Button
+                      className='p-2.5 rounded-full bg-brand-100 text-brand-300'
                       onClick={() => workoutExercises.remove(index)}
                     >
                       <TrashIcon className='w-4 h-4' />
-                    </button>
+                    </Button>
                   )}
                 </div>
               ))}
@@ -155,25 +172,26 @@ export function CreateWorkout() {
             </label>
           </div>
 
-          <button
-            type='button'
-            className='w-full border border-dashed border-brand-600 rounded-lg hover:bg-brand-50/40 hover:border-brand-500'
+          <Button
+            className='w-full border border-dashed border-brand-600 rounded-lg'
             onClick={() => {
               workoutExercises.append({ value: '', label: '' });
             }}
           >
             <div className='py-2 flex items-center justify-center space-x-2 text-brand-600'>
-              <PlusIcon className='w-4 h-4' />
-              <span>Añadir un ejercicio más</span>
+              <PlusIcon className='w-4 h-4 mr-1' />
+              <span>Añadir uno más</span>
             </div>
-          </button>
+          </Button>
+
+          <div className='flex-auto'></div>
 
           <SubmitButton>
-            <CheckIcon className='w-6 h-6 mr-1' />
+            <CheckIcon className='w-4 h-4 mr-1' />
             <span>Ingresar</span>
           </SubmitButton>
         </Form>
-      </Card>
+      </div>
     </Page>
   );
 }

@@ -17,6 +17,8 @@ input DoneExerciseInput {
 }
 
 input DoneExerciseSetInput {
+  distance: Int
+  kcal: Int
   lbs: Int
   mins: Int
   reps: Int
@@ -66,12 +68,11 @@ type User {
   exercises: [Exercise!]!
   id: ID!
   username: String!
-  workouts(limit: Int! = 8, offset: Int! = 0): [Workout!]!
+  workouts(limit: Int! = 5, offset: Int! = 0): [Workout!]!
   workoutsCount: Int!
 }
 
 type Workout {
-  bias: String!
   completedAt: DateTime
   createdAt: DateTime!
   id: ID!
@@ -84,12 +85,16 @@ type Workout {
 type WorkoutExercise {
   exercise: Exercise!
   id: ID!
+  index: Int!
   sets: [WorkoutSet!]!
+  setsCount: Int!
 }
 
 type WorkoutSet {
+  distance: Int!
   id: ID!
-  lbs: Int
-  mins: Int
-  reps: Int
+  kcal: Int!
+  lbs: Int!
+  mins: Int!
+  reps: Int!
 }

@@ -29,8 +29,9 @@ model Session {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   expiresAt DateTime @default(now())
-  user      User     @relation(fields: [userId], references: [id])
-  userId    String
+
+  user   User   @relation(fields: [userId], references: [id])
+  userId String
 }
 
 enum ExerciseType {
@@ -47,12 +48,14 @@ enum MuscleGroup {
 }
 
 model Exercise {
-  id               String            @id @default(uuid())
-  createdAt        DateTime          @default(now())
-  updatedAt        DateTime          @updatedAt
-  name             String
-  type             ExerciseType      @default(AEROBIC)
-  muscleGroup      MuscleGroup?
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  name        String
+  type        ExerciseType @default(AEROBIC)
+  muscleGroup MuscleGroup?
+
   user             User              @relation(fields: [userId], references: [id])
   userId           String
   workoutExercises WorkoutExercise[]
@@ -61,26 +64,34 @@ model Exercise {
 }
 
 model WorkoutSet {
-  id                String          @id @default(uuid())
-  createdAt         DateTime        @default(now())
-  updatedAt         DateTime        @updatedAt
-  mins              Int?
-  lbs               Int?
-  reps              Int?
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  mins     Int @default(0)
+  distance Int @default(0)
+  kcal     Int @default(0)
+
+  lbs  Int @default(0)
+  reps Int @default(0)
+
   workoutExercise   WorkoutExercise @relation(fields: [workoutExerciseId], references: [id])
   workoutExerciseId String
 }
 
 model WorkoutExercise {
-  id         String       @id @default(uuid())
-  createdAt  DateTime     @default(now())
-  updatedAt  DateTime     @updatedAt
-  sets       WorkoutSet[]
-  workout    Workout?     @relation(fields: [workoutId], references: [id])
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  index Int
+  sets  WorkoutSet[]
+
+  workout    Workout? @relation(fields: [workoutId], references: [id])
   workoutId  String?
-  exercise   Exercise     @relation(fields: [exerciseId], references: [id])
+  exercise   Exercise @relation(fields: [exerciseId], references: [id])
   exerciseId String
-  user       User         @relation(fields: [userId], references: [id])
+  user       User     @relation(fields: [userId], references: [id])
   userId     String
 }
 
@@ -90,13 +101,15 @@ enum WorkoutStatus {
 }
 
 model Workout {
-  id               String            @id @default(uuid())
-  createdAt        DateTime          @default(now())
-  updatedAt        DateTime          @updatedAt
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
   name             String
   status           WorkoutStatus     @default(DRAFTED)
   completedAt      DateTime?
   workoutExercises WorkoutExercise[]
-  user             User              @relation(fields: [userId], references: [id])
-  userId           String
+
+  user   User   @relation(fields: [userId], references: [id])
+  userId String
 }
