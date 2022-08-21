@@ -93,12 +93,11 @@ export function ViewWorkout() {
 
       {workout && (
         <div className='h-full flex flex-col space-y-4'>
-          <div className='flex items-center space-x-4'>
-            <Button
-              className='rounded-full bg-brand-300 text-brand-700 p-2'
-              href='/'
-            >
-              <ChevronLeftIcon className='w-4 h-4' />
+          <div className='flex items-center space-x-2'>
+            <Button href='/' className=''>
+              <div className='rounded-full bg-brand-300 text-brand-700 p-2 flex items-center justify-center'>
+                <ChevronLeftIcon className='w-4 h-4' />
+              </div>
             </Button>
 
             <Heading>{workout.name}</Heading>
