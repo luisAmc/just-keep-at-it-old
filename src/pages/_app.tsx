@@ -1,13 +1,15 @@
-import type { AppProps } from 'next/app';
-import { RelayEnvironmentProvider } from 'relay-hooks';
-import { relayEnvironment } from 'src/relayEnvironment';
+import { ApolloProvider } from '@apollo/client';
+import { AppProps } from 'next/app';
+import { useApollo } from 'src/utils/apollo';
 import '../styles.css';
 
 function MyApp({ Component, pageProps }: AppProps) {
+  const client = useApollo(pageProps.initialClientState);
+
   return (
-    <RelayEnvironmentProvider environment={relayEnvironment}>
+    <ApolloProvider client={client}>
       <Component {...pageProps} />
-    </RelayEnvironmentProvider>
+    </ApolloProvider>
   );
 }
 

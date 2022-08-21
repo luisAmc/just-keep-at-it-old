@@ -1,17 +1,15 @@
 import { GetServerSideProps } from 'next';
-import { useQuery } from 'relay-hooks';
 import { Exercises, query } from 'src/components/Exercises';
-import { ExercisesQuery } from 'src/components/Exercises/__generated__/ExercisesQuery.graphql';
+import { preloadQuery } from 'src/utils/apollo';
 import { authenticatedRoute } from 'src/utils/redirects';
 
-export const getServerSideProps: GetServerSideProps = authenticatedRoute;
-
-export default function ExercisesPage() {
-  const { data, isLoading } = useQuery<ExercisesQuery>(query);
-
-  if (isLoading || !data) {
-    return <p>Cargando...</p>;
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+  const auth = await authenticatedRoute(ctx);
+  if ('redirect' in auth) {
+    return auth;
   }
+  
+  return preloadQuery(ctx, { query });
+};
 
-  return <Exercises exercises={data.exercises} />;
-}
+export default Exercises;

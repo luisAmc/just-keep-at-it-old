@@ -1,25 +1,9 @@
 import { GetServerSideProps } from 'next';
-import { useQuery } from 'relay-hooks';
-import { GetItDone, query } from 'src/components/Workouts/GetItDone';
-import { GetItDoneQuery } from 'src/components/Workouts/GetItDone/__generated__/GetItDoneQuery.graphql';
-import { WorkoutShimmer } from 'src/components/Workouts/Workout';
+import { GetItDone } from 'src/components/Workouts/GetItDone';
+import { query } from 'src/components/Workouts/ViewWorkout';
+import { preloadQuery } from 'src/utils/apollo';
 
-export const getServerSideProps: GetServerSideProps = async (req) => {
-  return {
-    props: { id: req.query.workoutId }
-  };
-};
+export const getServerSideProps: GetServerSideProps = async (ctx) =>
+  preloadQuery(ctx, { query });
 
-interface Props {
-  id: string;
-}
-
-export default function GetItDonePage({ id }: Props) {
-  const { data, isLoading } = useQuery<GetItDoneQuery>(query, { id });
-
-  if (isLoading || !data) {
-    return <WorkoutShimmer />;
-  }
-
-  return <GetItDone workout={data.workout} />;
-}
+export default GetItDone;

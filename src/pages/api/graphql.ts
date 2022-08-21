@@ -1,8 +1,13 @@
+import { builder, Context, createGraphQLContext } from 'src/graphql/builder';
+import {
+  printSchema,
+  lexicographicSortSchema,
+  ExecutionResult,
+  GraphQLError
+} from 'graphql';
 import fs from 'fs';
 import { IncomingHttpHeaders } from 'http';
 import { NextApiHandler } from 'next';
-import { ExecutionResult, GraphQLError, printSchema } from 'graphql';
-import { builder, Context, createGraphQLContext } from 'src/graphql/builder';
 import { resolveSession } from 'src/utils/sessions';
 import {
   getGraphQLParameters,
@@ -14,7 +19,10 @@ import 'src/graphql/resolvers';
 
 const schema = builder.toSchema({});
 
-fs.writeFileSync('./schema.graphql', printSchema(schema));
+fs.writeFileSync(
+  './src/graphql/schema.graphql',
+  printSchema(lexicographicSortSchema(schema))
+);
 
 function getGraphQLCode(error: Error & { code?: number }) {
   return error.code ?? error.name === 'NotFoundError' ? 404 : null;
@@ -27,6 +35,10 @@ function formatResult(result: ExecutionResult) {
 
   if (result.errors) {
     formattedResult.errors = result.errors.map((error) => {
+      // NOTE: If you need to debug a specific server-side GraphQL error, you may want to uncomment this log:
+      // console.log(error.originalError);
+
+      // Return a generic error message instead
       return new GraphQLError(
         error.message,
         error.nodes,
@@ -60,7 +72,7 @@ const handler: NextApiHandler = async (req, res) => {
     return;
   }
 
-  const session = await resolveSession({ req, res });
+  const { session, ironSession } = await resolveSession(req, res);
 
   try {
     // Create a generic Request object that can be consumed by Graphql Helix's API
@@ -73,7 +85,6 @@ const handler: NextApiHandler = async (req, res) => {
 
     // Determine whether we should render GraphiQL instead of returning an API response
     if (shouldRenderGraphiQL(request)) {
-      res.setHeader('Content-Type', 'text/html');
       res.send(
         renderGraphiQL({
           endpoint: '/api/graphql',
@@ -91,7 +102,8 @@ const handler: NextApiHandler = async (req, res) => {
         variables,
         request,
         schema,
-        contextFactory: () => createGraphQLContext(req, res, session)
+        contextFactory: () =>
+          createGraphQLContext(req, res, ironSession, session)
       });
 
       // processRequest returns one of three types of results depending on how the server should respond
@@ -101,11 +113,11 @@ const handler: NextApiHandler = async (req, res) => {
       // The "sendResult" is a NodeJS-only shortcut for handling all possible types of Graphql responses,
       // See "Advanced Usage" below for more details and customizations available on that layer.
 
+      //   sendResult(result, res);
+
       if (result.type !== 'RESPONSE') {
         throw new Error(`Unsupported response type: "${result.type}"`);
       }
-
-      // sendResult(result, res);
 
       result.headers.forEach(({ name, value }) => res.setHeader(name, value));
       res.status(result.status);

@@ -5,7 +5,7 @@ export async function unauthenticatedRoute(
   ctx: GetServerSidePropsContext,
   redirect: string = '/'
 ) {
-  const session = await resolveSession(ctx);
+  const { session } = await resolveSession(ctx.req, ctx.res);
 
   if (session) {
     return {
@@ -25,7 +25,7 @@ export async function authenticatedRoute(
   ctx: GetServerSidePropsContext,
   redirect = '/auth/login'
 ): Promise<GetServerSidePropsResult<{}>> {
-  const session = await resolveSession(ctx);
+  const { session } = await resolveSession(ctx.req, ctx.res);
 
   if (!session) {
     return {
@@ -39,11 +39,6 @@ export async function authenticatedRoute(
   }
 
   return {
-    props: {
-      // user: {
-        // name: session.user.name,
-        // username: session.user.username
-      // }
-    }
+    props: {}
   };
 }

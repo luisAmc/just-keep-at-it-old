@@ -1,28 +1,31 @@
-import { FieldValues } from 'react-hook-form';
-import { graphql, useMutation } from 'relay-hooks';
+import { gql, useMutation } from '@apollo/client';
+import { CheckCircleIcon } from '@heroicons/react/solid';
 import { useAuthRedirect } from 'src/utils/useAuthRedirect';
-import { object, string } from 'yup';
-import { Container } from '../ui/Container';
-import { ErrorMessage } from '../ui/ErrorMessage';
-import { Form, useYupForm } from '../ui/Form';
-import { Input } from '../ui/Input';
-import { SubmitButton } from '../ui/SubmitButton';
-import { LoginFormMutation } from './__generated__/LoginFormMutation.graphql';
+import { object, string } from 'zod';
+import { Card } from '../shared/Card';
+import { ErrorMessage } from '../shared/ErrorMessage';
+import { Form, useZodForm } from '../shared/Form';
+import { Input } from '../shared/Input';
+import { Link } from '../shared/Link';
+import { SubmitButton } from '../shared/SubmitButton';
+import {
+  LoginMutation,
+  LoginMutationVariables
+} from './__generated__/LoginForm.generated';
 
-const loginSchema = object().shape({
-  username: string().trim().required('Ingrese el usuario.'),
-  password: string()
-    .trim()
-    .min(6, 'El tamaño mínimo de la conrtaseña es seis caracteres.')
-    .required('Ingrese la contraseña.')
+const LoginSchema = object({
+  username: string().min(1, 'Ingrese el nombre de usuario.'),
+  password: string().min(6, 'La cantidad miníma es de seis (6) caracteres.')
 });
 
 export function LoginForm() {
   const authRedirect = useAuthRedirect();
 
-  const [login, { error }] = useMutation<LoginFormMutation>(
-    graphql`
-      mutation LoginFormMutation($input: LoginInput!) {
+  const form = useZodForm({ schema: LoginSchema });
+
+  const [login, { error }] = useMutation<LoginMutation, LoginMutationVariables>(
+    gql`
+      mutation LoginMutation($input: LoginInput!) {
         login(input: $input) {
           id
         }
@@ -35,46 +38,42 @@ export function LoginForm() {
     }
   );
 
-  const form = useYupForm({ schema: loginSchema });
-
-  async function onSubmit(values: FieldValues) {
-    login({
-      variables: {
-        input: {
-          username: values.username,
-          password: values.password
-        }
-      }
-    });
-  }
-
   return (
-    <div className='h-screen'>
-      <Container title='Ingresar'>
-        <Form form={form} onSubmit={onSubmit}>
-          <ErrorMessage
-            title='Ocurrio un error al tratar de ingresar.'
-            // @ts-ignore
-            error={error?.source?.errors[0]}
-          />
+    <div className='mt-6'>
+      <Card title='Ingresar'>
+        <Form
+          form={form}
+          onSubmit={(input) =>
+            login({
+              variables: {
+                input: {
+                  username: input.username,
+                  password: input.password
+                }
+              }
+            })
+          }
+        >
+          <ErrorMessage title='Error de ingreso' error={error} />
 
-          <Input
-            {...form.register('username')}
-            autoFocus
-            label='Usuario'
-            autoComplete='username'
-          />
+          <Input {...form.register('username')} autoFocus label='Usuario' />
 
           <Input
             {...form.register('password')}
-            label='Contraseña'
-            autoComplete='password'
             type='password'
+            label='Contraseña'
           />
 
-          <SubmitButton>Iniciar Sesión</SubmitButton>
+          <SubmitButton>
+            <CheckCircleIcon className='w-6 h-6 mr-1' />
+            <span>Ingresar</span>
+          </SubmitButton>
         </Form>
-      </Container>
+
+        <div className='mt-4 flex justify-end'>
+          <Link href='/auth/signup'>Crear cuenta</Link>
+        </div>
+      </Card>
     </div>
   );
 }

@@ -1,4 +1,6 @@
 import './AuthResolvers';
 import './ExerciseResolvers';
-import './ImageUploadResolver';
-import './WorkoutResolver';
+import './UserResolvers';
+import './WorkoutExerciseResolvers';
+import './WorkoutResolvers';
+import './WorkoutSetResolvers';

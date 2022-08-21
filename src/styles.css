@@ -3,9 +3,13 @@
 @tailwind utilities;
 
 body {
-  @apply bg-sky-50/75 text-stone-900 font-sans antialiased;
+    @apply bg-white font-sans antialiased;
 }
 
-form {
-  margin-block-end: 0;
+@layer utilities {
+    input[type="number"]::-webkit-inner-spin-button,
+    input[type="number"]::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
 }

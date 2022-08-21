@@ -1,96 +1,81 @@
-import { ExerciseType, MuscleGroup } from '@prisma/client';
-import { useFragment } from 'react-relay';
-import { graphql } from 'relay-hooks';
-import { Button } from '../ui/Button';
-import { Container } from '../ui/Container';
-import { Pill } from '../ui/Pill';
-import { Table, TableDataCell, TableHeader, TableRow } from '../ui/Table';
-import { Exercises_exercise$key } from './__generated__/Exercises_exercise.graphql';
+import { gql, useQuery } from '@apollo/client';
+import { ChevronLeftIcon } from '@heroicons/react/outline';
+import { PlusCircleIcon } from '@heroicons/react/solid';
+import { Button } from '../shared/Button';
+import { Heading } from '../shared/Heading';
+import { Page } from '../shared/Page';
+import clsx from 'clsx';
+import { ExercisesQuery } from './__generated__/index.generated';
+import { getMuscleGroupColors } from 'src/utils/getMuscleGroupColors';
 
-export const query = graphql`
-  query ExercisesQuery {
-    exercises {
-      ...Exercises_exercise
-    }
+export const ExerciseInfoFragment = gql`
+  fragment Exercises_exercise on Exercise {
+    id
+    name
+    type
+    muscleGroup
   }
 `;
 
-interface Props {
-  exercises: Exercises_exercise$key;
-}
-
-export function Exercises({ exercises }: Props) {
-  const data = useFragment(
-    graphql`
-      fragment Exercises_exercise on Exercise @relay(plural: true) {
-        id
-        name
-        type
-        muscleGroup
+export const query = gql`
+  query ExercisesQuery {
+    viewer {
+      id
+      exercises {
+        ...Exercises_exercise
       }
-    `,
-    exercises
-  );
+    }
+  }
+  ${ExerciseInfoFragment}
+`;
+
+export function Exercises() {
+  const { data } = useQuery<ExercisesQuery>(query);
+
+  const exercises = data?.viewer?.exercises ?? [];
 
   return (
-    <Container
-      href='/'
-      size='2xl'
-      title='Ejercicios'
-      action={<Button href='/exercises/create'>Nuevo Ejercicio</Button>}
-    >
-      {data &&
-        (data.length === 0 ? (
-          <p>No se han creado ejercicios.</p>
-        ) : (
-          <Table
-            itemsPerPage={10}
-            values={data}
-            header={
-              <>
-                <TableHeader label='#' />
-                <TableHeader label='Nombre' />
-                <TableHeader label='Tipo' className='text-center' />
-                <TableHeader label='Grupo múscular' className='text-center' />
-              </>
-            }
+    <Page>
+      <div className='h-full flex flex-col space-y-4'>
+        <div className='flex items-center space-x-4'>
+          <Button
+            className='rounded-full bg-brand-300 text-brand-700 p-2'
+            href='/'
           >
-            {(exercise, i) => (
-              <TableRow key={exercise.id}>
-                <TableDataCell>{i + 1}</TableDataCell>
-                <TableDataCell>{exercise.name}</TableDataCell>
-                <TableDataCell className='text-center'>
-                  <Pill
-                    variant={exercise.type as ExerciseType}
-                    text={
-                      exercise.type === ExerciseType.AEROBIC
-                        ? 'Aerobico'
-                        : 'Fuerza'
-                    }
-                  />
-                </TableDataCell>
-                <TableDataCell className='text-center'>
-                  {exercise.muscleGroup ? (
-                    <Pill
-                      variant={exercise.muscleGroup as MuscleGroup}
-                      text={
-                        {
-                          [MuscleGroup.ARMS]: 'Brazos',
-                          [MuscleGroup.CHEST]: 'Pecho',
-                          [MuscleGroup.BACK]: 'Espalda',
-                          [MuscleGroup.LEGS]: 'Piernas',
-                          [MuscleGroup.SHOULDERS]: 'Hombros'
-                        }[(exercise.muscleGroup as MuscleGroup) ?? '']
-                      }
-                    />
-                  ) : (
-                    '-'
+            <ChevronLeftIcon className='w-4 h-4' />
+          </Button>
+
+          <Heading>Ejercicios</Heading>
+        </div>
+
+        <div className='bg-gray-50 flex flex-col px-3 divide-y divide-gray-200 rounded-lg'>
+          {exercises.length > 0 &&
+            exercises.map((exercise) => (
+              <div
+                key={exercise.id}
+                className='px-4 py-3 flex items-center justify-between'
+              >
+                <div>{exercise.name}</div>
+
+                <span
+                  className={clsx(
+                    'px-2 inline-flex text-xs font-medium rounded-full',
+                    getMuscleGroupColors(exercise.muscleGroup)
                   )}
-                </TableDataCell>
-              </TableRow>
-            )}
-          </Table>
-        ))}
-    </Container>
+                >
+                  {exercise.muscleGroup ?? 'AEROBIC'}
+                </span>
+              </div>
+            ))}
+        </div>
+
+        <div className='flex-auto'></div>
+
+        <Button href='/exercises/create'>
+          <PlusCircleIcon className='w-4 h-4 mr-1' />
+          <span>Añadir un ejercicio</span>
+        </Button>
+      </div>
+    </Page>
   );
 }

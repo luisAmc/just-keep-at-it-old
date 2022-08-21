@@ -1,18 +1,22 @@
-let colors = require('tailwindcss/colors');
+/** @type {import('tailwindcss').Config} */
+const colors = require('tailwindcss/colors');
 
-const brand = colors.amber;
+const brand = colors.rose;
 
 const aerobic = colors.teal;
 const strength = colors.pink;
 
-const arms = colors.cyan;
+const arms = colors.indigo;
 const chest = colors.blue;
 const back = colors.emerald;
-const legs = colors.red;
-const shoulders = colors.yellow;
+const legs = colors.amber;
+const shoulders = colors.orange;
 
 module.exports = {
-  content: ['./src/**/*.{js,ts,jsx,tsx}'],
+  content: [
+    './src/pages/**/*.{js,ts,jsx,tsx}',
+    './src/components/**/*.{js,ts,jsx,tsx}'
+  ],
   theme: {
     extend: {
       colors: {

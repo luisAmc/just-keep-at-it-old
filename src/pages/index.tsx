@@ -1,34 +1,8 @@
-import { GetServerSidePropsContext } from 'next';
-import { resolveSession } from 'src/utils/sessions';
+import { GetServerSideProps } from 'next';
+import { Home, query } from 'src/components/Home';
+import { preloadQuery } from 'src/utils/apollo';
 
-export async function getServerSideProps(ctx: GetServerSidePropsContext) {
-  const session = await resolveSession(ctx);
-  
+export const getServerSideProps: GetServerSideProps = async (ctx) =>
+  preloadQuery(ctx, { query });
 
-  if (session) {
-    return {
-      redirect: {
-        destination: '/home',
-        permanent: false
-      },
-      props: {
-        data: {
-          // me: {
-          //   name: session.user.name,
-          //   username: session.user.username
-          // }
-        }
-      }
-    };
-  }
-
-  return {
-    redirect: {
-      destination: '/auth/login',
-      permanent: false
-    },
-    props: {}
-  };
-}
-
-export { Home as default } from '../components/Home';
+export default Home;

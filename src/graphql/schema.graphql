@@ -1,0 +1,101 @@
+input CreateExerciseInput {
+  muscleGroup: String
+  name: String!
+  type: String!
+}
+
+input CreateWorkoutInput {
+  name: String!
+  workoutExercises: [ExerciseOptionInput!]!
+}
+
+scalar DateTime
+
+input DoneExerciseInput {
+  id: String!
+  sets: [DoneExerciseSetInput!]!
+}
+
+input DoneExerciseSetInput {
+  distance: Int
+  kcal: Int
+  lbs: Int
+  mins: Int
+  reps: Int
+}
+
+type Exercise {
+  id: ID!
+  muscleGroup: String
+  name: String!
+  type: String!
+}
+
+input ExerciseOptionInput {
+  id: String!
+}
+
+input GetWorkoutDoneInput {
+  workoutExercises: [DoneExerciseInput!]!
+  workoutId: String!
+}
+
+input LoginInput {
+  password: String!
+  username: String!
+}
+
+type Mutation {
+  createExercise(input: CreateExerciseInput!): Exercise!
+  createWorkout(input: CreateWorkoutInput!): Workout!
+  doItAgain(workoutToCopyId: ID!): Workout!
+  getWorkoutDone(input: GetWorkoutDoneInput!): Workout!
+  login(input: LoginInput!): User!
+  signUp(input: SignUpInput!): User!
+}
+
+type Query {
+  viewer: User
+  workout(id: ID!): Workout!
+  workouts: [Workout!]!
+}
+
+input SignUpInput {
+  password: String!
+  username: String!
+}
+
+type User {
+  exercises: [Exercise!]!
+  id: ID!
+  username: String!
+  workouts(limit: Int! = 5, offset: Int! = 0): [Workout!]!
+  workoutsCount: Int!
+}
+
+type Workout {
+  completedAt: DateTime
+  createdAt: DateTime!
+  id: ID!
+  name: String!
+  status: String!
+  workoutExercises: [WorkoutExercise!]!
+  workoutExercisesCount: Int!
+}
+
+type WorkoutExercise {
+  exercise: Exercise!
+  id: ID!
+  index: Int!
+  sets: [WorkoutSet!]!
+  setsCount: Int!
+}
+
+type WorkoutSet {
+  distance: Int!
+  id: ID!
+  kcal: Int!
+  lbs: Int!
+  mins: Int!
+  reps: Int!
+}

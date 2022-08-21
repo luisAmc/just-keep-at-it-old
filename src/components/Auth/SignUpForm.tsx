@@ -1,36 +1,35 @@
-import { FieldValues } from 'react-hook-form';
-import { graphql, useMutation } from 'relay-hooks';
+import { object, string } from 'zod';
+import { Form, useZodForm } from '../shared/Form';
+import { Input } from '../shared/Input';
+import { SubmitButton } from '../shared/SubmitButton';
+import { CheckCircleIcon } from '@heroicons/react/solid';
+import { gql, useMutation } from '@apollo/client';
+import {
+  SignUpFormMutation,
+  SignUpFormMutationVariables
+} from './__generated__/SignUpForm.generated';
 import { useAuthRedirect } from 'src/utils/useAuthRedirect';
-import { object, string } from 'yup';
-import { Container } from '../ui/Container';
-import { Form, useYupForm } from '../ui/Form';
-import { Input } from '../ui/Input';
-import { Message } from '../ui/Message';
-import { SubmitButton } from '../ui/SubmitButton';
-import { SignUpFormMutation } from './__generated__/SignUpFormMutation.graphql';
+import { Card } from '../shared/Card';
 
-const signUpSchema = object().shape({
-  username: string().trim().required('Ingrese el nombre de usuario.'),
-  password: string()
-    .trim()
-    .min(6, 'El tamaño mínimo de la conrtaseña es seis caracteres.')
-    .required('Ingrese la contraseña.'),
-  confirmPassword: string()
-    .trim()
-    .test(
-      'does-password-match',
-      'Las contraseñas no coinciden.',
-      function (value) {
-        return this.parent.password === value;
-      }
-    )
+const SignUpSchema = object({
+  username: string().min(1, 'Ingrese el nombre de usuario.'),
+  password: string().min(6, 'La cantidad miníma es de seis (6) caracteres.'),
+  confirmPassword: string().min(
+    6,
+    'La cantidad miníma es de seis (6) caracteres.'
+  )
+}).refine((data) => data.password === data.confirmPassword, {
+  message: 'Las contraseñas no coinciden.',
+  path: ['confirmPassword']
 });
 
 export function SignUpForm() {
   const authRedirect = useAuthRedirect();
 
-  const [signUp, signUpResult] = useMutation<SignUpFormMutation>(
-    graphql`
+  const form = useZodForm({ schema: SignUpSchema });
+
+  const [signUp] = useMutation<SignUpFormMutation, SignUpFormMutationVariables>(
+    gql`
       mutation SignUpFormMutation($input: SignUpInput!) {
         signUp(input: $input) {
           id
@@ -44,52 +43,42 @@ export function SignUpForm() {
     }
   );
 
-  const form = useYupForm({ schema: signUpSchema });
-
-  async function onSubmit(values: FieldValues) {
-    signUp({
-      variables: {
-        input: {
-          username: values.username,
-          password: values.password
-        }
-      }
-    });
-  }
-
   return (
-    <div className='h-screen'>
-      <Container title='Crear Usuario'>
-        <Form form={form} onSubmit={onSubmit}>
-          <Message
-            type='error'
-            title='Ocurrio un error al tratar de crear el usuario.'
-            text={signUpResult.error?.message}
-          />
-
-          <Input
-            {...form.register('username')}
-            label='Usuario'
-            autoComplete='username'
-          />
+    <div className='mt-6'>
+      <Card title='Crear Usuario'>
+        <Form
+          form={form}
+          onSubmit={(input) =>
+            signUp({
+              variables: {
+                input: {
+                  username: input.username,
+                  password: input.password
+                }
+              }
+            })
+          }
+        >
+          <Input {...form.register('username')} label='Usuario' />
 
           <Input
             {...form.register('password')}
-            label='Contraseña'
-            autoComplete='password'
             type='password'
+            label='Contraseña'
           />
 
           <Input
             {...form.register('confirmPassword')}
-            label='Confirmar Contraseña'
-            autoComplete='confirmPassword'
             type='password'
+            label='Confirmar contraseña'
           />
 
-          <SubmitButton>Crear Usuario</SubmitButton>
+          <SubmitButton>
+            <CheckCircleIcon className='w-6 h-6 mr-1' />
+            <span>Crear</span>
+          </SubmitButton>
         </Form>
-      </Container>
+      </Card>
     </div>
   );
 }

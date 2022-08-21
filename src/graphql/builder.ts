@@ -1,29 +1,27 @@
-import SchemaBuilder from '@giraphql/core';
-import ScopeAuthPlugin from '@giraphql/plugin-scope-auth';
-import RelayPlugin from '@giraphql/plugin-relay';
-import PrismaPlugin from '@giraphql/plugin-prisma';
-import type PrismaTypes from '@giraphql/plugin-prisma/generated';
-import SimpleObjectsPlugin from '@giraphql/plugin-simple-objects';
-import { db } from 'src/utils/prisma';
-import { IncomingMessage, OutgoingMessage } from 'http';
 import { Session } from '@prisma/client';
+import { IncomingMessage, OutgoingMessage } from 'http';
+import SchemaBuilder from '@pothos/core';
+import PrismaPlugin from '@pothos/plugin-prisma';
+import ScopeAuthPlugin from '@pothos/plugin-scope-auth';
+import SimpleObjectsPlugin from '@pothos/plugin-simple-objects';
+import type PrismaTypes from '@pothos/plugin-prisma/generated';
+import { db } from 'src/utils/prisma';
+import { IronSession } from 'iron-session';
 
 export interface Context {
   req: IncomingMessage;
   res: OutgoingMessage;
+  ironSession: IronSession;
   session?: Session | null;
 }
 
 export function createGraphQLContext(
   req: IncomingMessage,
   res: OutgoingMessage,
+  ironSession: IronSession,
   session?: Session | null
 ): Context {
-  return {
-    req,
-    res,
-    session
-  };
+  return { req, res, ironSession, session };
 }
 
 export const builder = new SchemaBuilder<{
@@ -36,39 +34,33 @@ export const builder = new SchemaBuilder<{
     unauthenticated: boolean;
   };
   Scalars: {
-    ID: { Input: string; Output: string | number };
+    ID: { Input: string; Output: string };
     DateTime: { Input: Date; Output: Date };
   };
 }>({
-  plugins: [RelayPlugin, PrismaPlugin, ScopeAuthPlugin, SimpleObjectsPlugin],
+  plugins: [PrismaPlugin, ScopeAuthPlugin, SimpleObjectsPlugin],
   authScopes: async ({ session }) => ({
     public: true,
     user: !!session,
     unauthenticated: !session
   }),
-  relayOptions: {
-    clientMutationId: 'omit',
-    cursorType: 'String'
-  },
   prisma: {
     client: db
   },
   defaultInputFieldRequiredness: true
 });
 
-// This initializes the query and mutation types so that we can add fields to them dynamically:
-builder.queryType({
-  authScopes: { user: true }
-});
+builder.queryType({ authScopes: { user: true } });
 
-builder.mutationType({
-  authScopes: { user: true }
-});
+builder.mutationType({ authScopes: { user: true } });
 
-// Provide the custom DateTime scalar that allows dates to be transmitted over GraphQL:
 builder.scalarType('DateTime', {
   serialize: (date) => date.toISOString(),
-  parseValue: (date: any) => {
+  parseValue: (date) => {
+    if (typeof date !== 'string') {
+      throw new Error('Unknown date value.');
+    }
+
     return new Date(date);
   }
 });

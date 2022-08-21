@@ -1,28 +1,9 @@
 import { GetServerSideProps } from 'next';
-import {
-  Workout,
-  WorkoutShimmer,
-  query
-} from 'src/components/Workouts/Workout';
-import { useQuery } from 'relay-hooks';
-import { WorkoutIdQuery } from 'src/components/Workouts/__generated__/WorkoutIdQuery.graphql';
+import { ViewWorkout } from 'src/components/Workouts/ViewWorkout';
+import { query } from 'src/components/Workouts/ViewWorkout';
+import { preloadQuery } from 'src/utils/apollo';
 
-export const getServerSideProps: GetServerSideProps = async (req) => {
-  return {
-    props: { id: req.query.workoutId }
-  };
-};
+export const getServerSideProps: GetServerSideProps = async (ctx) =>
+  preloadQuery(ctx, { query });
 
-interface Props {
-  id: string;
-}
-
-export default function WorkoutPage({ id }: Props) {
-  const { data, isLoading } = useQuery<WorkoutIdQuery>(query, { id });
-
-  if (isLoading || !data) {
-    return <WorkoutShimmer />;
-  }
-
-  return <Workout workout={data.workout} />;
-}
+export default ViewWorkout;
