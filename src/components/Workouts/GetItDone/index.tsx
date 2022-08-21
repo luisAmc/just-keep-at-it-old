@@ -56,8 +56,8 @@ export function GetItDone() {
       }
     `,
     {
-      onCompleted(data) {
-        router.push(`/workouts/${data.getWorkoutDone.id}`);
+      onCompleted() {
+        router.push('/');
       }
     }
   );

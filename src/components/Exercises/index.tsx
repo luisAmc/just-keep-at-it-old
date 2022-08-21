@@ -1,7 +1,12 @@
 import { gql, useQuery } from '@apollo/client';
-import { PlusIcon } from '@heroicons/react/outline';
+import { ChevronLeftIcon, PlusIcon } from '@heroicons/react/outline';
+import { PlusCircleIcon } from '@heroicons/react/solid';
+import { MuscleGroup } from '@prisma/client';
+import clsx from 'clsx';
+import { useMuscleGroupColors } from 'src/utils/useMuscleGroupColors';
 import { Button } from '../shared/Button';
-import { Card } from '../shared/Card';
+import { Heading } from '../shared/Heading';
+import { Page } from '../shared/Page';
 import { ExercisesQuery } from './__generated__/index.generated';
 
 export const ExerciseInfoFragment = gql`
@@ -28,28 +33,47 @@ export const query = gql`
 export function Exercises() {
   const { data } = useQuery<ExercisesQuery>(query);
 
-  const exercises = data?.me?.exercises ?? [];
+  const exercises = data?.viewer?.exercises ?? [];
 
   return (
-    <div className='mt-6'>
-      <Card
-        href='/'
-        title='Ejercicios'
-        action={
-          <Button href='/exercises/create'>
-            <PlusIcon className='w-4 h-4 mr-1' />
-            <span>Crear Ejercicio</span>
+    <Page>
+      <div className='h-full flex flex-col space-y-4'>
+        <div className='flex items-center space-x-4'>
+          <Button
+            className='rounded-full bg-brand-300 text-brand-700 p-2'
+            href='/'
+          >
+            <ChevronLeftIcon className='w-4 h-4' />
           </Button>
-        }
-      >
-        {exercises.length > 0 ? (
-          exercises.map((exercise) => (
-            <div key={exercise.id}>{exercise.name}</div>
-          ))
-        ) : (
-          <div>No se han creado ejercicios.</div>
-        )}
-      </Card>
-    </div>
+
+          <Heading>Ejercicios</Heading>
+        </div>
+
+        <div className='bg-gray-50 flex flex-col px-3 divide-y divide-gray-200 rounded-lg'>
+          {exercises.length > 0 &&
+            exercises.map((exercise) => (
+              <div className='px-4 py-3 flex items-center justify-between'>
+                <div>{exercise.name}</div>
+
+                <span
+                  className={clsx(
+                    'px-2 inline-flex text-xs font-medium rounded-full',
+                    useMuscleGroupColors(exercise.muscleGroup)
+                  )}
+                >
+                  {exercise.muscleGroup ?? 'AEROBIC'}
+                </span>
+              </div>
+            ))}
+        </div>
+
+        <div className='flex-auto'></div>
+
+        <Button href='/exercises/create'>
+          <PlusCircleIcon className='w-4 h-4 mr-1' />
+          <span>Añadir un ejercicio</span>
+        </Button>
+      </div>
+    </Page>
   );
 }

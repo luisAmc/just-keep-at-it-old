@@ -42,7 +42,7 @@ export function MuscleGroupSelector({ label, options, name }: Props) {
       <div className='font-medium text-gray-800 mb-1'>{label}</div>
 
       <RadioGroup value={value} onChange={onChange}>
-        <div className='mt-4 flex items-center justify-evenly space-x-3'>
+        <div className='mt-4 flex justify-evenly'>
           {options.map((option) => (
             <RadioGroup.Option
               key={option.value}
@@ -52,13 +52,13 @@ export function MuscleGroupSelector({ label, options, name }: Props) {
                   useMuscleGroupColors(option.value),
                   active && checked ? 'ring ring-offset-1' : '',
                   !active && checked ? 'ring-2' : '',
-                  '-m-0.5 relative rounded-lg flex items-center justify-center cursor-pointer focus:outline-none'
+                  'm-0.5 relative rounded-lg flex items-center justify-center cursor-pointer focus:outline-none'
                 )
               }
             >
               <RadioGroup.Label
                 as='span'
-                className='font-medium text-sm px-2.5 py-1.5'
+                className='font-medium text-sm px-2 py-1.5'
               >
                 {option.label}
               </RadioGroup.Label>
