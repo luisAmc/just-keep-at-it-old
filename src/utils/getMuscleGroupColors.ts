@@ -1,6 +1,7 @@
 import { MuscleGroup } from "@prisma/client";
 
-export function useMuscleGroupColors(muscleGroup?: string | null) {
+export function getMuscleGroupColors
+(muscleGroup?: string | null) {
   switch (muscleGroup) {
     case MuscleGroup.ARMS:
       return 'bg-arms-200 ring-arms-400 text-arms-900';

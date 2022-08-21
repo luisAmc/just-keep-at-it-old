@@ -4,7 +4,8 @@ import { RadioGroup } from '@headlessui/react';
 import { useController } from 'react-hook-form';
 import clsx from 'clsx';
 
-function useMuscleGroupColors(muscleGroup: string) {
+function getMuscleGroupColors
+(muscleGroup: string) {
   switch (muscleGroup) {
     case MuscleGroup.ARMS:
       return 'bg-arms-200 ring-arms-400 text-arms-900';
@@ -49,7 +50,8 @@ export function MuscleGroupSelector({ label, options, name }: Props) {
               value={option.value}
               className={({ active, checked }) =>
                 clsx(
-                  useMuscleGroupColors(option.value),
+                  getMuscleGroupColors
+(option.value),
                   active && checked ? 'ring ring-offset-1' : '',
                   !active && checked ? 'ring-2' : '',
                   'm-0.5 relative rounded-lg flex items-center justify-center cursor-pointer focus:outline-none'

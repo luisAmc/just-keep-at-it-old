@@ -3,10 +3,9 @@ import { Combobox, Transition } from '@headlessui/react';
 import { FieldError } from '../../shared/Form';
 import { Fragment, useState } from 'react';
 import { useController } from 'react-hook-form';
-import clsx from 'clsx';
-import { MuscleGroup } from '@prisma/client';
 import { CheckCircleIcon } from '@heroicons/react/solid';
-import { useMuscleGroupColors } from 'src/utils/useMuscleGroupColors';
+import { getMuscleGroupColors } from 'src/utils/getMuscleGroupColors';
+import clsx from 'clsx';
 
 interface Props {
   name: string;
@@ -96,7 +95,7 @@ export function SelectExercise({ label, name, options }: Props) {
                         <span
                           className={clsx(
                             'px-2 inline-flex text-xs font-medium rounded-full',
-                            useMuscleGroupColors(option.muscleGroup)
+                            getMuscleGroupColors(option.muscleGroup)
                           )}
                         >
                           {option.muscleGroup ?? 'AEROBIC'}

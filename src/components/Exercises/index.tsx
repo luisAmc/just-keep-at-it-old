@@ -1,13 +1,12 @@
 import { gql, useQuery } from '@apollo/client';
-import { ChevronLeftIcon, PlusIcon } from '@heroicons/react/outline';
+import { ChevronLeftIcon } from '@heroicons/react/outline';
 import { PlusCircleIcon } from '@heroicons/react/solid';
-import { MuscleGroup } from '@prisma/client';
-import clsx from 'clsx';
-import { useMuscleGroupColors } from 'src/utils/useMuscleGroupColors';
 import { Button } from '../shared/Button';
 import { Heading } from '../shared/Heading';
 import { Page } from '../shared/Page';
+import clsx from 'clsx';
 import { ExercisesQuery } from './__generated__/index.generated';
+import { getMuscleGroupColors } from 'src/utils/getMuscleGroupColors';
 
 export const ExerciseInfoFragment = gql`
   fragment Exercises_exercise on Exercise {
@@ -52,13 +51,16 @@ export function Exercises() {
         <div className='bg-gray-50 flex flex-col px-3 divide-y divide-gray-200 rounded-lg'>
           {exercises.length > 0 &&
             exercises.map((exercise) => (
-              <div className='px-4 py-3 flex items-center justify-between'>
+              <div
+                key={exercise.id}
+                className='px-4 py-3 flex items-center justify-between'
+              >
                 <div>{exercise.name}</div>
 
                 <span
                   className={clsx(
                     'px-2 inline-flex text-xs font-medium rounded-full',
-                    useMuscleGroupColors(exercise.muscleGroup)
+                    getMuscleGroupColors(exercise.muscleGroup)
                   )}
                 >
                   {exercise.muscleGroup ?? 'AEROBIC'}
