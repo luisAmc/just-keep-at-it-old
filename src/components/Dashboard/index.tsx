@@ -25,18 +25,6 @@ const query = gql`
 `;
 
 export function Dashboard() {
-  // const router = useRouter();
-
-  // const workoutSlideOver = useSlideOver();
-
-  // useEffect(() => {
-  //   if (router.query.workoutId) {
-  //     workoutSlideOver.open();
-  //   } else {
-  //     workoutSlideOver.close();
-  //   }
-  // }, [router.query.workoutId, workoutSlideOver]);
-
   const { data, loading, fetchMore } = useQuery<
     DashboardQuery,
     DashboardQueryVariables
@@ -86,8 +74,6 @@ export function Dashboard() {
             </Button>
           )}
       </div>
-
-      {/* <ViewWorkout {...workoutSlideOver.props} /> */}
     </Page>
   );
 }

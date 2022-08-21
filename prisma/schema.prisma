@@ -75,8 +75,8 @@ model WorkoutSet {
   lbs  Int @default(0)
   reps Int @default(0)
 
-  workoutExercise   WorkoutExercise @relation(fields: [workoutExerciseId], references: [id])
-  workoutExerciseId String
+  workoutExercise   WorkoutExercise? @relation(fields: [workoutExerciseId], references: [id])
+  workoutExerciseId String?
 }
 
 model WorkoutExercise {

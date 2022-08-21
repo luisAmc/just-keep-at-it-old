@@ -2,7 +2,7 @@ import { CheckIcon, ChevronLeftIcon } from '@heroicons/react/outline';
 import { Form, useZodForm } from 'src/components/shared/Form';
 import { gql, useMutation, useQuery } from '@apollo/client';
 import { Heading } from 'src/components/shared/Heading';
-import { object, array, number, record, z } from 'zod';
+import { object, array, record, z, string } from 'zod';
 import { Page } from 'src/components/shared/Page';
 import { query } from '../ViewWorkout';
 import { SubmitButton } from 'src/components/shared/SubmitButton';
@@ -15,14 +15,20 @@ import {
 import { Button } from 'src/components/shared/Button';
 import { ExerciseSetInput } from './ExerciseSetInput';
 
+const numberShape = string().regex(/^\d*$/).transform(Number);
+
+const SetSchema = object({
+  mins: numberShape.optional().nullable(),
+  distance: numberShape.optional().nullable(),
+  kcal: numberShape.optional().nullable(),
+  lbs: numberShape.optional().nullable(),
+  reps: numberShape.optional().nullable()
+});
+
 const GetItDoneSchema = object({
   workoutExercises: record(
     object({
-      sets: array(
-        object({
-          mins: number()
-        })
-      )
+      sets: array(SetSchema)
     })
   )
 });
@@ -65,7 +71,7 @@ export function GetItDone() {
     )) {
       if (workoutExerciseValue.sets.length > 0) {
         const nonEmptySets = workoutExerciseValue.sets.filter(
-          (set) => set.mins > 0
+          (set) => (set.mins ?? 0) > 0 || (set.lbs ?? 0) > 0
         );
 
         if (nonEmptySets.length > 0) {
@@ -79,7 +85,7 @@ export function GetItDone() {
         variables: {
           input: {
             workoutId: workoutId,
-            workoutExercies: workoutExercises
+            workoutExercises: workoutExercises
           }
         }
       });
@@ -110,6 +116,7 @@ export function GetItDone() {
               {workout.workoutExercises.map((workoutExercise) => (
                 <ExerciseSetInput
                   key={workoutExercise.id}
+                  workoutExerciseId={workoutExercise.id}
                   exercise={workoutExercise.exercise}
                   isDisabled={false}
                 />

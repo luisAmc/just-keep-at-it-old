@@ -50,7 +50,7 @@ export type ExerciseOptionInput = {
 };
 
 export type GetWorkoutDoneInput = {
-  workoutExercies: Array<DoneExerciseInput>;
+  workoutExercises: Array<DoneExerciseInput>;
   workoutId: Scalars['String'];
 };
 

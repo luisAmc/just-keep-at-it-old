@@ -36,7 +36,7 @@ input ExerciseOptionInput {
 }
 
 input GetWorkoutDoneInput {
-  workoutExercies: [DoneExerciseInput!]!
+  workoutExercises: [DoneExerciseInput!]!
   workoutId: String!
 }
 

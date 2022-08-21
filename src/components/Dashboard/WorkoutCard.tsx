@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { formatDate } from 'src/utils/transforms';
-import { ViewWorkout_Workout } from '../Workouts/__generated__/ViewWorkout.generated';
+import { ViewWorkout_Workout } from '../Workouts/ViewWorkout/__generated__/index.generated';
 
 interface WorkoutCardProps {
   workout: ViewWorkout_Workout;
@@ -20,7 +20,11 @@ export function WorkoutCard({ workout }: WorkoutCardProps) {
 
         <div className='text-sm'>
           {workout.workoutExercises.map((workoutExercise) => (
-            <div key={workoutExercise.id}>{workoutExercise.exercise.name}</div>
+            <div key={workoutExercise.id}>
+              {workoutExercise.setsCount > 0 &&
+                `${workoutExercise.setsCount}x `}
+              {workoutExercise.exercise.name}
+            </div>
           ))}
         </div>
 

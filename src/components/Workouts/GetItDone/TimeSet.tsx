@@ -1,5 +1,5 @@
 import { TrashIcon } from '@heroicons/react/outline';
-import { useFormContext, useWatch } from 'react-hook-form';
+import { useFormContext } from 'react-hook-form';
 import { Button } from 'src/components/shared/Button';
 import { NumberInput } from 'src/components/shared/NumberInput';
 
@@ -11,7 +11,7 @@ interface Props {
 }
 
 export function TimeSet({ exerciseId, setId, isDisabled, remove }: Props) {
-  const { control, setValue } = useFormContext();
+  const { control } = useFormContext();
 
   const SET_ID = `workoutExercises.${exerciseId}.sets.${setId}`;
 

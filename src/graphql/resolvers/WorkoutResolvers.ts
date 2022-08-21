@@ -95,7 +95,7 @@ builder.queryField('workout', (t) =>
 const GetWorkoutDoneInput = builder.inputType('GetWorkoutDoneInput', {
   fields: (t) => ({
     workoutId: t.string(),
-    workoutExercies: t.field({
+    workoutExercises: t.field({
       type: [
         builder.inputType('DoneExerciseInput', {
           fields: (t) => ({
@@ -128,7 +128,7 @@ builder.mutationField('getWorkoutDone', (t) =>
     },
     resolve: async (_query, _parent, { input }, { session }) => {
       const workout = await db.$transaction(async (db) => {
-        for (const exercise of input.workoutExercies) {
+        for (const exercise of input.workoutExercises) {
           for (const set of exercise.sets) {
             await db.workoutSet.create({
               data: {

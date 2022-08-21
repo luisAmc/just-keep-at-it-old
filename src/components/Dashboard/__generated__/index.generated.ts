@@ -6,4 +6,4 @@ export type DashboardQueryVariables = Types.Exact<{
 }>;
 
 
-export type DashboardQuery = { __typename?: 'Query', viewer?: { __typename?: 'User', id: string, workoutsCount: number, workouts: Array<{ __typename?: 'Workout', id: string, name: string, status: string, completedAt?: string | null, createdAt: string, workoutExercisesCount: number, workoutExercises: Array<{ __typename?: 'WorkoutExercise', id: string, exercise: { __typename?: 'Exercise', id: string, name: string } }> }> } | null };
+export type DashboardQuery = { __typename?: 'Query', viewer?: { __typename?: 'User', id: string, workoutsCount: number, workouts: Array<{ __typename?: 'Workout', id: string, name: string, status: string, completedAt?: string | null, createdAt: string, workoutExercisesCount: number, workoutExercises: Array<{ __typename?: 'WorkoutExercise', id: string, setsCount: number, exercise: { __typename?: 'Exercise', id: string, name: string } }> }> } | null };

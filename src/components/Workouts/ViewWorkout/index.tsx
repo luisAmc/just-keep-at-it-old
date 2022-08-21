@@ -23,6 +23,7 @@ export const WorkoutInfoFragment = gql`
         id
         name
       }
+      setsCount
     }
   }
 `;
@@ -91,7 +92,7 @@ export function ViewWorkout() {
                 )}
               >
                 <div className='flex items-center justify-between'>
-                  <span>{workoutExercise.exercise.name}</span>
+                  <h2 className='font-medium'>{workoutExercise.exercise.name}</h2>
 
                   {isDone && (
                     <span className='font-bold text-xs'>
@@ -109,7 +110,11 @@ export function ViewWorkout() {
                       >
                         {workoutExercise.exercise.type ===
                         ExerciseType.AEROBIC ? (
-                          <AerobicSet mins={set.mins} />
+                          <AerobicSet
+                            mins={set.mins}
+                            distance={set.distance}
+                            kcal={set.kcal}
+                          />
                         ) : (
                           <StrengthSet lbs={set.lbs} reps={set.reps} />
                         )}
@@ -139,13 +144,27 @@ export function ViewWorkout() {
 
 interface AerobicSetProps {
   mins?: number | null;
+  distance?: number | null;
+  kcal?: number | null;
 }
 
-function AerobicSet({ mins }: AerobicSetProps) {
+function AerobicSet({ mins, distance, kcal }: AerobicSetProps) {
   return (
-    <div>
-      <span className='text-3xl font-medium'>{mins}</span>
-      <span className='ml-1'>mins</span>
+    <div className='grid grid-cols-3 gap-6'>
+      <span>
+        <span className='text-2xl font-medium'>{mins}</span>
+        <span className='ml-1'>mins</span>
+      </span>
+
+      <span>
+        <span className='text-2xl font-medium'>{distance}</span>
+        <span className='ml-1'>dist</span>
+      </span>
+
+      <span>
+        <span className='text-2xl font-medium'>{kcal}</span>
+        <span className='ml-1'>kcal</span>
+      </span>
     </div>
   );
 }
@@ -157,16 +176,14 @@ interface StrengthSetProps {
 
 function StrengthSet({ lbs, reps }: StrengthSetProps) {
   return (
-    <div className='flex items-center space-x-3'>
+    <div className='grid grid-cols-2 gap-6'>
       <span>
-        <span className='text-3xl font-medium'>{lbs}</span>
+        <span className='text-2xl font-medium'>{lbs}</span>
         <span className='ml-1'>lbs</span>
       </span>
 
-      <span>&#124;</span>
-
       <span>
-        <span className='text-3xl font-medium'>{reps}</span>
+        <span className='text-2xl font-medium'>{reps}</span>
         <span className='ml-1'>reps</span>
       </span>
     </div>

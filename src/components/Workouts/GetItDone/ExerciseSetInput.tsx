@@ -7,11 +7,13 @@ import { RepetitionSet } from './RepetitionSet';
 import { TimeSet } from './TimeSet';
 
 interface ExerciseSetInputProps {
+  workoutExerciseId: string;
   exercise: WorkoutQuery['workout']['workoutExercises'][0]['exercise'];
   isDisabled: boolean;
 }
 
 export function ExerciseSetInput({
+  workoutExerciseId,
   exercise,
   isDisabled
 }: ExerciseSetInputProps) {
@@ -19,7 +21,7 @@ export function ExerciseSetInput({
 
   const sets = useFieldArray({
     control,
-    name: `workoutExercises.${exercise.id}.sets`
+    name: `workoutExercises.${workoutExerciseId}.sets`
   });
 
   const isAerobic = exercise.type === ExerciseType.AEROBIC;
@@ -40,7 +42,7 @@ export function ExerciseSetInput({
                 <TimeSet
                   key={field.id}
                   setId={index}
-                  exerciseId={exercise.id}
+                  exerciseId={workoutExerciseId}
                   isDisabled={isDisabled}
                   remove={() => sets.remove(index)}
                 />
@@ -52,7 +54,7 @@ export function ExerciseSetInput({
                 <RepetitionSet
                   key={field.id}
                   setId={index}
-                  exerciseId={exercise.id}
+                  exerciseId={workoutExerciseId}
                   isDisabled={isDisabled}
                   remove={() => sets.remove(index)}
                 />
@@ -65,7 +67,15 @@ export function ExerciseSetInput({
             <button
               type='button'
               className='flex flex-col items-center justify-center py-5 text-gray-500 border-2 border-dashed border-gray-300 group hover:border-gray-400 rounded-lg'
-              onClick={() => sets.append({ reps: 0, lbs: 0 })}
+              onClick={() =>
+                sets.append({
+                  mins: '',
+                  distance: '',
+                  kcal: '',
+                  reps: '',
+                  lbs: ''
+                })
+              }
             >
               <SparklesIcon className='w-6 h-6 group-hover:text-gray-600' />
               <span className='font-semibold group-hover:text-gray-600'>
@@ -75,7 +85,15 @@ export function ExerciseSetInput({
           ) : (
             <Button
               variant='secondary'
-              onClick={() => sets.append({ reps: 0, lbs: 0 })}
+              onClick={() =>
+                sets.append({
+                  mins: '',
+                  distance: '',
+                  kcal: '',
+                  reps: '',
+                  lbs: ''
+                })
+              }
             >
               <PlusIcon className='w-4 h-4 mr-1' />
               <span>Añadir set</span>
