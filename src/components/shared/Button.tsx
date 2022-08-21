@@ -17,8 +17,8 @@ export function Button({
   return (
     <ButtonOrLink
       className={clsx(
-        'flex items-center justify-center px-4 py-2 font-medium focus:outline-none focus:ring-2 focus:ring-offset-white focus:ring-offset-1 disabled:opacity-60 disabled:pointer-events-none hover:bg-opacity-80',
-        rounded ? 'rounded-xl py-2' : 'rounded',
+        'appearance-none flex items-center justify-center px-4 py-2 font-medium focus:outline-none focus:ring-2 focus:ring-offset-white focus:ring-offset-1 disabled:opacity-60 disabled:pointer-events-none hover:bg-opacity-80',
+        rounded ? 'rounded-full' : 'rounded',
         floating && ' shadow-xl',
         {
           'bg-brand-500 text-white': variant === 'primary',
