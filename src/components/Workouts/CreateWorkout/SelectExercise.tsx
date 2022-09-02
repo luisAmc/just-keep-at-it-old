@@ -61,7 +61,7 @@ export function SelectExercise({ label, name, options }: Props) {
             leaveTo='opacity-0'
             afterLeave={() => setQuery('')}
           >
-            <Combobox.Options className='absolute z-10 mt-1 w-full bg-white shadow-lg max-h-60 rounded-md py-1 text-base ring-1 ring-black ring-opacity-5 overflow-auto focus:outline-none sm:text-sm'>
+            <Combobox.Options className='absolute z-20 mt-1 w-full bg-white shadow-lg max-h-60 rounded-md py-1 text-base ring-1 ring-black ring-opacity-5 overflow-auto focus:outline-none sm:text-sm'>
               {filteredOptions.length === 0 && query !== '' ? (
                 <div className='relative cursor-default select-none py-2 px-4 text-gray-700'>
                   No se encontró un ejercicio.

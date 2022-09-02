@@ -8,7 +8,7 @@ function MyApp({ Component, pageProps }: AppProps) {
 
   return (
     <ApolloProvider client={client}>
-      <div className='absolute inset-0'>
+      <div className=''>
         <Component {...pageProps} />
       </div>
     </ApolloProvider>

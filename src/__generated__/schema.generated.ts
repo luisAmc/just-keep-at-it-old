@@ -13,6 +13,11 @@ export type Scalars = {
   DateTime: string;
 };
 
+export type AddExerciseToWorkoutInput = {
+  exerciseId: Scalars['String'];
+  workoutId: Scalars['String'];
+};
+
 export type CreateExerciseInput = {
   muscleGroup?: InputMaybe<Scalars['String']>;
   name: Scalars['String'];
@@ -61,12 +66,18 @@ export type LoginInput = {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  addExerciseToWorkout: Workout;
   createExercise: Exercise;
   createWorkout: Workout;
   doItAgain: Workout;
   getWorkoutDone: Workout;
   login: User;
   signUp: User;
+};
+
+
+export type MutationAddExerciseToWorkoutArgs = {
+  input: AddExerciseToWorkoutInput;
 };
 
 

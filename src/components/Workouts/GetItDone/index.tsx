@@ -15,6 +15,8 @@ import {
 import { Button } from 'src/components/shared/Button';
 import { ExerciseSetInput } from './ExerciseSetInput';
 import { CheckCircleIcon } from '@heroicons/react/solid';
+import { useModal } from 'src/components/shared/Modal';
+import { AddExerciseModal } from './AddExerciseModal';
 
 const numberShape = string().regex(/^\d*$/).transform(Number);
 
@@ -39,7 +41,7 @@ export function GetItDone() {
 
   const workoutId = router.query.workoutId as string;
 
-  const { data, loading } = useQuery<WorkoutQuery>(query, {
+  const { data, loading, refetch } = useQuery<WorkoutQuery>(query, {
     variables: { id: workoutId },
     skip: !router.isReady
   });
@@ -63,6 +65,7 @@ export function GetItDone() {
   );
 
   const form = useZodForm({ schema: GetItDoneSchema });
+  const addExerciseModal = useModal();
 
   async function onSubmit(input: z.infer<typeof GetItDoneSchema>) {
     const workoutExercises = [];
@@ -100,7 +103,7 @@ export function GetItDone() {
       {loading && <div>Cargando...</div>}
 
       {workout && (
-        <div className='h-full flex flex-col space-y-4 pb-4'>
+        <div className='h-full flex flex-col space-y-4'>
           <div className='flex items-center space-x-2'>
             <Button href='/' className=''>
               <div className='rounded-full bg-brand-300 text-brand-700 p-2 flex items-center justify-center'>
@@ -123,6 +126,10 @@ export function GetItDone() {
               ))}
             </div>
 
+            <Button variant='secondary' onClick={addExerciseModal.open}>
+              Añadir otro ejercicio
+            </Button>
+
             <div className='flex-auto'></div>
 
             <SubmitButton>
@@ -132,6 +139,8 @@ export function GetItDone() {
           </Form>
         </div>
       )}
+      
+      <AddExerciseModal {...addExerciseModal.props} onConfirm={refetch} />
     </Page>
   );
 }

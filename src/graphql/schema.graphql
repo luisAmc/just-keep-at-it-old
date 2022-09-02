@@ -1,3 +1,8 @@
+input AddExerciseToWorkoutInput {
+  exerciseId: String!
+  workoutId: String!
+}
+
 input CreateExerciseInput {
   muscleGroup: String
   name: String!
@@ -46,6 +51,7 @@ input LoginInput {
 }
 
 type Mutation {
+  addExerciseToWorkout(input: AddExerciseToWorkoutInput!): Workout!
   createExercise(input: CreateExerciseInput!): Exercise!
   createWorkout(input: CreateWorkoutInput!): Workout!
   doItAgain(workoutToCopyId: ID!): Workout!

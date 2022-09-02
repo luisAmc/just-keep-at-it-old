@@ -83,10 +83,9 @@ builder.queryField('workout', (t) =>
       id: t.arg.id()
     },
     resolve: (query, _parent, { id }, { session }) => {
-      return db.workout.findFirst({
+      return db.workout.findFirstOrThrow({
         ...query,
-        where: { id, userId: session?.userId },
-        rejectOnNotFound: true
+        where: { id, userId: session?.userId }
       });
     }
   })
@@ -191,6 +190,46 @@ builder.mutationField('doItAgain', (t) =>
                   exerciseId: workoutExercise.exerciseId
                 })
               )
+            }
+          }
+        }
+      });
+    }
+  })
+);
+
+const AddExerciseToWorkoutInput = builder.inputType(
+  'AddExerciseToWorkoutInput',
+  {
+    fields: (t) => ({
+      workoutId: t.string(),
+      exerciseId: t.string()
+    })
+  }
+);
+
+builder.mutationField('addExerciseToWorkout', (t) =>
+  t.prismaField({
+    type: 'Workout',
+    args: {
+      input: t.arg({ type: AddExerciseToWorkoutInput })
+    },
+    resolve: async (_query, _parent, { input }, { session }) => {
+      const workout = await db.workout.findFirstOrThrow({
+        where: { id: input.workoutId, userId: session!.userId },
+        select: {
+          workoutExercises: true
+        }
+      });
+
+      return await db.workout.update({
+        where: { id: input.workoutId },
+        data: {
+          workoutExercises: {
+            create: {
+              index: workout.workoutExercises.length,
+              userId: session!.userId,
+              exerciseId: input.exerciseId
             }
           }
         }
