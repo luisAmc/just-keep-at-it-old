@@ -54,6 +54,7 @@ type Mutation {
   addExerciseToWorkout(input: AddExerciseToWorkoutInput!): Workout!
   createExercise(input: CreateExerciseInput!): Exercise!
   createWorkout(input: CreateWorkoutInput!): Workout!
+  deleteWorkout(workoutId: ID!): Workout!
   doItAgain(workoutToCopyId: ID!): Workout!
   getWorkoutDone(input: GetWorkoutDoneInput!): Workout!
   login(input: LoginInput!): User!

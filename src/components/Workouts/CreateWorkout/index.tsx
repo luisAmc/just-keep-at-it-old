@@ -57,6 +57,7 @@ const CreateWorkoutSchema = object({
 export function CreateWorkout() {
   const router = useRouter();
 
+  // TODO: Add loading state
   const { data, loading } = useQuery<CreateWorkoutQuery>(query);
 
   const form = useZodForm({
@@ -154,7 +155,7 @@ export function CreateWorkout() {
 
                   {workoutExercises.fields.length > 1 && (
                     <Button
-                      className='p-2.5 rounded-full bg-brand-100 text-brand-300'
+                      className='p-2.5 rounded-full bg-gray-100 text-gray-500'
                       onClick={() => workoutExercises.remove(index)}
                     >
                       <TrashIcon className='w-4 h-4' />

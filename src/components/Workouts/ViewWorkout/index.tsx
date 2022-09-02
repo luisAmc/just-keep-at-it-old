@@ -1,17 +1,24 @@
 import { Button } from 'src/components/shared/Button';
-import { ChevronLeftIcon } from '@heroicons/react/outline';
 import { ExerciseType, WorkoutStatus } from '@prisma/client';
 import { gql, useMutation, useQuery } from '@apollo/client';
 import { Heading } from 'src/components/shared/Heading';
-import { LightningBoltIcon } from '@heroicons/react/solid';
 import { Page } from 'src/components/shared/Page';
 import { useRouter } from 'next/router';
+import {
+  LightningBoltIcon,
+  ChevronLeftIcon,
+  TrashIcon
+} from '@heroicons/react/outline';
 import clsx from 'clsx';
 import {
+  DeleteWorkoutMutation,
+  DeleteWorkoutMutationVariables,
   DoItAgainMutation,
   DoItAgainMutationVariables,
   WorkoutQuery
 } from './__generated__/index.generated';
+import { useModal } from 'src/components/shared/Modal';
+import { ConfirmationModal } from 'src/components/shared/ConfirmationModal';
 
 export const WorkoutInfoFragment = gql`
   fragment ViewWorkout_workout on Workout {
@@ -79,11 +86,30 @@ export function ViewWorkout() {
     }
   );
 
-  const { data, loading, error } = useQuery<WorkoutQuery>(query, {
+  const [deleteCommit] = useMutation<
+    DeleteWorkoutMutation,
+    DeleteWorkoutMutationVariables
+  >(
+    gql`
+      mutation DeleteWorkoutMutation($workoutId: ID!) {
+        deleteWorkout(workoutId: $workoutId) {
+          id
+        }
+      }
+    `,
+    {
+      onCompleted() {
+        router.replace('/');
+      }
+    }
+  );
+
+  const { data, loading } = useQuery<WorkoutQuery>(query, {
     variables: { id: router.query.workoutId },
     skip: !router.isReady
   });
 
+  const deleteModal = useModal();
   const workout = data?.workout ?? null;
   const isDone = workout?.status === WorkoutStatus.DONE;
 
@@ -159,26 +185,53 @@ export function ViewWorkout() {
           <div className='flex-auto'></div>
 
           {isDone ? (
-            <Button
-              variant='secondary'
-              onClick={() =>
-                doItAgain({
-                  variables: {
-                    workoutToCopyId: router.query.workoutId as string
-                  }
-                })
-              }
-            >
-              Volver a hacer
-            </Button>
+            <div className='grid grid-cols-2 gap-4'>
+              <Button variant='secondary' onClick={deleteModal.open}>
+                <TrashIcon className='w-4 h-4 mr-1' />
+                <span>Borrar</span>
+              </Button>
+
+              <Button
+                variant='secondary'
+                onClick={() =>
+                  doItAgain({
+                    variables: {
+                      workoutToCopyId: router.query.workoutId as string
+                    }
+                  })
+                }
+              >
+                <span> Volver a hacer</span>
+              </Button>
+            </div>
           ) : (
-            <Button href={`/workouts/${workout.id}/get-it-done`}>
-              <LightningBoltIcon className='w-4 h-4 mr-1' />
-              <span>Comenzar</span>
-            </Button>
+            <div className='grid grid-cols-2 gap-4'>
+              <Button variant='secondary' onClick={deleteModal.open}>
+                <TrashIcon className='w-4 h-4 mr-1' />
+                <span>Borrar</span>
+              </Button>
+
+              <Button href={`/workouts/${workout.id}/get-it-done`}>
+                <LightningBoltIcon className='w-4 h-4 mr-1' />
+                <span>Comenzar</span>
+              </Button>
+            </div>
           )}
         </div>
       )}
+
+      <ConfirmationModal
+        {...deleteModal.props}
+        onConfirm={() => {
+          deleteCommit({
+            variables: {
+              workoutId: router.query.workoutId as string
+            }
+          });
+        }}
+      >
+        ¿Está seguro de borrar la rutina?
+      </ConfirmationModal>
     </Page>
   );
 }

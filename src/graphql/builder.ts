@@ -1,12 +1,12 @@
-import { Session } from '@prisma/client';
+import { db } from 'src/utils/prisma';
 import { IncomingMessage, OutgoingMessage } from 'http';
-import SchemaBuilder from '@pothos/core';
+import { IronSession } from 'iron-session';
+import { Session } from '@prisma/client';
 import PrismaPlugin from '@pothos/plugin-prisma';
+import SchemaBuilder from '@pothos/core';
 import ScopeAuthPlugin from '@pothos/plugin-scope-auth';
 import SimpleObjectsPlugin from '@pothos/plugin-simple-objects';
 import type PrismaTypes from '@pothos/plugin-prisma/generated';
-import { db } from 'src/utils/prisma';
-import { IronSession } from 'iron-session';
 
 export interface Context {
   req: IncomingMessage;

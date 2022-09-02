@@ -1,4 +1,4 @@
-import { ExerciseType, WorkoutStatus } from '@prisma/client';
+import { WorkoutStatus } from '@prisma/client';
 import { db } from 'src/utils/prisma';
 import { builder } from '../builder';
 
@@ -53,6 +53,29 @@ builder.mutationField('createWorkout', (t) =>
               }))
             }
           }
+        }
+      });
+    }
+  })
+);
+
+builder.mutationField('deleteWorkout', (t) =>
+  t.prismaField({
+    type: 'Workout',
+    args: {
+      workoutId: t.arg.id()
+    },
+    resolve: async (_query, _parent, { workoutId }, { session }) => {
+      await db.workout.findFirstOrThrow({
+        where: {
+          id: workoutId,
+          userId: session!.userId
+        }
+      });
+
+      return await db.workout.delete({
+        where: {
+          id: workoutId
         }
       });
     }

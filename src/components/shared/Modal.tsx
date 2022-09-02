@@ -18,7 +18,7 @@ export function useModal() {
 }
 
 export interface ModalProps {
-  title: string;
+  title?: string;
   open: boolean;
   onClose: () => void;
   children?: ReactNode;
@@ -51,7 +51,7 @@ export function Modal({ title, open, onClose, children }: ModalProps) {
               leaveFrom='opacity-100 scale-100'
               leaveTo='opacity-0 scale-95'
             >
-              <Dialog.Panel className='flex flex-col space-y-4 w-full max-w-md transform rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all'>
+              <Dialog.Panel className='flex flex-col space-y-4 w-full max-w-md transform rounded-xl bg-white p-6 text-left align-middle shadow-xl transition-all'>
                 <div className='flex items-center justify-between'>
                   <Dialog.Title
                     as='h3'

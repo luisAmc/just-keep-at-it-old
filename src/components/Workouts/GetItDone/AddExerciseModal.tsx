@@ -1,5 +1,5 @@
 import { Modal, ModalProps } from 'src/components/shared/Modal';
-import { PlusCircleIcon } from '@heroicons/react/solid';
+import { PlusIcon } from '@heroicons/react/outline';
 import { query as ExercisesQuery } from '../CreateWorkout';
 import { SelectExercise } from '../CreateWorkout/SelectExercise';
 import { SubmitButton } from 'src/components/shared/SubmitButton';
@@ -7,7 +7,6 @@ import { useExercises } from 'src/utils/useExercises';
 import { gql, useMutation, useQuery } from '@apollo/client';
 import { Form, useZodForm } from 'src/components/shared/Form';
 import { object, string } from 'zod';
-import { useState } from 'react';
 import {
   AddExerciseToWorkoutMutation,
   AddExerciseToWorkoutMutationVariables
@@ -55,12 +54,7 @@ export function AddExerciseModal({ open, onClose, onConfirm }: Props) {
     }
   );
 
-  const form = useZodForm({
-    schema: AddExerciseSchema,
-    defaultValues: {
-      exercise: { label: '', value: '' }
-    }
-  });
+  const form = useZodForm({ schema: AddExerciseSchema });
 
   const exercises = useExercises(data?.viewer?.exercises);
 
@@ -84,13 +78,10 @@ export function AddExerciseModal({ open, onClose, onConfirm }: Props) {
           });
         }}
       >
-        <div>
-          <label>Seleccione un ejercicio:</label>
-          <SelectExercise name='exercise' options={exercises} />
-        </div>
+        <SelectExercise name='exercise' options={exercises} />
 
         <SubmitButton variant='secondary'>
-          <PlusCircleIcon className='w-4 h-4 mr-1' />
+          <PlusIcon className='w-4 h-4 mr-1' />
           <span>Añadir ejercicio</span>
         </SubmitButton>
       </Form>
