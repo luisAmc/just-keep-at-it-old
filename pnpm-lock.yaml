@@ -2,6 +2,7 @@ lockfileVersion: 5.4
 
 specifiers:
   '@apollo/client': ^3.6.9
+  '@formkit/auto-animate': 1.0.0-beta.3
   '@graphql-codegen/cli': ^2.11.6
   '@graphql-codegen/near-operation-file-preset': ^2.4.1
   '@graphql-codegen/typescript': ^2.7.3
@@ -42,6 +43,7 @@ specifiers:
 
 dependencies:
   '@apollo/client': 3.6.9_ila5be2toiy6xjqjieu6owlh24
+  '@formkit/auto-animate': 1.0.0-beta.3
   '@graphql-codegen/cli': 2.12.0_i3kxpzsjod47o2a2wxrugcm3oq
   '@graphql-codegen/near-operation-file-preset': 2.4.1_graphql@16.6.0
   '@graphql-codegen/typescript': 2.7.3_graphql@16.6.0
@@ -741,6 +743,10 @@ packages:
     transitivePeerDependencies:
       - supports-color
     dev: true
+
+  /@formkit/auto-animate/1.0.0-beta.3:
+    resolution: {integrity: sha512-glsi+ytwQpxT/Ctr9GtcIfVr4dO6mJ04mQbNU8MFSdCdqMopHtyfU5Fib0+9lNFIeR0luY4/0NW95/2R5pKsag==}
+    dev: false
 
   /@graphql-codegen/add/3.2.1_graphql@16.6.0:
     resolution: {integrity: sha512-w82H/evh8SSGoD3K6K/Oh3kqSdbuU+TgHqMYmmHFxtH692v2xhN/cu1s/TotBQ7r4mO7OQutze7dde2tZEXGEQ==}

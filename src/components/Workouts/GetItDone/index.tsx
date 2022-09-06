@@ -126,7 +126,11 @@ export function GetItDone() {
               ))}
             </div>
 
-            <Button variant='secondary' onClick={addExerciseModal.open}>
+            <Button
+              variant='dashed'
+              color='secondary'
+              onClick={addExerciseModal.open}
+            >
               Añadir otro ejercicio
             </Button>
 
@@ -139,7 +143,7 @@ export function GetItDone() {
           </Form>
         </div>
       )}
-      
+
       <AddExerciseModal {...addExerciseModal.props} onConfirm={refetch} />
     </Page>
   );
