@@ -84,7 +84,7 @@ export function ExerciseSetInput({
             </button>
           ) : (
             <Button
-              variant='secondary'
+              color='secondary'
               onClick={() =>
                 sets.append({
                   mins: '',

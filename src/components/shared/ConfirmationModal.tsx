@@ -22,12 +22,12 @@ export function ConfirmationModal({
         <div className='text-center font-medium'>{children}</div>
 
         <div className='mt-2 grid grid-cols-1 sm:grid-cols-2 gap-2'>
-          <Button variant='danger' onClick={onConfirm}>
+          <Button color='danger' onClick={onConfirm}>
             <TrashIcon className='w-4 h-4 mr-1' />
             <span>Aceptar</span>
           </Button>
 
-          <Button variant='secondary' onClick={onClose}>
+          <Button color='secondary' onClick={onClose}>
             <XIcon className='w-4 h-4 mr-1' />
             <span>Cancelar</span>
           </Button>

@@ -186,13 +186,13 @@ export function ViewWorkout() {
 
           {isDone ? (
             <div className='grid grid-cols-2 gap-4'>
-              <Button variant='secondary' onClick={deleteModal.open}>
+              <Button color='secondary' onClick={deleteModal.open}>
                 <TrashIcon className='w-4 h-4 mr-1' />
                 <span>Borrar</span>
               </Button>
 
               <Button
-                variant='secondary'
+                color='secondary'
                 onClick={() =>
                   doItAgain({
                     variables: {
@@ -206,7 +206,7 @@ export function ViewWorkout() {
             </div>
           ) : (
             <div className='grid grid-cols-2 gap-4'>
-              <Button variant='secondary' onClick={deleteModal.open}>
+              <Button color='secondary' onClick={deleteModal.open}>
                 <TrashIcon className='w-4 h-4 mr-1' />
                 <span>Borrar</span>
               </Button>
