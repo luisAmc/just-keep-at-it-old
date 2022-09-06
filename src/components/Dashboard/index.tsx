@@ -60,7 +60,7 @@ export function Dashboard() {
             data?.viewer?.workouts &&
             data.viewer.workoutsCount > data.viewer.workouts.length && (
               <Button
-                variant='secondary'
+                color='secondary'
                 onClick={() =>
                   fetchMore({
                     variables: {
@@ -78,7 +78,7 @@ export function Dashboard() {
       </Page>
 
       <div className='fixed bottom-6 right-4'>
-        <Button href='/exercises' variant='secondary' rounded floating>
+        <Button href='/exercises' color='secondary' rounded floating>
           <FlagIcon className='w-4 h-4 mr-1' />
           <span>Ver ejercicios</span>
         </Button>
