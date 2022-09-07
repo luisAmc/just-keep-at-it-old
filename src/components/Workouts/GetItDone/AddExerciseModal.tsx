@@ -63,6 +63,7 @@ export function AddExerciseModal({ open, onClose, onConfirm }: Props) {
       onCompleted() {
         onConfirm();
         onClose();
+        form.reset();
       }
     }
   );
@@ -80,6 +81,7 @@ export function AddExerciseModal({ open, onClose, onConfirm }: Props) {
     `,
     {
       onCompleted() {
+        form.reset();
         refetch();
         setIsCreatingExercise(false);
       }
