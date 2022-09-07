@@ -35,11 +35,11 @@ export type DoneExerciseInput = {
 };
 
 export type DoneExerciseSetInput = {
-  distance?: InputMaybe<Scalars['Int']>;
-  kcal?: InputMaybe<Scalars['Int']>;
-  lbs?: InputMaybe<Scalars['Int']>;
-  mins?: InputMaybe<Scalars['Int']>;
-  reps?: InputMaybe<Scalars['Int']>;
+  distance: Scalars['Float'];
+  kcal: Scalars['Int'];
+  lbs: Scalars['Float'];
+  mins: Scalars['Int'];
+  reps: Scalars['Int'];
 };
 
 export type Exercise = {
@@ -170,10 +170,10 @@ export type WorkoutExercise = {
 
 export type WorkoutSet = {
   __typename?: 'WorkoutSet';
-  distance: Scalars['Int'];
+  distance: Scalars['Float'];
   id: Scalars['ID'];
   kcal: Scalars['Int'];
-  lbs: Scalars['Int'];
+  lbs: Scalars['Float'];
   mins: Scalars['Int'];
   reps: Scalars['Int'];
 };

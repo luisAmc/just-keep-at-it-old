@@ -5,10 +5,10 @@ builder.prismaObject('WorkoutSet', {
   fields: (t) => ({
     id: t.exposeID('id'),
     mins: t.exposeInt('mins'),
-    distance: t.exposeInt('distance'),
+    distance: t.exposeFloat('distance'),
     kcal: t.exposeInt('kcal'),
 
-    lbs: t.exposeInt('lbs'),
+    lbs: t.exposeFloat('lbs'),
     reps: t.exposeInt('reps')
   })
 });

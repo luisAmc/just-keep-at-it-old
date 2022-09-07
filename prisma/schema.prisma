@@ -68,12 +68,12 @@ model WorkoutSet {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  mins     Int @default(0)
-  distance Int @default(0)
-  kcal     Int @default(0)
+  mins     Int   @default(0)
+  distance Float @default(0)
+  kcal     Int   @default(0)
 
-  lbs  Int @default(0)
-  reps Int @default(0)
+  lbs  Float @default(0)
+  reps Int   @default(0)
 
   workoutExercise   WorkoutExercise? @relation(fields: [workoutExerciseId], references: [id])
   workoutExerciseId String?

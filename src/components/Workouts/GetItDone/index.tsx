@@ -2,7 +2,7 @@ import { ChevronLeftIcon } from '@heroicons/react/outline';
 import { Form, useZodForm } from 'src/components/shared/Form';
 import { gql, useMutation, useQuery } from '@apollo/client';
 import { Heading } from 'src/components/shared/Heading';
-import { object, array, record, z, string } from 'zod';
+import { object, array, record, z, string, number, literal } from 'zod';
 import { Page } from 'src/components/shared/Page';
 import { query } from '../ViewWorkout';
 import { SubmitButton } from 'src/components/shared/SubmitButton';
@@ -18,14 +18,14 @@ import { CheckCircleIcon } from '@heroicons/react/solid';
 import { useModal } from 'src/components/shared/Modal';
 import { AddExerciseModal } from './AddExerciseModal';
 
-const numberShape = string().regex(/^\d*$/).transform(Number);
+const numberShape = string().or(literal('')).optional().transform(Number);
 
 const SetSchema = object({
-  mins: numberShape.optional().nullable(),
-  distance: numberShape.optional().nullable(),
-  kcal: numberShape.optional().nullable(),
-  lbs: numberShape.optional().nullable(),
-  reps: numberShape.optional().nullable()
+  mins: numberShape,
+  distance: numberShape,
+  kcal: numberShape,
+  reps: numberShape,
+  lbs: numberShape
 });
 
 const GetItDoneSchema = object({

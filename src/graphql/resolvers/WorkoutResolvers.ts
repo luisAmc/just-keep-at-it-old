@@ -126,11 +126,11 @@ const GetWorkoutDoneInput = builder.inputType('GetWorkoutDoneInput', {
               type: [
                 builder.inputType('DoneExerciseSetInput', {
                   fields: (t) => ({
-                    mins: t.int({ required: false }),
-                    distance: t.int({ required: false }),
-                    kcal: t.int({ required: false }),
-                    lbs: t.int({ required: false }),
-                    reps: t.int({ required: false })
+                    mins: t.int(),
+                    distance: t.float(),
+                    kcal: t.int(),
+                    lbs: t.float(),
+                    reps: t.int()
                   })
                 })
               ]
@@ -155,11 +155,11 @@ builder.mutationField('getWorkoutDone', (t) =>
             await db.workoutSet.create({
               data: {
                 workoutExerciseId: exercise.id,
-                mins: set.mins ?? 0,
-                distance: set.distance ?? 0,
-                kcal: set.kcal ?? 0,
-                lbs: set.lbs ?? 0,
-                reps: set.reps ?? 0
+                mins: set.mins,
+                distance: set.distance,
+                kcal: set.kcal,
+                lbs: set.lbs,
+                reps: set.reps
               }
             });
           }

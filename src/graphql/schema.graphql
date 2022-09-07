@@ -22,11 +22,11 @@ input DoneExerciseInput {
 }
 
 input DoneExerciseSetInput {
-  distance: Int
-  kcal: Int
-  lbs: Int
-  mins: Int
-  reps: Int
+  distance: Float!
+  kcal: Int!
+  lbs: Float!
+  mins: Int!
+  reps: Int!
 }
 
 type Exercise {
@@ -99,10 +99,10 @@ type WorkoutExercise {
 }
 
 type WorkoutSet {
-  distance: Int!
+  distance: Float!
   id: ID!
   kcal: Int!
-  lbs: Int!
+  lbs: Float!
   mins: Int!
   reps: Int!
 }
