@@ -2,19 +2,21 @@ import { PlusIcon, SparklesIcon } from '@heroicons/react/outline';
 import { ExerciseType } from '@prisma/client';
 import { useFieldArray, useFormContext } from 'react-hook-form';
 import { Button } from 'src/components/shared/Button';
-import { WorkoutQuery } from '../ViewWorkout/__generated__/index.generated';
 import { RepetitionSet } from './RepetitionSet';
 import { TimeSet } from './TimeSet';
+import { GetIrDoneQuery } from './__generated__/index.generated';
 
 interface ExerciseSetInputProps {
   workoutExerciseId: string;
-  exercise: WorkoutQuery['workout']['workoutExercises'][0]['exercise'];
+  exercise: GetIrDoneQuery['workout']['workoutExercises'][0]['exercise'];
+  lastSession: GetIrDoneQuery['workout']['workoutExercises'][0]['lastSession'];
   isDisabled: boolean;
 }
 
 export function ExerciseSetInput({
   workoutExerciseId,
   exercise,
+  lastSession,
   isDisabled
 }: ExerciseSetInputProps) {
   const { control } = useFormContext();
@@ -99,7 +101,73 @@ export function ExerciseSetInput({
               <span>Añadir set</span>
             </Button>
           ))}
+
+        {lastSession && lastSession.sets.length > 0 && (
+          <div className='flex flex-col divide-y divide-gray-300 bg-gray-200 p-2 rounded-lg'>
+            {lastSession.sets.map((set) => (
+              <div key={set.id} className='flex items-center justify-center'>
+                {lastSession.exercise.type === ExerciseType.AEROBIC ? (
+                  <AerobicSet
+                    mins={set.mins}
+                    distance={set.distance}
+                    kcal={set.kcal}
+                  />
+                ) : (
+                  <StrengthSet lbs={set.lbs} reps={set.reps} />
+                )}
+              </div>
+            ))}
+          </div>
+        )}
       </div>
+    </div>
+  );
+}
+
+interface AerobicSetProps {
+  mins?: number | null;
+  distance?: number | null;
+  kcal?: number | null;
+}
+
+function AerobicSet({ mins, distance, kcal }: AerobicSetProps) {
+  return (
+    <div className='grid grid-cols-3 gap-6'>
+      <span>
+        <span className='text-lg font-medium'>{mins}</span>
+        <span className='text-sm ml-1'>mins</span>
+      </span>
+
+      <span>
+        <span className='text-lg font-medium'>{distance}</span>
+        <span className='text-sm ml-1'>dist</span>
+      </span>
+
+      <span>
+        <span className='text-lg font-medium'>{kcal}</span>
+        <span className='text-sm ml-1'>kcal</span>
+      </span>
+    </div>
+  );
+}
+
+interface StrengthSetProps {
+  lbs?: number | null;
+  reps?: number | null;
+}
+
+function StrengthSet({ lbs, reps }: StrengthSetProps) {
+  return (
+    <div className='grid grid-cols-2 gap-6'>
+      <span>
+        <span className='text-lg font-medium'>{lbs}</span>
+        <span className='text-sm ml-1'>lbs</span>
+      </span>
+
+      <span>
+        <span className='text-lg font-medium'>{reps}</span>
+        <span className='text-sm ml-1'>reps</span>
+      </span>
     </div>
   );
 }

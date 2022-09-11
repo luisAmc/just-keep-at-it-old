@@ -34,12 +34,11 @@ builder.queryField('viewer', (t) =>
         return null;
       }
 
-      return db.user.findUnique({
+      return db.user.findUniqueOrThrow({
         ...query,
         where: {
           id: session.userId
-        },
-        rejectOnNotFound: true
+        }
       });
     }
   })

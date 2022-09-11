@@ -2,13 +2,12 @@ import { ChevronLeftIcon } from '@heroicons/react/outline';
 import { Form, useZodForm } from 'src/components/shared/Form';
 import { gql, useMutation, useQuery } from '@apollo/client';
 import { Heading } from 'src/components/shared/Heading';
-import { object, array, record, z, string, number, literal } from 'zod';
+import { object, array, record, z, string, literal } from 'zod';
 import { Page } from 'src/components/shared/Page';
-import { query } from '../ViewWorkout';
 import { SubmitButton } from 'src/components/shared/SubmitButton';
 import { useRouter } from 'next/router';
-import { WorkoutQuery } from '../ViewWorkout/__generated__/index.generated';
 import {
+  GetIrDoneQuery,
   GetWorkoutDoneMutation,
   GetWorkoutDoneMutationVariables
 } from './__generated__/index.generated';
@@ -36,12 +35,54 @@ const GetItDoneSchema = object({
   )
 });
 
+export const query = gql`
+  query GetIrDoneQuery($id: ID!) {
+    workout(id: $id) {
+      name
+      status
+      completedAt
+      createdAt
+      workoutExercisesCount
+      workoutExercises {
+        id
+        exercise {
+          id
+          name
+          type
+        }
+        setsCount
+        sets {
+          id
+          mins
+          distance
+          kcal
+          lbs
+          reps
+        }
+        lastSession {
+          exercise {
+            type
+          }
+          sets {
+            id
+            mins
+            distance
+            kcal
+            lbs
+            reps
+          }
+        }
+      }
+    }
+  }
+`;
+
 export function GetItDone() {
   const router = useRouter();
 
   const workoutId = router.query.workoutId as string;
 
-  const { data, loading, refetch } = useQuery<WorkoutQuery>(query, {
+  const { data, loading, refetch } = useQuery<GetIrDoneQuery>(query, {
     variables: { id: workoutId },
     skip: !router.isReady
   });
@@ -115,12 +156,13 @@ export function GetItDone() {
           </div>
 
           <Form form={form} onSubmit={onSubmit}>
-            <div className='flex flex-col space-y-4 rounded-lg'>
+            <div className='flex flex-col space-y-6 rounded-lg'>
               {workout.workoutExercises.map((workoutExercise) => (
                 <ExerciseSetInput
                   key={workoutExercise.id}
                   workoutExerciseId={workoutExercise.id}
                   exercise={workoutExercise.exercise}
+                  lastSession={workoutExercise.lastSession}
                   isDisabled={false}
                 />
               ))}

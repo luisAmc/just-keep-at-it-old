@@ -164,6 +164,7 @@ export type WorkoutExercise = {
   exercise: Exercise;
   id: Scalars['ID'];
   index: Scalars['Int'];
+  lastSession?: Maybe<WorkoutExercise>;
   sets: Array<WorkoutSet>;
   setsCount: Scalars['Int'];
 };
