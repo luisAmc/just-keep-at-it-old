@@ -7,7 +7,7 @@ import { Page } from 'src/components/shared/Page';
 import { SubmitButton } from 'src/components/shared/SubmitButton';
 import { useRouter } from 'next/router';
 import {
-  GetIrDoneQuery,
+  GetItDoneQuery,
   GetWorkoutDoneMutation,
   GetWorkoutDoneMutationVariables
 } from './__generated__/index.generated';
@@ -36,7 +36,7 @@ const GetItDoneSchema = object({
 });
 
 export const query = gql`
-  query GetIrDoneQuery($id: ID!) {
+  query GetItDoneQuery($id: ID!) {
     workout(id: $id) {
       name
       status
@@ -82,9 +82,29 @@ export function GetItDone() {
 
   const workoutId = router.query.workoutId as string;
 
-  const { data, loading, refetch } = useQuery<GetIrDoneQuery>(query, {
+  const form = useZodForm({ schema: GetItDoneSchema });
+  const addExerciseModal = useModal();
+
+  const { data, loading, refetch } = useQuery<GetItDoneQuery>(query, {
     variables: { id: workoutId },
-    skip: !router.isReady
+    skip: !router.isReady,
+    onCompleted(data) {
+      const workoutExercises: Record<string, any> = {};
+
+      for (const workoutExercise of data.workout.workoutExercises) {
+        workoutExercises[workoutExercise.id] = {
+          sets: workoutExercise.sets.map((set) => ({
+            mins: set.mins.toString(),
+            distance: set.distance.toString(),
+            kcal: set.kcal.toString(),
+            reps: set.reps.toString(),
+            lbs: set.lbs.toString()
+          }))
+        };
+      }
+
+      form.reset({ workoutExercises });
+    }
   });
 
   const [commit, { error }] = useMutation<
@@ -100,13 +120,10 @@ export function GetItDone() {
     `,
     {
       onCompleted() {
-        router.push('/');
+        router.push(`/workouts/${workoutId}`);
       }
     }
   );
-
-  const form = useZodForm({ schema: GetItDoneSchema });
-  const addExerciseModal = useModal();
 
   async function onSubmit(input: z.infer<typeof GetItDoneSchema>) {
     const workoutExercises = [];

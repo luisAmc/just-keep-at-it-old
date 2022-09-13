@@ -150,6 +150,16 @@ builder.mutationField('getWorkoutDone', (t) =>
     },
     resolve: async (_query, _parent, { input }) => {
       const workout = await db.$transaction(async (db) => {
+        const workoutExercises = await db.workoutExercise.findMany({
+          where: { workoutId: input.workoutId }
+        });
+
+        await db.workoutSet.deleteMany({
+          where: {
+            workoutExerciseId: { in: workoutExercises.map((we) => we.id) }
+          }
+        });
+
         for (const exercise of input.workoutExercises) {
           for (const set of exercise.sets) {
             await db.workoutSet.create({

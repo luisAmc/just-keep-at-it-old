@@ -4,12 +4,12 @@ import { useFieldArray, useFormContext } from 'react-hook-form';
 import { Button } from 'src/components/shared/Button';
 import { RepetitionSet } from './RepetitionSet';
 import { TimeSet } from './TimeSet';
-import { GetIrDoneQuery } from './__generated__/index.generated';
+import { GetItDoneQuery } from './__generated__/index.generated';
 
 interface ExerciseSetInputProps {
   workoutExerciseId: string;
-  exercise: GetIrDoneQuery['workout']['workoutExercises'][0]['exercise'];
-  lastSession: GetIrDoneQuery['workout']['workoutExercises'][0]['lastSession'];
+  exercise: GetItDoneQuery['workout']['workoutExercises'][0]['exercise'];
+  lastSession: GetItDoneQuery['workout']['workoutExercises'][0]['lastSession'];
   isDisabled: boolean;
 }
 

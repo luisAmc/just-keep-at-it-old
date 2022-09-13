@@ -96,7 +96,7 @@ export function ViewWorkoutActions({ isDone }: ViewWorkoutActionsProps) {
               <ViewWorkoutActionItem
                 label='Continuar'
                 icon={SparklesIcon}
-                onClick={() => {}}
+                href={`/workouts/${workoutId}/get-it-done/continue`}
               />
 
               <ViewWorkoutActionItem
