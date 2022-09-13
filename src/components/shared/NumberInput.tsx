@@ -16,7 +16,8 @@ export const NumberInput = forwardRef<HTMLInputElement, Props>(
             'disabled:opacity-60 disabled:bg-gray-500 disabled:bg-opacity-20 disabled:rounded-lg'
           )}
           ref={ref}
-          type='number'
+          type='text'
+          pattern='\d*'
           step='any'
           placeholder='0'
           {...props}
