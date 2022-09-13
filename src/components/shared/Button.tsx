@@ -1,5 +1,4 @@
 import { ButtonOrLink, ButtonOrLinkProps } from './ButtonOrLink';
-import { forwardRef } from 'react';
 import clsx from 'clsx';
 
 export interface Props extends ButtonOrLinkProps {
@@ -9,10 +8,14 @@ export interface Props extends ButtonOrLinkProps {
   floating?: boolean;
 }
 
-export const Button = forwardRef<HTMLButtonElement, Props>(function Button(
-  { variant = 'default', color = 'primary', rounded, floating, type, ...props },
-  _ref
-) {
+export const Button = ({
+  variant = 'default',
+  color = 'primary',
+  rounded,
+  floating,
+  type,
+  ...props
+}: Props) => {
   return (
     <ButtonOrLink
       className={clsx(
@@ -36,4 +39,4 @@ export const Button = forwardRef<HTMLButtonElement, Props>(function Button(
       {...props}
     />
   );
-});
+};
