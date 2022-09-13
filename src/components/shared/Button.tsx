@@ -1,5 +1,6 @@
-import clsx from 'clsx';
 import { ButtonOrLink, ButtonOrLinkProps } from './ButtonOrLink';
+import { forwardRef } from 'react';
+import clsx from 'clsx';
 
 export interface Props extends ButtonOrLinkProps {
   color?: 'primary' | 'secondary' | 'danger';
@@ -8,14 +9,10 @@ export interface Props extends ButtonOrLinkProps {
   floating?: boolean;
 }
 
-export function Button({
-  variant = 'default',
-  color = 'primary',
-  rounded,
-  floating,
-  type,
-  ...props
-}: Props) {
+export const Button = forwardRef<HTMLButtonElement, Props>(function Button(
+  { variant = 'default', color = 'primary', rounded, floating, type, ...props },
+  _ref
+) {
   return (
     <ButtonOrLink
       className={clsx(
@@ -29,12 +26,14 @@ export function Button({
         },
         variant === 'dashed' && 'border-2 border-dashed',
         variant === 'dashed' && {
-          'border-brand-300 text-brand-600 hover:bg-brand-50': color === 'primary',
-          'border-gray-300 text-gray-600 hover:bg-gray-100': color === 'secondary'
+          'border-brand-300 text-brand-600 hover:bg-brand-50':
+            color === 'primary',
+          'border-gray-300 text-gray-600 hover:bg-gray-100':
+            color === 'secondary'
         }
       )}
       type={type || 'button'}
       {...props}
     />
   );
-}
+});
