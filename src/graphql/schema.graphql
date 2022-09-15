@@ -58,6 +58,7 @@ type Mutation {
   doItAgain(workoutToCopyId: ID!): Workout!
   getWorkoutDone(input: GetWorkoutDoneInput!): Workout!
   login(input: LoginInput!): User!
+  saveWorkout(input: GetWorkoutDoneInput!): Boolean!
   signUp(input: SignUpInput!): User!
 }
 

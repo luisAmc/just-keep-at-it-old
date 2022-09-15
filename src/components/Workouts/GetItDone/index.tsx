@@ -1,39 +1,22 @@
-import { ChevronLeftIcon } from '@heroicons/react/outline';
-import { Form, useZodForm } from 'src/components/shared/Form';
 import { gql, useMutation, useQuery } from '@apollo/client';
-import { Heading } from 'src/components/shared/Heading';
-import { object, array, record, z, string, literal } from 'zod';
 import { Page } from 'src/components/shared/Page';
-import { SubmitButton } from 'src/components/shared/SubmitButton';
 import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
+import { Form, useZodForm } from 'src/components/shared/Form';
+import { array, z, literal, object, string } from 'zod';
+import { useFieldArray } from 'react-hook-form';
+import { Button } from 'src/components/shared/Button';
+import { CheckCircleIcon, ChevronLeftIcon } from '@heroicons/react/outline';
+import { Heading } from 'src/components/shared/Heading';
+import { WorkoutExercise } from './WorkoutExercise';
+import { useModal } from 'src/components/shared/Modal';
+import { SubmitButton } from 'src/components/shared/SubmitButton';
 import {
   GetItDoneQuery,
   GetWorkoutDoneMutation,
   GetWorkoutDoneMutationVariables
 } from './__generated__/index.generated';
-import { Button } from 'src/components/shared/Button';
-import { ExerciseSetInput } from './ExerciseSetInput';
-import { CheckCircleIcon } from '@heroicons/react/solid';
-import { useModal } from 'src/components/shared/Modal';
 import { AddExerciseModal } from './AddExerciseModal';
-
-const numberShape = string().or(literal('')).optional().transform(Number);
-
-const SetSchema = object({
-  mins: numberShape,
-  distance: numberShape,
-  kcal: numberShape,
-  reps: numberShape,
-  lbs: numberShape
-});
-
-const GetItDoneSchema = object({
-  workoutExercises: record(
-    object({
-      sets: array(SetSchema)
-    })
-  )
-});
 
 export const query = gql`
   query GetItDoneQuery($id: ID!) {
@@ -77,37 +60,78 @@ export const query = gql`
   }
 `;
 
+const numberShape = string().or(literal('')).optional().transform(Number);
+
+const SetSchema = object({
+  mins: numberShape,
+  distance: numberShape,
+  kcal: numberShape,
+  reps: numberShape,
+  lbs: numberShape
+});
+
+const GetItDoneSchema = object({
+  workoutExercises: array(
+    object({
+      workoutId: string(),
+      sets: array(SetSchema)
+    })
+  )
+});
+
+type ExerciseRecord = { name: string; type: string };
+
 export function GetItDone() {
   const router = useRouter();
-
   const workoutId = router.query.workoutId as string;
 
-  const form = useZodForm({ schema: GetItDoneSchema });
   const addExerciseModal = useModal();
 
-  const { data, loading, refetch } = useQuery<GetItDoneQuery>(query, {
+  const [exerciseMap, setExerciseMap] = useState(
+    new Map<string, ExerciseRecord>()
+  );
+
+  const form = useZodForm({ schema: GetItDoneSchema });
+
+  const workoutExercises = useFieldArray({
+    control: form.control,
+    name: 'workoutExercises'
+  });
+
+  const values = form.watch();
+
+  useEffect(() => {
+    console.log({ values });
+  }, [values]);
+
+  const { data, loading } = useQuery<GetItDoneQuery>(query, {
     variables: { id: workoutId },
     skip: !router.isReady,
     onCompleted(data) {
-      const workoutExercises: Record<string, any> = {};
+      const map = new Map<string, ExerciseRecord>();
 
-      for (const workoutExercise of data.workout.workoutExercises) {
-        workoutExercises[workoutExercise.id] = {
-          sets: workoutExercise.sets.map((set) => ({
-            mins: set.mins.toString(),
-            distance: set.distance.toString(),
-            kcal: set.kcal.toString(),
-            reps: set.reps.toString(),
-            lbs: set.lbs.toString()
-          }))
-        };
+      for (const exercise of data.workout.workoutExercises) {
+        map.set(exercise.id, {
+          name: exercise.exercise.name,
+          type: exercise.exercise.type
+        });
       }
 
-      form.reset({ workoutExercises });
+      setExerciseMap(map);
+
+      form.reset({
+        workoutExercises: data.workout.workoutExercises.map(
+          (workoutExercise) => ({
+            workoutId: workoutExercise.id,
+            sets: []
+          })
+        )
+      });
     }
   });
 
-  const [commit, { error }] = useMutation<
+  // TODO: Handle error
+  const [commit] = useMutation<
     GetWorkoutDoneMutation,
     GetWorkoutDoneMutationVariables
   >(
@@ -137,7 +161,10 @@ export function GetItDone() {
         );
 
         if (nonEmptySets.length > 0) {
-          workoutExercises.push({ id: workoutExerciseKey, sets: nonEmptySets });
+          workoutExercises.push({
+            id: workoutExerciseKey,
+            sets: nonEmptySets
+          });
         }
       }
     }
@@ -173,25 +200,24 @@ export function GetItDone() {
           </div>
 
           <Form form={form} onSubmit={onSubmit}>
-            <div className='flex flex-col space-y-6 rounded-lg'>
-              {workout.workoutExercises.map((workoutExercise) => (
-                <ExerciseSetInput
-                  key={workoutExercise.id}
-                  workoutExerciseId={workoutExercise.id}
-                  exercise={workoutExercise.exercise}
-                  lastSession={workoutExercise.lastSession}
-                  isDisabled={false}
+            <div className='flex flex-col space-y-6'>
+              {workoutExercises.fields.map((field, index) => (
+                <WorkoutExercise
+                  key={field.id}
+                  exercise={exerciseMap.get(field.workoutId)!}
+                  fieldName={`workoutExercises[${index}]`}
+                  onRemove={() => workoutExercises.remove(index)}
                 />
               ))}
-            </div>
 
-            <Button
-              variant='dashed'
-              color='secondary'
-              onClick={addExerciseModal.open}
-            >
-              Añadir otro ejercicio
-            </Button>
+              <Button
+                variant='dashed'
+                color='secondary'
+                onClick={addExerciseModal.open}
+              >
+                Añadir otro ejercicio
+              </Button>
+            </div>
 
             <div className='flex-auto'></div>
 
@@ -200,10 +226,14 @@ export function GetItDone() {
               <span>Completar</span>
             </SubmitButton>
           </Form>
-        </div>
-      )}
 
-      <AddExerciseModal {...addExerciseModal.props} onConfirm={refetch} />
+          <AddExerciseModal {...addExerciseModal.props} onConfirm={refetch} />
+        </div>
+
+        // <WorkoutProvider>
+        //   <GetItDoneForm workoutName={workout.name} />
+        // </WorkoutProvider>
+      )}
     </Page>
   );
 }

@@ -1,5 +1,5 @@
 import { Button } from 'src/components/shared/Button';
-import { ChevronLeftIcon } from '@heroicons/react/outline';
+import { ChevronLeftIcon, LightningBoltIcon } from '@heroicons/react/outline';
 import { ExerciseType, WorkoutStatus } from '@prisma/client';
 import { gql, useQuery } from '@apollo/client';
 import { Heading } from 'src/components/shared/Heading';
@@ -138,7 +138,12 @@ export function ViewWorkout() {
             ))}
           </div>
 
-          <div className='flex-auto'></div>
+          {!isDone && (
+            <Button href={`/workouts/${router.query.workoutId}/get-it-done`}>
+              <LightningBoltIcon className='mr-1 w-4 h-4' />
+              <span>Comenzar</span>
+            </Button>
+          )}
         </div>
       )}
     </Page>

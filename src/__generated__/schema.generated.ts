@@ -73,6 +73,7 @@ export type Mutation = {
   doItAgain: Workout;
   getWorkoutDone: Workout;
   login: User;
+  saveWorkout: Scalars['Boolean'];
   signUp: User;
 };
 
@@ -109,6 +110,11 @@ export type MutationGetWorkoutDoneArgs = {
 
 export type MutationLoginArgs = {
   input: LoginInput;
+};
+
+
+export type MutationSaveWorkoutArgs = {
+  input: GetWorkoutDoneInput;
 };
 
 

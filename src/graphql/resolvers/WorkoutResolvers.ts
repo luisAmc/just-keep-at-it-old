@@ -270,3 +270,57 @@ builder.mutationField('addExerciseToWorkout', (t) =>
     }
   })
 );
+
+builder.mutationField('saveWorkout', (t) =>
+  t.boolean({
+    args: {
+      input: t.arg({ type: GetWorkoutDoneInput })
+    },
+    resolve: async (_parent, { input }, { session }) => {
+      const workout = await db.workout.findFirstOrThrow({
+        where: { id: input.workoutId, userId: session!.userId },
+        include: {
+          workoutExercises: {
+            include: { sets: true }
+          }
+        }
+      });
+
+      const map = new Map();
+      for (const exercise of input.workoutExercises) {
+        if (!map.has(exercise.id)) {
+          map.set(exercise.id, exercise)
+        }
+      }
+
+      for (const workoutExercise of workout.workoutExercises) {
+        // await db.workoutSet.deleteMany({
+        //   where: { id: { in: workoutExercise.sets.map((set) => set.id) } }
+        // });
+
+/**
+ *  createMany: {
+              data: workoutToCopy.workoutExercises.map(
+                (workoutExercise, index) => ({
+                  index,
+                  userId: session!.userId,
+                  exerciseId: workoutExercise.exerciseId
+                })
+              )
+            }
+ */
+
+        // await db.workoutExercise.update({
+        //   where: { id: workoutExercise.id },
+        //   data: {
+        //     sets: {
+
+        //     }
+        //   }
+        // });
+      }
+
+      return false;
+    }
+  })
+);

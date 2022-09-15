@@ -13,7 +13,7 @@ export const NumberInput = forwardRef<HTMLInputElement, Props>(
           className={clsx(
             'w-12 justify-center text-xl text-center text-gray-800 bg-transparent outline-none appearance-none',
             'focus:border-brand-600 focus:border-b-2 focus:ring-brand-500',
-            'disabled:opacity-60 disabled:bg-gray-500 disabled:bg-opacity-20 disabled:rounded-lg'
+            'disabled:opacity-60 disabled:bg-gray-500 disabled:bg-opacity-20'
           )}
           ref={ref}
           inputMode='decimal'

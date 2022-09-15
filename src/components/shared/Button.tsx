@@ -19,7 +19,7 @@ export const Button = ({
   return (
     <ButtonOrLink
       className={clsx(
-        'appearance-none flex items-center justify-center px-4 py-2 font-medium focus:outline-none focus:ring-2 focus:ring-offset-white focus:ring-offset-1 disabled:opacity-60 disabled:pointer-events-none hover:bg-opacity-80',
+        'appearance-none w-full flex items-center justify-center px-4 py-2 font-medium focus:outline-none focus:ring-2 focus:ring-offset-white focus:ring-offset-1 disabled:opacity-60 disabled:pointer-events-none hover:bg-opacity-80',
         rounded ? 'rounded-full' : 'rounded',
         floating && ' shadow-xl',
         variant === 'default' && {

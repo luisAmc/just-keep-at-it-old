@@ -39,10 +39,12 @@ export function Dashboard() {
           <div className='flex items-center justify-between space-x-4'>
             <Heading>Últimas rutinas</Heading>
 
-            <Button href='/workouts/create' rounded>
-              <PlusCircleIcon className='w-4 h-4 mr-1' />
-              <span>Nueva rutina</span>
-            </Button>
+            <div>
+              <Button href='/exercises' color='secondary'>
+                <FlagIcon className='w-4 h-4 mr-1' />
+                <span>Ver ejercicios</span>
+              </Button>
+            </div>
           </div>
 
           {!loading &&
@@ -78,9 +80,9 @@ export function Dashboard() {
       </Page>
 
       <div className='fixed bottom-6 right-4'>
-        <Button href='/exercises' color='secondary' rounded floating>
-          <FlagIcon className='w-4 h-4 mr-1' />
-          <span>Ver ejercicios</span>
+        <Button href='/workouts/create' rounded floating>
+          <PlusCircleIcon className='w-4 h-4 mr-1' />
+          <span>Rutina</span>
         </Button>
       </div>
     </>

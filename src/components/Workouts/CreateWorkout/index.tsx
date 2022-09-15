@@ -1,7 +1,7 @@
 import { gql, useMutation, useQuery } from '@apollo/client';
 import { ChevronLeftIcon, PlusIcon, TrashIcon } from '@heroicons/react/outline';
 import { useFieldArray } from 'react-hook-form';
-import { array, object, string } from 'zod';
+import { array, object, string, z } from 'zod';
 import { ExerciseInfoFragment } from '../../Exercises';
 import { Exercises_Exercise } from '../../Exercises/__generated__/index.generated';
 import { FieldError, Form, useZodForm } from '../../shared/Form';
@@ -63,12 +63,7 @@ export function CreateWorkout() {
   const form = useZodForm({
     schema: CreateWorkoutSchema,
     defaultValues: {
-      workoutExercises: [
-        {
-          label: '',
-          value: ''
-        }
-      ]
+      workoutExercises: [{ label: '', value: '' }]
     }
   });
 
@@ -95,16 +90,33 @@ export function CreateWorkout() {
           }
         });
       },
-      onCompleted() {
-        router.push('/');
+      onCompleted(data) {
+        router.push(`/workouts/${data.createWorkout.id}`);
       }
     }
   );
+
+  async function onSubmit(input: z.infer<typeof CreateWorkoutSchema>) {
+    await createWorkout({
+      variables: {
+        input: {
+          name: input.name,
+          workoutExercises: input.workoutExercises.map((exercise) => ({
+            id: exercise.value
+          }))
+        }
+      }
+    });
+  }
 
   const workoutExercises = useFieldArray({
     control: form.control,
     name: 'workoutExercises'
   });
+
+  function appendWorkout() {
+    workoutExercises.append({ value: '', label: '' });
+  }
 
   const exercises = useExercises(data?.viewer?.exercises);
 
@@ -121,21 +133,7 @@ export function CreateWorkout() {
           <Heading>Crear rutina</Heading>
         </div>
 
-        <Form
-          form={form}
-          onSubmit={(input) =>
-            createWorkout({
-              variables: {
-                input: {
-                  name: input.name,
-                  workoutExercises: input.workoutExercises.map((exercise) => ({
-                    id: exercise.value
-                  }))
-                }
-              }
-            })
-          }
-        >
+        <Form form={form} onSubmit={onSubmit}>
           <ErrorMessage title='Ocurrió un error...' error={error} />
 
           <Input {...form.register('name')} label='Nombre' />
@@ -168,19 +166,10 @@ export function CreateWorkout() {
             </label>
           </div>
 
-          <Button
-            className='w-full border border-dashed border-brand-600 rounded-lg'
-            onClick={() => {
-              workoutExercises.append({ value: '', label: '' });
-            }}
-          >
-            <div className='py-2 flex items-center justify-center space-x-2 text-brand-600'>
-              <PlusIcon className='w-4 h-4 mr-1' />
-              <span>Añadir uno más</span>
-            </div>
+          <Button onClick={appendWorkout} variant='dashed' color='secondary'>
+            <PlusIcon className='w-4 h-4 mr-1' />
+            <span>Añadir uno más</span>
           </Button>
-
-          <div className='flex-auto'></div>
 
           <SubmitButton>
             <CheckCircleIcon className='w-4 h-4 mr-1' />
