@@ -1,7 +1,6 @@
 import { gql, useMutation, useQuery } from '@apollo/client';
 import { Page } from 'src/components/shared/Page';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
 import { Form, useZodForm } from 'src/components/shared/Form';
 import { array, z, literal, object, string } from 'zod';
 import { useFieldArray } from 'react-hook-form';
@@ -78,7 +77,19 @@ const GetItDoneSchema = object({
       exercise: object({
         exerciseId: string(),
         name: string(),
-        type: string()
+        type: string(),
+        lastSession: object({
+          sets: array(
+            object({
+              id: string(),
+              mins: string(),
+              distance: string(),
+              kcal: string(),
+              reps: string(),
+              lbs: string()
+            })
+          )
+        }).optional()
       }),
       sets: array(SetSchema)
     })
@@ -98,14 +109,9 @@ export function GetItDone() {
     name: 'workoutExercises'
   });
 
-  // const values = form.watch();
-
-  // useEffect(() => {
-  //   console.log({ values });
-  // }, [values]);
-
   const { data, loading } = useQuery<GetItDoneQuery>(query, {
     variables: { id: workoutId },
+    fetchPolicy: 'no-cache',
     skip: !router.isReady,
     onCompleted(data) {
       form.reset({
@@ -115,7 +121,19 @@ export function GetItDone() {
             exercise: {
               exerciseId: workoutExercise.exercise.id,
               name: workoutExercise.exercise.name,
-              type: workoutExercise.exercise.type
+              type: workoutExercise.exercise.type,
+              lastSession: workoutExercise.lastSession
+                ? {
+                    sets: workoutExercise.lastSession.sets.map((set) => ({
+                      id: set.id,
+                      mins: set.mins.toString(),
+                      distance: set.distance.toString(),
+                      kcal: set.kcal.toString(),
+                      reps: set.reps.toString(),
+                      lbs: set.lbs.toString()
+                    }))
+                  }
+                : undefined
             },
             sets: []
           })
@@ -159,7 +177,7 @@ export function GetItDone() {
           workoutExercises.push({
             id: workoutExercise.workoutId,
             exerciseId: workoutExercise.exercise.exerciseId,
-            sets: nonEmptySets
+            sets: nonEmptySets.map((set) => ({ ...set }))
           });
         }
       }
@@ -234,10 +252,6 @@ export function GetItDone() {
             }}
           />
         </div>
-
-        // <WorkoutProvider>
-        //   <GetItDoneForm workoutName={workout.name} />
-        // </WorkoutProvider>
       )}
     </Page>
   );

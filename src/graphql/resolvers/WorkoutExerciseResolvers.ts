@@ -1,3 +1,4 @@
+import { WorkoutStatus } from '@prisma/client';
 import { db } from 'src/utils/prisma';
 import { builder } from '../builder';
 
@@ -7,18 +8,25 @@ builder.prismaObject('WorkoutExercise', {
     id: t.exposeID('id'),
     index: t.exposeInt('index'),
     setsCount: t.relationCount('sets'),
-    sets: t.relation('sets'),
+    sets: t.relation('sets', {
+      query: {
+        orderBy: { index: 'asc' }
+      }
+    }),
     exercise: t.relation('exercise'),
     lastSession: t.prismaField({
       type: 'WorkoutExercise',
       nullable: true,
       resolve: async (_query, currentWorkoutExercise) => {
         const lastWorkoutExerciseSession = await db.workoutExercise.findFirst({
-          where: { exerciseId: currentWorkoutExercise.exerciseId },
-          orderBy: {
-            createdAt: 'desc'
+          where: {
+            exerciseId: currentWorkoutExercise.exerciseId,
+            workout: { status: WorkoutStatus.DONE }
           },
-          skip: 1,
+          orderBy: {
+            updatedAt: 'asc'
+          },
+          take: -1,
           include: {
             sets: true
           }

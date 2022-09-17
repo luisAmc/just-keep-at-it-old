@@ -13,11 +13,23 @@ import { useFieldArray, useFormContext } from 'react-hook-form';
 import { WorkoutExerciseActions } from './WorkoutExerciseActions';
 import clsx from 'clsx';
 
+type LastSessionSet = {
+  id: string;
+  mins: string;
+  distance: string;
+  kcal: string;
+  reps: string;
+  lbs: string;
+};
+
 interface WorkoutExerciseProps {
   fieldName: string;
   exercise: {
     name: string;
     type: string;
+    lastSession?: {
+      sets: LastSessionSet[];
+    };
   };
   onRemove(): void;
 }
@@ -111,10 +123,65 @@ export function WorkoutExercise({
                   <span>Añadir set</span>
                 </Button>
               )}
+
+              {exercise.lastSession && (
+                <div className='mt-2'>
+                  <LastSession
+                    isAerobic={isAerobic}
+                    sets={exercise.lastSession.sets}
+                  />
+                </div>
+              )}
             </Disclosure.Panel>
           </>
         )}
       </Disclosure>
+    </div>
+  );
+}
+
+interface LastSessionProps {
+  isAerobic: boolean;
+  sets: LastSessionSet[];
+}
+
+function LastSession({ isAerobic, sets }: LastSessionProps) {
+  return (
+    <div className='flex flex-col divide-y divide-gray-300 bg-gray-200 p-2 rounded-lg'>
+      {sets.map((set) => (
+        <div key={set.id} className='flex items-center justify-center'>
+          {isAerobic ? (
+            <div className='grid grid-cols-3 gap-6'>
+              <span>
+                <span className='font-medium'>{set.mins}</span>
+                <span className='text-sm ml-1'>mins</span>
+              </span>
+
+              <span>
+                <span className='font-medium'>{set.distance}</span>
+                <span className='text-sm ml-1'>dist</span>
+              </span>
+
+              <span>
+                <span className='font-medium'>{set.kcal}</span>
+                <span className='text-sm ml-1'>kcal</span>
+              </span>
+            </div>
+          ) : (
+            <div className='grid grid-cols-2 gap-6'>
+              <span>
+                <span className='font-medium'>{set.lbs}</span>
+                <span className='text-sm ml-1'>lbs</span>
+              </span>
+
+              <span>
+                <span className='font-medium'>{set.reps}</span>
+                <span className='text-sm ml-1'>reps</span>
+              </span>
+            </div>
+          )}
+        </div>
+      ))}
     </div>
   );
 }

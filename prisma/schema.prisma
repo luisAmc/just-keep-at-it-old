@@ -68,6 +68,8 @@ model WorkoutSet {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
+  index Int
+
   mins     Int   @default(0)
   distance Float @default(0)
   kcal     Int   @default(0)
@@ -84,8 +86,9 @@ model WorkoutExercise {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  index Int?         @default(autoincrement())
-  sets  WorkoutSet[]
+  index Int
+
+  sets WorkoutSet[]
 
   workout    Workout? @relation(fields: [workoutId], references: [id])
   workoutId  String?
@@ -105,9 +108,10 @@ model Workout {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  name             String
-  status           WorkoutStatus     @default(DRAFTED)
-  completedAt      DateTime?
+  name        String
+  status      WorkoutStatus @default(DRAFTED)
+  completedAt DateTime?
+
   workoutExercises WorkoutExercise[]
 
   user   User   @relation(fields: [userId], references: [id])
