@@ -6,6 +6,7 @@ export function useExercises(exercises: Exercises_Exercise[] | undefined) {
   return exercises.map((exercise) => ({
     label: exercise.name,
     value: exercise.id,
-    muscleGroup: exercise.muscleGroup as string
+    muscleGroup: exercise.muscleGroup as string,
+    type: exercise.type
   }));
 }

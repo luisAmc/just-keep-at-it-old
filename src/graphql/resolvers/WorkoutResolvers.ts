@@ -46,8 +46,7 @@ builder.mutationField('createWorkout', (t) =>
           name: input.name,
           workoutExercises: {
             createMany: {
-              data: input.workoutExercises.map((exercise, index) => ({
-                index: index,
+              data: input.workoutExercises.map((exercise) => ({
                 userId: session!.userId,
                 exerciseId: exercise.id
               }))
@@ -116,12 +115,13 @@ builder.queryField('workout', (t) =>
 
 const GetWorkoutDoneInput = builder.inputType('GetWorkoutDoneInput', {
   fields: (t) => ({
-    workoutId: t.string(),
+    workoutId: t.id(),
     workoutExercises: t.field({
       type: [
         builder.inputType('DoneExerciseInput', {
           fields: (t) => ({
-            id: t.string(),
+            id: t.id({ required: false }),
+            exerciseId: t.id(),
             sets: t.field({
               type: [
                 builder.inputType('DoneExerciseSetInput', {
@@ -148,31 +148,48 @@ builder.mutationField('getWorkoutDone', (t) =>
     args: {
       input: t.arg({ type: GetWorkoutDoneInput })
     },
-    resolve: async (_query, _parent, { input }) => {
+    resolve: async (_query, _parent, { input }, { session }) => {
       const workout = await db.$transaction(async (db) => {
-        const workoutExercises = await db.workoutExercise.findMany({
-          where: { workoutId: input.workoutId }
-        });
+        const alreadyPresentWorkoutExercise = input.workoutExercises.filter(
+          (workoutExercise) => workoutExercise.id != null
+        );
 
-        await db.workoutSet.deleteMany({
-          where: {
-            workoutExerciseId: { in: workoutExercises.map((we) => we.id) }
-          }
-        });
+        for (const workoutExercise of alreadyPresentWorkoutExercise) {
+          await db.workoutSet.createMany({
+            data: workoutExercise.sets.map((set) => ({
+              workoutExerciseId: workoutExercise.id,
+              mins: set.mins,
+              distance: set.distance,
+              kcal: set.kcal,
+              lbs: set.lbs,
+              reps: set.reps
+            }))
+          });
+        }
 
-        for (const exercise of input.workoutExercises) {
-          for (const set of exercise.sets) {
-            await db.workoutSet.create({
-              data: {
-                workoutExerciseId: exercise.id,
-                mins: set.mins,
-                distance: set.distance,
-                kcal: set.kcal,
-                lbs: set.lbs,
-                reps: set.reps
+        const newWorkoutExercises = input.workoutExercises.filter(
+          (workoutExercise) => workoutExercise.id == null
+        );
+
+        for (const newWorkoutExercise of newWorkoutExercises) {
+          await db.workoutExercise.create({
+            data: {
+              workoutId: input.workoutId,
+              exerciseId: newWorkoutExercise.exerciseId,
+              userId: session!.userId,
+              sets: {
+                createMany: {
+                  data: newWorkoutExercise.sets.map((set) => ({
+                    mins: set.mins,
+                    distance: set.distance,
+                    kcal: set.kcal,
+                    lbs: set.lbs,
+                    reps: set.reps
+                  }))
+                }
               }
-            });
-          }
+            }
+          });
         }
 
         return db.workout.update({
@@ -227,100 +244,6 @@ builder.mutationField('doItAgain', (t) =>
           }
         }
       });
-    }
-  })
-);
-
-const AddExerciseToWorkoutInput = builder.inputType(
-  'AddExerciseToWorkoutInput',
-  {
-    fields: (t) => ({
-      workoutId: t.string(),
-      exerciseId: t.string()
-    })
-  }
-);
-
-builder.mutationField('addExerciseToWorkout', (t) =>
-  t.prismaField({
-    type: 'Workout',
-    args: {
-      input: t.arg({ type: AddExerciseToWorkoutInput })
-    },
-    resolve: async (_query, _parent, { input }, { session }) => {
-      const workout = await db.workout.findFirstOrThrow({
-        where: { id: input.workoutId, userId: session!.userId },
-        select: {
-          workoutExercises: true
-        }
-      });
-
-      return await db.workout.update({
-        where: { id: input.workoutId },
-        data: {
-          workoutExercises: {
-            create: {
-              index: workout.workoutExercises.length,
-              userId: session!.userId,
-              exerciseId: input.exerciseId
-            }
-          }
-        }
-      });
-    }
-  })
-);
-
-builder.mutationField('saveWorkout', (t) =>
-  t.boolean({
-    args: {
-      input: t.arg({ type: GetWorkoutDoneInput })
-    },
-    resolve: async (_parent, { input }, { session }) => {
-      const workout = await db.workout.findFirstOrThrow({
-        where: { id: input.workoutId, userId: session!.userId },
-        include: {
-          workoutExercises: {
-            include: { sets: true }
-          }
-        }
-      });
-
-      const map = new Map();
-      for (const exercise of input.workoutExercises) {
-        if (!map.has(exercise.id)) {
-          map.set(exercise.id, exercise)
-        }
-      }
-
-      for (const workoutExercise of workout.workoutExercises) {
-        // await db.workoutSet.deleteMany({
-        //   where: { id: { in: workoutExercise.sets.map((set) => set.id) } }
-        // });
-
-/**
- *  createMany: {
-              data: workoutToCopy.workoutExercises.map(
-                (workoutExercise, index) => ({
-                  index,
-                  userId: session!.userId,
-                  exerciseId: workoutExercise.exerciseId
-                })
-              )
-            }
- */
-
-        // await db.workoutExercise.update({
-        //   where: { id: workoutExercise.id },
-        //   data: {
-        //     sets: {
-
-        //     }
-        //   }
-        // });
-      }
-
-      return false;
     }
   })
 );

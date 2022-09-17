@@ -17,6 +17,7 @@ import {
   GetWorkoutDoneMutationVariables
 } from './__generated__/index.generated';
 import { AddExerciseModal } from './AddExerciseModal';
+import { ExerciseType } from '@prisma/client';
 
 export const query = gql`
   query GetItDoneQuery($id: ID!) {
@@ -73,23 +74,22 @@ const SetSchema = object({
 const GetItDoneSchema = object({
   workoutExercises: array(
     object({
-      workoutId: string(),
+      workoutId: string().optional(),
+      exercise: object({
+        exerciseId: string(),
+        name: string(),
+        type: string()
+      }),
       sets: array(SetSchema)
     })
   )
 });
-
-type ExerciseRecord = { name: string; type: string };
 
 export function GetItDone() {
   const router = useRouter();
   const workoutId = router.query.workoutId as string;
 
   const addExerciseModal = useModal();
-
-  const [exerciseMap, setExerciseMap] = useState(
-    new Map<string, ExerciseRecord>()
-  );
 
   const form = useZodForm({ schema: GetItDoneSchema });
 
@@ -98,31 +98,25 @@ export function GetItDone() {
     name: 'workoutExercises'
   });
 
-  const values = form.watch();
+  // const values = form.watch();
 
-  useEffect(() => {
-    console.log({ values });
-  }, [values]);
+  // useEffect(() => {
+  //   console.log({ values });
+  // }, [values]);
 
   const { data, loading } = useQuery<GetItDoneQuery>(query, {
     variables: { id: workoutId },
     skip: !router.isReady,
     onCompleted(data) {
-      const map = new Map<string, ExerciseRecord>();
-
-      for (const exercise of data.workout.workoutExercises) {
-        map.set(exercise.id, {
-          name: exercise.exercise.name,
-          type: exercise.exercise.type
-        });
-      }
-
-      setExerciseMap(map);
-
       form.reset({
         workoutExercises: data.workout.workoutExercises.map(
           (workoutExercise) => ({
             workoutId: workoutExercise.id,
+            exercise: {
+              exerciseId: workoutExercise.exercise.id,
+              name: workoutExercise.exercise.name,
+              type: workoutExercise.exercise.type
+            },
             sets: []
           })
         )
@@ -152,17 +146,19 @@ export function GetItDone() {
   async function onSubmit(input: z.infer<typeof GetItDoneSchema>) {
     const workoutExercises = [];
 
-    for (const [workoutExerciseKey, workoutExerciseValue] of Object.entries(
-      input.workoutExercises
-    )) {
-      if (workoutExerciseValue.sets.length > 0) {
-        const nonEmptySets = workoutExerciseValue.sets.filter(
-          (set) => (set.mins ?? 0) > 0 || (set.lbs ?? 0) > 0
+    for (const workoutExercise of input.workoutExercises) {
+      if (workoutExercise.sets.length > 0) {
+        const isAerobic =
+          workoutExercise.exercise.type === ExerciseType.AEROBIC;
+
+        const nonEmptySets = workoutExercise.sets.filter((set) =>
+          isAerobic ? set.mins ?? 0 : set.lbs ?? 0
         );
 
         if (nonEmptySets.length > 0) {
           workoutExercises.push({
-            id: workoutExerciseKey,
+            id: workoutExercise.workoutId,
+            exerciseId: workoutExercise.exercise.exerciseId,
             sets: nonEmptySets
           });
         }
@@ -204,7 +200,7 @@ export function GetItDone() {
               {workoutExercises.fields.map((field, index) => (
                 <WorkoutExercise
                   key={field.id}
-                  exercise={exerciseMap.get(field.workoutId)!}
+                  exercise={field.exercise}
                   fieldName={`workoutExercises[${index}]`}
                   onRemove={() => workoutExercises.remove(index)}
                 />
@@ -227,7 +223,16 @@ export function GetItDone() {
             </SubmitButton>
           </Form>
 
-          <AddExerciseModal {...addExerciseModal.props} onConfirm={refetch} />
+          <AddExerciseModal
+            {...addExerciseModal.props}
+            onConfirm={(exercise: {
+              exerciseId: string;
+              name: string;
+              type: string;
+            }) => {
+              workoutExercises.append({ exercise, sets: [] });
+            }}
+          />
         </div>
 
         // <WorkoutProvider>

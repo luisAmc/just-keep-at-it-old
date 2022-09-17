@@ -10,7 +10,7 @@ interface Props {
 
 export function WorkoutExerciseActions({ onRemove }: Props) {
   return (
-    <Menu as='div' className='z-20 relative inline-block text-left'>
+    <Menu as='div' className='z-10 relative inline-block text-left'>
       <Menu.Button className='inline-flex w-full justify-center rounded-full bg-gray-100 border border-gray-200 p-2 text-sm font-medium text-gray-500 hover:bg-opacity-80 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75'>
         <DotsVerticalIcon className='w-4 h-4' />
       </Menu.Button>

@@ -8,12 +8,9 @@ import { gql, useMutation, useQuery } from '@apollo/client';
 import { Form, useZodForm } from 'src/components/shared/Form';
 import { object, string } from 'zod';
 import {
-  AddExerciseToWorkoutMutation,
-  AddExerciseToWorkoutMutationVariables,
   AddNewExerciseMutation,
   AddNewExerciseMutationVariables
 } from './__generated__/AddExerciseModal.generated';
-import { useRouter } from 'next/router';
 import { Button } from 'src/components/shared/Button';
 import { useState } from 'react';
 import {
@@ -27,46 +24,23 @@ const AddExerciseSchema = object({
   exercise: object(
     {
       label: string(),
-      value: string()
+      value: string(),
+      type: string()
     },
     { required_error: 'Seleccione una opción.' }
   )
 });
 
 interface Props extends Omit<ModalProps, 'title' | 'children'> {
-  onConfirm: () => void;
+  onConfirm(exercise: { exerciseId: string; name: string; type: string }): void;
 }
 
 export function AddExerciseModal({ open, onClose, onConfirm }: Props) {
-  const router = useRouter();
-
   // TODO: Add loading state (shimmer)
   const { data, loading, refetch } = useQuery(ExercisesQuery);
 
   const [isCreatingExercise, setIsCreatingExercise] = useState(false);
   const [animateParent] = useAutoAnimate<HTMLDivElement>();
-
-  const [addNewExerciseCommit] = useMutation<
-    AddExerciseToWorkoutMutation,
-    AddExerciseToWorkoutMutationVariables
-  >(
-    gql`
-      mutation AddExerciseToWorkoutMutation(
-        $input: AddExerciseToWorkoutInput!
-      ) {
-        addExerciseToWorkout(input: $input) {
-          id
-        }
-      }
-    `,
-    {
-      onCompleted() {
-        onConfirm();
-        onClose();
-        form.reset();
-      }
-    }
-  );
 
   const [createNewExerciseCommit] = useMutation<
     AddNewExerciseMutation,
@@ -81,9 +55,8 @@ export function AddExerciseModal({ open, onClose, onConfirm }: Props) {
     `,
     {
       onCompleted() {
-        form.reset();
-        refetch();
         setIsCreatingExercise(false);
+        refetch();
       }
     }
   );
@@ -109,14 +82,13 @@ export function AddExerciseModal({ open, onClose, onConfirm }: Props) {
         }
       });
     } else {
-      addNewExerciseCommit({
-        variables: {
-          input: {
-            workoutId: router.query.workoutId as string,
-            exerciseId: input.exercise.value
-          }
-        }
+      onConfirm({
+        exerciseId: input.exercise.value,
+        name: input.exercise.label,
+        type: input.exercise.type
       });
+
+      handleClose();
     }
   }
 

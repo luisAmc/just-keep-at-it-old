@@ -10,7 +10,12 @@ import clsx from 'clsx';
 interface Props {
   name: string;
   label?: string;
-  options: { label: string; value: string; muscleGroup: string }[];
+  options: {
+    label: string;
+    value: string;
+    muscleGroup: string;
+    type: string;
+  }[];
 }
 
 export function SelectExercise({ label, name, options }: Props) {
@@ -37,7 +42,7 @@ export function SelectExercise({ label, name, options }: Props) {
             <Combobox.Input
               placeholder='Seleccione una opción...'
               onChange={(event) => setQuery(event.target.value)}
-              displayValue={(option: { label: string }) =>
+              displayValue={(option: typeof options[0]) =>
                 option ? option.label : ''
               }
               className={clsx(

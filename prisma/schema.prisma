@@ -84,7 +84,7 @@ model WorkoutExercise {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  index Int
+  index Int?         @default(autoincrement())
   sets  WorkoutSet[]
 
   workout    Workout? @relation(fields: [workoutId], references: [id])
