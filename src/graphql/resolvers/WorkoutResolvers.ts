@@ -98,12 +98,29 @@ builder.mutationField('deleteWorkout', (t) =>
       workoutId: t.arg.id()
     },
     resolve: async (_query, _parent, { workoutId }, { session }) => {
-      await db.workout.findFirstOrThrow({
+      const workout = await db.workout.findFirstOrThrow({
         where: {
           id: workoutId,
           userId: session!.userId
+        },
+        include: {
+          workoutExercises: {
+            include: {
+              sets: true
+            }
+          }
         }
       });
+
+      await db.workoutSet.deleteMany({
+        where: {
+          workoutExerciseId: {
+            in: workout.workoutExercises.map((we) => we.id)
+          }
+        }
+      });
+
+      await db.workoutExercise.deleteMany({ where: { workoutId: workout.id } });
 
       return await db.workout.delete({
         where: {
@@ -122,11 +139,13 @@ const GetWorkoutDoneInput = builder.inputType('GetWorkoutDoneInput', {
         builder.inputType('DoneExerciseInput', {
           fields: (t) => ({
             id: t.id({ required: false }),
+            index: t.int(),
             exerciseId: t.id(),
             sets: t.field({
               type: [
                 builder.inputType('DoneExerciseSetInput', {
                   fields: (t) => ({
+                    id: t.id({ required: false }),
                     mins: t.int(),
                     distance: t.float(),
                     kcal: t.int(),
@@ -172,7 +191,7 @@ builder.mutationField('getWorkoutDone', (t) =>
                 workoutId: input.workoutId,
                 exerciseId: workoutExercise.exerciseId,
                 userId: session!.userId,
-                index: index,
+                index: workoutExercise.index,
                 sets: {
                   createMany: {
                     data: workoutExercise.sets.map((set, setIndex) => ({
@@ -218,7 +237,7 @@ builder.mutationField('doItAgain', (t) =>
         },
         include: {
           workoutExercises: {
-            select: { exerciseId: true }
+            select: { index: true, exerciseId: true }
           }
         }
       });
@@ -230,13 +249,11 @@ builder.mutationField('doItAgain', (t) =>
           name: workoutToCopy.name,
           workoutExercises: {
             createMany: {
-              data: workoutToCopy.workoutExercises.map(
-                (workoutExercise, index) => ({
-                  index: index,
-                  userId: session!.userId,
-                  exerciseId: workoutExercise.exerciseId
-                })
-              )
+              data: workoutToCopy.workoutExercises.map((workoutExercise) => ({
+                index: workoutExercise.index,
+                userId: session!.userId,
+                exerciseId: workoutExercise.exerciseId
+              }))
             }
           }
         }

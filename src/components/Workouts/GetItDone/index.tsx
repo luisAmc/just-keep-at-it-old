@@ -18,6 +18,26 @@ import {
 import { AddExerciseModal } from './AddExerciseModal';
 import { ExerciseType } from '@prisma/client';
 
+const WorkoutExerciseFragment = gql`
+  fragment WorkoutExercise_workoutExercise on WorkoutExercise {
+    id
+    index
+    exercise {
+      id
+      name
+      type
+    }
+    sets {
+      id
+      mins
+      distance
+      kcal
+      lbs
+      reps
+    }
+  }
+`;
+
 export const query = gql`
   query GetItDoneQuery($id: ID!) {
     workout(id: $id) {
@@ -27,42 +47,20 @@ export const query = gql`
       createdAt
       workoutExercisesCount
       workoutExercises {
-        id
-        exercise {
-          id
-          name
-          type
-        }
-        setsCount
-        sets {
-          id
-          mins
-          distance
-          kcal
-          lbs
-          reps
-        }
+        ...WorkoutExercise_workoutExercise
         lastSession {
-          exercise {
-            type
-          }
-          sets {
-            id
-            mins
-            distance
-            kcal
-            lbs
-            reps
-          }
+          ...WorkoutExercise_workoutExercise
         }
       }
     }
   }
+  ${WorkoutExerciseFragment}
 `;
 
 const numberShape = string().or(literal('')).optional().transform(Number);
 
 const SetSchema = object({
+  id: string().optional(),
   mins: numberShape,
   distance: numberShape,
   kcal: numberShape,
@@ -115,8 +113,9 @@ export function GetItDone() {
     skip: !router.isReady,
     onCompleted(data) {
       form.reset({
-        workoutExercises: data.workout.workoutExercises.map(
-          (workoutExercise) => ({
+        workoutExercises: data.workout.workoutExercises
+          .sort((a, b) => (a.index < b.index ? -1 : 1))
+          .map((workoutExercise) => ({
             workoutId: workoutExercise.id,
             exercise: {
               exerciseId: workoutExercise.exercise.id,
@@ -136,13 +135,11 @@ export function GetItDone() {
                 : undefined
             },
             sets: []
-          })
-        )
+          }))
       });
     }
   });
 
-  // TODO: Handle error
   const [commit] = useMutation<
     GetWorkoutDoneMutation,
     GetWorkoutDoneMutationVariables
@@ -164,7 +161,9 @@ export function GetItDone() {
   async function onSubmit(input: z.infer<typeof GetItDoneSchema>) {
     const workoutExercises = [];
 
-    for (const workoutExercise of input.workoutExercises) {
+    for (let i = 0; i < input.workoutExercises.length; i++) {
+      const workoutExercise = input.workoutExercises[i];
+
       if (workoutExercise.sets.length > 0) {
         const isAerobic =
           workoutExercise.exercise.type === ExerciseType.AEROBIC;
@@ -175,6 +174,7 @@ export function GetItDone() {
 
         if (nonEmptySets.length > 0) {
           workoutExercises.push({
+            index: i,
             id: workoutExercise.workoutId,
             exerciseId: workoutExercise.exercise.exerciseId,
             sets: nonEmptySets.map((set) => ({ ...set }))

@@ -27,11 +27,13 @@ export type CreateWorkoutInput = {
 export type DoneExerciseInput = {
   exerciseId: Scalars['ID'];
   id?: InputMaybe<Scalars['ID']>;
+  index: Scalars['Int'];
   sets: Array<DoneExerciseSetInput>;
 };
 
 export type DoneExerciseSetInput = {
   distance: Scalars['Float'];
+  id?: InputMaybe<Scalars['ID']>;
   kcal: Scalars['Int'];
   lbs: Scalars['Float'];
   mins: Scalars['Int'];

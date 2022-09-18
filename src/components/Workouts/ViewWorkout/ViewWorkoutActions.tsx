@@ -3,7 +3,6 @@ import {
   DotsVerticalIcon,
   LightningBoltIcon,
   RefreshIcon,
-  SparklesIcon,
   TrashIcon
 } from '@heroicons/react/outline';
 import { ComponentType, Fragment } from 'react';
@@ -93,12 +92,6 @@ export function ViewWorkoutActions({ isDone }: ViewWorkoutActionsProps) {
 
           {isDone && (
             <div className='px-1 py-1'>
-              <ViewWorkoutActionItem
-                label='Continuar'
-                icon={SparklesIcon}
-                href={`/workouts/${workoutId}/get-it-done/continue`}
-              />
-
               <ViewWorkoutActionItem
                 label='Repetir rutina'
                 icon={RefreshIcon}

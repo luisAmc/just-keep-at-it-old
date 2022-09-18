@@ -14,11 +14,13 @@ scalar DateTime
 input DoneExerciseInput {
   exerciseId: ID!
   id: ID
+  index: Int!
   sets: [DoneExerciseSetInput!]!
 }
 
 input DoneExerciseSetInput {
   distance: Float!
+  id: ID
   kcal: Int!
   lbs: Float!
   mins: Int!
