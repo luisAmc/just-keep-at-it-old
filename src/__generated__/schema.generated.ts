@@ -110,9 +110,16 @@ export type MutationSignUpArgs = {
 
 export type Query = {
   __typename?: 'Query';
+  lastSessions: Array<WorkoutExercise>;
   viewer?: Maybe<User>;
   workout: Workout;
   workouts: Array<Workout>;
+};
+
+
+export type QueryLastSessionsArgs = {
+  exerciseId: Scalars['ID'];
+  take?: InputMaybe<Scalars['Int']>;
 };
 
 
@@ -153,6 +160,7 @@ export type Workout = {
 
 export type WorkoutExercise = {
   __typename?: 'WorkoutExercise';
+  createdAt: Scalars['DateTime'];
   exercise: Exercise;
   id: Scalars['ID'];
   index: Scalars['Int'];

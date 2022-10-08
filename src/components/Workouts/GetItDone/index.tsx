@@ -17,6 +17,9 @@ import {
 } from './__generated__/index.generated';
 import { AddExerciseModal } from './AddExerciseModal';
 import { ExerciseType } from '@prisma/client';
+import { LastExerciseSessions } from './LastExerciseSessions';
+import { useSlideOver } from 'src/components/shared/SlideOver';
+import { useState } from 'react';
 
 const WorkoutExerciseFragment = gql`
   fragment WorkoutExercise_workoutExercise on WorkoutExercise {
@@ -48,9 +51,6 @@ export const query = gql`
       workoutExercisesCount
       workoutExercises {
         ...WorkoutExercise_workoutExercise
-        lastSession {
-          ...WorkoutExercise_workoutExercise
-        }
       }
     }
   }
@@ -75,19 +75,7 @@ const GetItDoneSchema = object({
       exercise: object({
         exerciseId: string(),
         name: string(),
-        type: string(),
-        lastSession: object({
-          sets: array(
-            object({
-              id: string(),
-              mins: string(),
-              distance: string(),
-              kcal: string(),
-              reps: string(),
-              lbs: string()
-            })
-          )
-        }).optional()
+        type: string()
       }),
       sets: array(SetSchema)
     })
@@ -99,6 +87,9 @@ export function GetItDone() {
   const workoutId = router.query.workoutId as string;
 
   const addExerciseModal = useModal();
+  const lastSessions = useSlideOver();
+
+  const [selectedExerciseId, setSelectedExerciseId] = useState('');
 
   const form = useZodForm({ schema: GetItDoneSchema });
 
@@ -120,19 +111,7 @@ export function GetItDone() {
             exercise: {
               exerciseId: workoutExercise.exercise.id,
               name: workoutExercise.exercise.name,
-              type: workoutExercise.exercise.type,
-              lastSession: workoutExercise.lastSession
-                ? {
-                    sets: workoutExercise.lastSession.sets.map((set) => ({
-                      id: set.id,
-                      mins: set.mins.toString(),
-                      distance: set.distance.toString(),
-                      kcal: set.kcal.toString(),
-                      reps: set.reps.toString(),
-                      lbs: set.lbs.toString()
-                    }))
-                  }
-                : undefined
+              type: workoutExercise.exercise.type
             },
             sets: []
           }))
@@ -220,6 +199,10 @@ export function GetItDone() {
                   key={field.id}
                   exercise={field.exercise}
                   fieldName={`workoutExercises[${index}]`}
+                  onSelect={(exerciseId) => {
+                    setSelectedExerciseId(exerciseId);
+                    lastSessions.open();
+                  }}
                   onRemove={() => workoutExercises.remove(index)}
                 />
               ))}
@@ -249,6 +232,15 @@ export function GetItDone() {
               type: string;
             }) => {
               workoutExercises.append({ exercise, sets: [] });
+            }}
+          />
+
+          <LastExerciseSessions
+            exerciseId={selectedExerciseId}
+            open={lastSessions.props.open}
+            onClose={() => {
+              setSelectedExerciseId('');
+              lastSessions.close();
             }}
           />
         </div>

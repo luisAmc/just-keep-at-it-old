@@ -34,6 +34,31 @@ builder.prismaObject('WorkoutExercise', {
 
         return lastWorkoutExerciseSession;
       }
-    })
+    }),
+    createdAt: t.expose('createdAt', { type: 'DateTime' })
   })
 });
+
+builder.queryField('lastSessions', (t) =>
+  t.prismaField({
+    type: ['WorkoutExercise'],
+    args: {
+      exerciseId: t.arg.id(),
+      take: t.arg.int({ required: false })
+    },
+    resolve: async (query, _parent, { exerciseId, take }, { session }) => {
+      return await db.workoutExercise.findMany({
+        ...query,
+        where: {
+          exerciseId: exerciseId,
+          userId: session!.userId,
+          workout: {
+            status: WorkoutStatus.DONE
+          }
+        },
+        orderBy: { createdAt: 'desc' },
+        take: take ?? 5
+      });
+    }
+  })
+);

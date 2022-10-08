@@ -59,6 +59,7 @@ type Mutation {
 }
 
 type Query {
+  lastSessions(exerciseId: ID!, take: Int): [WorkoutExercise!]!
   viewer: User
   workout(id: ID!): Workout!
   workouts: [Workout!]!
@@ -88,6 +89,7 @@ type Workout {
 }
 
 type WorkoutExercise {
+  createdAt: DateTime!
   exercise: Exercise!
   id: ID!
   index: Int!
