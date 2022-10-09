@@ -13,7 +13,7 @@ export function RepetitionSet({ fieldName, remove }: Props) {
   const { control } = useFormContext();
 
   return (
-    <div className='flex items-center justify-center px-2 py-3 gap-x-6'>
+    <div className='flex items-center justify-center py-2 gap-x-6'>
       <NumberInput {...control.register(`${fieldName}.lbs`)} label='lbs' />
       <NumberInput {...control.register(`${fieldName}.reps`)} label='reps' />
 
@@ -21,7 +21,7 @@ export function RepetitionSet({ fieldName, remove }: Props) {
 
       <Button
         onClick={remove}
-        className='p-2.5 rounded-full bg-gray-100 text-gray-500 border border-gray-200'
+        className='p-2 rounded-full bg-gray-100 text-gray-500 border border-gray-200'
       >
         <TrashIcon className='w-4 h-4' />
       </Button>

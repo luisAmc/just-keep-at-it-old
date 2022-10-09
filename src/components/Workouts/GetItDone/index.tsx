@@ -183,7 +183,7 @@ export function GetItDone() {
       {workout && (
         <div className='h-full flex flex-col space-y-4'>
           <div className='flex items-center space-x-2'>
-            <Button href={`/workouts/${workoutId}`} className=''>
+            <Button href='/' className=''>
               <div className='rounded-full bg-brand-300 text-brand-700 p-2 flex items-center justify-center'>
                 <ChevronLeftIcon className='w-4 h-4' />
               </div>
@@ -193,9 +193,10 @@ export function GetItDone() {
           </div>
 
           <Form form={form} onSubmit={onSubmit}>
-            <div className='flex flex-col space-y-6'>
+            <div className='flex flex-col divide-y px-4 bg-gray-100 rounded-lg'>
               {workoutExercises.fields.map((field, index) => (
                 <WorkoutExercise
+                  defaultOpen={index === 0}
                   key={field.id}
                   exercise={field.exercise}
                   fieldName={`workoutExercises[${index}]`}
@@ -206,17 +207,15 @@ export function GetItDone() {
                   onRemove={() => workoutExercises.remove(index)}
                 />
               ))}
-
-              <Button
-                variant='dashed'
-                color='secondary'
-                onClick={addExerciseModal.open}
-              >
-                Añadir otro ejercicio
-              </Button>
             </div>
 
-            <div className='flex-auto'></div>
+            <Button
+              variant='dashed'
+              color='secondary'
+              onClick={addExerciseModal.open}
+            >
+              Añadir otro ejercicio
+            </Button>
 
             <SubmitButton>
               <CheckCircleIcon className='w-4 h-4 mr-1' />

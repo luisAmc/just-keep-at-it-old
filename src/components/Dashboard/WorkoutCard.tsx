@@ -12,7 +12,13 @@ export function WorkoutCard({ workout }: WorkoutCardProps) {
   const isDone = workout.status === WorkoutStatus.DONE;
 
   return (
-    <Link href={`/workouts/${workout.id}`}>
+    <Link
+      href={
+        isDone
+          ? `/workouts/${workout.id}`
+          : `/workouts/${workout.id}/get-it-done`
+      }
+    >
       <div
         className={clsx(
           'px-5 py-4 bg-gray-100 rounded-md hover:cursor-pointer',

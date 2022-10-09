@@ -1,6 +1,6 @@
 import { gql, useQuery } from '@apollo/client';
 import { ExerciseType } from '@prisma/client';
-import { Button } from 'src/components/shared/Button';
+import { ErrorMessage } from 'src/components/shared/ErrorMessage';
 import { SlideOver, SlideOverProps } from 'src/components/shared/SlideOver';
 import { formatDate } from 'src/utils/transforms';
 import {
@@ -13,25 +13,26 @@ interface Props extends Omit<SlideOverProps, 'title' | 'children'> {
 }
 
 export function LastExerciseSessions({ exerciseId, open, onClose }: Props) {
-  const { data, loading } = useQuery<
+  const { data, loading, error } = useQuery<
     LastExerciseSessionsQuery,
     LastExerciseSessionsQueryVariables
   >(
     gql`
-      query LastExerciseSessionsQuery($exerciseId: ID!, $take: Int) {
-        lastSessions(exerciseId: $exerciseId, take: $take) {
+      query LastExerciseSessionsQuery($exerciseId: ID!, $limit: Int) {
+        exercise(id: $exerciseId) {
           id
-          exercise {
-            type
-          }
-          createdAt
-          sets {
+          type
+          doneSessions(limit: $limit) {
             id
-            mins
-            distance
-            kcal
-            lbs
-            reps
+            createdAt
+            sets {
+              id
+              mins
+              distance
+              kcal
+              lbs
+              reps
+            }
           }
         }
       }
@@ -42,11 +43,13 @@ export function LastExerciseSessions({ exerciseId, open, onClose }: Props) {
     }
   );
 
-  const sessions = data?.lastSessions ?? [];
+  const sessions = data?.exercise?.doneSessions ?? [];
 
   return (
     <SlideOver title='Últimas Iteraciones' open={open} onClose={onClose}>
       {loading && <div>Cargando...</div>}
+
+      <ErrorMessage title='Error...' error={error} />
 
       <div className='flex flex-col space-y-4'>
         {data &&
@@ -57,7 +60,7 @@ export function LastExerciseSessions({ exerciseId, open, onClose }: Props) {
               </div>
 
               <div className='text-center'>
-                {session.exercise.type === ExerciseType.AEROBIC
+                {data.exercise.type === ExerciseType.AEROBIC
                   ? session.sets.map((set) => (
                       <div key={set.id} className='grid grid-cols-3 gap-3'>
                         <span>
@@ -93,12 +96,6 @@ export function LastExerciseSessions({ exerciseId, open, onClose }: Props) {
             </div>
           ))}
       </div>
-
-      <div className='flex-1'></div>
-
-      <Button color='secondary' onClick={onClose}>
-        Cerrar
-      </Button>
     </SlideOver>
   );
 }

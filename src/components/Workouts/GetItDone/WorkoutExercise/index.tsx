@@ -15,6 +15,7 @@ import clsx from 'clsx';
 import { ZoomInIcon } from '@heroicons/react/solid';
 
 interface WorkoutExerciseProps {
+  defaultOpen: boolean;
   fieldName: string;
   exercise: {
     exerciseId: string;
@@ -26,6 +27,7 @@ interface WorkoutExerciseProps {
 }
 
 export function WorkoutExercise({
+  defaultOpen,
   fieldName,
   exercise,
   onSelect,
@@ -46,21 +48,16 @@ export function WorkoutExercise({
   }
 
   return (
-    <div
-      ref={animateParent}
-      className='p-4 rounded-lg bg-gray-100 text-gray-700'
-    >
-      <Disclosure>
+    <div ref={animateParent} className='py-4'>
+      <Disclosure defaultOpen={defaultOpen}>
         {({ open }) => (
           <>
             <div className='flex items-center space-x-4'>
               <Disclosure.Button className='flex w-full justify-between'>
-                <span className='font-medium'>{exercise.name}</span>
+                <span className='font-base'>{exercise.name}</span>
 
                 <div className='flex items-center space-x-2'>
-                  <span className='text-sm font-medium'>
-                    {sets.fields.length} sets
-                  </span>
+                  <span className='text-sm'>{sets.fields.length} sets</span>
 
                   <ChevronUpIcon
                     className={clsx('w-4 h-4', open && 'transform rotate-180')}
@@ -118,7 +115,7 @@ export function WorkoutExercise({
 
                   <Button
                     onClick={() => onSelect(exercise.exerciseId)}
-                    className='rounded-full p-2 bg-gray-500 text-white'
+                    className='rounded-full p-2 bg-gray-300 text-gray-600'
                   >
                     <ZoomInIcon className='w-4 h-4' />
                   </Button>

@@ -1,4 +1,4 @@
-import { ExerciseType, MuscleGroup } from '@prisma/client';
+import { ExerciseType, MuscleGroup, WorkoutStatus } from '@prisma/client';
 import { db } from 'src/utils/prisma';
 import { builder } from '../builder';
 
@@ -8,7 +8,23 @@ builder.prismaObject('Exercise', {
     id: t.exposeID('id'),
     name: t.exposeString('name'),
     type: t.exposeString('type'),
-    muscleGroup: t.exposeString('muscleGroup', { nullable: true })
+    muscleGroup: t.exposeString('muscleGroup', { nullable: true }),
+    doneSessions: t.relation('workoutExercises', {
+      args: {
+        limit: t.arg.int({ defaultValue: 10 })
+      },
+      query: ({ limit }) => ({
+        where: {
+          workout: {
+            status: { equals: WorkoutStatus.DONE }
+          }
+        },
+        take: limit,
+        orderBy: {
+          updatedAt: 'desc'
+        }
+      })
+    })
   })
 });
 
@@ -37,5 +53,22 @@ builder.mutationField('createExercise', (t) =>
         }
       });
     }
+  })
+);
+
+builder.queryField('exercise', (t) =>
+  t.prismaField({
+    type: 'Exercise',
+    args: {
+      id: t.arg.id()
+    },
+    resolve: async (query, _parent, { id }, { session }) =>
+      await db.exercise.findFirstOrThrow({
+        ...query,
+        where: {
+          id: id,
+          userId: session!.userId
+        }
+      })
   })
 );

@@ -42,10 +42,16 @@ export type DoneExerciseSetInput = {
 
 export type Exercise = {
   __typename?: 'Exercise';
+  doneSessions: Array<WorkoutExercise>;
   id: Scalars['ID'];
   muscleGroup?: Maybe<Scalars['String']>;
   name: Scalars['String'];
   type: Scalars['String'];
+};
+
+
+export type ExerciseDoneSessionsArgs = {
+  limit?: Scalars['Int'];
 };
 
 export type ExerciseOptionInput = {
@@ -110,16 +116,15 @@ export type MutationSignUpArgs = {
 
 export type Query = {
   __typename?: 'Query';
-  lastSessions: Array<WorkoutExercise>;
+  exercise: Exercise;
   viewer?: Maybe<User>;
   workout: Workout;
   workouts: Array<Workout>;
 };
 
 
-export type QueryLastSessionsArgs = {
-  exerciseId: Scalars['ID'];
-  take?: InputMaybe<Scalars['Int']>;
+export type QueryExerciseArgs = {
+  id: Scalars['ID'];
 };
 
 
@@ -164,7 +169,6 @@ export type WorkoutExercise = {
   exercise: Exercise;
   id: Scalars['ID'];
   index: Scalars['Int'];
-  lastSession?: Maybe<WorkoutExercise>;
   sets: Array<WorkoutSet>;
   setsCount: Scalars['Int'];
 };
