@@ -1,7 +1,8 @@
 import { gql, useQuery } from '@apollo/client';
-import { FireIcon, FlagIcon, PlusCircleIcon } from '@heroicons/react/outline';
+import { FlagIcon, PlusCircleIcon } from '@heroicons/react/outline';
 import { Button } from '../shared/Button';
 import { Heading } from '../shared/Heading';
+import { InfiniteList } from '../shared/InfiniteList';
 import { Page } from '../shared/Page';
 import { WorkoutInfoFragment } from '../Workouts/ViewWorkout';
 import { EmptyWorkouts } from './EmptyWorkouts';
@@ -31,6 +32,8 @@ export function Dashboard() {
   >(query);
 
   const workouts = data?.viewer?.workouts ?? [];
+  const hasNext =
+    (data?.viewer?.workoutsCount ?? 0) > (data?.viewer?.workouts.length ?? 0);
 
   return (
     <>
@@ -51,31 +54,25 @@ export function Dashboard() {
             (workouts.length === 0 ? (
               <EmptyWorkouts />
             ) : (
-              <div className='flex flex-col space-y-4'>
-                {workouts.map((workout) => (
-                  <WorkoutCard key={workout.id} workout={workout} />
-                ))}
-              </div>
-            ))}
-
-          {!loading &&
-            data?.viewer?.workouts &&
-            data.viewer.workoutsCount > data.viewer.workouts.length && (
-              <Button
-                color='secondary'
-                onClick={() =>
+              <InfiniteList
+                length={workouts.length}
+                hasNext={hasNext}
+                next={() =>
                   fetchMore({
                     variables: {
-                      offset: data.viewer?.workouts.length,
+                      offset: data?.viewer?.workouts.length,
                       limit: 5
                     }
                   })
                 }
               >
-                <FireIcon className='w-4 h-4 mr-1' />
-                <span className='text-sm'>Ver más rutinas</span>
-              </Button>
-            )}
+                <div className='flex flex-col space-y-4'>
+                  {workouts.map((workout) => (
+                    <WorkoutCard key={workout.id} workout={workout} />
+                  ))}
+                </div>
+              </InfiniteList>
+            ))}
         </div>
       </Page>
 
