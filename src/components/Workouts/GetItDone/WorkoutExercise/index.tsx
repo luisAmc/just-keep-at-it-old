@@ -10,11 +10,14 @@ import { RepetitionSet } from './RepetitionSet';
 import { TimeSet } from './TimeSet';
 import { useAutoAnimate } from '@formkit/auto-animate/react';
 import { useFieldArray, useFormContext } from 'react-hook-form';
-import { WorkoutExerciseActions } from './WorkoutExerciseActions';
-import clsx from 'clsx';
+import {
+  WorkoutExerciseActions,
+  WorkoutExerciseActionsProps
+} from './WorkoutExerciseActions';
 import { ZoomInIcon } from '@heroicons/react/solid';
+import clsx from 'clsx';
 
-interface WorkoutExerciseProps {
+interface WorkoutExerciseProps extends WorkoutExerciseActionsProps {
   defaultOpen: boolean;
   fieldName: string;
   exercise: {
@@ -23,7 +26,6 @@ interface WorkoutExerciseProps {
     type: string;
   };
   onSelect(exerciseId: string): void;
-  onRemove(): void;
 }
 
 export function WorkoutExercise({
@@ -31,7 +33,7 @@ export function WorkoutExercise({
   fieldName,
   exercise,
   onSelect,
-  onRemove
+  ...actionProps
 }: WorkoutExerciseProps) {
   const isAerobic = exercise?.type === ExerciseType.AEROBIC;
 
@@ -65,7 +67,7 @@ export function WorkoutExercise({
                 </div>
               </Disclosure.Button>
 
-              <WorkoutExerciseActions onRemove={onRemove} />
+              <WorkoutExerciseActions {...actionProps} />
             </div>
 
             <Disclosure.Panel className='pt-4'>

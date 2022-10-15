@@ -205,6 +205,14 @@ export function GetItDone() {
                     lastSessions.open();
                   }}
                   onRemove={() => workoutExercises.remove(index)}
+                  isFirst={index === 0}
+                  isLast={index === workoutExercises.fields.length - 1}
+                  onMove={(direction: 'up' | 'down') => {
+                    workoutExercises.move(
+                      index,
+                      index + (direction === 'up' ? -1 : 1)
+                    );
+                  }}
                 />
               ))}
             </div>
