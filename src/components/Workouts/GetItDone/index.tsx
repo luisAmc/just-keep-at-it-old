@@ -3,23 +3,23 @@ import { Page } from 'src/components/shared/Page';
 import { useRouter } from 'next/router';
 import { Form, useZodForm } from 'src/components/shared/Form';
 import { array, z, literal, object, string } from 'zod';
-import { useFieldArray } from 'react-hook-form';
+import { useFieldArray, useWatch } from 'react-hook-form';
 import { Button } from 'src/components/shared/Button';
 import { CheckCircleIcon, ChevronLeftIcon } from '@heroicons/react/outline';
 import { Heading } from 'src/components/shared/Heading';
 import { WorkoutExercise } from './WorkoutExercise';
 import { useModal } from 'src/components/shared/Modal';
 import { SubmitButton } from 'src/components/shared/SubmitButton';
+import { AddExerciseModal } from './AddExerciseModal';
+import { ExerciseType } from '@prisma/client';
+import { LastExerciseSessions } from './LastExerciseSessions';
+import { useSlideOver } from 'src/components/shared/SlideOver';
+import { useEffect, useState } from 'react';
 import {
   GetItDoneQuery,
   GetWorkoutDoneMutation,
   GetWorkoutDoneMutationVariables
 } from './__generated__/index.generated';
-import { AddExerciseModal } from './AddExerciseModal';
-import { ExerciseType } from '@prisma/client';
-import { LastExerciseSessions } from './LastExerciseSessions';
-import { useSlideOver } from 'src/components/shared/SlideOver';
-import { useState } from 'react';
 
 const WorkoutExerciseFragment = gql`
   fragment WorkoutExercise_workoutExercise on WorkoutExercise {
@@ -103,19 +103,25 @@ export function GetItDone() {
     fetchPolicy: 'no-cache',
     skip: !router.isReady,
     onCompleted(data) {
-      form.reset({
-        workoutExercises: data.workout.workoutExercises
-          .sort((a, b) => (a.index < b.index ? -1 : 1))
-          .map((workoutExercise) => ({
-            workoutId: workoutExercise.id,
-            exercise: {
-              exerciseId: workoutExercise.exercise.id,
-              name: workoutExercise.exercise.name,
-              type: workoutExercise.exercise.type
-            },
-            sets: []
-          }))
-      });
+      const alreadyEditedWorkout = localStorage.getItem(`workout-${workoutId}`);
+
+      if (alreadyEditedWorkout) {
+        form.reset(JSON.parse(alreadyEditedWorkout));
+      } else {
+        form.reset({
+          workoutExercises: data.workout.workoutExercises
+            .sort((a, b) => (a.index < b.index ? -1 : 1))
+            .map((workoutExercise) => ({
+              workoutId: workoutExercise.id,
+              exercise: {
+                exerciseId: workoutExercise.exercise.id,
+                name: workoutExercise.exercise.name,
+                type: workoutExercise.exercise.type
+              },
+              sets: []
+            }))
+        });
+      }
     }
   });
 
@@ -132,10 +138,26 @@ export function GetItDone() {
     `,
     {
       onCompleted() {
+        localStorage.removeItem(`workout-${workoutId}`);
         router.push(`/workouts/${workoutId}`);
       }
     }
   );
+
+  const currentWorkoutState = useWatch({ control: form.control });
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      localStorage.setItem(
+        `workout-${workoutId}`,
+        JSON.stringify(currentWorkoutState)
+      );
+    }, 1000);
+
+    return () => {
+      clearTimeout(timeout);
+    };
+  }, [JSON.stringify(currentWorkoutState)]);
 
   async function onSubmit(input: z.infer<typeof GetItDoneSchema>) {
     const workoutExercises = [];
