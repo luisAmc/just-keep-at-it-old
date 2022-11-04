@@ -15,3 +15,10 @@ export type GetWorkoutDoneMutationVariables = Types.Exact<{
 
 
 export type GetWorkoutDoneMutation = { __typename?: 'Mutation', getWorkoutDone: { __typename?: 'Workout', id: string } };
+
+export type GetItDoneDeleteMutationVariables = Types.Exact<{
+  workoutId: Types.Scalars['ID'];
+}>;
+
+
+export type GetItDoneDeleteMutation = { __typename?: 'Mutation', deleteWorkout: { __typename?: 'Workout', id: string } };

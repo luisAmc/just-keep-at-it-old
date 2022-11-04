@@ -23,7 +23,7 @@ export function WorkoutExerciseActions({
   onMove
 }: WorkoutExerciseActionsProps) {
   return (
-    <Menu as='div' className='z-20 relative inline-block text-left'>
+    <Menu as='div' className='relative inline-block text-left'>
       <Menu.Button className='inline-flex w-full justify-center rounded-full bg-gray-100 border border-gray-200 p-2 text-sm font-medium text-gray-500 hover:bg-opacity-80 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75'>
         <DotsVerticalIcon className='w-4 h-4' />
       </Menu.Button>
@@ -37,7 +37,7 @@ export function WorkoutExerciseActions({
         leaveFrom='transform opacity-100 scale-100'
         leaveTo='transform opacity-0 scale-95'
       >
-        <Menu.Items className='absolute right-0 mt-2 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none'>
+        <Menu.Items className='z-20 absolute right-0 mt-2 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none'>
           <div className='px-1 py-1'>
             <Menu.Item disabled={isFirst}>
               {({ active, disabled }) => (
