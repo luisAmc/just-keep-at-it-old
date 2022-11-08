@@ -21,8 +21,8 @@ export function WorkoutCard({ workout }: WorkoutCardProps) {
     >
       <div
         className={clsx(
-          'px-5 py-4 bg-gray-100 rounded-md hover:cursor-pointer',
-          isDone ? 'bg-teal-100' : 'bg-gray-100'
+          'px-5 py-4 rounded-md hover:cursor-pointer transition hover:scale-[1.02]',
+          isDone ? 'bg-brand-200 text-brand-900' : 'bg-slate-600 text-slate-200'
         )}
       >
         <div className='flex items-center justify-between'>

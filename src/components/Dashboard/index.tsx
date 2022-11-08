@@ -38,9 +38,9 @@ export function Dashboard() {
   return (
     <>
       <Page>
-        <div className='flex flex-col space-y-4 pb-4'>
+        <div className='bg-white/5 rounded-lg p-4 flex flex-col space-y-4'>
           <div className='flex items-center justify-between space-x-4'>
-            <Heading>Últimas rutinas</Heading>
+            <Heading>Historial</Heading>
 
             <div>
               <Button href='/exercises' color='secondary'>
