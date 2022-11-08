@@ -163,7 +163,7 @@ function ViewWorkoutActionItem({
           href={href}
           className={clsx(
             'group flex w-full items-center rounded-md p-2 text-sm',
-            active ? 'bg-brand-500 text-white' : 'text-gray-900'
+            active ? 'bg-brand-500 text-white' : 'text-slate-900'
           )}
         >
           <Icon className='mr-2 w-4 h-4' />

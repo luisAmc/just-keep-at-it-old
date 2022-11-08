@@ -55,14 +55,14 @@ export function Modal({ title, open, onClose, children }: ModalProps) {
                 <div className='flex items-center justify-between'>
                   <Dialog.Title
                     as='h3'
-                    className='text-xl font-medium leading-6 text-gray-900'
+                    className='text-xl font-medium leading-6 text-slate-900'
                   >
                     {title}
                   </Dialog.Title>
 
                   <button
                     type='button'
-                    className='rounded-full bg-white text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:ring-offset-2'
+                    className='rounded-full bg-white text-slate-400 hover:text-slate-500 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:ring-offset-2'
                     onClick={onClose}
                   >
                     <XIcon className='h-6 w-6' />

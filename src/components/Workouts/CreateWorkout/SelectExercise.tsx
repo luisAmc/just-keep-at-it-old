@@ -34,7 +34,7 @@ export function SelectExercise({ label, name, options }: Props) {
 
   return (
     <label>
-      {label && <div className='font-medium text-gray-800 mb-1'>{label}</div>}
+      {label && <div className='font-medium text-slate-800 mb-1'>{label}</div>}
 
       <Combobox value={value} onChange={onChange}>
         <div className='relative mt-1'>
@@ -47,13 +47,13 @@ export function SelectExercise({ label, name, options }: Props) {
               }
               className={clsx(
                 'bg-white relative w-full border rounded-lg shadow-sm pl-3 pr-10 py-2 text-left cursor-default focus:outline-none focus:border-2 focus:ring-brand-500 focus:border-brand-600',
-                value ? 'text-gray-800' : 'text-gray-400'
+                value ? 'text-slate-800' : 'text-slate-400'
               )}
             />
 
             <Combobox.Button className='absolute inset-y-0 right-0 flex items-center pr-2'>
               <SelectorIcon
-                className='h-5 w-5 text-gray-400'
+                className='h-5 w-5 text-slate-400'
                 aria-hidden='true'
               />
             </Combobox.Button>
@@ -68,7 +68,7 @@ export function SelectExercise({ label, name, options }: Props) {
           >
             <Combobox.Options className='absolute z-20 mt-1 w-full bg-white shadow-lg max-h-60 rounded-md py-1 text-base ring-1 ring-black ring-opacity-5 overflow-auto focus:outline-none sm:text-sm'>
               {filteredOptions.length === 0 && query !== '' ? (
-                <div className='relative cursor-default select-none py-2 px-4 text-gray-700'>
+                <div className='relative cursor-default select-none py-2 px-4 text-slate-700'>
                   No se encontró un ejercicio.
                 </div>
               ) : (
@@ -82,7 +82,7 @@ export function SelectExercise({ label, name, options }: Props) {
                       className={({ active }) =>
                         clsx(
                           'relative cursor-default select-none py-2 pl-3 pr-9',
-                          active && !isSelected && 'text-gray-800 bg-brand-200',
+                          active && !isSelected && 'text-slate-800 bg-brand-200',
                           isSelected && 'text-white bg-brand-500'
                         )
                       }

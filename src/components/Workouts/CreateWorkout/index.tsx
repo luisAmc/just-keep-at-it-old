@@ -154,7 +154,7 @@ export function CreateWorkout() {
 
                   {workoutExercises.fields.length > 1 && (
                     <Button
-                      className='p-2.5 rounded-full bg-gray-100 text-gray-500'
+                      className='p-2.5 rounded-full bg-gray-100 text-slate-500'
                       onClick={() => workoutExercises.remove(index)}
                     >
                       <TrashIcon className='w-4 h-4' />

@@ -17,7 +17,7 @@ export function ExerciseTypeSelector({ label, options, name }: Props) {
 
   return (
     <label>
-      <div className='font-medium text-gray-800 mb-1'>{label}</div>
+      <div className='font-medium text-slate-800 mb-1'>{label}</div>
 
       <RadioGroup value={value} onChange={onChange} name={name}>
         {options.map((option) => (
@@ -72,7 +72,7 @@ export function ExerciseTypeSelector({ label, options, name }: Props) {
                         ? value === ExerciseType.AEROBIC
                           ? 'text-aerobic-900'
                           : 'text-strength-900'
-                        : 'text-gray-900',
+                        : 'text-slate-900',
                       'block text-sm font-medium'
                     )}
                   >
@@ -87,7 +87,7 @@ export function ExerciseTypeSelector({ label, options, name }: Props) {
                           ? value === ExerciseType.AEROBIC
                             ? 'text-aerobic-700'
                             : 'text-strength-700'
-                          : 'text-gray-500',
+                          : 'text-slate-500',
                         'block text-sm'
                       )}
                     >
