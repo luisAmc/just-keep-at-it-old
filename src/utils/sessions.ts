@@ -16,13 +16,9 @@ if (!process.env.COOKIE_SECRET) {
   );
 }
 
-// The session will be valid for one day
+// The session will be valid for six hours
 // The session will automatically renew when there's < 25% of it validity period
-const SESSION_TTL = 1 * 24 * 3600 * 1000;
-
-interface ReqWithSession extends IncomingMessage {
-  session: import('iron-session').IronSession;
-}
+const SESSION_TTL = 6 * 3600 * 1000;
 
 const sessionOptions: IronSessionOptions = {
   password: { 1: process.env.COOKIE_SECRET as string },
