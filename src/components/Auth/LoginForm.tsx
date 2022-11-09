@@ -89,6 +89,14 @@ export function LoginForm() {
           <div className='mt-4 flex justify-end'>
             <Link href='/auth/signup'>Crear cuenta</Link>
           </div>
+
+          <p className='text-center text-xs font-medium mt-4'>
+            Illustration by{' '}
+            <a href='https://icons8.com/illustrations/author/HzkZD6h9f9qm'>
+              AsIa Vitalyevna
+            </a>{' '}
+            from <a href='https://icons8.com/illustrations'>Ouch!</a>
+          </p>
         </div>
       </div>
     </div>
