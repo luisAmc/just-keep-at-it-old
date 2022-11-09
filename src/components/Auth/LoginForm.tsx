@@ -40,13 +40,13 @@ export function LoginForm() {
   );
 
   return (
-    <div className='h-screen sm:h-auto flex items-center justi sm:mt-6'>
+    <div className='h-screen sm:h-auto flex items-center justify-center mx-2 sm:mx-0 sm:mt-6'>
       <div className='relative mx-auto max-w-md w-full px-1'>
         <div className='absolute hidden sm:block bg-white/[.15] inset-0 -rotate-[3deg] rounded-xl'></div>
 
-        <div className='relative bg-white/[0.8] px-8 py-10 rounded-xl'>
+        <div className='relative h-full bg-white/[0.8] px-8 py-10 rounded-xl'>
           <div className='flex items-center justify-center'>
-            <Image src='/images/login.png' width={237} height={161} />
+            <Image src='/images/login.png' width={222} height={250} />
           </div>
 
           <div className='pb-6'></div>
