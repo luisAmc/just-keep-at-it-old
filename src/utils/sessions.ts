@@ -18,7 +18,7 @@ if (!process.env.COOKIE_SECRET) {
 
 // The session will be valid for six hours
 // The session will automatically renew when there's < 25% of it validity period
-const SESSION_TTL = 6 * 3600 * 1000;
+const SESSION_TTL = 6 * 3600;
 
 const sessionOptions: IronSessionOptions = {
   password: { 1: process.env.COOKIE_SECRET as string },
@@ -36,7 +36,7 @@ export async function createSession(ironSession: IronSession, user: User) {
   const session = await db.session.create({
     data: {
       userId: user.id,
-      expiresAt: new Date(Date.now() + SESSION_TTL)
+      expiresAt: addSeconds(new Date(), SESSION_TTL)
     }
   });
 
