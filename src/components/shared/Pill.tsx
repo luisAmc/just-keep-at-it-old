@@ -12,7 +12,7 @@ export function Pill({ text, color = 'mono' }: Props) {
         'inline-flex font-semibold rounded-full px-2 text-xs leading-5',
         {
           'bg-green-100 text-green-800': color === 'success',
-          'bg-gray-100 text-gray-800': color === 'mono'
+          'bg-gray-100 text-slate-800': color === 'mono'
         }
       )}
     >

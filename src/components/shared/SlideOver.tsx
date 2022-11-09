@@ -56,13 +56,13 @@ export function SlideOver({ title, open, onClose, children }: SlideOverProps) {
                   <div className='flex h-full flex-col overflow-y-scroll bg-white py-6 shadow-xl'>
                     <div className='px-4 sm:px-6'>
                       <div className='flex items-start justify-between'>
-                        <Dialog.Title className='text-lg font-medium text-gray-900'>
+                        <Dialog.Title className='text-lg font-medium text-slate-900'>
                           {title}
                         </Dialog.Title>
                         <div className='ml-3 flex h-7 items-center'>
                           <button
                             type='button'
-                            className='rounded-md bg-white text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2'
+                            className='rounded-md bg-white text-slate-400 hover:text-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2'
                             onClick={onClose}
                           >
                             <XIcon className='h-6 w-6' aria-hidden='true' />

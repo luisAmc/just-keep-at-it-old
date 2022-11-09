@@ -40,7 +40,7 @@ export function MuscleGroupSelector({ label, options, name }: Props) {
 
   return (
     <label>
-      <div className='font-medium text-gray-800 mb-1'>{label}</div>
+      <div className='font-medium text-slate-800 mb-1'>{label}</div>
 
       <RadioGroup value={value} onChange={onChange}>
         <div className='mt-4 flex justify-evenly'>

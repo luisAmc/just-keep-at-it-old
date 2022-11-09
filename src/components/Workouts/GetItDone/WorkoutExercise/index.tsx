@@ -56,9 +56,9 @@ export function WorkoutExercise({
           <>
             <div className='flex items-center space-x-4'>
               <Disclosure.Button className='flex w-full justify-between'>
-                <span className='font-base'>{exercise.name}</span>
+                <span className='text-slate-200'>{exercise.name}</span>
 
-                <div className='flex items-center space-x-2'>
+                <div className='flex items-center space-x-2 text-slate-200'>
                   <span className='text-sm'>{sets.fields.length} sets</span>
 
                   <ChevronUpIcon
@@ -74,7 +74,7 @@ export function WorkoutExercise({
               {sets.fields.length > 0 && (
                 <>
                   {isAerobic ? (
-                    <div>
+                    <div className='divide-y divide-slate-600'>
                       {sets.fields.map((field, setIndex) => (
                         <TimeSet
                           key={field.id}
@@ -84,7 +84,7 @@ export function WorkoutExercise({
                       ))}
                     </div>
                   ) : (
-                    <div>
+                    <div className='divide-y divide-slate-600'>
                       {sets.fields.map((field, setIndex) => (
                         <RepetitionSet
                           key={field.id}
@@ -100,11 +100,11 @@ export function WorkoutExercise({
               {sets.fields.length === 0 ? (
                 <button
                   type='button'
-                  className='w-full flex flex-col items-center justify-center py-5 text-gray-500 border-2 border-dashed border-gray-300 group hover:border-gray-400 rounded-lg'
+                  className='w-full flex flex-col items-center justify-center py-5 text-slate-500 border-2 border-dashed border-slate-600 group hover:border-slate-300 rounded-lg'
                   onClick={addSet}
                 >
-                  <SparklesIcon className='w-6 h-6 group-hover:text-gray-600' />
-                  <span className='font-semibold group-hover:text-gray-600'>
+                  <SparklesIcon className='w-6 h-6 group-hover:text-slate-200' />
+                  <span className='font-semibold group-hover:text-slate-200'>
                     Comenzar
                   </span>
                 </button>
@@ -117,7 +117,7 @@ export function WorkoutExercise({
 
                   <Button
                     onClick={() => onSelect(exercise.exerciseId)}
-                    className='rounded-full p-2 bg-gray-300 text-gray-600'
+                    className='rounded-full p-2 bg-slate-600 text-slate-200'
                   >
                     <ZoomInIcon className='w-4 h-4' />
                   </Button>

@@ -2,14 +2,15 @@
 @tailwind components;
 @tailwind utilities;
 
-html, body {
-    @apply bg-white font-sans antialiased;
+html,
+body {
+  @apply bg-slate-800 font-sans antialiased;
 }
 
 @layer utilities {
-    input[type="number"]::-webkit-inner-spin-button,
-    input[type="number"]::-webkit-outer-spin-button {
-        -webkit-appearance: none;
-        margin: 0;
-    }
+  input[type='number']::-webkit-inner-spin-button,
+  input[type='number']::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
 }

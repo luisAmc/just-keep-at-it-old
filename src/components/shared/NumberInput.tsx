@@ -11,7 +11,7 @@ export const NumberInput = forwardRef<HTMLInputElement, Props>(
       <label className='flex flex-col items-center justify-center'>
         <input
           className={clsx(
-            'w-12 justify-center text-xl text-center text-gray-800 bg-transparent outline-none appearance-none',
+            'w-12 justify-center text-xl text-center text-slate-200 bg-transparent outline-none appearance-none',
             'focus:border-brand-600 focus:border-b-2 focus:ring-brand-500',
             'disabled:opacity-60 disabled:bg-gray-500 disabled:bg-opacity-20'
           )}
@@ -22,7 +22,7 @@ export const NumberInput = forwardRef<HTMLInputElement, Props>(
           {...props}
         />
 
-        <div className='text-sm font-medium text-gray-800 ml-1'>{label}</div>
+        <div className='text-sm font-medium text-slate-200 ml-1'>{label}</div>
       </label>
     );
   }

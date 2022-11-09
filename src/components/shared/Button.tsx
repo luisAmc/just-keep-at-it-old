@@ -24,14 +24,14 @@ export const Button = ({
         floating && ' shadow-xl',
         variant === 'default' && {
           'bg-brand-600 text-white': color === 'primary',
-          'bg-gray-200 text-gray-900': color === 'secondary',
+          'bg-slate-500 text-slate-50': color === 'secondary',
           'bg-red-500 text-white': color === 'danger'
         },
         variant === 'dashed' && 'border-2 border-dashed',
         variant === 'dashed' && {
           'border-brand-300 text-brand-600 hover:bg-brand-50':
             color === 'primary',
-          'border-gray-300 text-gray-600 hover:bg-gray-100':
+          'bg-slate-700 text-slate-400 border-slate-500':
             color === 'secondary'
         }
       )}

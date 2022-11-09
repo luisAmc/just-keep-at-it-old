@@ -66,14 +66,14 @@ export function LastExerciseSessions({ exerciseId, open, onClose }: Props) {
                           <span className='text-xs'>mins</span>
                         </span>
 
-                        <span className='text-gray-400 text-sm'>x</span>
+                        <span className='text-slate-400 text-sm'>x</span>
 
                         <span>
                           <span className='text-base'>{set.distance}</span>
                           <span className='text-xs'>dist</span>
                         </span>
 
-                        <span className='text-gray-400 text-sm'>x</span>
+                        <span className='text-slate-400 text-sm'>x</span>
 
                         <span>
                           <span className='text-base'>{set.kcal}</span>
@@ -87,7 +87,7 @@ export function LastExerciseSessions({ exerciseId, open, onClose }: Props) {
                           <span className='text-xs'>lbs</span>
                         </span>
 
-                        <span className='text-gray-400 text-sm'>x</span>
+                        <span className='text-slate-400 text-sm'>x</span>
 
                         <span>
                           <span className='text-base'>{set.reps}</span>

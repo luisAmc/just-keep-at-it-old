@@ -21,7 +21,7 @@ export function RepetitionSet({ fieldName, remove }: Props) {
 
       <Button
         onClick={remove}
-        className='p-2 rounded-full bg-gray-100 text-gray-500 border border-gray-200'
+        className='p-2 rounded-full bg-slate-600 text-slate-200'
       >
         <TrashIcon className='w-4 h-4' />
       </Button>

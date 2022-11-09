@@ -1,30 +1,34 @@
 import clsx from 'clsx';
-import { ComponentProps, forwardRef } from 'react';
+import { ComponentProps, ComponentType, forwardRef } from 'react';
 import { FieldError } from './Form';
 
 interface Props extends ComponentProps<'input'> {
-  label: string;
+  label?: string;
+  icon?: ComponentType<any>;
 }
 
 export const Input = forwardRef<HTMLInputElement, Props>(function Input(
-  { label, type = 'text', ...props },
+  { label, type = 'text', icon: Icon, ...props },
   ref
 ) {
   return (
     <label>
-      <div className='font-medium text-gray-800 mb-1'>{label}</div>
+      {label && <div className='font-medium text-slate-800 mb-1'>{label}</div>}
 
-      <input
-        {...props}
-        ref={ref}
-        type={type}
-        placeholder={`${label}...`}
-        className={clsx(
-          'text-gray-800 w-full rounded-lg px-4 py-2 border',
-          'focus:outline-none focus:border-brand-600 focus:border-2 focus:ring-brand-500',
-          'disabled:opacity-60 disabled:bg-gray-500 disabled:bg-opacity-20'
-        )}
-      />
+      <div className='text-slate-700 w-full flex items-center rounded-lg bg-white border-2 transition focus-within:border-brand-600 focus-within:bg-white overflow-hidden'>
+        {Icon && <Icon className='w-4 h-4 ml-4' />}
+
+        <input
+          placeholder={`${label}...`}
+          ref={ref}
+          type={type}
+          className={clsx(
+            'bg-transparent w-full rounded-lg px-4 py-2 focus:outline-none',
+            'disabled:opacity-60 disabled:bg-gray-500 disabled:bg-opacity-20'
+          )}
+          {...props}
+        />
+      </div>
 
       <FieldError name={props.name} />
     </label>
