@@ -90,7 +90,7 @@ export function LoginForm() {
             <Link href='/auth/signup'>Crear cuenta</Link>
           </div>
 
-          <p className='text-center text-xs font-medium mt-4'>
+          <p className='text-center text-xs text-slate-900 font-medium mt-4'>
             Illustration by{' '}
             <a href='https://icons8.com/illustrations/author/HzkZD6h9f9qm'>
               AsIa Vitalyevna

@@ -228,107 +228,105 @@ export function GetItDone() {
 
   return (
     <Page>
-      <div className='bg-white/5 rounded-lg p-4 flex flex-col space-y-4'>
-        {loading && <div>Cargando...</div>}
+      {loading && <div>Cargando...</div>}
 
-        {workout && (
-          <div className='h-full flex flex-col space-y-4'>
-            <div className='flex items-center justify-between'>
-              <div className='flex items-center space-x-2'>
-                <Button href='/' className=''>
-                  <div className='rounded-full bg-brand-400 text-brand-800 p-2 flex items-center justify-center'>
-                    <ChevronLeftIcon className='w-4 h-4' />
-                  </div>
-                </Button>
-
-                <Heading>{workout.name}</Heading>
-              </div>
-
-              <div>
-                <Button
-                  onClick={deleteModal.open}
-                  className='p-2 rounded-full bg-rose-500 text-rose-300 focus:outline-none focus:ring-2 focus:ring-offset-white focus:ring-offset-1 hover:bg-opacity-80'
-                >
-                  <TrashIcon className='w-4 h-4' />
-                </Button>
-
-                <ConfirmationModal
-                  {...deleteModal.props}
-                  onConfirm={() => {
-                    deleteCommit({
-                      variables: {
-                        workoutId: workoutId
-                      }
-                    });
-                  }}
-                >
-                  ¿Está seguro de borrar la rutina?
-                </ConfirmationModal>
-              </div>
-            </div>
-
-            <Form form={form} onSubmit={onSubmit}>
-              <div className='flex flex-col divide-y divide-slate-600 px-4 bg-slate-700 rounded-lg'>
-                {workoutExercises.fields.map((field, index) => (
-                  <WorkoutExercise
-                    defaultOpen={index === 0}
-                    key={field.id}
-                    exercise={field.exercise}
-                    fieldName={`workoutExercises[${index}]`}
-                    onSelect={(exerciseId) => {
-                      setSelectedExerciseId(exerciseId);
-                      lastSessions.open();
-                    }}
-                    onRemove={() => workoutExercises.remove(index)}
-                    isFirst={index === 0}
-                    isLast={index === workoutExercises.fields.length - 1}
-                    onMove={(direction: 'up' | 'down') => {
-                      workoutExercises.move(
-                        index,
-                        index + (direction === 'up' ? -1 : 1)
-                      );
-                    }}
-                  />
-                ))}
-              </div>
-
-              <Button
-                variant='dashed'
-                color='secondary'
-                onClick={addExerciseModal.open}
-              >
-                <PlusIcon className='w-4 h-4 mr-1' />
-                <span>Añadir otro ejercicio</span>
+      {workout && (
+        <div className='h-full flex flex-col space-y-4'>
+          <div className='flex items-center justify-between'>
+            <div className='flex items-center space-x-2'>
+              <Button href='/' className=''>
+                <div className='rounded-full bg-brand-400 text-brand-800 p-2 flex items-center justify-center'>
+                  <ChevronLeftIcon className='w-4 h-4' />
+                </div>
               </Button>
 
-              <SubmitButton>
-                <CheckCircleIcon className='w-4 h-4 mr-1' />
-                <span>Completar</span>
-              </SubmitButton>
-            </Form>
+              <Heading>{workout.name}</Heading>
+            </div>
 
-            <AddExerciseModal
-              {...addExerciseModal.props}
-              onConfirm={(exercise: {
-                exerciseId: string;
-                name: string;
-                type: string;
-              }) => {
-                workoutExercises.append({ exercise, sets: [] });
-              }}
-            />
+            <div>
+              <Button
+                onClick={deleteModal.open}
+                className='p-2 rounded-full bg-rose-500 text-rose-300 focus:outline-none focus:ring-2 focus:ring-offset-white focus:ring-offset-1 hover:bg-opacity-80'
+              >
+                <TrashIcon className='w-4 h-4' />
+              </Button>
 
-            <LastExerciseSessions
-              exerciseId={selectedExerciseId}
-              open={lastSessions.props.open}
-              onClose={() => {
-                setSelectedExerciseId('');
-                lastSessions.close();
-              }}
-            />
+              <ConfirmationModal
+                {...deleteModal.props}
+                onConfirm={() => {
+                  deleteCommit({
+                    variables: {
+                      workoutId: workoutId
+                    }
+                  });
+                }}
+              >
+                ¿Está seguro de borrar la rutina?
+              </ConfirmationModal>
+            </div>
           </div>
-        )}
-      </div>
+
+          <Form form={form} onSubmit={onSubmit}>
+            <div className='flex flex-col divide-y divide-slate-600 px-4 bg-slate-700 rounded-lg'>
+              {workoutExercises.fields.map((field, index) => (
+                <WorkoutExercise
+                  defaultOpen={index === 0}
+                  key={field.id}
+                  exercise={field.exercise}
+                  fieldName={`workoutExercises[${index}]`}
+                  onSelect={(exerciseId) => {
+                    setSelectedExerciseId(exerciseId);
+                    lastSessions.open();
+                  }}
+                  onRemove={() => workoutExercises.remove(index)}
+                  isFirst={index === 0}
+                  isLast={index === workoutExercises.fields.length - 1}
+                  onMove={(direction: 'up' | 'down') => {
+                    workoutExercises.move(
+                      index,
+                      index + (direction === 'up' ? -1 : 1)
+                    );
+                  }}
+                />
+              ))}
+            </div>
+
+            <Button
+              variant='dashed'
+              color='secondary'
+              onClick={addExerciseModal.open}
+            >
+              <PlusIcon className='w-4 h-4 mr-1' />
+              <span>Añadir otro ejercicio</span>
+            </Button>
+
+            <SubmitButton>
+              <CheckCircleIcon className='w-4 h-4 mr-1' />
+              <span>Completar</span>
+            </SubmitButton>
+          </Form>
+
+          <AddExerciseModal
+            {...addExerciseModal.props}
+            onConfirm={(exercise: {
+              exerciseId: string;
+              name: string;
+              type: string;
+            }) => {
+              workoutExercises.append({ exercise, sets: [] });
+            }}
+          />
+
+          <LastExerciseSessions
+            exerciseId={selectedExerciseId}
+            open={lastSessions.props.open}
+            onClose={() => {
+              setSelectedExerciseId('');
+              lastSessions.close();
+            }}
+          />
+        </div>
+      )}
     </Page>
   );
 }

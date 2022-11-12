@@ -47,7 +47,7 @@ export function Exercises() {
           <Heading>Ejercicios</Heading>
         </div>
 
-        <div className='bg-gray-50 flex flex-col px-3 divide-y divide-gray-200 rounded-lg'>
+        <div className='bg-slate-700 flex flex-col px-3 divide-y divide-gray-200 rounded-lg'>
           {exercises.length > 0 &&
             exercises.map((exercise) => (
               <div

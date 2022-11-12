@@ -4,7 +4,7 @@
 
 html,
 body {
-  @apply bg-slate-800 font-sans antialiased;
+  @apply bg-slate-800 text-slate-200 font-sans antialiased;
 }
 
 @layer utilities {

@@ -38,42 +38,40 @@ export function Dashboard() {
   return (
     <>
       <Page>
-        <div className='bg-white/5 rounded-lg p-4 flex flex-col space-y-4'>
-          <div className='flex items-center justify-between space-x-4'>
-            <Heading>Historial</Heading>
+        <div className='flex items-center justify-between space-x-4'>
+          <Heading>Historial</Heading>
 
-            <div>
-              <Button href='/exercises' color='secondary'>
-                <FlagIcon className='w-4 h-4 mr-1' />
-                <span>Ver ejercicios</span>
-              </Button>
-            </div>
+          <div>
+            <Button href='/exercises' color='secondary'>
+              <FlagIcon className='w-4 h-4 mr-1' />
+              <span>Ver ejercicios</span>
+            </Button>
           </div>
-
-          {!loading &&
-            (workouts.length === 0 ? (
-              <EmptyWorkouts />
-            ) : (
-              <InfiniteList
-                length={workouts.length}
-                hasNext={hasNext}
-                next={() =>
-                  fetchMore({
-                    variables: {
-                      offset: data?.viewer?.workouts.length,
-                      limit: 5
-                    }
-                  })
-                }
-              >
-                <div className='flex flex-col space-y-4'>
-                  {workouts.map((workout) => (
-                    <WorkoutCard key={workout.id} workout={workout} />
-                  ))}
-                </div>
-              </InfiniteList>
-            ))}
         </div>
+
+        {!loading &&
+          (workouts.length === 0 ? (
+            <EmptyWorkouts />
+          ) : (
+            <InfiniteList
+              length={workouts.length}
+              hasNext={hasNext}
+              next={() =>
+                fetchMore({
+                  variables: {
+                    offset: data?.viewer?.workouts.length,
+                    limit: 5
+                  }
+                })
+              }
+            >
+              <div className='flex flex-col space-y-4'>
+                {workouts.map((workout) => (
+                  <WorkoutCard key={workout.id} workout={workout} />
+                ))}
+              </div>
+            </InfiniteList>
+          ))}
       </Page>
 
       <div className='fixed bottom-6 right-4'>

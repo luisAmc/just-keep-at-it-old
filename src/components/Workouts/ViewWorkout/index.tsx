@@ -68,84 +68,79 @@ export function ViewWorkout() {
 
   return (
     <Page>
-      <div className='bg-white/5 rounded-lg p-4 flex flex-col space-y-4'>
-        {loading && <div>Cargando...</div>}
+      {loading && <div>Cargando...</div>}
 
-        {workout && (
-          <div className='h-full flex flex-col space-y-4'>
-            <div className='flex items-center justify-between'>
-              <div className='flex items-center space-x-2'>
-                <Button href='/' className=''>
-                  <div className='rounded-full bg-brand-300 text-brand-700 p-2 flex items-center justify-center'>
-                    <ChevronLeftIcon className='w-4 h-4' />
-                  </div>
-                </Button>
+      {workout && (
+        <div className='h-full flex flex-col space-y-4'>
+          <div className='flex items-center justify-between'>
+            <div className='flex items-center space-x-2'>
+              <Button href='/' className=''>
+                <div className='rounded-full bg-brand-300 text-brand-700 p-2 flex items-center justify-center'>
+                  <ChevronLeftIcon className='w-4 h-4' />
+                </div>
+              </Button>
 
-                <Heading>{workout.name}</Heading>
-              </div>
-
-              <ViewWorkoutActions isDone={isDone} />
+              <Heading>{workout.name}</Heading>
             </div>
 
-            <div
-              className={clsx(
-                'flex flex-col space-y-3 p-4 divide-y divide-slate-500 rounded-lg',
-                isDone
-                  ? 'text-slate-200 bg-slate-600'
-                  : 'text-amber-700 bg-amber-300'
-              )}
-            >
-              {workout.workoutExercises.map((workoutExercise) => (
-                <div
-                  key={workoutExercise.id}
-                  className={clsx('py-3')}
-                >
-                  <div className='flex items-center justify-between'>
-                    <h2 className='font-medium'>
-                      {workoutExercise.exercise.name}
-                    </h2>
+            <ViewWorkoutActions isDone={isDone} />
+          </div>
 
-                    {isDone && (
-                      <span className='font-bold text-xs'>
-                        {workoutExercise.setsCount} sets
-                      </span>
-                    )}
-                  </div>
+          <div
+            className={clsx(
+              'flex flex-col space-y-3 p-4 divide-y divide-slate-500 rounded-lg',
+              isDone
+                ? 'text-slate-200 bg-slate-600'
+                : 'text-amber-700 bg-amber-300'
+            )}
+          >
+            {workout.workoutExercises.map((workoutExercise) => (
+              <div key={workoutExercise.id} className={clsx('py-3')}>
+                <div className='flex items-center justify-between'>
+                  <h2 className='font-medium'>
+                    {workoutExercise.exercise.name}
+                  </h2>
 
                   {isDone && (
-                    <div>
-                      {workoutExercise.sets.map((set) => (
-                        <div
-                          key={set.id}
-                          className='flex items-center justify-center'
-                        >
-                          {workoutExercise.exercise.type ===
-                          ExerciseType.AEROBIC ? (
-                            <AerobicSet
-                              mins={set.mins}
-                              distance={set.distance}
-                              kcal={set.kcal}
-                            />
-                          ) : (
-                            <StrengthSet lbs={set.lbs} reps={set.reps} />
-                          )}
-                        </div>
-                      ))}
-                    </div>
+                    <span className='font-bold text-xs'>
+                      {workoutExercise.setsCount} sets
+                    </span>
                   )}
                 </div>
-              ))}
-            </div>
 
-            {!isDone && (
-              <Button href={`/workouts/${router.query.workoutId}/get-it-done`}>
-                <LightningBoltIcon className='mr-1 w-4 h-4' />
-                <span>Comenzar</span>
-              </Button>
-            )}
+                {isDone && (
+                  <div>
+                    {workoutExercise.sets.map((set) => (
+                      <div
+                        key={set.id}
+                        className='flex items-center justify-center'
+                      >
+                        {workoutExercise.exercise.type ===
+                        ExerciseType.AEROBIC ? (
+                          <AerobicSet
+                            mins={set.mins}
+                            distance={set.distance}
+                            kcal={set.kcal}
+                          />
+                        ) : (
+                          <StrengthSet lbs={set.lbs} reps={set.reps} />
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            ))}
           </div>
-        )}
-      </div>
+
+          {!isDone && (
+            <Button href={`/workouts/${router.query.workoutId}/get-it-done`}>
+              <LightningBoltIcon className='mr-1 w-4 h-4' />
+              <span>Comenzar</span>
+            </Button>
+          )}
+        </div>
+      )}
     </Page>
   );
 }
