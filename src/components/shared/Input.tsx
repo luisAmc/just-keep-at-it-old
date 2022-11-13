@@ -4,18 +4,36 @@ import { FieldError } from './Form';
 
 interface Props extends ComponentProps<'input'> {
   label?: string;
+  color?: 'light' | 'dark';
   icon?: ComponentType<any>;
 }
 
 export const Input = forwardRef<HTMLInputElement, Props>(function Input(
-  { label, type = 'text', icon: Icon, ...props },
+  { label, type = 'text', icon: Icon, color = 'dark', ...props },
   ref
 ) {
   return (
     <label>
-      {label && <div className='font-medium text-slate-800 mb-1'>{label}</div>}
+      {label && (
+        <div
+          className={clsx('font-medium mb-1', {
+            'text-slate-800': color === 'light',
+            'text-slate-200': color === 'dark'
+          })}
+        >
+          {label}
+        </div>
+      )}
 
-      <div className='text-slate-700 w-full flex items-center rounded-lg bg-white border-2 transition focus-within:border-brand-600 focus-within:bg-white overflow-hidden'>
+      <div
+        className={clsx(
+          'w-full flex items-center rounded-lg border-2 border-transparent transition focus-within:border-brand-600 overflow-hidden',
+          {
+            'text-slate-700 bg-white focus-within:bg-white': color === 'light',
+            'text-slate-200 bg-slate-800': color === 'dark'
+          }
+        )}
+      >
         {Icon && <Icon className='w-4 h-4 ml-4' />}
 
         <input

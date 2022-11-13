@@ -1,4 +1,3 @@
-import { ExerciseType } from '@prisma/client';
 import { FieldError } from '../../shared/Form';
 import { RadioGroup } from '@headlessui/react';
 import { useController } from 'react-hook-form';
@@ -17,7 +16,7 @@ export function ExerciseTypeSelector({ label, options, name }: Props) {
 
   return (
     <label>
-      <div className='font-medium text-slate-800 mb-1'>{label}</div>
+      <div className='font-medium text-slate-200 mb-1'>{label}</div>
 
       <RadioGroup value={value} onChange={onChange} name={name}>
         {options.map((option) => (
@@ -26,15 +25,8 @@ export function ExerciseTypeSelector({ label, options, name }: Props) {
             value={option.value}
             className={({ checked }) =>
               clsx(
-                'relative border p-4 flex cursor-pointer focus:outline-none first:rounded-t-md last:rounded-b-md',
-                checked
-                  ? {
-                      'bg-aerobic-50 border-aerobic-200':
-                        value === ExerciseType.AEROBIC,
-                      'bg-strength-50 border-strength-200':
-                        value === ExerciseType.STRENGTH
-                    }
-                  : 'border-gray-200'
+                'relative border border-slate-700 p-4 flex cursor-pointer focus:outline-none first:rounded-t-md last:rounded-b-md',
+                checked && 'bg-slate-800'
               )
             }
           >
@@ -44,20 +36,10 @@ export function ExerciseTypeSelector({ label, options, name }: Props) {
                   <span
                     className={clsx(
                       'h-4 w-4 mt-0.5 cursor-pointer rounded-full border flex items-center justify-center',
-                      checked && 'border-transparent',
+                      active && 'ring-2 ring-offset-2 ring-brand-600',
                       checked
-                        ? {
-                            'bg-aerobic-600': value === ExerciseType.AEROBIC,
-                            'bg-strength-600': value === ExerciseType.STRENGTH
-                          }
-                        : 'bg-white border-gray-200',
-                      active && 'ring-2 ring-offset-2',
-                      active
-                        ? {
-                            'ring-aerobic-600': value === ExerciseType.AEROBIC,
-                            'ring-strength-600': value === ExerciseType.STRENGTH
-                          }
-                        : ''
+                        ? 'border-transparent bg-brand-600'
+                        : 'bg-white border-gray-200'
                     )}
                     aria-hidden='true'
                   >
@@ -68,11 +50,7 @@ export function ExerciseTypeSelector({ label, options, name }: Props) {
                   <RadioGroup.Label
                     as='span'
                     className={clsx(
-                      checked
-                        ? value === ExerciseType.AEROBIC
-                          ? 'text-aerobic-900'
-                          : 'text-strength-900'
-                        : 'text-slate-900',
+                      checked ? 'text-slate-50' : 'text-slate-400',
                       'block text-sm font-medium'
                     )}
                   >
@@ -83,12 +61,8 @@ export function ExerciseTypeSelector({ label, options, name }: Props) {
                     <RadioGroup.Description
                       as='span'
                       className={clsx(
-                        checked
-                          ? value === ExerciseType.AEROBIC
-                            ? 'text-aerobic-700'
-                            : 'text-strength-700'
-                          : 'text-slate-500',
-                        'block text-sm'
+                        'block text-sm',
+                        checked ? 'text-slate-200' : 'text-slate-500'
                       )}
                     >
                       {option.description}
