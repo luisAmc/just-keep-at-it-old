@@ -3,12 +3,12 @@ import { ExerciseType } from '@prisma/client';
 import { ErrorMessage } from 'src/components/shared/ErrorMessage';
 import { SlideOver, SlideOverProps } from 'src/components/shared/SlideOver';
 import {
-  LastExerciseSessionsQuery,
-  LastExerciseSessionsQueryVariables
-} from './__generated__/LastExerciseSessions.generated';
+  LastSessionsQuery,
+  LastSessionsQueryVariables
+} from './__generated__/LastSessionsSlideOver.generated';
 
 const query = gql`
-  query LastExerciseSessionsQuery($exerciseId: ID!, $limit: Int) {
+  query LastSessionsQuery($exerciseId: ID!, $limit: Int) {
     exercise(id: $exerciseId) {
       id
       type
@@ -32,10 +32,10 @@ interface Props extends Omit<SlideOverProps, 'title' | 'children'> {
   exerciseId: string;
 }
 
-export function LastExerciseSessions({ exerciseId, open, onClose }: Props) {
+export function LastSessionsSlideOver({ exerciseId, open, onClose }: Props) {
   const { data, loading, error } = useQuery<
-    LastExerciseSessionsQuery,
-    LastExerciseSessionsQueryVariables
+    LastSessionsQuery,
+    LastSessionsQueryVariables
   >(query, {
     skip: !exerciseId,
     variables: { exerciseId: exerciseId }
@@ -53,7 +53,7 @@ export function LastExerciseSessions({ exerciseId, open, onClose }: Props) {
       {data && (
         <div className='flex flex-col space-y-1'>
           {sessions.map((session) => (
-            <div key={session.id} className='bg-gray-100 px-4 py-3 rounded-lg'>
+            <div key={session.id} className='bg-slate-700 px-4 py-3 rounded-lg'>
               <div className='flex flex-col space-y-1'>
                 {session.sets.map((set, i) => (
                   <div key={set.id} className='flex items-center space-x-3'>

@@ -15,9 +15,8 @@ import { Heading } from 'src/components/shared/Heading';
 import { WorkoutExercise } from './WorkoutExercise';
 import { useModal } from 'src/components/shared/Modal';
 import { SubmitButton } from 'src/components/shared/SubmitButton';
-import { AddExerciseModal } from './AddExerciseModal';
 import { ExerciseType } from '@prisma/client';
-import { LastExerciseSessions } from './LastExerciseSessions';
+import { LastSessionsSlideOver } from './LastSessionsSlideOver';
 import { useSlideOver } from 'src/components/shared/SlideOver';
 import { useEffect, useState } from 'react';
 import {
@@ -28,6 +27,7 @@ import {
   GetWorkoutDoneMutationVariables
 } from './__generated__/index.generated';
 import { ConfirmationModal } from 'src/components/shared/ConfirmationModal';
+import { AddExerciseSlideOver } from './AddExerciseSlideOver';
 
 const WorkoutExerciseFragment = gql`
   fragment WorkoutExercise_workoutExercise on WorkoutExercise {
@@ -306,7 +306,7 @@ export function GetItDone() {
             </SubmitButton>
           </Form>
 
-          <AddExerciseModal
+          <AddExerciseSlideOver
             {...addExerciseModal.props}
             onConfirm={(exercise: {
               exerciseId: string;
@@ -317,7 +317,7 @@ export function GetItDone() {
             }}
           />
 
-          <LastExerciseSessions
+          <LastSessionsSlideOver
             exerciseId={selectedExerciseId}
             open={lastSessions.props.open}
             onClose={() => {

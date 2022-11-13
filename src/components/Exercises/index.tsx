@@ -9,7 +9,7 @@ import { ExercisesQuery } from './__generated__/index.generated';
 import { getMuscleGroupColors } from 'src/utils/getMuscleGroupColors';
 
 export const ExerciseInfoFragment = gql`
-  fragment Exercises_exercise on Exercise {
+  fragment Exercise_exercise on Exercise {
     id
     name
     type
@@ -22,7 +22,7 @@ export const query = gql`
     viewer {
       id
       exercises {
-        ...Exercises_exercise
+        ...Exercise_exercise
       }
     }
   }
@@ -47,7 +47,7 @@ export function Exercises() {
           <Heading>Ejercicios</Heading>
         </div>
 
-        <div className='bg-slate-700 flex flex-col px-3 divide-y divide-gray-200 rounded-lg'>
+        <div className='bg-slate-700 flex flex-col px-3 divide-y divide-gray-600 rounded-lg'>
           {exercises.length > 0 &&
             exercises.map((exercise) => (
               <div

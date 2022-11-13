@@ -3,7 +3,6 @@ import { ChevronLeftIcon, PlusIcon, TrashIcon } from '@heroicons/react/outline';
 import { useFieldArray } from 'react-hook-form';
 import { array, object, string, z } from 'zod';
 import { ExerciseInfoFragment } from '../../Exercises';
-import { Exercises_Exercise } from '../../Exercises/__generated__/index.generated';
 import { FieldError, Form, useZodForm } from '../../shared/Form';
 import { Input } from '../../shared/Input';
 import { SelectExercise } from './SelectExercise';
@@ -19,29 +18,19 @@ import { Page } from 'src/components/shared/Page';
 import { Heading } from 'src/components/shared/Heading';
 import { Button } from 'src/components/shared/Button';
 import { CheckCircleIcon } from '@heroicons/react/solid';
+import { useExercises } from 'src/components/Exercises/useExercises';
 
 export const query = gql`
   query CreateWorkoutQuery {
     viewer {
       id
       exercises {
-        ...Exercises_exercise
+        ...Exercise_exercise
       }
     }
   }
   ${ExerciseInfoFragment}
 `;
-
-function useExercises(exercises: Exercises_Exercise[] | undefined) {
-  if (!exercises || !exercises.length) return [];
-
-  return exercises.map((exercise) => ({
-    label: exercise.name,
-    value: exercise.id,
-    type: exercise.type,
-    muscleGroup: exercise.muscleGroup as string
-  }));
-}
 
 const CreateWorkoutSchema = object({
   name: string().min(1, 'Ingrese el nombre de la rutina.'),

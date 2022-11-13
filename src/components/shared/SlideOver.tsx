@@ -37,7 +37,7 @@ export function SlideOver({ title, open, onClose, children }: SlideOverProps) {
           leaveFrom='opacity-100'
           leaveTo='opacity-0'
         >
-          <div className='fixed inset-0 bg-black/20' />
+          <div className='fixed inset-0 bg-black/40' />
         </Transition.Child>
 
         <div className='fixed inset-0 overflow-hidden'>
@@ -53,16 +53,16 @@ export function SlideOver({ title, open, onClose, children }: SlideOverProps) {
                 leaveTo='translate-x-full'
               >
                 <Dialog.Panel className='pointer-events-auto w-screen max-w-md'>
-                  <div className='flex h-full flex-col overflow-y-scroll bg-white py-6 shadow-xl'>
-                    <div className='px-4 sm:px-6'>
+                  <div className='flex h-full flex-col overflow-y-scroll bg-slate-800 shadow-xl'>
+                    <div className='top-0 sticky z-20 bg-slate-800/70 backdrop-blur-sm px-4 sm:px-6 pt-6 pb-4'>
                       <div className='flex items-start justify-between'>
-                        <Dialog.Title className='text-lg font-medium text-slate-900'>
+                        <Dialog.Title className='text-lg font-medium text-slate-200'>
                           {title}
                         </Dialog.Title>
                         <div className='ml-3 flex h-7 items-center'>
                           <button
                             type='button'
-                            className='rounded-md bg-white text-slate-400 hover:text-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2'
+                            className='rounded-md bg-slate-700 text-slate-200 hover:opacity-80 focus:outline-none focus:ring-2 focus:ring-brand-500'
                             onClick={onClose}
                           >
                             <XIcon className='h-6 w-6' aria-hidden='true' />
@@ -70,7 +70,8 @@ export function SlideOver({ title, open, onClose, children }: SlideOverProps) {
                         </div>
                       </div>
                     </div>
-                    <div className='relative mt-6 flex flex-col flex-1 px-4 sm:px-6'>
+
+                    <div className='relative flex flex-col flex-1 px-4 sm:px-6'>
                       {children}
                     </div>
                   </div>
