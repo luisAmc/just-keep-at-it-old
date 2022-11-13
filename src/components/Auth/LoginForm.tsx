@@ -40,7 +40,7 @@ export function LoginForm() {
   );
 
   return (
-    <div className='h-screen sm:h-auto flex items-center justify-center mx-2 sm:mx-0 sm:mt-6'>
+    <div className='flex items-center justify-center mx-2 sm:mx-0 sm:mt-6'>
       <div className='relative mx-auto max-w-md w-full px-1'>
         <div className='absolute hidden sm:block bg-white/[.15] inset-0 -rotate-[3deg] rounded-xl'></div>
 
