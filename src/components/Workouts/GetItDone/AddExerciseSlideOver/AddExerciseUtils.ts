@@ -15,7 +15,7 @@ export function useExerciseCategories(exercises?: Exercise_Exercise[]) {
 
     const category = categories.get(categoryKey) ?? {
       id: categoryKey,
-      name: useCategoryName(categoryKey),
+      name: getCategoryName(categoryKey),
       exercises: []
     };
 
@@ -29,7 +29,7 @@ export function useExerciseCategories(exercises?: Exercise_Exercise[]) {
   return Array.from(categories.values());
 }
 
-export function useCategoryName(name: string) {
+export function getCategoryName(name: string) {
   switch (name) {
     case MuscleGroup.ARMS:
       return 'Brazos';

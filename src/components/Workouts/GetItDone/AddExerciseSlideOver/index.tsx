@@ -24,10 +24,7 @@ export function AddExerciseSlideOver({ onConfirm, ...slideOverProps }: Props) {
     ${ExerciseInfoFragment}
   `);
 
-  const exerciseCategories = useMemo(
-    () => useExerciseCategories(data?.viewer?.exercises),
-    [data?.viewer?.exercises]
-  );
+  const exerciseCategories = useExerciseCategories(data?.viewer?.exercises);
 
   return (
     <SlideOver title='Anadir un ejercicio' {...slideOverProps}>
