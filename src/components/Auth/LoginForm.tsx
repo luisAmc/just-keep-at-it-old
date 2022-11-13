@@ -71,6 +71,7 @@ export function LoginForm() {
               autoFocus
               icon={UserIcon}
               placeholder='Usuario'
+              color='light'
             />
 
             <Input
@@ -78,6 +79,7 @@ export function LoginForm() {
               icon={LockClosedIcon}
               type='password'
               placeholder='Contraseña'
+              color='light'
             />
 
             <SubmitButton>
