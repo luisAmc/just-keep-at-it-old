@@ -28,6 +28,7 @@ import {
 } from './__generated__/index.generated';
 import { ConfirmationModal } from 'src/components/shared/ConfirmationModal';
 import { AddExerciseSlideOver } from './AddExerciseSlideOver';
+import { MoveExerciseDirection } from './WorkoutExercise/WorkoutExerciseActions';
 
 const WorkoutExerciseFragment = gql`
   fragment WorkoutExercise_workoutExercise on WorkoutExercise {
@@ -270,7 +271,6 @@ export function GetItDone() {
             <div className='flex flex-col divide-y divide-slate-600 px-4 bg-slate-700 rounded-lg'>
               {workoutExercises.fields.map((field, index) => (
                 <WorkoutExercise
-                  defaultOpen={index === 0}
                   key={field.id}
                   exercise={field.exercise}
                   fieldName={`workoutExercises[${index}]`}
@@ -281,11 +281,20 @@ export function GetItDone() {
                   onRemove={() => workoutExercises.remove(index)}
                   isFirst={index === 0}
                   isLast={index === workoutExercises.fields.length - 1}
-                  onMove={(direction: 'up' | 'down') => {
-                    workoutExercises.move(
-                      index,
-                      index + (direction === 'up' ? -1 : 1)
-                    );
+                  onMove={(direction: MoveExerciseDirection) => {
+                    if (direction === 'first') {
+                      workoutExercises.move(index, 0);
+                    } else if (direction === 'last') {
+                      workoutExercises.move(
+                        index,
+                        workoutExercises.fields.length - 1
+                      );
+                    } else {
+                      workoutExercises.move(
+                        index,
+                        index + (direction === 'up' ? -1 : 1)
+                      );
+                    }
                   }}
                 />
               ))}

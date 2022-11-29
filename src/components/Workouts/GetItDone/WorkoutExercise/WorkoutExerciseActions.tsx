@@ -2,6 +2,8 @@ import { Button } from 'src/components/shared/Button';
 import {
   ArrowDownIcon,
   ArrowUpIcon,
+  ChevronDoubleDownIcon,
+  ChevronDoubleUpIcon,
   DotsVerticalIcon,
   TrashIcon
 } from '@heroicons/react/outline';
@@ -9,11 +11,13 @@ import { Fragment } from 'react';
 import { Menu, Transition } from '@headlessui/react';
 import clsx from 'clsx';
 
+export type MoveExerciseDirection = 'up' | 'down' | 'first' | 'last';
+
 export interface WorkoutExerciseActionsProps {
   isFirst: boolean;
   isLast: boolean;
   onRemove(): void;
-  onMove(direction: 'up' | 'down'): void;
+  onMove(direction: MoveExerciseDirection): void;
 }
 
 export function WorkoutExerciseActions({
@@ -28,6 +32,18 @@ export function WorkoutExerciseActions({
         <DotsVerticalIcon className='w-4 h-4' />
       </Menu.Button>
 
+      <Transition.Child
+        as={Fragment}
+        enter='ease-out duration-300'
+        enterFrom='opacity-0'
+        enterTo='opacity-100'
+        leave='ease-in duration-200'
+        leaveFrom='opacity-100'
+        leaveTo='opacity-0'
+      >
+        <div className='fixed inset-0 bg-black bg-opacity-40' />
+      </Transition.Child>
+
       <Transition
         as={Fragment}
         enter='transition ease-out duration-100'
@@ -37,8 +53,24 @@ export function WorkoutExerciseActions({
         leaveFrom='transform opacity-100 scale-100'
         leaveTo='transform opacity-0 scale-95'
       >
-        <Menu.Items className='z-20 absolute right-0 mt-2 w-56 origin-top-right divide-y divide-slate-300 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none'>
+        <Menu.Items className='z-20 absolute right-0 -mt-8 w-56 origin-top-right divide-y divide-slate-300 rounded-md bg-slate-700 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none'>
           <div className='px-1 py-1'>
+            <Menu.Item disabled={isFirst}>
+              {({ active, disabled }) => (
+                <Button
+                  onClick={() => onMove('first')}
+                  className={clsx(
+                    'group flex w-full items-center rounded-md px-2 py-2 text-sm',
+                    active && 'bg-gray-500 text-white',
+                    disabled && 'text-slate-600 cursor-not-allowed'
+                  )}
+                >
+                  <ChevronDoubleUpIcon className='mr-2 w-4 h-4' />
+                  <span>Mover al inicio</span>
+                </Button>
+              )}
+            </Menu.Item>
+
             <Menu.Item disabled={isFirst}>
               {({ active, disabled }) => (
                 <Button
@@ -46,7 +78,7 @@ export function WorkoutExerciseActions({
                   className={clsx(
                     'group flex w-full items-center rounded-md px-2 py-2 text-sm',
                     active && 'bg-gray-500 text-white',
-                    disabled && 'text-slate-200 cursor-not-allowed'
+                    disabled && 'text-slate-600 cursor-not-allowed'
                   )}
                 >
                   <ArrowUpIcon className='mr-2 w-4 h-4' />
@@ -62,11 +94,27 @@ export function WorkoutExerciseActions({
                   className={clsx(
                     'group flex w-full items-center rounded-md px-2 py-2 text-sm',
                     active && 'bg-gray-500 text-white',
-                    disabled && 'text-slate-200 cursor-not-allowed'
+                    disabled && 'text-slate-600 cursor-not-allowed'
                   )}
                 >
                   <ArrowDownIcon className='mr-2 w-4 h-4' />
                   <span>Mover abajo</span>
+                </Button>
+              )}
+            </Menu.Item>
+
+            <Menu.Item disabled={isLast}>
+              {({ active, disabled }) => (
+                <Button
+                  onClick={() => onMove('last')}
+                  className={clsx(
+                    'group flex w-full items-center rounded-md px-2 py-2 text-sm',
+                    active && 'bg-gray-500 text-white',
+                    disabled && 'text-slate-600 cursor-not-allowed'
+                  )}
+                >
+                  <ChevronDoubleDownIcon className='mr-2 w-4 h-4' />
+                  <span>Mover al final</span>
                 </Button>
               )}
             </Menu.Item>
@@ -79,11 +127,11 @@ export function WorkoutExerciseActions({
                   onClick={onRemove}
                   className={clsx(
                     'group flex w-full items-center rounded-md px-2 py-2 text-sm',
-                    active ? 'bg-red-500 text-white' : 'text-red-500'
+                    active ? 'bg-red-500 text-red-50' : 'text-white'
                   )}
                 >
-                  <TrashIcon className='mr-2 w-4 h-4' />
-                  <span>Borrar</span>
+                  <TrashIcon className='mr-2 w-4 h-4 text-red-500' />
+                  <span>Remover ejercicio</span>
                 </Button>
               )}
             </Menu.Item>
