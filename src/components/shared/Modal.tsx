@@ -51,7 +51,7 @@ export function Modal({ title, open, onClose, children }: ModalProps) {
               leaveFrom='opacity-100 scale-100'
               leaveTo='opacity-0 scale-95'
             >
-              <Dialog.Panel className='flex flex-col space-y-4 w-full max-w-md transform rounded-xl bg-white p-6 text-left align-middle shadow-xl transition-all'>
+              <Dialog.Panel className='flex flex-col space-y-4 w-full max-w-md transform rounded-xl bg-slate-600 p-6 text-left align-middle shadow-xl transition-all'>
                 <div className='flex items-center justify-between'>
                   <Dialog.Title
                     as='h3'
@@ -62,7 +62,7 @@ export function Modal({ title, open, onClose, children }: ModalProps) {
 
                   <button
                     type='button'
-                    className='rounded-full bg-white text-slate-400 hover:text-slate-500 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:ring-offset-2'
+                    className='rounded-full bg-slate-600 text-slate-50 hover:text-slate-500 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2 focus:ring-offset-slate-400'
                     onClick={onClose}
                   >
                     <XIcon className='h-6 w-6' />
