@@ -18,7 +18,6 @@ import { ZoomInIcon } from '@heroicons/react/solid';
 import clsx from 'clsx';
 
 interface WorkoutExerciseProps extends WorkoutExerciseActionsProps {
-  defaultOpen: boolean;
   fieldName: string;
   exercise: {
     exerciseId: string;
@@ -29,7 +28,6 @@ interface WorkoutExerciseProps extends WorkoutExerciseActionsProps {
 }
 
 export function WorkoutExercise({
-  defaultOpen,
   fieldName,
   exercise,
   onSelect,
@@ -51,7 +49,7 @@ export function WorkoutExercise({
 
   return (
     <div ref={animateParent} className='py-4'>
-      <Disclosure defaultOpen={defaultOpen}>
+      <Disclosure defaultOpen={true}>
         {({ open }) => (
           <>
             <div className='flex items-center space-x-4'>
