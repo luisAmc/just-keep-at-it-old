@@ -47,6 +47,7 @@ export function Modal({ title, open, onClose, children }: ModalProps) {
           <div className='fixed inset-0 overflow-y-auto'>
             <div className='flex min-h-full items-center justify-center my-4 text-center'>
               <motion.div
+                className='w-full'
                 transition={{ duration: 0.2 }}
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
