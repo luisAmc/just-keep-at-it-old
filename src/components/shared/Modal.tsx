@@ -30,13 +30,14 @@ export function Modal({ title, open, onClose, children }: ModalProps) {
     <AnimatePresence>
       {open && (
         <Dialog
-          open={open}
           as='div'
-          className='relative z-10'
+          static
+          className='fixed inset-0 z-10 overflow-y-auto'
+          open={open}
           onClose={onClose}
         >
           <motion.div
-            transition={{ duration: 0.2 }}
+            transition={{ duration: 0.15 }}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -44,15 +45,21 @@ export function Modal({ title, open, onClose, children }: ModalProps) {
             <div className='fixed inset-0 bg-black bg-opacity-40' />
           </motion.div>
 
-          <div className='fixed inset-0 overflow-y-auto'>
-            <div className='flex min-h-full items-center justify-center my-4 text-center'>
-              <motion.div
-                className='w-full'
-                transition={{ duration: 0.2 }}
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.95 }}
-              >
+          <span
+            className='inline-block h-screen align-middle'
+            aria-hidden='true'
+          >
+            &#8203;
+          </span>
+
+          <motion.div
+            transition={{ duration: 0.15 }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+          >
+            <div className='fixed inset-0 overflow-y-auto'>
+              <div className='min-h-full flex items-center justify-center p-4 text-center'>
                 <Dialog.Panel className='flex flex-col space-y-4 w-full max-w-md transform rounded-xl bg-slate-600 p-6 text-left align-middle shadow-xl transition-all'>
                   <div className='flex items-center justify-between'>
                     <Dialog.Title
@@ -73,9 +80,9 @@ export function Modal({ title, open, onClose, children }: ModalProps) {
 
                   <div className='mt-2'>{children}</div>
                 </Dialog.Panel>
-              </motion.div>
+              </div>
             </div>
-          </div>
+          </motion.div>
         </Dialog>
       )}
     </AnimatePresence>
