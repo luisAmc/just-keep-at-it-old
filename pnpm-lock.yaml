@@ -24,6 +24,7 @@ specifiers:
   date-fns: ^2.29.3
   eslint: 8.17.0
   eslint-config-next: 12.1.6
+  framer-motion: ^7.6.19
   graphql: ^16.6.0
   graphql-helix: ^1.13.0
   iron-session: ^6.3.1
@@ -58,6 +59,7 @@ dependencies:
   '@prisma/client': 4.7.1_prisma@4.7.1
   clsx: 1.2.1
   date-fns: 2.29.3
+  framer-motion: 7.6.19_ef5jwxihqo6n7gxfmzogljlgcm
   graphql: 16.6.0
   graphql-helix: 1.13.0_graphql@16.6.0
   iron-session: 6.3.1_next@12.1.6
@@ -824,6 +826,19 @@ packages:
     dependencies:
       '@jridgewell/trace-mapping': 0.3.9
 
+  /@emotion/is-prop-valid/0.8.8:
+    resolution: {integrity: sha512-u5WtneEAr5IDG2Wv65yhunPSMLIpuKsbuOktRojfrEiEvRyC85LgPMZI63cr7NUqT8ZIGdSVg8ZKGxIug4lXcA==}
+    requiresBuild: true
+    dependencies:
+      '@emotion/memoize': 0.7.4
+    dev: false
+    optional: true
+
+  /@emotion/memoize/0.7.4:
+    resolution: {integrity: sha512-Ja/Vfqe3HpuzRsG1oBtWTHk2PGZ7GR+2Vz5iYGelAw8dx32K0y7PjVuxK6z1nMpZOqAFsRUPCkK1YjJ56qJlgw==}
+    dev: false
+    optional: true
+
   /@eslint/eslintrc/1.3.1:
     resolution: {integrity: sha512-OhSY22oQQdw3zgPOOwdoj01l/Dzl1Z+xyUP33tkSN+aqyEhymJCcPHyXt+ylW8FSe0TfRC2VG+ROQOapD0aZSQ==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
@@ -1512,6 +1527,53 @@ packages:
     dependencies:
       '@jridgewell/resolve-uri': 3.1.0
       '@jridgewell/sourcemap-codec': 1.4.14
+
+  /@motionone/animation/10.15.0:
+    resolution: {integrity: sha512-FllQ9ogoATxEEiq7TFKuh2uPEvcw9658IYCpOTGnu53HYCrFQS61eKwsn7TqR4NEnTql2I+NGNipFqw3UZo1AA==}
+    dependencies:
+      '@motionone/easing': 10.15.0
+      '@motionone/types': 10.15.0
+      '@motionone/utils': 10.15.0
+      tslib: 2.4.1
+    dev: false
+
+  /@motionone/dom/10.13.1:
+    resolution: {integrity: sha512-zjfX+AGMIt/fIqd/SL1Lj93S6AiJsEA3oc5M9VkUr+Gz+juRmYN1vfvZd6MvEkSqEjwPQgcjN7rGZHrDB9APfQ==}
+    dependencies:
+      '@motionone/animation': 10.15.0
+      '@motionone/generators': 10.15.0
+      '@motionone/types': 10.15.0
+      '@motionone/utils': 10.15.0
+      hey-listen: 1.0.8
+      tslib: 2.4.1
+    dev: false
+
+  /@motionone/easing/10.15.0:
+    resolution: {integrity: sha512-VA1a0sa81euSeki2JgVl/t4MygeqfJn7GsMfewoGCln7gp/iZR12HbSo6RaWsHxPkUBRxSRUo+8zeuYRxv6oZQ==}
+    dependencies:
+      '@motionone/utils': 10.15.0
+      tslib: 2.4.1
+    dev: false
+
+  /@motionone/generators/10.15.0:
+    resolution: {integrity: sha512-bE4lEd/RIQ+DwlLC2IfF/FBOSPwjxV5AbwQuatMg/bWtndps66YMvX1NbvD0wzg+EIpPwi8i8YnYy7usdb8apg==}
+    dependencies:
+      '@motionone/types': 10.15.0
+      '@motionone/utils': 10.15.0
+      tslib: 2.4.1
+    dev: false
+
+  /@motionone/types/10.15.0:
+    resolution: {integrity: sha512-uNjSt2/Ud1Ld5TuZ98empFFgHNPysIcUQE3F/YuWxDQR/UO86sCqvnAHBkxUhpc2FVE6hb+3RpFmFxAUDwn11w==}
+    dev: false
+
+  /@motionone/utils/10.15.0:
+    resolution: {integrity: sha512-M1PCJ533xpjuEmhTVZYw+KPU6/lDZP9d2NpJDcMMUH/TYPnL3w9CYCTn+b4KKdSUJB2KO7t3xfspJsLqj35SRQ==}
+    dependencies:
+      '@motionone/types': 10.15.0
+      hey-listen: 1.0.8
+      tslib: 2.4.1
+    dev: false
 
   /@n1ru4l/graphql-live-query/0.10.0_graphql@16.6.0:
     resolution: {integrity: sha512-qZ7OHH/NB0NcG/Xa7irzgjE63UH0CkofZT0Bw4Ko6iRFagPRHBM8RgFXwTt/6JbFGIEUS4STRtaFoc/Eq/ZtzQ==}
@@ -3490,6 +3552,29 @@ packages:
     resolution: {integrity: sha512-MhLuK+2gUcnZe8ZHlaaINnQLl0xRIGRfcGk2yl8xoQAfHrSsL3rYu6FCmBdkdbhc9EPlwyGHewaRsvwRMJtAlA==}
     dev: true
 
+  /framer-motion/7.6.19_ef5jwxihqo6n7gxfmzogljlgcm:
+    resolution: {integrity: sha512-U+ogwGwNw6Y+pdq6GZB5xvnvLDlq3FTmcKaG5MCUjXuqRLrjKbKTqN4iwZISv3ajwUfgNHM6+tu31LRbYfF9YQ==}
+    peerDependencies:
+      react: ^18.0.0
+      react-dom: ^18.0.0
+    dependencies:
+      '@motionone/dom': 10.13.1
+      framesync: 6.1.2
+      hey-listen: 1.0.8
+      react: 18.1.0
+      react-dom: 18.1.0_react@18.1.0
+      style-value-types: 5.1.2
+      tslib: 2.4.0
+    optionalDependencies:
+      '@emotion/is-prop-valid': 0.8.8
+    dev: false
+
+  /framesync/6.1.2:
+    resolution: {integrity: sha512-jBTqhX6KaQVDyus8muwZbBeGGP0XgujBRbQ7gM7BRdS3CadCZIHiawyzYLnafYcvZIh5j8WE7cxZKFn7dXhu9g==}
+    dependencies:
+      tslib: 2.4.0
+    dev: false
+
   /fs.realpath/1.0.0:
     resolution: {integrity: sha512-OO0pH2lK6a0hZnAdau5ItzHPI6pUlvI7jMVnxUQRtw4owF2wk8lOSabtGDCTP4Ggrg2MbGnWO9X8K1t4+fGMDw==}
 
@@ -3745,6 +3830,10 @@ packages:
     dependencies:
       capital-case: 1.0.4
       tslib: 2.4.0
+    dev: false
+
+  /hey-listen/1.0.8:
+    resolution: {integrity: sha512-COpmrF2NOg4TBWUJ5UVyaCU2A88wEMkUPK4hNqyCkqHbxT92BbvfjoSozkAIIm6XhicGlJHhFdullInrdhwU8Q==}
     dev: false
 
   /hoist-non-react-statics/3.3.2:
@@ -5465,6 +5554,13 @@ packages:
     resolution: {integrity: sha512-6fPc+R4ihwqP6N/aIv2f1gMH8lOVtWQHoqC4yK6oSDVVocumAsfCqjkXnqiYMhmMwS/mEHLp7Vehlt3ql6lEig==}
     engines: {node: '>=8'}
     dev: true
+
+  /style-value-types/5.1.2:
+    resolution: {integrity: sha512-Vs9fNreYF9j6W2VvuDTP7kepALi7sk0xtk2Tu8Yxi9UoajJdEVpNpCov0HsLTqXvNGKX+Uv09pkozVITi1jf3Q==}
+    dependencies:
+      hey-listen: 1.0.8
+      tslib: 2.4.0
+    dev: false
 
   /styled-jsx/5.0.2_react@18.1.0:
     resolution: {integrity: sha512-LqPQrbBh3egD57NBcHET4qcgshPks+yblyhPlH2GY8oaDgKs8SK4C3dBh3oSJjgzJ3G5t1SYEZGHkP+QEpX9EQ==}
