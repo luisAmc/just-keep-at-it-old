@@ -63,15 +63,14 @@ export function WorkoutExercise({
                 >
                   {exercise.name}
                 </button>
-                {/* <span className='text-slate-200'>{exercise.name}</span> */}
 
-                <div className='flex items-center space-x-2 text-slate-200'>
+                <Disclosure.Button className='flex items-center space-x-2 text-slate-200 hover:bg-white/5 px-2 py-1 rounded-lg transition'>
                   <span className='text-sm'>{sets.fields.length} sets</span>
 
                   <ChevronUpIcon
                     className={clsx('w-4 h-4', open && 'transform rotate-180')}
                   />
-                </div>
+                </Disclosure.Button>
               </div>
 
               <WorkoutExerciseActions
