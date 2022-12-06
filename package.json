@@ -16,21 +16,24 @@
     "clean:codegen": "trash \"./src/**/__generated__/**\"",
     "postinstall": "prisma generate"
   },
+  "prisma": {
+    "seed": "ts-node ./prisma/seed.ts"
+  },
   "dependencies": {
     "@apollo/client": "^3.7.1",
     "@formkit/auto-animate": "1.0.0-beta.3",
-    "@graphql-codegen/cli": "^2.13.11",
+    "@graphql-codegen/cli": "^2.15.0",
     "@graphql-codegen/near-operation-file-preset": "^2.4.4",
-    "@graphql-codegen/typescript": "^2.8.1",
-    "@graphql-codegen/typescript-operations": "^2.5.6",
+    "@graphql-codegen/typescript": "^2.8.3",
+    "@graphql-codegen/typescript-operations": "^2.5.8",
     "@headlessui/react": "^1.7.4",
     "@heroicons/react": "^1.0.6",
     "@hookform/resolvers": "^2.9.10",
-    "@pothos/core": "^3.22.9",
-    "@pothos/plugin-prisma": "^3.35.8",
+    "@pothos/core": "^3.23.1",
+    "@pothos/plugin-prisma": "^3.37.0",
     "@pothos/plugin-scope-auth": "^3.16.0",
     "@pothos/plugin-simple-objects": "^3.6.7",
-    "@prisma/client": "^4.5.0",
+    "@prisma/client": "^4.7.1",
     "clsx": "^1.2.1",
     "date-fns": "^2.29.3",
     "graphql": "^16.6.0",
@@ -39,24 +42,24 @@
     "next": "12.1.6",
     "react": "18.1.0",
     "react-dom": "18.1.0",
-    "react-hook-form": "^7.39.1",
+    "react-hook-form": "^7.40.0",
     "secure-password": "^4.0.0",
     "zod": "^3.19.1"
   },
   "devDependencies": {
     "@types/node": "^17.0.45",
-    "@types/react": "^18.0.25",
+    "@types/react": "^18.0.26",
     "@types/secure-password": "^3.1.1",
     "autoprefixer": "^10.4.13",
-    "concurrently": "^7.5.0",
+    "concurrently": "^7.6.0",
     "eslint": "8.17.0",
     "eslint-config-next": "12.1.6",
-    "postcss": "^8.4.18",
-    "prisma": "^4.5.0",
-    "tailwindcss": "^3.2.2",
+    "postcss": "^8.4.19",
+    "prisma": "^4.7.1",
+    "tailwindcss": "^3.2.4",
     "trash-cli": "^5.0.0",
     "ts-node": "^10.9.1",
-    "tsconfig-paths": "^4.1.0",
-    "typescript": "^4.8.4"
+    "tsconfig-paths": "^4.1.1",
+    "typescript": "^4.9.3"
   }
 }

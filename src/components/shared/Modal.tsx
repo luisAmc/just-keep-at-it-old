@@ -55,7 +55,7 @@ export function Modal({ title, open, onClose, children }: ModalProps) {
                 <div className='flex items-center justify-between'>
                   <Dialog.Title
                     as='h3'
-                    className='text-xl font-medium leading-6 text-slate-900'
+                    className='text-xl font-medium leading-6 text-slate-50'
                   >
                     {title}
                   </Dialog.Title>
