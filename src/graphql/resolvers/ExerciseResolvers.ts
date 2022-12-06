@@ -9,6 +9,20 @@ builder.prismaObject('Exercise', {
     name: t.exposeString('name'),
     type: t.exposeString('type'),
     muscleGroup: t.exposeString('muscleGroup', { nullable: true }),
+    lastSession: t.prismaField({
+      type: 'WorkoutExercise',
+      nullable: true,
+      resolve: (query, parent) => {
+        return db.workoutExercise.findFirst({
+          ...query,
+          where: {
+            exerciseId: parent.id,
+            workout: { status: { equals: WorkoutStatus.DONE } }
+          },
+          take: 1
+        });
+      }
+    }),
     doneSessions: t.relation('workoutExercises', {
       args: {
         limit: t.arg.int({ defaultValue: 10 })

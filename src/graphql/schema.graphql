@@ -30,6 +30,7 @@ input DoneExerciseSetInput {
 type Exercise {
   doneSessions(limit: Int! = 10): [WorkoutExercise!]!
   id: ID!
+  lastSession: WorkoutExercise
   muscleGroup: String
   name: String!
   type: String!
@@ -96,6 +97,7 @@ type WorkoutExercise {
   index: Int!
   sets: [WorkoutSet!]!
   setsCount: Int!
+  workout: Workout!
 }
 
 type WorkoutSet {

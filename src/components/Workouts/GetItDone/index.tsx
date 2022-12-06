@@ -16,8 +16,6 @@ import { WorkoutExercise } from './WorkoutExercise';
 import { useModal } from 'src/components/shared/Modal';
 import { SubmitButton } from 'src/components/shared/SubmitButton';
 import { ExerciseType } from '@prisma/client';
-import { LastSessionsSlideOver } from './LastSessionsSlideOver';
-import { useSlideOver } from 'src/components/shared/SlideOver';
 import { useEffect, useState } from 'react';
 import {
   GetItDoneDeleteMutation,
@@ -29,6 +27,7 @@ import {
 import { ConfirmationModal } from 'src/components/shared/ConfirmationModal';
 import { AddExerciseSlideOver } from './AddExerciseSlideOver';
 import { MoveExerciseDirection } from './WorkoutExercise/WorkoutExerciseActions';
+import { ExerciseModal, useExerciseModal } from './ExerciseModal';
 
 const WorkoutExerciseFragment = gql`
   fragment WorkoutExercise_workoutExercise on WorkoutExercise {
@@ -38,6 +37,16 @@ const WorkoutExerciseFragment = gql`
       id
       name
       type
+      lastSession {
+        sets {
+          id
+          mins
+          distance
+          kcal
+          lbs
+          reps
+        }
+      }
     }
     sets {
       id
@@ -97,7 +106,8 @@ export function GetItDone() {
   const deleteModal = useModal();
 
   const addExerciseModal = useModal();
-  const lastSessions = useSlideOver();
+  // const lastSessions = useSlideOver();
+  const exerciseModal = useExerciseModal();
 
   const [selectedExerciseId, setSelectedExerciseId] = useState('');
 
@@ -274,10 +284,11 @@ export function GetItDone() {
                   key={field.id}
                   exercise={field.exercise}
                   fieldName={`workoutExercises[${index}]`}
-                  onSelect={(exerciseId) => {
-                    setSelectedExerciseId(exerciseId);
-                    lastSessions.open();
-                  }}
+                  // onSelect={(exerciseId) => {
+                  //   setSelectedExerciseId(exerciseId);
+                  //   lastSessions.open();
+                  // }}
+                  onSelect={(id) => exerciseModal.setExerciseId(id)}
                   onRemove={() => workoutExercises.remove(index)}
                   isFirst={index === 0}
                   isLast={index === workoutExercises.fields.length - 1}
@@ -326,14 +337,16 @@ export function GetItDone() {
             }}
           />
 
-          <LastSessionsSlideOver
+          {/* <LastSessionsSlideOver
             exerciseId={selectedExerciseId}
             open={lastSessions.props.open}
             onClose={() => {
               setSelectedExerciseId('');
               lastSessions.close();
             }}
-          />
+          /> */}
+
+          <ExerciseModal {...exerciseModal.props} />
         </div>
       )}
     </Page>

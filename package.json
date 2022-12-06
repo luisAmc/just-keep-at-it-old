@@ -16,6 +16,9 @@
     "clean:codegen": "trash \"./src/**/__generated__/**\"",
     "postinstall": "prisma generate"
   },
+  "prisma": {
+    "seed": "ts-node ./prisma/seed.ts"
+  },
   "dependencies": {
     "@apollo/client": "^3.7.1",
     "@formkit/auto-animate": "1.0.0-beta.3",

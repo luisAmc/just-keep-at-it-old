@@ -44,6 +44,7 @@ export type Exercise = {
   __typename?: 'Exercise';
   doneSessions: Array<WorkoutExercise>;
   id: Scalars['ID'];
+  lastSession?: Maybe<WorkoutExercise>;
   muscleGroup?: Maybe<Scalars['String']>;
   name: Scalars['String'];
   type: Scalars['String'];
@@ -171,6 +172,7 @@ export type WorkoutExercise = {
   index: Scalars['Int'];
   sets: Array<WorkoutSet>;
   setsCount: Scalars['Int'];
+  workout: Workout;
 };
 
 export type WorkoutSet = {

@@ -11,6 +11,7 @@ builder.prismaObject('WorkoutExercise', {
         orderBy: { index: 'asc' }
       }
     }),
+    workout: t.relation('workout'),
     exercise: t.relation('exercise'),
     createdAt: t.expose('createdAt', { type: 'DateTime' })
   })

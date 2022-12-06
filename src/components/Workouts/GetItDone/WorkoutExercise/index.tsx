@@ -53,8 +53,15 @@ export function WorkoutExercise({
         {({ open }) => (
           <>
             <div className='flex items-center space-x-4'>
-              <Disclosure.Button className='flex w-full justify-between'>
-                <span className='text-slate-200'>{exercise.name}</span>
+              <div className='flex w-full justify-between'>
+                {/* <Disclosure.Button className='flex w-full justify-between'> */}
+                <button
+                  onClick={() => onSelect(exercise.exerciseId)}
+                  className='text-slate-200'
+                >
+                  {exercise.name}
+                </button>
+                {/* <span className='text-slate-200'>{exercise.name}</span> */}
 
                 <div className='flex items-center space-x-2 text-slate-200'>
                   <span className='text-sm'>{sets.fields.length} sets</span>
@@ -63,7 +70,8 @@ export function WorkoutExercise({
                     className={clsx('w-4 h-4', open && 'transform rotate-180')}
                   />
                 </div>
-              </Disclosure.Button>
+              </div>
+              {/* </Disclosure.Button> */}
 
               <WorkoutExerciseActions {...actionProps} />
             </div>
