@@ -1,14 +1,14 @@
 import { gql, useQuery } from '@apollo/client';
 import { ExerciseType } from '@prisma/client';
 import { useState } from 'react';
-import { Modal, ModalProps } from 'src/components/shared/Modal';
+import { SlideOver, SlideOverProps } from 'src/components/shared/SlideOver';
 import { formatDate } from 'src/utils/transforms';
 import {
-  ExerciseModalQuery,
-  ExerciseModalQueryVariables
-} from './__generated__/ExerciseModal.generated';
+  ExerciseSessionHistoryQuery,
+  ExerciseSessionHistoryQueryVariables
+} from './__generated__/ExerciseSessionHistory.generated';
 
-export function useExerciseModal() {
+export function useExerciseSessionHistory() {
   const [open, setOpen] = useState(false);
   const [id, setId] = useState<string | null>(null);
 
@@ -29,20 +29,21 @@ export function useExerciseModal() {
   };
 }
 
-interface ExerciseModalProps extends Omit<ModalProps, 'title' | 'children'> {
+interface ExerciseSessionHistoryProps
+  extends Omit<SlideOverProps, 'title' | 'children'> {
   exerciseId?: string | null;
 }
 
-export function ExerciseModal({
+export function ExerciseSessionHistory({
   exerciseId,
   ...modalProps
-}: ExerciseModalProps) {
+}: ExerciseSessionHistoryProps) {
   const { data, loading } = useQuery<
-    ExerciseModalQuery,
-    ExerciseModalQueryVariables
+    ExerciseSessionHistoryQuery,
+    ExerciseSessionHistoryQueryVariables
   >(
     gql`
-      query ExerciseModalQuery($id: ID!, $limit: Int) {
+      query ExerciseSessionHistoryQuery($id: ID!, $limit: Int) {
         exercise(id: $id) {
           id
           name
@@ -75,12 +76,16 @@ export function ExerciseModal({
   const isAerobic = data?.exercise.type === ExerciseType.AEROBIC;
 
   return (
-    <Modal {...modalProps} title={data?.exercise.name}>
+    <SlideOver {...modalProps} title={data?.exercise.name ?? ''}>
       {loading && <Shimmer />}
 
       {data &&
         (sessions.length > 0 ? (
           <div className='flex flex-col space-y-2'>
+            <div className='text-sm text-slate-400'>
+              Últimas cinco sesiones del ejercicio...
+            </div>
+
             {sessions.map((session) => (
               <div
                 key={session.id}
@@ -154,10 +159,31 @@ export function ExerciseModal({
             </p>
           </div>
         ))}
-    </Modal>
+    </SlideOver>
   );
 }
 
 function Shimmer() {
-  return <div>Cargando</div>;
+  return (
+    <div className='animate-pulse flex flex-col space-y-4'>
+      {Array.from({ length: 3 }).map((_, i) => (
+        <div
+          key={`shimmer-div-${i}`}
+          className='border rounded-lg border-slate-500 p-3'
+        >
+          <div className='flex flex-col space-y-2'>
+            <div className='h-4 w-1/2 bg-slate-500 rounded-md'></div>
+            <div className='h-3 w-3/4 bg-slate-600 rounded-md'></div>
+
+            {/* Spacer */}
+            <div></div>
+
+            <div className='h-4 w-3/5 bg-slate-500 rounded-md'></div>
+            <div className='h-4 w-3/5 bg-slate-500 rounded-md'></div>
+            <div className='h-4 w-3/5 bg-slate-500 rounded-md'></div>
+          </div>
+        </div>
+      ))}
+    </div>
+  );
 }

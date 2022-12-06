@@ -57,6 +57,7 @@ export function WorkoutExercise({
             <div className='flex items-center space-x-4'>
               <div className='flex w-full justify-between'>
                 <button
+                  type='button'
                   onClick={() => onSelect(workoutExercise.exerciseId)}
                   className='text-slate-200 hover:bg-white/5 px-2 py-1 rounded-lg transition'
                 >
