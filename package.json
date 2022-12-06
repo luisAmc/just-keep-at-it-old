@@ -36,6 +36,7 @@
     "@prisma/client": "^4.7.1",
     "clsx": "^1.2.1",
     "date-fns": "^2.29.3",
+    "framer-motion": "^7.6.19",
     "graphql": "^16.6.0",
     "graphql-helix": "^1.13.0",
     "iron-session": "^6.3.1",

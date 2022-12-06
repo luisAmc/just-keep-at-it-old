@@ -1,6 +1,7 @@
-import { Dialog, Transition } from '@headlessui/react';
+import { Dialog } from '@headlessui/react';
 import { XIcon } from '@heroicons/react/solid';
-import { Fragment, ReactNode, useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { ReactNode, useState } from 'react';
 
 export function useModal() {
   const [open, setOpen] = useState(false);
@@ -26,55 +27,56 @@ export interface ModalProps {
 
 export function Modal({ title, open, onClose, children }: ModalProps) {
   return (
-    <Transition appear show={open} as={Fragment}>
-      <Dialog as='div' className='relative z-10' onClose={onClose}>
-        <Transition.Child
-          as={Fragment}
-          enter='ease-out duration-300'
-          enterFrom='opacity-0'
-          enterTo='opacity-100'
-          leave='ease-in duration-200'
-          leaveFrom='opacity-100'
-          leaveTo='opacity-0'
+    <AnimatePresence>
+      {open && (
+        <Dialog
+          open={open}
+          as='div'
+          className='relative z-10'
+          onClose={onClose}
         >
-          <div className='fixed inset-0 bg-black bg-opacity-40' />
-        </Transition.Child>
+          <motion.div
+            transition={{ duration: 0.2 }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+          >
+            <div className='fixed inset-0 bg-black bg-opacity-40' />
+          </motion.div>
 
-        <div className='fixed inset-0 overflow-y-auto'>
-          <div className='flex min-h-full items-center justify-center p-4 text-center'>
-            <Transition.Child
-              as={Fragment}
-              enter='ease-out duration-300'
-              enterFrom='opacity-0 scale-95'
-              enterTo='opacity-100 scale-100'
-              leave='ease-in duration-200'
-              leaveFrom='opacity-100 scale-100'
-              leaveTo='opacity-0 scale-95'
-            >
-              <Dialog.Panel className='flex flex-col space-y-4 w-full max-w-md transform rounded-xl bg-slate-600 p-6 text-left align-middle shadow-xl transition-all'>
-                <div className='flex items-center justify-between'>
-                  <Dialog.Title
-                    as='h3'
-                    className='text-xl font-medium leading-6 text-slate-50'
-                  >
-                    {title}
-                  </Dialog.Title>
+          <div className='fixed inset-0 overflow-y-auto'>
+            <div className='flex min-h-full items-center justify-center my-4 text-center'>
+              <motion.div
+                transition={{ duration: 0.2 }}
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.95 }}
+              >
+                <Dialog.Panel className='flex flex-col space-y-4 w-full max-w-md transform rounded-xl bg-slate-600 p-6 text-left align-middle shadow-xl transition-all'>
+                  <div className='flex items-center justify-between'>
+                    <Dialog.Title
+                      as='h3'
+                      className='text-xl font-medium leading-6 text-slate-50'
+                    >
+                      {title}
+                    </Dialog.Title>
 
-                  <button
-                    type='button'
-                    className='rounded-full bg-slate-600 text-slate-50 hover:text-slate-500 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2 focus:ring-offset-slate-400'
-                    onClick={onClose}
-                  >
-                    <XIcon className='h-6 w-6' />
-                  </button>
-                </div>
+                    <button
+                      type='button'
+                      className='rounded-full bg-slate-600 text-slate-50 hover:text-slate-500 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2 focus:ring-offset-slate-400'
+                      onClick={onClose}
+                    >
+                      <XIcon className='h-6 w-6' />
+                    </button>
+                  </div>
 
-                <div className='mt-2'>{children}</div>
-              </Dialog.Panel>
-            </Transition.Child>
+                  <div className='mt-2'>{children}</div>
+                </Dialog.Panel>
+              </motion.div>
+            </div>
           </div>
-        </div>
-      </Dialog>
-    </Transition>
+        </Dialog>
+      )}
+    </AnimatePresence>
   );
 }
