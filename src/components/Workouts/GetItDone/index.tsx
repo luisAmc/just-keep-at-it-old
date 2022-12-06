@@ -27,9 +27,12 @@ import {
 import { ConfirmationModal } from 'src/components/shared/ConfirmationModal';
 import { AddExerciseSlideOver } from './AddExerciseSlideOver';
 import { MoveExerciseDirection } from './WorkoutExercise/WorkoutExerciseActions';
-import { ExerciseModal, useExerciseModal } from './ExerciseModal';
 import { WorkoutProvider } from './WorkoutContext';
 import { WorkoutExerciseProvider } from './WorkoutExercise/WorkoutExerciseProvider';
+import {
+  ExerciseSessionHistory,
+  useExerciseSessionHistory
+} from './ExerciseSessionHistory';
 
 const WorkoutExerciseFragment = gql`
   fragment WorkoutExercise_workoutExercise on WorkoutExercise {
@@ -109,7 +112,7 @@ export function GetItDone() {
 
   const addExerciseModal = useModal();
   // const lastSessions = useSlideOver();
-  const exerciseModal = useExerciseModal();
+  const exerciseSessionHistory = useExerciseSessionHistory();
 
   const [selectedExerciseId, setSelectedExerciseId] = useState('');
 
@@ -291,7 +294,9 @@ export function GetItDone() {
                   >
                     <WorkoutExercise
                       exercise={field.exercise}
-                      onSelect={(id) => exerciseModal.setExerciseId(id)}
+                      onSelect={(id) =>
+                        exerciseSessionHistory.setExerciseId(id)
+                      }
                       onRemove={() => workoutExercises.remove(index)}
                       onMove={(direction: MoveExerciseDirection) => {
                         if (direction === 'first') {
@@ -339,7 +344,7 @@ export function GetItDone() {
               }}
             />
 
-            <ExerciseModal {...exerciseModal.props} />
+            <ExerciseSessionHistory {...exerciseSessionHistory.props} />
           </div>
         </WorkoutProvider>
       )}
