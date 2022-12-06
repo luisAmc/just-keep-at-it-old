@@ -28,6 +28,8 @@ import { ConfirmationModal } from 'src/components/shared/ConfirmationModal';
 import { AddExerciseSlideOver } from './AddExerciseSlideOver';
 import { MoveExerciseDirection } from './WorkoutExercise/WorkoutExerciseActions';
 import { ExerciseModal, useExerciseModal } from './ExerciseModal';
+import { WorkoutProvider } from './WorkoutContext';
+import { WorkoutExerciseProvider } from './WorkoutExercise/WorkoutExerciseProvider';
 
 const WorkoutExerciseFragment = gql`
   fragment WorkoutExercise_workoutExercise on WorkoutExercise {
@@ -242,112 +244,104 @@ export function GetItDone() {
       {loading && <div>Cargando...</div>}
 
       {workout && (
-        <div className='h-full flex flex-col space-y-4'>
-          <div className='flex items-center justify-between'>
-            <div className='flex items-center space-x-2'>
-              <Button href='/' className=''>
-                <div className='rounded-full bg-brand-400 text-brand-800 p-2 flex items-center justify-center'>
-                  <ChevronLeftIcon className='w-4 h-4' />
-                </div>
-              </Button>
+        <WorkoutProvider workout={workout}>
+          <div className='h-full flex flex-col space-y-4'>
+            <div className='flex items-center justify-between'>
+              <div className='flex items-center space-x-2'>
+                <Button href='/' className=''>
+                  <div className='rounded-full bg-brand-400 text-brand-800 p-2 flex items-center justify-center'>
+                    <ChevronLeftIcon className='w-4 h-4' />
+                  </div>
+                </Button>
 
-              <Heading>{workout.name}</Heading>
-            </div>
+                <Heading>{workout.name}</Heading>
+              </div>
 
-            <div>
-              <Button
-                onClick={deleteModal.open}
-                className='p-2 rounded-full bg-rose-500 text-rose-300 focus:outline-none focus:ring-2 focus:ring-offset-white focus:ring-offset-1 hover:bg-opacity-80'
-              >
-                <TrashIcon className='w-4 h-4' />
-              </Button>
+              <div>
+                <Button
+                  onClick={deleteModal.open}
+                  className='p-2 rounded-full bg-rose-500 text-rose-300 focus:outline-none focus:ring-2 focus:ring-offset-white focus:ring-offset-1 hover:bg-opacity-80'
+                >
+                  <TrashIcon className='w-4 h-4' />
+                </Button>
 
-              <ConfirmationModal
-                {...deleteModal.props}
-                onConfirm={() => {
-                  deleteCommit({
-                    variables: {
-                      workoutId: workoutId
-                    }
-                  });
-                }}
-              >
-                ¿Está seguro de borrar la rutina?
-              </ConfirmationModal>
-            </div>
-          </div>
-
-          <Form form={form} onSubmit={onSubmit}>
-            <div className='flex flex-col divide-y divide-slate-600 px-4 bg-slate-700 rounded-lg'>
-              {workoutExercises.fields.map((field, index) => (
-                <WorkoutExercise
-                  key={field.id}
-                  exercise={field.exercise}
-                  fieldName={`workoutExercises[${index}]`}
-                  // onSelect={(exerciseId) => {
-                  //   setSelectedExerciseId(exerciseId);
-                  //   lastSessions.open();
-                  // }}
-                  onSelect={(id) => exerciseModal.setExerciseId(id)}
-                  onRemove={() => workoutExercises.remove(index)}
-                  isFirst={index === 0}
-                  isLast={index === workoutExercises.fields.length - 1}
-                  onMove={(direction: MoveExerciseDirection) => {
-                    if (direction === 'first') {
-                      workoutExercises.move(index, 0);
-                    } else if (direction === 'last') {
-                      workoutExercises.move(
-                        index,
-                        workoutExercises.fields.length - 1
-                      );
-                    } else {
-                      workoutExercises.move(
-                        index,
-                        index + (direction === 'up' ? -1 : 1)
-                      );
-                    }
+                <ConfirmationModal
+                  {...deleteModal.props}
+                  onConfirm={() => {
+                    deleteCommit({
+                      variables: {
+                        workoutId: workoutId
+                      }
+                    });
                   }}
-                />
-              ))}
+                >
+                  ¿Está seguro de borrar la rutina?
+                </ConfirmationModal>
+              </div>
             </div>
 
-            <Button
-              variant='dashed'
-              color='secondary'
-              onClick={addExerciseModal.open}
-            >
-              <PlusIcon className='w-4 h-4 mr-1' />
-              <span>Añadir otro ejercicio</span>
-            </Button>
+            <Form form={form} onSubmit={onSubmit}>
+              <div className='flex flex-col px-4 bg-slate-700 rounded-lg'>
+                {workoutExercises.fields.map((field, index) => (
+                  <WorkoutExerciseProvider
+                    key={field.id}
+                    exerciseId={field.exercise.exerciseId}
+                    index={index}
+                    size={workoutExercises.fields.length}
+                  >
+                    <WorkoutExercise
+                      exercise={field.exercise}
+                      onSelect={(id) => exerciseModal.setExerciseId(id)}
+                      onRemove={() => workoutExercises.remove(index)}
+                      onMove={(direction: MoveExerciseDirection) => {
+                        if (direction === 'first') {
+                          workoutExercises.move(index, 0);
+                        } else if (direction === 'last') {
+                          workoutExercises.move(
+                            index,
+                            workoutExercises.fields.length - 1
+                          );
+                        } else {
+                          workoutExercises.move(
+                            index,
+                            index + (direction === 'up' ? -1 : 1)
+                          );
+                        }
+                      }}
+                    />
+                  </WorkoutExerciseProvider>
+                ))}
+              </div>
 
-            <SubmitButton>
-              <CheckCircleIcon className='w-4 h-4 mr-1' />
-              <span>Completar</span>
-            </SubmitButton>
-          </Form>
+              <Button
+                variant='dashed'
+                color='secondary'
+                onClick={addExerciseModal.open}
+              >
+                <PlusIcon className='w-4 h-4 mr-1' />
+                <span>Añadir otro ejercicio</span>
+              </Button>
 
-          <AddExerciseSlideOver
-            {...addExerciseModal.props}
-            onConfirm={(exercise: {
-              exerciseId: string;
-              name: string;
-              type: string;
-            }) => {
-              workoutExercises.append({ exercise, sets: [] });
-            }}
-          />
+              <SubmitButton>
+                <CheckCircleIcon className='w-4 h-4 mr-1' />
+                <span>Completar</span>
+              </SubmitButton>
+            </Form>
 
-          {/* <LastSessionsSlideOver
-            exerciseId={selectedExerciseId}
-            open={lastSessions.props.open}
-            onClose={() => {
-              setSelectedExerciseId('');
-              lastSessions.close();
-            }}
-          /> */}
+            <AddExerciseSlideOver
+              {...addExerciseModal.props}
+              onConfirm={(exercise: {
+                exerciseId: string;
+                name: string;
+                type: string;
+              }) => {
+                workoutExercises.append({ exercise, sets: [] });
+              }}
+            />
 
-          <ExerciseModal {...exerciseModal.props} />
-        </div>
+            <ExerciseModal {...exerciseModal.props} />
+          </div>
+        </WorkoutProvider>
       )}
     </Page>
   );
