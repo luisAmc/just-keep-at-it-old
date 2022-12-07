@@ -68,7 +68,7 @@ export function ExerciseSessionHistory({
     `,
     {
       skip: !exerciseId,
-      variables: { id: exerciseId!, limit: 10 }
+      variables: { id: exerciseId!, limit: 5 }
     }
   );
 
@@ -81,7 +81,7 @@ export function ExerciseSessionHistory({
 
       {data &&
         (sessions.length > 0 ? (
-          <div className='flex flex-col space-y-2'>
+          <div className='flex flex-col space-y-2 pb-2'>
             <div className='text-sm text-slate-400'>
               Últimas cinco sesiones del ejercicio...
             </div>
