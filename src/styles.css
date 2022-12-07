@@ -2,9 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --doc-height: 100%;
+}
+
 html,
 body {
   @apply bg-slate-800 text-slate-200 font-sans antialiased;
+  height: var(--doc-height);
 }
 
 @layer utilities {

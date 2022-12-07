@@ -46,7 +46,7 @@ export function Modal({ title, open, onClose, children }: ModalProps) {
           </motion.div>
 
           <span
-            className='inline-block h-screen align-middle'
+            className='inline-block h-full align-middle'
             aria-hidden='true'
           >
             &#8203;
