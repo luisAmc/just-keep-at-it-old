@@ -1,5 +1,5 @@
 import { GetServerSideProps } from 'next';
-import { GetItDone, query } from 'src/components/Workouts/GetItDone';
+import { GetItDone, query } from 'src/components/GetItDone';
 import { preloadQuery } from 'src/utils/apollo';
 import { authenticatedRoute } from 'src/utils/redirects';
 
