@@ -29,26 +29,46 @@ export const WorkoutExercisesSchema = z.object({
 export function MostRecentCorrespondingSet({ index }: { index: number }) {
   const workoutExercise = useWorkoutExerciseContext();
 
+  const fieldName = `${workoutExercise.fieldName}.sets.${index}`;
+  const form = useFormContext();
+
   const correspondingSet = workoutExercise.mostRecentSession?.sets[index];
+
+  function copySetToCurrentWorkout(lbs: number, reps: number) {
+    form.setValue(`${fieldName}.lbs`, lbs.toString());
+    form.setValue(`${fieldName}.reps`, reps.toString());
+  }
+
   if (workoutExercise.type === ExerciseType.STRENGTH) {
     if (correspondingSet) {
       return (
-        <div className='text-slate-400 px-2 py-1'>
-          <span>
-            <span className='text-sm'>{correspondingSet.lbs}</span>
-            <span className='text-xs'>lbs</span>
-          </span>
+        <div className='flex items-center'>
+          <button
+            type='button'
+            className='text-slate-400 hover:bg-white/5 px-2 py-1 rounded-lg transition'
+            onClick={() =>
+              copySetToCurrentWorkout(
+                correspondingSet.lbs,
+                correspondingSet.reps
+              )
+            }
+          >
+            <span>
+              <span className='text-sm'>{correspondingSet.lbs}</span>
+              <span className='text-xs'>lbs</span>
+            </span>
 
-          <span className='text-slate-500 text-sm'>x</span>
+            <span className='text-slate-500 text-sm'>x</span>
 
-          <span>
-            <span className='text-sm'>{correspondingSet.reps}</span>
-            <span className='text-xs'>reps</span>
-          </span>
+            <span>
+              <span className='text-sm'>{correspondingSet.reps}</span>
+              <span className='text-xs'>reps</span>
+            </span>
+          </button>
         </div>
       );
     } else {
-      return <span className='text-slate-400 px-2 py-1'>-</span>;
+      return <span className='text-xs text-slate-500 px-2 py-1'> - </span>;
     }
   }
 

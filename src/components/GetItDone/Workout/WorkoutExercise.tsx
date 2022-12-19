@@ -7,6 +7,7 @@ import {
   SparklesIcon
 } from '@heroicons/react/outline';
 import clsx from 'clsx';
+import { useEffect } from 'react';
 import { useFieldArray, useFormContext } from 'react-hook-form';
 import { Button } from 'src/components/shared/Button';
 import {
@@ -49,6 +50,18 @@ function WorkoutExerciseInContext() {
     control,
     name: `${workoutExercise.fieldName}.sets`
   });
+
+  useEffect(() => {
+    if (
+      workoutExercise.mostRecentSession &&
+      workoutExercise.mostRecentSession.sets.length > sets.fields.length
+    ) {
+      const differenceInSets =
+        workoutExercise.mostRecentSession.sets.length - sets.fields.length;
+
+      Array.from({ length: differenceInSets }).forEach((_) => addSet());
+    }
+  }, []);
 
   function addSet() {
     sets.append({ mins: '', distance: '', kcal: '', reps: '', lbs: '' });
