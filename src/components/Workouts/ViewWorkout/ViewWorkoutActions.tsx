@@ -60,6 +60,7 @@ export function ViewWorkoutActions({ isDone }: ViewWorkoutActionsProps) {
     {
       onCompleted() {
         localStorage.removeItem(`workout-${workoutId}`);
+        localStorage.removeItem(`workout-${workoutId}-cache`);
         router.replace('/');
       }
     }
