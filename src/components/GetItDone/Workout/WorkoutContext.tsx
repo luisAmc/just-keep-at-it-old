@@ -5,7 +5,7 @@ import {
   WorkoutExercise_WorkoutExercise
 } from './__generated__/WorkoutExercise.generated';
 
-interface WorkoutContextType {
+interface ContextType {
   id: string;
   name: string;
   workoutExercises: Array<WorkoutExercise_WorkoutExercise>;
@@ -15,7 +15,7 @@ interface WorkoutContextType {
   setExerciseCache(alreadyEditedExercises: any[]): void;
 }
 
-const WorkoutContext = createContext<WorkoutContextType>({
+const WorkoutContext = createContext<ContextType>({
   id: '',
   name: '',
   workoutExercises: [],
@@ -55,8 +55,8 @@ export const WorkoutProvider = ({
   };
 
   const setExerciseCache = (alreadyEditedExercises: any[]) => {
-    for (const workoutExercise of alreadyEditedExercises) {
-      exerciseMap.set(workoutExercise.exercise.id, workoutExercise.exercise);
+    for (const exercise of alreadyEditedExercises) {
+      exerciseMap.set(exercise.id, exercise);
     }
   };
 

@@ -185,7 +185,7 @@ builder.mutationField('getWorkoutDone', (t) =>
         });
 
         input.workoutExercises.forEach(
-          async (workoutExercise, index) =>
+          async (workoutExercise) =>
             await db.workoutExercise.create({
               data: {
                 workoutId: input.workoutId,
