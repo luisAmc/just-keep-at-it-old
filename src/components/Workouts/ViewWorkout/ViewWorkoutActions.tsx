@@ -1,4 +1,3 @@
-import { Button } from 'src/components/shared/Button';
 import {
   DotsVerticalIcon,
   LightningBoltIcon,
@@ -26,6 +25,7 @@ interface ViewWorkoutActionsProps {
 export function ViewWorkoutActions({ isDone }: ViewWorkoutActionsProps) {
   const router = useRouter();
   const workoutId = router.query.workoutId as string;
+  
   const deleteModal = useModal();
 
   const [doItAgain] = useMutation<
@@ -110,7 +110,8 @@ export function ViewWorkoutActions({ isDone }: ViewWorkoutActionsProps) {
           <div className='px-1 py-1'>
             <Menu.Item>
               {({ active }) => (
-                <Button
+                <button
+                  type='button'
                   onClick={deleteModal.open}
                   className={clsx(
                     'group flex w-full items-center rounded-md px-2 py-2 text-sm',
@@ -119,7 +120,7 @@ export function ViewWorkoutActions({ isDone }: ViewWorkoutActionsProps) {
                 >
                   <TrashIcon className='mr-2 w-4 h-4' />
                   <span>Borrar</span>
-                </Button>
+                </button>
               )}
             </Menu.Item>
           </div>
@@ -157,19 +158,32 @@ function ViewWorkoutActionItem({
 }: ViewWorkoutActionItemProps) {
   return (
     <Menu.Item>
-      {({ active }) => (
-        <Button
-          onClick={onClick}
-          href={href}
-          className={clsx(
-            'group flex w-full items-center rounded-md p-2 text-sm',
-            active ? 'bg-brand-500 text-white' : 'text-slate-900'
-          )}
-        >
-          <Icon className='mr-2 w-4 h-4' />
-          <span>{label}</span>
-        </Button>
-      )}
+      {({ active }) =>
+        href ? (
+          <a
+            href={href}
+            className={clsx(
+              'group flex w-full items-center rounded-md p-2 text-sm',
+              active ? 'bg-brand-500 text-white' : 'text-slate-900'
+            )}
+          >
+            <Icon className='mr-2 w-4 h-4' />
+            <span>{label}</span>
+          </a>
+        ) : (
+          <button
+            type='button'
+            onClick={onClick}
+            className={clsx(
+              'group flex w-full items-center rounded-md p-2 text-sm',
+              active ? 'bg-brand-500 text-white' : 'text-slate-900'
+            )}
+          >
+            <Icon className='mr-2 w-4 h-4' />
+            <span>{label}</span>
+          </button>
+        )
+      }
     </Menu.Item>
   );
 }

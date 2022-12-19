@@ -1,33 +1,36 @@
-import { AddExerciseQuery } from './__generated__/index.generated';
-import { Button } from 'src/components/shared/Button';
-import { ExerciseInfoFragment } from 'src/components/Exercises';
 import { gql, useQuery } from '@apollo/client';
+import { useFieldArray, useFormContext } from 'react-hook-form';
+import { Button } from 'src/components/shared/Button';
 import { SlideOver, SlideOverProps } from 'src/components/shared/SlideOver';
-import { useMemo } from 'react';
-import { useExerciseCategories } from './AddExerciseUtils';
+import { useWorkoutContext } from '../Workout/WorkoutContext';
+import { ExerciseFragment } from '../Workout/WorkoutExercise';
+import { useExerciseCategories } from '../Workout/WorkoutUtils';
 import { ExerciseCategory } from './ExerciseCategory';
+import { AddExerciseSlideOverQuery } from './__generated__/index.generated';
 
 interface Props extends Omit<SlideOverProps, 'title' | 'children'> {
-  onConfirm(exercise: { exerciseId: string; name: string; type: string }): void;
+  onConfirm(exerciseId: string): void;
 }
 
-export function AddExerciseSlideOver({ onConfirm, ...slideOverProps }: Props) {
-  const { data, loading } = useQuery<AddExerciseQuery>(gql`
-    query AddExerciseQuery {
+export function AddExerciseSlideOver({ onConfirm, open, onClose }: Props) {
+  const { addExercise } = useWorkoutContext();
+
+  const { data, loading } = useQuery<AddExerciseSlideOverQuery>(gql`
+    query AddExerciseSlideOverQuery {
       viewer {
         id
         exercises {
-          ...Exercise_exercise
+          ...WorkoutExercise_exercise
         }
       }
     }
-    ${ExerciseInfoFragment}
+    ${ExerciseFragment}
   `);
 
   const exerciseCategories = useExerciseCategories(data?.viewer?.exercises);
 
   return (
-    <SlideOver title='Anadir un ejercicio' {...slideOverProps}>
+    <SlideOver title='Anadir un ejercicio' open={open} onClose={onClose}>
       {loading && <div>Cargando...</div>}
 
       {data && (
@@ -37,8 +40,9 @@ export function AddExerciseSlideOver({ onConfirm, ...slideOverProps }: Props) {
               key={category.id}
               category={category}
               onClick={(clickedExercise) => {
-                onConfirm(clickedExercise);
-                slideOverProps.onClose();
+                addExercise(clickedExercise);
+                onConfirm(clickedExercise.id);
+                onClose();
               }}
             />
           ))}

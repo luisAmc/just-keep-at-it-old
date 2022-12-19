@@ -1,17 +1,18 @@
 import { ChevronUpIcon } from '@heroicons/react/outline';
 import { Disclosure } from '@headlessui/react';
-import { ExerciseCategory } from './AddExerciseUtils';
+import { ExerciseCategoryType } from '../Workout/WorkoutUtils';
+import { WorkoutExercise_Exercise } from '../Workout/__generated__/WorkoutExercise.generated';
 import clsx from 'clsx';
 
-interface ExerciseCategoryProps {
-  category: ExerciseCategory;
-  onClick(exercise: { exerciseId: string; name: string; type: string }): void;
+interface Props {
+  category: ExerciseCategoryType;
+  onClick(exercise: WorkoutExercise_Exercise): void;
 }
 
-export function ExerciseCategory({ category, onClick }: ExerciseCategoryProps) {
+export function ExerciseCategory({ category, onClick }: Props) {
   return (
     <div>
-      <Disclosure defaultOpen={true}>
+      <Disclosure>
         {({ open }) => (
           <>
             <div>
@@ -36,13 +37,7 @@ export function ExerciseCategory({ category, onClick }: ExerciseCategoryProps) {
                 <button
                   key={exercise.id}
                   type='button'
-                  onClick={() =>
-                    onClick({
-                      exerciseId: exercise.id,
-                      name: exercise.name,
-                      type: exercise.muscleGroup ?? exercise.type
-                    })
-                  }
+                  onClick={() => onClick(exercise)}
                   className='text-left p-3 rounded-lg hover:bg-black/5'
                 >
                   {exercise.name}

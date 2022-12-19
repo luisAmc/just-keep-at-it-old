@@ -19,6 +19,7 @@ builder.prismaObject('Exercise', {
             exerciseId: parent.id,
             workout: { status: { equals: WorkoutStatus.DONE } }
           },
+          orderBy: { workout: { completedAt: 'desc' } },
           take: 1
         });
       }

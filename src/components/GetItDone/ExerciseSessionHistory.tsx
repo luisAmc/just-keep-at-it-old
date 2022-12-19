@@ -1,8 +1,8 @@
 import { gql, useQuery } from '@apollo/client';
 import { ExerciseType } from '@prisma/client';
 import { useState } from 'react';
-import { SlideOver, SlideOverProps } from 'src/components/shared/SlideOver';
 import { formatDate } from 'src/utils/transforms';
+import { SlideOver, SlideOverProps } from '../shared/SlideOver';
 import {
   ExerciseSessionHistoryQuery,
   ExerciseSessionHistoryQueryVariables
