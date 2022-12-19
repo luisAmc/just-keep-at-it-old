@@ -25,6 +25,7 @@ interface ViewWorkoutActionsProps {
 export function ViewWorkoutActions({ isDone }: ViewWorkoutActionsProps) {
   const router = useRouter();
   const workoutId = router.query.workoutId as string;
+  
   const deleteModal = useModal();
 
   const [doItAgain] = useMutation<
@@ -59,7 +60,6 @@ export function ViewWorkoutActions({ isDone }: ViewWorkoutActionsProps) {
     {
       onCompleted() {
         localStorage.removeItem(`workout-${workoutId}`);
-        localStorage.removeItem(`workout-${workoutId}-cache`);
         router.replace('/');
       }
     }
