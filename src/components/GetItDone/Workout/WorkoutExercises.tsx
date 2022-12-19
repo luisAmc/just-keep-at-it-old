@@ -8,7 +8,7 @@ import { SubmitButton } from 'src/components/shared/SubmitButton';
 import {
   useDebouncedWorkout,
   WorkoutExercisesSchema,
-  workoutInLocalStorage
+  useWorkoutInLocalStorage
 } from './WorkoutUtils';
 import { useEffect } from 'react';
 import { useFieldArray, useWatch } from 'react-hook-form';
@@ -40,7 +40,7 @@ export function WorkoutExercises() {
     name: 'workoutExercises'
   });
 
-  const inLocalStorage = workoutInLocalStorage();
+  const inLocalStorage = useWorkoutInLocalStorage();
   const workoutState = useWatch({ control: form.control });
 
   useEffect(() => {

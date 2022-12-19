@@ -124,7 +124,7 @@ export function useDebouncedWorkout<T>(workoutString: T) {
   return debouncedWorkout;
 }
 
-export function workoutInLocalStorage<T>() {
+export function useWorkoutInLocalStorage<T>() {
   const { getExerciseCache } = useWorkoutContext();
 
   const save = (workoutId: string, workout: T) => {
