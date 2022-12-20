@@ -2,6 +2,7 @@ import { ButtonOrLink, ButtonOrLinkProps } from './ButtonOrLink';
 import clsx from 'clsx';
 
 export interface Props extends ButtonOrLinkProps {
+  size?: 'small' | 'medium';
   color?: 'primary' | 'secondary' | 'danger';
   variant?: 'default' | 'dashed';
   rounded?: boolean;
@@ -9,6 +10,7 @@ export interface Props extends ButtonOrLinkProps {
 }
 
 export const Button = ({
+  size = 'medium',
   variant = 'default',
   color = 'primary',
   rounded,
@@ -19,7 +21,11 @@ export const Button = ({
   return (
     <ButtonOrLink
       className={clsx(
-        'appearance-none w-full flex items-center justify-center px-4 py-2 font-medium focus:outline-none focus:ring-2 focus:ring-offset-white focus:ring-offset-1 disabled:opacity-60 disabled:pointer-events-none hover:bg-opacity-80',
+        'appearance-none w-full flex items-center justify-center font-medium focus:outline-none focus:ring-2 focus:ring-offset-white focus:ring-offset-1 disabled:opacity-60 disabled:pointer-events-none hover:bg-opacity-80',
+        {
+          'px-2.5 py-1.5 text-xs': size === 'small',
+          'px-4 py-2': size === 'medium'
+        },
         rounded ? 'rounded-full' : 'rounded',
         floating && ' shadow-xl',
         variant === 'default' && {
@@ -31,8 +37,7 @@ export const Button = ({
         variant === 'dashed' && {
           'border-brand-300 text-brand-600 hover:bg-brand-50':
             color === 'primary',
-          'bg-slate-700 text-slate-400 border-slate-500':
-            color === 'secondary'
+          'bg-slate-700 text-slate-400 border-slate-500': color === 'secondary'
         }
       )}
       type={type || 'button'}

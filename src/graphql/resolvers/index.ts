@@ -4,3 +4,4 @@ import './UserResolvers';
 import './WorkoutExerciseResolvers';
 import './WorkoutResolvers';
 import './WorkoutSetResolvers';
+import './WorkoutTemplateResolvers';

@@ -146,7 +146,7 @@ const GetWorkoutDoneInput = builder.inputType('GetWorkoutDoneInput', {
                 builder.inputType('DoneExerciseSetInput', {
                   fields: (t) => ({
                     id: t.id({ required: false }),
-                    mins: t.int(),
+                    mins: t.float(),
                     distance: t.float(),
                     kcal: t.int(),
                     lbs: t.float(),

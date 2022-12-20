@@ -9,6 +9,15 @@ input CreateWorkoutInput {
   workoutExercises: [ExerciseOptionInput!]!
 }
 
+input CreateWorkoutTemplateExerciseInput {
+  exerciseId: ID!
+}
+
+input CreateWorkoutTemplateInput {
+  exercises: [CreateWorkoutTemplateExerciseInput!]!
+  name: String!
+}
+
 scalar DateTime
 
 input DoneExerciseInput {
@@ -23,7 +32,7 @@ input DoneExerciseSetInput {
   id: ID
   kcal: Int!
   lbs: Float!
-  mins: Int!
+  mins: Float!
   reps: Int!
 }
 
@@ -53,17 +62,21 @@ input LoginInput {
 type Mutation {
   createExercise(input: CreateExerciseInput!): Exercise!
   createWorkout(input: CreateWorkoutInput!): Workout!
+  createWorkoutTemplate(input: CreateWorkoutTemplateInput!): WorkoutTemplate!
   deleteWorkout(workoutId: ID!): Workout!
   doItAgain(workoutToCopyId: ID!): Workout!
   getWorkoutDone(input: GetWorkoutDoneInput!): Workout!
   login(input: LoginInput!): User!
   signUp(input: SignUpInput!): User!
+  startWorkoutFromTemplate(id: ID!): Workout!
 }
 
 type Query {
   exercise(id: ID!): Exercise!
   viewer: User
   workout(id: ID!): Workout!
+  workoutTemplate(id: ID!): WorkoutTemplate!
+  workoutTemplates: [WorkoutTemplate!]!
   workouts: [Workout!]!
 }
 
@@ -76,6 +89,7 @@ type User {
   exercises: [Exercise!]!
   id: ID!
   username: String!
+  workoutTemplates: [WorkoutTemplate!]!
   workouts(limit: Int! = 5, offset: Int! = 0): [Workout!]!
   workoutsCount: Int!
 }
@@ -105,6 +119,12 @@ type WorkoutSet {
   id: ID!
   kcal: Int!
   lbs: Float!
-  mins: Int!
+  mins: Float!
   reps: Int!
+}
+
+type WorkoutTemplate {
+  exercises: [Exercise!]!
+  id: ID!
+  name: String!
 }
