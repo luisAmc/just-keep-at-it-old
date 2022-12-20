@@ -24,6 +24,15 @@ export type CreateWorkoutInput = {
   workoutExercises: Array<ExerciseOptionInput>;
 };
 
+export type CreateWorkoutTemplateExerciseInput = {
+  exerciseId: Scalars['ID'];
+};
+
+export type CreateWorkoutTemplateInput = {
+  exercises: Array<CreateWorkoutTemplateExerciseInput>;
+  name: Scalars['String'];
+};
+
 export type DoneExerciseInput = {
   exerciseId: Scalars['ID'];
   id?: InputMaybe<Scalars['ID']>;
@@ -36,7 +45,7 @@ export type DoneExerciseSetInput = {
   id?: InputMaybe<Scalars['ID']>;
   kcal: Scalars['Int'];
   lbs: Scalars['Float'];
-  mins: Scalars['Int'];
+  mins: Scalars['Float'];
   reps: Scalars['Int'];
 };
 
@@ -73,11 +82,13 @@ export type Mutation = {
   __typename?: 'Mutation';
   createExercise: Exercise;
   createWorkout: Workout;
+  createWorkoutTemplate: WorkoutTemplate;
   deleteWorkout: Workout;
   doItAgain: Workout;
   getWorkoutDone: Workout;
   login: User;
   signUp: User;
+  startWorkoutFromTemplate: Workout;
 };
 
 
@@ -88,6 +99,11 @@ export type MutationCreateExerciseArgs = {
 
 export type MutationCreateWorkoutArgs = {
   input: CreateWorkoutInput;
+};
+
+
+export type MutationCreateWorkoutTemplateArgs = {
+  input: CreateWorkoutTemplateInput;
 };
 
 
@@ -115,11 +131,18 @@ export type MutationSignUpArgs = {
   input: SignUpInput;
 };
 
+
+export type MutationStartWorkoutFromTemplateArgs = {
+  id: Scalars['ID'];
+};
+
 export type Query = {
   __typename?: 'Query';
   exercise: Exercise;
   viewer?: Maybe<User>;
   workout: Workout;
+  workoutTemplate: WorkoutTemplate;
+  workoutTemplates: Array<WorkoutTemplate>;
   workouts: Array<Workout>;
 };
 
@@ -133,6 +156,11 @@ export type QueryWorkoutArgs = {
   id: Scalars['ID'];
 };
 
+
+export type QueryWorkoutTemplateArgs = {
+  id: Scalars['ID'];
+};
+
 export type SignUpInput = {
   password: Scalars['String'];
   username: Scalars['String'];
@@ -143,6 +171,7 @@ export type User = {
   exercises: Array<Exercise>;
   id: Scalars['ID'];
   username: Scalars['String'];
+  workoutTemplates: Array<WorkoutTemplate>;
   workouts: Array<Workout>;
   workoutsCount: Scalars['Int'];
 };
@@ -181,6 +210,13 @@ export type WorkoutSet = {
   id: Scalars['ID'];
   kcal: Scalars['Int'];
   lbs: Scalars['Float'];
-  mins: Scalars['Int'];
+  mins: Scalars['Float'];
   reps: Scalars['Int'];
+};
+
+export type WorkoutTemplate = {
+  __typename?: 'WorkoutTemplate';
+  exercises: Array<Exercise>;
+  id: Scalars['ID'];
+  name: Scalars['String'];
 };

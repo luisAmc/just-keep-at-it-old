@@ -34,7 +34,7 @@ export function SelectExercise({ label, name, options }: Props) {
 
   return (
     <label>
-      {label && <div className='font-medium text-slate-800 mb-1'>{label}</div>}
+      {label && <div className='font-medium text-slate-300 mb-1'>{label}</div>}
 
       <Combobox value={value} onChange={onChange}>
         <div className='relative mt-1'>
@@ -46,8 +46,8 @@ export function SelectExercise({ label, name, options }: Props) {
                 option ? option.label : ''
               }
               className={clsx(
-                'bg-white relative w-full border rounded-lg shadow-sm pl-3 pr-10 py-2 text-left cursor-default focus:outline-none focus:border-2 focus:ring-brand-500 focus:border-brand-600',
-                value ? 'text-slate-800' : 'text-slate-400'
+                'bg-slate-800 relative w-full border border-transparent rounded-lg shadow-sm pl-3 pr-10 py-2 text-left cursor-default focus:outline-none focus:border-2 focus:ring-brand-500 focus:border-brand-600',
+                value ? 'text-slate-300' : 'text-slate-700'
               )}
             />
 
@@ -66,7 +66,7 @@ export function SelectExercise({ label, name, options }: Props) {
             leaveTo='opacity-0'
             afterLeave={() => setQuery('')}
           >
-            <Combobox.Options className='absolute z-20 mt-1 w-full bg-white shadow-lg max-h-60 rounded-md py-1 text-base ring-1 ring-black ring-opacity-5 overflow-auto focus:outline-none sm:text-sm'>
+            <Combobox.Options className='absolute z-20 mt-1 w-full bg-slate-700 shadow-lg max-h-60 rounded-md py-1 text-base ring-1 ring-black ring-opacity-5 overflow-auto focus:outline-none sm:text-sm'>
               {filteredOptions.length === 0 && query !== '' ? (
                 <div className='relative cursor-default select-none py-2 px-4 text-slate-700'>
                   No se encontró un ejercicio.

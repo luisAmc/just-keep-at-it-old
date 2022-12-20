@@ -1,0 +1,15 @@
+import * as Types from '../../../__generated__/schema.generated';
+
+export type Templates_Template = { __typename?: 'WorkoutTemplate', id: string, name: string, exercises: Array<{ __typename?: 'Exercise', id: string, name: string, type: string, muscleGroup?: string | null }> };
+
+export type TemplatesQueryVariables = Types.Exact<{ [key: string]: never; }>;
+
+
+export type TemplatesQuery = { __typename?: 'Query', viewer?: { __typename?: 'User', id: string, workoutTemplates: Array<{ __typename?: 'WorkoutTemplate', id: string, name: string, exercises: Array<{ __typename?: 'Exercise', id: string, name: string, type: string, muscleGroup?: string | null }> }> } | null };
+
+export type TemplatesMutationVariables = Types.Exact<{
+  id: Types.Scalars['ID'];
+}>;
+
+
+export type TemplatesMutation = { __typename?: 'Mutation', startWorkoutFromTemplate: { __typename?: 'Workout', id: string } };

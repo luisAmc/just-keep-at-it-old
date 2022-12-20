@@ -19,6 +19,6 @@ export function getMuscleGroupColors
       return 'bg-shoulders-200 ring-shoulders-400 text-shoulders-900';
 
     default:
-      return 'bg-white ring-aerobic-400 text-aerobic-900';
+      return 'bg-slate-600 ring-aerobic-400 text-aerobic-900';
   }
 }

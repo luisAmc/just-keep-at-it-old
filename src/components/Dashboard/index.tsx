@@ -1,5 +1,5 @@
 import { gql, useQuery } from '@apollo/client';
-import { FlagIcon, PlusCircleIcon } from '@heroicons/react/outline';
+import { DocumentTextIcon, ViewListIcon, PlusCircleIcon } from '@heroicons/react/outline';
 import { Button } from '../shared/Button';
 import { Heading } from '../shared/Heading';
 import { InfiniteList } from '../shared/InfiniteList';
@@ -41,10 +41,15 @@ export function Dashboard() {
         <div className='flex items-center justify-between space-x-4'>
           <Heading>Historial</Heading>
 
-          <div>
-            <Button href='/exercises' color='secondary'>
-              <FlagIcon className='w-4 h-4 mr-1' />
-              <span>Ver ejercicios</span>
+          <div className='flex items-center justify-center space-x-2'>
+            <Button size='small' href='/templates' color='secondary'>
+              <DocumentTextIcon className='w-4 h-4 mr-1' />
+              <span>Bocetos</span>
+            </Button>
+
+            <Button size='small' href='/exercises' color='secondary'>
+              <ViewListIcon className='w-4 h-4 mr-1' />
+              <span>Ejercicios</span>
             </Button>
           </div>
         </div>

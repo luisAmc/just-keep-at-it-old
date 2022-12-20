@@ -6,6 +6,7 @@ builder.prismaObject('User', {
   fields: (t) => ({
     id: t.exposeID('id'),
     username: t.exposeString('username'),
+    workoutTemplates: t.relation('workoutTemplates'),
     exercises: t.relation('exercises'),
     workoutsCount: t.relationCount('workouts'),
     workouts: t.relation('workouts', {
