@@ -150,7 +150,8 @@ builder.mutationField('startWorkoutFromTemplate', (t) =>
           name: true,
           exercises: {
             select: {
-              exerciseId: true
+              exerciseId: true,
+              index: true
             }
           }
         }
@@ -163,10 +164,10 @@ builder.mutationField('startWorkoutFromTemplate', (t) =>
           name: template.name,
           workoutExercises: {
             createMany: {
-              data: template.exercises.map(({ exerciseId }, i) => ({
+              data: template.exercises.map(({ exerciseId, index }) => ({
                 userId: session!.userId,
-                index: i,
-                exerciseId: exerciseId
+                index,
+                exerciseId
               }))
             }
           }
