@@ -21,7 +21,7 @@ export function WorkoutExerciseInputSet({ type, index, onRemove }: Props) {
   return (
     <div className='flex items-center justify-center py-2 gap-x-6'>
       <div className='w-full grid grid-cols-2'>
-        <div className='flex items-center'>
+        <div className='flex items-center space-x-2'>
           {type === ExerciseType.AEROBIC ? (
             <>
               <NumberInput

@@ -42,7 +42,7 @@ export function MostRecentCorrespondingSet({ index }: { index: number }) {
   if (workoutExercise.type === ExerciseType.STRENGTH) {
     if (correspondingSet) {
       return (
-        <div className='flex items-center'>
+        <div className='flex items-start'>
           <button
             type='button'
             className='text-slate-400 hover:bg-white/5 px-2 py-1 rounded-lg transition'

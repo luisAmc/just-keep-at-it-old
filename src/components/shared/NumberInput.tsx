@@ -11,8 +11,8 @@ export const NumberInput = forwardRef<HTMLInputElement, Props>(
       <label className='flex flex-col items-center justify-center'>
         <input
           className={clsx(
-            'w-12 justify-center text-xl text-center text-slate-200 bg-transparent outline-none appearance-none',
-            'focus:border-brand-600 focus:border-b-2 focus:ring-brand-500',
+            'w-16 py-0.5 justify-center text-xl text-center text-slate-200  bg-slate-800 outline-none appearance-none',
+            'focus:border-brand-600 rounded-md border-2 border-transparent focus:ring-brand-500',
             'disabled:opacity-60 disabled:bg-gray-500 disabled:bg-opacity-20'
           )}
           ref={ref}
