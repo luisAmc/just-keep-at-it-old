@@ -100,6 +100,40 @@ builder.mutationField('createWorkoutTemplate', (t) =>
   })
 );
 
+builder.mutationField('deleteWorkoutTemplate', (t) =>
+  t.prismaField({
+    type: 'WorkoutTemplate',
+    args: {
+      id: t.arg.id()
+    },
+    resolve: async (query, _parent, { id }, { session }) => {
+      const template = await db.workoutTemplate.findFirstOrThrow({
+        where: {
+          id,
+          userId: session!.userId
+        },
+        include: {
+          exercises: {
+            select: {
+              id: true
+            }
+          }
+        }
+      });
+
+      await db.exerciseOnWorkoutTemplate.deleteMany({
+        where: {
+          id: {
+            in: template.exercises.map((e) => e.id)
+          }
+        }
+      });
+
+      return await db.workoutTemplate.delete({ ...query, where: { id } });
+    }
+  })
+);
+
 builder.mutationField('startWorkoutFromTemplate', (t) =>
   t.prismaField({
     type: 'Workout',

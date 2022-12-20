@@ -13,3 +13,10 @@ export type TemplatesMutationVariables = Types.Exact<{
 
 
 export type TemplatesMutation = { __typename?: 'Mutation', startWorkoutFromTemplate: { __typename?: 'Workout', id: string } };
+
+export type TemplatesDeleteMutationVariables = Types.Exact<{
+  id: Types.Scalars['ID'];
+}>;
+
+
+export type TemplatesDeleteMutation = { __typename?: 'Mutation', deleteWorkoutTemplate: { __typename?: 'WorkoutTemplate', id: string } };

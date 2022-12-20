@@ -92,6 +92,7 @@ export type Mutation = {
   createWorkout: Workout;
   createWorkoutTemplate: WorkoutTemplate;
   deleteWorkout: Workout;
+  deleteWorkoutTemplate: WorkoutTemplate;
   doItAgain: Workout;
   getWorkoutDone: Workout;
   login: User;
@@ -117,6 +118,11 @@ export type MutationCreateWorkoutTemplateArgs = {
 
 export type MutationDeleteWorkoutArgs = {
   workoutId: Scalars['ID'];
+};
+
+
+export type MutationDeleteWorkoutTemplateArgs = {
+  id: Scalars['ID'];
 };
 
 
