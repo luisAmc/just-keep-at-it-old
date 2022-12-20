@@ -95,7 +95,8 @@ export function CreateTemplate() {
       variables: {
         input: {
           name: input.name,
-          exercises: input.exercises.map((exercise) => ({
+          exercises: input.exercises.map((exercise, i) => ({
+            index: i,
             exerciseId: exercise.value
           }))
         }

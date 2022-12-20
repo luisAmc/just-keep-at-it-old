@@ -26,6 +26,7 @@ export type CreateWorkoutInput = {
 
 export type CreateWorkoutTemplateExerciseInput = {
   exerciseId: Scalars['ID'];
+  index: Scalars['Int'];
 };
 
 export type CreateWorkoutTemplateInput = {
@@ -62,6 +63,13 @@ export type Exercise = {
 
 export type ExerciseDoneSessionsArgs = {
   limit?: Scalars['Int'];
+};
+
+export type ExerciseOnWorkoutTemplate = {
+  __typename?: 'ExerciseOnWorkoutTemplate';
+  exercise: Exercise;
+  id: Scalars['ID'];
+  index: Scalars['Int'];
 };
 
 export type ExerciseOptionInput = {
@@ -216,7 +224,7 @@ export type WorkoutSet = {
 
 export type WorkoutTemplate = {
   __typename?: 'WorkoutTemplate';
-  exercises: Array<Exercise>;
+  exercises: Array<ExerciseOnWorkoutTemplate>;
   id: Scalars['ID'];
   name: Scalars['String'];
 };

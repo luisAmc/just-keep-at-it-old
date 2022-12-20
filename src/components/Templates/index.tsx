@@ -23,7 +23,9 @@ export const TemplateFragment = gql`
     id
     name
     exercises {
-      ...Exercise_exercise
+      exercise {
+        ...Exercise_exercise
+      }
     }
   }
   ${ExerciseInfoFragment}
@@ -115,9 +117,8 @@ export function Templates() {
             </div>
 
             <div className='text-slate-400'>
-              {template.exercises.map((exercise, i) => (
+              {template.exercises.map(({ exercise }, i) => (
                 <div key={exercise.id} className='flex items-center space-x-2'>
-                  <span className='text-xs'>{i + 1}</span>
                   <span className='text-sm'>{exercise.name}</span>
                 </div>
               ))}

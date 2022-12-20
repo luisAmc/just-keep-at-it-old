@@ -58,11 +58,10 @@ model Exercise {
   muscleGroup MuscleGroup?
 
   workoutExercises WorkoutExercise[]
+  workoutTemplates ExerciseOnWorkoutTemplate[]
 
-  template   WorkoutTemplate? @relation(fields: [templateId], references: [id])
-  templateId String?
-  user       User             @relation(fields: [userId], references: [id])
-  userId     String
+  user   User   @relation(fields: [userId], references: [id])
+  userId String
 
   @@unique([userId, name])
 }
@@ -128,8 +127,21 @@ model WorkoutTemplate {
   updatedAt DateTime @updatedAt
 
   name      String
-  exercises Exercise[]
+  exercises ExerciseOnWorkoutTemplate[]
 
   user   User   @relation(fields: [userId], references: [id])
   userId String
+}
+
+model ExerciseOnWorkoutTemplate {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  index      Int
+  
+  exercise   Exercise @relation(fields: [exerciseId], references: [id])
+  exerciseId String
+  workoutTemplate   WorkoutTemplate? @relation(fields: [workoutTemplateId], references: [id])
+  workoutTemplateId String?
 }

@@ -6,7 +6,22 @@ builder.prismaObject('WorkoutTemplate', {
   fields: (t) => ({
     id: t.exposeID('id'),
     name: t.exposeString('name'),
-    exercises: t.relation('exercises')
+    exercises: t.relation('exercises', {
+      query: {
+        orderBy: {
+          index: 'asc'
+        }
+      }
+    })
+  })
+});
+
+builder.prismaObject('ExerciseOnWorkoutTemplate', {
+  findUnique: (template) => ({ id: template.id }),
+  fields: (t) => ({
+    id: t.exposeID('id'),
+    index: t.exposeInt('index'),
+    exercise: t.relation('exercise')
   })
 });
 
@@ -49,6 +64,7 @@ const CreateWorkoutTemplateInput = builder.inputType(
         type: [
           builder.inputType('CreateWorkoutTemplateExerciseInput', {
             fields: (t) => ({
+              index: t.int(),
               exerciseId: t.id()
             })
           })
@@ -71,9 +87,12 @@ builder.mutationField('createWorkoutTemplate', (t) =>
           userId: session!.userId,
           name: input.name,
           exercises: {
-            connect: input.exercises.map((exercise) => ({
-              id: exercise.exerciseId
-            }))
+            createMany: {
+              data: input.exercises.map((exercise) => ({
+                index: exercise.index,
+                exerciseId: exercise.exerciseId
+              }))
+            }
           }
         }
       });
@@ -97,7 +116,7 @@ builder.mutationField('startWorkoutFromTemplate', (t) =>
           name: true,
           exercises: {
             select: {
-              id: true
+              exerciseId: true
             }
           }
         }
@@ -110,10 +129,10 @@ builder.mutationField('startWorkoutFromTemplate', (t) =>
           name: template.name,
           workoutExercises: {
             createMany: {
-              data: template.exercises.map((exercise, i) => ({
+              data: template.exercises.map(({ exerciseId }, i) => ({
                 userId: session!.userId,
                 index: i,
-                exerciseId: exercise.id
+                exerciseId: exerciseId
               }))
             }
           }
