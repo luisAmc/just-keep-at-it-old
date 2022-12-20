@@ -1,8 +1,10 @@
 import { gql, useMutation, useQuery } from '@apollo/client';
 import {
   ChevronLeftIcon,
+  ClipboardCopyIcon,
   PlusCircleIcon,
-  SparklesIcon
+  SparklesIcon,
+  TrashIcon
 } from '@heroicons/react/outline';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
@@ -13,6 +15,7 @@ import { Heading } from '../shared/Heading';
 import { useModal } from '../shared/Modal';
 import { Page } from '../shared/Page';
 import {
+  TemplatesDeleteMutation,
   TemplatesMutation,
   TemplatesMutationVariables,
   TemplatesQuery
@@ -50,6 +53,7 @@ export function Templates() {
 
   const [selectedTemplateId, setSelectedTemplateId] = useState('');
   const startFromTemplateModal = useModal();
+  const deleteTemplateModal = useModal();
 
   const [startWorkoutFromTemplate] = useMutation<
     TemplatesMutation,
@@ -82,6 +86,24 @@ export function Templates() {
     }
   );
 
+  const [deleteWorkoutTemplate] = useMutation<
+    TemplatesDeleteMutation,
+    TemplatesMutationVariables
+  >(
+    gql`
+      mutation TemplatesDeleteMutation($id: ID!) {
+        deleteWorkoutTemplate(id: $id) {
+          id
+        }
+      }
+    `,
+    {
+      onCompleted() {
+        router.reload();
+      }
+    }
+  );
+
   const templates = data?.viewer?.workoutTemplates ?? [];
 
   return (
@@ -103,27 +125,53 @@ export function Templates() {
 
       {templates.length > 0 ? (
         templates.map((template) => (
-          <button
+          <div
             key={template.id}
-            type='button'
-            className='bg-slate-700 hover:bg-opacity-50 px-5 py-4 rounded-md'
-            onClick={() => {
-              setSelectedTemplateId(template.id);
-              startFromTemplateModal.open();
-            }}
+            className='bg-slate-700 px-5 py-4 rounded-md flex'
           >
-            <div className='flex items-center justify-between'>
-              <Heading size='lg'>{template.name}</Heading>
+            <div className='flex-1'>
+              <div className='flex items-center justify-between'>
+                <Heading size='lg'>{template.name}</Heading>
+              </div>
+
+              <div className='text-slate-400'>
+                {template.exercises.map(({ exercise }, i) => (
+                  <div
+                    key={exercise.id}
+                    className='flex items-center space-x-2'
+                  >
+                    <span className='text-sm'>{exercise.name}</span>
+                  </div>
+                ))}
+              </div>
             </div>
 
-            <div className='text-slate-400'>
-              {template.exercises.map(({ exercise }, i) => (
-                <div key={exercise.id} className='flex items-center space-x-2'>
-                  <span className='text-sm'>{exercise.name}</span>
-                </div>
-              ))}
+            <div className='flex flex-col justify-evenly'>
+              <div>
+                <Button
+                  className='p-2 rounded-full bg-slate-600 text-slate-300 hover:bg-opacity-50'
+                  onClick={() => {
+                    setSelectedTemplateId(template.id);
+                    startFromTemplateModal.open();
+                  }}
+                >
+                  <ClipboardCopyIcon className='w-3 h-3' />
+                </Button>
+              </div>
+
+              <div>
+                <Button
+                  className='p-2 rounded-full bg-slate-600 text-slate-300 hover:bg-opacity-50'
+                  onClick={() => {
+                    setSelectedTemplateId(template.id);
+                    deleteTemplateModal.open();
+                  }}
+                >
+                  <TrashIcon className='w-3 h-3' />
+                </Button>
+              </div>
             </div>
-          </button>
+          </div>
         ))
       ) : (
         <div className='bg-slate-700 divide-slate-700 rounded-lg flex flex-col px-4 py-4'>
@@ -148,6 +196,19 @@ export function Templates() {
         }}
       >
         ¿Comenzar una rutina apartir de este boceto?
+      </ConfirmationModal>
+
+      <ConfirmationModal
+        {...deleteTemplateModal.props}
+        onConfirm={() => {
+          deleteWorkoutTemplate({
+            variables: {
+              id: selectedTemplateId
+            }
+          });
+        }}
+      >
+        ¿Está seguro de borrar el boceto?
       </ConfirmationModal>
     </Page>
   );

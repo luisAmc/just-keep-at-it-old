@@ -71,6 +71,7 @@ type Mutation {
   createWorkout(input: CreateWorkoutInput!): Workout!
   createWorkoutTemplate(input: CreateWorkoutTemplateInput!): WorkoutTemplate!
   deleteWorkout(workoutId: ID!): Workout!
+  deleteWorkoutTemplate(id: ID!): WorkoutTemplate!
   doItAgain(workoutToCopyId: ID!): Workout!
   getWorkoutDone(input: GetWorkoutDoneInput!): Workout!
   login(input: LoginInput!): User!
