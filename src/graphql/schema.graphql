@@ -11,6 +11,7 @@ input CreateWorkoutInput {
 
 input CreateWorkoutTemplateExerciseInput {
   exerciseId: ID!
+  index: Int!
 }
 
 input CreateWorkoutTemplateInput {
@@ -43,6 +44,12 @@ type Exercise {
   muscleGroup: String
   name: String!
   type: String!
+}
+
+type ExerciseOnWorkoutTemplate {
+  exercise: Exercise!
+  id: ID!
+  index: Int!
 }
 
 input ExerciseOptionInput {
@@ -124,7 +131,7 @@ type WorkoutSet {
 }
 
 type WorkoutTemplate {
-  exercises: [Exercise!]!
+  exercises: [ExerciseOnWorkoutTemplate!]!
   id: ID!
   name: String!
 }
