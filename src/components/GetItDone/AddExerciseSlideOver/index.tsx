@@ -1,5 +1,4 @@
 import { gql, useQuery } from '@apollo/client';
-import { useFieldArray, useFormContext } from 'react-hook-form';
 import { Button } from 'src/components/shared/Button';
 import { SlideOver, SlideOverProps } from 'src/components/shared/SlideOver';
 import { useWorkoutContext } from '../Workout/WorkoutContext';

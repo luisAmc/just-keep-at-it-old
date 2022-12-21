@@ -32,7 +32,7 @@ export function Modal({ title, open, onClose, children }: ModalProps) {
         <Dialog
           as='div'
           static
-          className='fixed inset-0 z-10 overflow-y-auto'
+          className='fixed inset-0 z-30 overflow-y-auto'
           open={open}
           onClose={onClose}
         >

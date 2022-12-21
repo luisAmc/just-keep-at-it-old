@@ -1,9 +1,14 @@
 import { gql, useQuery } from '@apollo/client';
-import { DocumentTextIcon, ViewListIcon, PlusCircleIcon } from '@heroicons/react/outline';
+import {
+  DocumentTextIcon,
+  ViewListIcon,
+  PlusCircleIcon
+} from '@heroicons/react/outline';
 import { Button } from '../shared/Button';
 import { Heading } from '../shared/Heading';
 import { InfiniteList } from '../shared/InfiniteList';
 import { Page } from '../shared/Page';
+import { useSlideOver } from '../shared/SlideOver';
 import { WorkoutInfoFragment } from '../Workouts/ViewWorkout';
 import { EmptyWorkouts } from './EmptyWorkouts';
 import { WorkoutCard } from './WorkoutCard';
@@ -11,6 +16,11 @@ import {
   DashboardQuery,
   DashboardQueryVariables
 } from './__generated__/index.generated';
+
+import dynamic from 'next/dynamic';
+const TemplatesSlideOver = dynamic(() =>
+  import('./TemplatesSlideOver').then((mod) => mod.TemplatesSlideOver)
+);
 
 const query = gql`
   query DashboardQuery($offset: Int, $limit: Int) {
@@ -26,12 +36,15 @@ const query = gql`
 `;
 
 export function Dashboard() {
+  const newWorkoutSlideOver = useSlideOver();
+
   const { data, loading, fetchMore } = useQuery<
     DashboardQuery,
     DashboardQueryVariables
   >(query);
 
   const workouts = data?.viewer?.workouts ?? [];
+
   const hasNext =
     (data?.viewer?.workoutsCount ?? 0) > (data?.viewer?.workouts.length ?? 0);
 
@@ -80,11 +93,13 @@ export function Dashboard() {
       </Page>
 
       <div className='fixed bottom-6 right-4'>
-        <Button href='/workouts/create' rounded floating>
+        <Button rounded floating onClick={newWorkoutSlideOver.open}>
           <PlusCircleIcon className='w-4 h-4 mr-1' />
-          <span>Rutina</span>
+          <span>Nueva rutina</span>
         </Button>
       </div>
+
+      <TemplatesSlideOver {...newWorkoutSlideOver.props} />
     </>
   );
 }

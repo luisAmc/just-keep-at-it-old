@@ -46,6 +46,14 @@ export const query = gql`
   ${TemplateFragment}
 `;
 
+export const startWorkoutFromTemplateMutation = gql`
+  mutation TemplatesMutation($id: ID!) {
+    startWorkoutFromTemplate(id: $id) {
+      id
+    }
+  }
+`;
+
 export function Templates() {
   const router = useRouter();
 
@@ -58,33 +66,22 @@ export function Templates() {
   const [startWorkoutFromTemplate] = useMutation<
     TemplatesMutation,
     TemplatesMutationVariables
-  >(
-    gql`
-      mutation TemplatesMutation($id: ID!) {
-        startWorkoutFromTemplate(id: $id) {
-          id
-        }
-      }
-    `,
-    {
-      update(cache, { data }) {
-        if (!data?.startWorkoutFromTemplate) return;
+  >(startWorkoutFromTemplateMutation, {
+    update(cache, { data }) {
+      if (!data?.startWorkoutFromTemplate) return;
 
-        cache.modify({
-          fields: {
-            workouts(existingWorkouts = []) {
-              return [data.startWorkoutFromTemplate, ...existingWorkouts];
-            }
+      cache.modify({
+        fields: {
+          workouts(existingWorkouts = []) {
+            return [data.startWorkoutFromTemplate, ...existingWorkouts];
           }
-        });
-      },
-      onCompleted(data) {
-        router.push(
-          `/workouts/${data.startWorkoutFromTemplate.id}/get-it-done`
-        );
-      }
+        }
+      });
+    },
+    onCompleted(data) {
+      router.push(`/workouts/${data.startWorkoutFromTemplate.id}/get-it-done`);
     }
-  );
+  });
 
   const [deleteWorkoutTemplate] = useMutation<
     TemplatesDeleteMutation,
