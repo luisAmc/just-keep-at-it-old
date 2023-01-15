@@ -1,5 +1,5 @@
 import { Dialog } from '@headlessui/react';
-import { XIcon } from '@heroicons/react/solid';
+import { XMarkIcon } from '@heroicons/react/24/solid';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ReactNode, useState } from 'react';
 
@@ -74,7 +74,7 @@ export function Modal({ title, open, onClose, children }: ModalProps) {
                       className='rounded-full bg-slate-600 text-slate-50 hover:text-slate-500 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2 focus:ring-offset-slate-400'
                       onClick={onClose}
                     >
-                      <XIcon className='h-6 w-6' />
+                      <XMarkIcon className='h-6 w-6' />
                     </button>
                   </div>
 

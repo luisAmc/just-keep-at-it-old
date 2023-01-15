@@ -28,7 +28,7 @@
     "@graphql-codegen/typescript": "^2.8.5",
     "@graphql-codegen/typescript-operations": "^2.5.10",
     "@headlessui/react": "^1.7.7",
-    "@heroicons/react": "^1.0.6",
+    "@heroicons/react": "^2.0.13",
     "@hookform/resolvers": "^2.9.10",
     "@pothos/core": "^3.23.2",
     "@pothos/plugin-prisma": "^3.38.1",

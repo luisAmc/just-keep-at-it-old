@@ -1,9 +1,9 @@
 import { gql, useQuery } from '@apollo/client';
 import {
   DocumentTextIcon,
-  ViewListIcon,
+  QueueListIcon,
   PlusCircleIcon
-} from '@heroicons/react/outline';
+} from '@heroicons/react/24/outline';
 import { Button } from '../shared/Button';
 import { Heading } from '../shared/Heading';
 import { InfiniteList } from '../shared/InfiniteList';
@@ -61,7 +61,7 @@ export function Dashboard() {
             </Button>
 
             <Button size='small' href='/exercises' color='secondary'>
-              <ViewListIcon className='w-4 h-4 mr-1' />
+              <QueueListIcon className='w-4 h-4 mr-1' />
               <span>Ejercicios</span>
             </Button>
           </div>

@@ -1,4 +1,4 @@
-import { CheckCircleIcon } from '@heroicons/react/outline';
+import { CheckCircleIcon } from '@heroicons/react/24/outline';
 import { ExerciseType, MuscleGroup } from '@prisma/client';
 import { ExerciseTypeSelector } from './ExerciseTypeSelector';
 import { Input } from 'src/components/shared/Input';

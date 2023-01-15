@@ -6,7 +6,7 @@ import {
   ChevronDoubleUpIcon,
   DotsVerticalIcon,
   TrashIcon
-} from '@heroicons/react/outline';
+} from '@heroicons/react/24/outline';
 import clsx from 'clsx';
 import { Fragment } from 'react';
 import { useWorkoutExerciseContext } from './WorkoutExerciseContext';

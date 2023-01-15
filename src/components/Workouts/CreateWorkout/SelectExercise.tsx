@@ -1,9 +1,9 @@
-import { SelectorIcon } from '@heroicons/react/outline';
+import { SelectorIcon } from '@heroicons/react/24/outline';
 import { Combobox, Transition } from '@headlessui/react';
 import { FieldError } from '../../shared/Form';
 import { Fragment, useState } from 'react';
 import { useController } from 'react-hook-form';
-import { CheckCircleIcon } from '@heroicons/react/solid';
+import { CheckCircleIcon } from '@heroicons/react/24/solid';
 import { getMuscleGroupColors } from 'src/utils/getMuscleGroupColors';
 import clsx from 'clsx';
 

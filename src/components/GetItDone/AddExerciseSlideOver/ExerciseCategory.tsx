@@ -1,4 +1,4 @@
-import { ChevronUpIcon } from '@heroicons/react/outline';
+import { ChevronUpIcon } from '@heroicons/react/24/outline';
 import { Disclosure } from '@headlessui/react';
 import { ExerciseCategoryType } from '../Workout/WorkoutUtils';
 import { WorkoutExercise_Exercise } from '../Workout/__generated__/WorkoutExercise.generated';

@@ -1,10 +1,10 @@
 import {
-  BanIcon,
+  NoSymbolIcon,
   CheckCircleIcon,
   ExclamationCircleIcon,
   TrashIcon,
-  XIcon
-} from '@heroicons/react/outline';
+  XMarkIcon
+} from '@heroicons/react/24/outline';
 import clsx from 'clsx';
 import { ComponentType } from 'react';
 import { Button } from './Button';
@@ -35,7 +35,7 @@ export function ConfirmationModal({
           )}
         >
           {type === 'error' ? (
-            <BanIcon className='w-8 h-8 text-red-500' />
+            <NoSymbolIcon className='w-8 h-8 text-red-500' />
           ) : (
             <ExclamationCircleIcon className='w-8 h-8 text-amber-500' />
           )}
@@ -57,7 +57,7 @@ export function ConfirmationModal({
           </Button>
 
           <Button color='secondary' onClick={onClose}>
-            <XIcon className='w-4 h-4 mr-1' />
+            <XMarkIcon className='w-4 h-4 mr-1' />
             <span>Cancelar</span>
           </Button>
         </div>

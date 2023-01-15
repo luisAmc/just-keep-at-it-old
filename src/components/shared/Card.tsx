@@ -1,5 +1,5 @@
 import { Button } from './Button';
-import { ChevronLeftIcon } from '@heroicons/react/outline';
+import { ChevronLeftIcon } from '@heroicons/react/24/outline';
 import { Heading } from './Heading';
 import { ReactNode } from 'react';
 import clsx from 'clsx';

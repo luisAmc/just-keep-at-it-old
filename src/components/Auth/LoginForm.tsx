@@ -1,6 +1,6 @@
 import { gql, useMutation } from '@apollo/client';
-import { LockClosedIcon, UserIcon } from '@heroicons/react/outline';
-import { CheckCircleIcon } from '@heroicons/react/solid';
+import { LockClosedIcon, UserIcon } from '@heroicons/react/24/outline';
+import { CheckCircleIcon } from '@heroicons/react/24/solid';
 import { useAuthRedirect } from 'src/utils/useAuthRedirect';
 import { object, string } from 'zod';
 import { ErrorMessage } from '../shared/ErrorMessage';

@@ -1,4 +1,4 @@
-import { SparklesIcon } from '@heroicons/react/outline';
+import { SparklesIcon } from '@heroicons/react/24/outline';
 
 export function EmptyWorkouts() {
   return (

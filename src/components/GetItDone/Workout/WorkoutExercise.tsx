@@ -5,7 +5,7 @@ import {
   ChevronUpIcon,
   PlusIcon,
   SparklesIcon
-} from '@heroicons/react/outline';
+} from '@heroicons/react/24/outline';
 import clsx from 'clsx';
 import { useEffect } from 'react';
 import { useFieldArray, useFormContext } from 'react-hook-form';

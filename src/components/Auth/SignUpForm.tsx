@@ -2,7 +2,7 @@ import { object, string } from 'zod';
 import { Form, useZodForm } from '../shared/Form';
 import { Input } from '../shared/Input';
 import { SubmitButton } from '../shared/SubmitButton';
-import { CheckCircleIcon } from '@heroicons/react/solid';
+import { CheckCircleIcon } from '@heroicons/react/24/solid';
 import { gql, useMutation } from '@apollo/client';
 import {
   SignUpFormMutation,

@@ -1,9 +1,9 @@
 import {
   DotsVerticalIcon,
-  LightningBoltIcon,
+  BoltIcon,
   RefreshIcon,
   TrashIcon
-} from '@heroicons/react/outline';
+} from '@heroicons/react/24/outline';
 import { ComponentType, Fragment } from 'react';
 import { ConfirmationModal } from 'src/components/shared/ConfirmationModal';
 import {
@@ -85,7 +85,7 @@ export function ViewWorkoutActions({ isDone }: ViewWorkoutActionsProps) {
             <div className='px-1 py-1'>
               <ViewWorkoutActionItem
                 label='Comenzar'
-                icon={LightningBoltIcon}
+                icon={BoltIcon}
                 href={`/workouts/${workoutId}/get-it-done`}
               />
             </div>

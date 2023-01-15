@@ -5,7 +5,7 @@ import {
   PlusCircleIcon,
   SparklesIcon,
   TrashIcon
-} from '@heroicons/react/outline';
+} from '@heroicons/react/24/outline';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { ExerciseInfoFragment } from '../Exercises';
