@@ -73,10 +73,7 @@ export function SignUpForm() {
             label='Confirmar contraseña'
           />
 
-          <SubmitButton>
-            <CheckCircleIcon className='w-6 h-6 mr-1' />
-            <span>Crear</span>
-          </SubmitButton>
+          <SubmitButton>Crear</SubmitButton>
         </Form>
       </Card>
     </div>

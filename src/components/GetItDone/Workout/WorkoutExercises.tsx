@@ -175,10 +175,7 @@ export function WorkoutExercises() {
 
       <ExerciseSessionHistory {...exerciseSessionHistory.props} />
 
-      <SubmitButton>
-        <CheckCircleIcon className='w-4 h-4 mr-1' />
-        <span>Completar</span>
-      </SubmitButton>
+      <SubmitButton>Completar</SubmitButton>
     </Form>
   );
 }

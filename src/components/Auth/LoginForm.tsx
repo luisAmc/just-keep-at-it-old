@@ -82,10 +82,7 @@ export function LoginForm() {
               color='light'
             />
 
-            <SubmitButton>
-              <CheckCircleIcon className='w-6 h-6 mr-1' />
-              <span>Ingresar</span>
-            </SubmitButton>
+            <SubmitButton>Ingresar</SubmitButton>
           </Form>
 
           <div className='mt-4 flex justify-end'>

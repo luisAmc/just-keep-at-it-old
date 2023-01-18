@@ -150,10 +150,7 @@ export function CreateTemplate() {
           <span>Añadir uno más</span>
         </Button>
 
-        <SubmitButton>
-          <CheckCircleIcon className='w-4 h-4 mr-1' />
-          <span>Ingresar</span>
-        </SubmitButton>
+        <SubmitButton>Ingresar</SubmitButton>
       </Form>
     </Page>
   );
