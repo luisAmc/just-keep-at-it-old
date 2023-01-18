@@ -9,7 +9,7 @@ specifiers:
   '@graphql-codegen/typescript': ^2.8.5
   '@graphql-codegen/typescript-operations': ^2.5.10
   '@headlessui/react': ^1.7.7
-  '@heroicons/react': ^1.0.6
+  '@heroicons/react': ^2.0.13
   '@hookform/resolvers': ^2.9.10
   '@pothos/core': ^3.23.2
   '@pothos/plugin-prisma': ^3.38.1
@@ -52,7 +52,7 @@ dependencies:
   '@graphql-codegen/typescript': 2.8.5_graphql@16.6.0
   '@graphql-codegen/typescript-operations': 2.5.10_graphql@16.6.0
   '@headlessui/react': 1.7.7_ef5jwxihqo6n7gxfmzogljlgcm
-  '@heroicons/react': 1.0.6_react@18.1.0
+  '@heroicons/react': 2.0.13_react@18.1.0
   '@hookform/resolvers': 2.9.10_react-hook-form@7.41.0
   '@pothos/core': 3.23.2_graphql@16.6.0
   '@pothos/plugin-prisma': 3.38.1_va7zbxnwzwrttjdvec5yggojvu
@@ -1449,8 +1449,8 @@ packages:
       react-dom: 18.1.0_react@18.1.0
     dev: false
 
-  /@heroicons/react/1.0.6_react@18.1.0:
-    resolution: {integrity: sha512-JJCXydOFWMDpCP4q13iEplA503MQO3xLoZiKum+955ZCtHINWnx26CUxVxxFQu/uLb4LW3ge15ZpzIkXKkJ8oQ==}
+  /@heroicons/react/2.0.13_react@18.1.0:
+    resolution: {integrity: sha512-iSN5XwmagrnirWlYEWNPdCDj9aRYVD/lnK3JlsC9/+fqGF80k8C7rl+1HCvBX0dBoagKqOFBs6fMhJJ1hOg1EQ==}
     peerDependencies:
       react: '>= 16'
     dependencies:

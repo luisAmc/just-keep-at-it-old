@@ -43,6 +43,23 @@ builder.prismaObject('Exercise', {
   })
 });
 
+builder.queryField('exercise', (t) =>
+  t.prismaField({
+    type: 'Exercise',
+    args: {
+      id: t.arg.id()
+    },
+    resolve: async (query, _parent, { id }, { session }) =>
+      await db.exercise.findFirstOrThrow({
+        ...query,
+        where: {
+          id: id,
+          userId: session!.userId
+        }
+      })
+  })
+);
+
 const CreateExerciseInput = builder.inputType('CreateExerciseInput', {
   fields: (t) => ({
     name: t.string(),
@@ -71,19 +88,35 @@ builder.mutationField('createExercise', (t) =>
   })
 );
 
-builder.queryField('exercise', (t) =>
+const EditExerciseInput = builder.inputType('EditExerciseInput', {
+  fields: (t) => ({
+    exerciseId: t.id(),
+    name: t.string()
+  })
+});
+
+builder.mutationField('editExercise', (t) =>
   t.prismaField({
     type: 'Exercise',
-    args: {
-      id: t.arg.id()
-    },
-    resolve: async (query, _parent, { id }, { session }) =>
-      await db.exercise.findFirstOrThrow({
-        ...query,
+    args: { input: t.arg({ type: EditExerciseInput }) },
+    resolve: async (query, _parent, { input }, { session }) => {
+      const exercise = await db.exercise.findFirstOrThrow({
         where: {
-          id: id,
-          userId: session!.userId
+          id: input.exerciseId,
+          userId: session?.userId
+        },
+        select: {
+          id: true
         }
-      })
+      });
+
+      return await db.exercise.update({
+        ...query,
+        where: { id: exercise.id },
+        data: {
+          name: input.name
+        }
+      });
+    }
   })
 );

@@ -1,11 +1,11 @@
 import { gql, useMutation, useQuery } from '@apollo/client';
 import {
   ChevronLeftIcon,
-  ClipboardCopyIcon,
+  ClipboardDocumentIcon,
   PlusCircleIcon,
   SparklesIcon,
   TrashIcon
-} from '@heroicons/react/outline';
+} from '@heroicons/react/24/outline';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { ExerciseInfoFragment } from '../Exercises';
@@ -152,7 +152,7 @@ export function Templates() {
                     startFromTemplateModal.open();
                   }}
                 >
-                  <ClipboardCopyIcon className='w-3 h-3' />
+                  <ClipboardDocumentIcon className='w-3 h-3' />
                 </Button>
               </div>
 

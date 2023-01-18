@@ -1,5 +1,5 @@
 import { gql, useMutation, useQuery } from '@apollo/client';
-import { ChevronLeftIcon, PlusIcon, TrashIcon } from '@heroicons/react/outline';
+import { ChevronLeftIcon, PlusIcon, TrashIcon } from '@heroicons/react/24/outline';
 import { useFieldArray } from 'react-hook-form';
 import { array, object, string, z } from 'zod';
 import { ExerciseInfoFragment } from '../../Exercises';
@@ -17,7 +17,7 @@ import { useRouter } from 'next/router';
 import { Page } from 'src/components/shared/Page';
 import { Heading } from 'src/components/shared/Heading';
 import { Button } from 'src/components/shared/Button';
-import { CheckCircleIcon } from '@heroicons/react/solid';
+import { CheckCircleIcon } from '@heroicons/react/24/solid';
 import { useExercises } from 'src/components/Exercises/useExercises';
 
 export const query = gql`

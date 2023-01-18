@@ -1,5 +1,5 @@
 import { gql, useQuery } from '@apollo/client';
-import { PlusIcon } from '@heroicons/react/outline';
+import { PlusIcon } from '@heroicons/react/24/outline';
 import { Button } from '../shared/Button';
 import { Card } from '../shared/Card';
 import { WorkoutInfoFragment } from './ViewWorkout';

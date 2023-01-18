@@ -4,7 +4,7 @@ import {
   ChevronLeftIcon,
   PlusIcon,
   TrashIcon
-} from '@heroicons/react/outline';
+} from '@heroicons/react/24/outline';
 import { useRouter } from 'next/router';
 import { useFieldArray } from 'react-hook-form';
 import { z } from 'zod';

@@ -1,6 +1,6 @@
 import { AddExerciseSlideOver } from '../AddExerciseSlideOver';
 import { Button } from 'src/components/shared/Button';
-import { CheckCircleIcon, PlusIcon } from '@heroicons/react/outline';
+import { CheckCircleIcon, PlusIcon } from '@heroicons/react/24/outline';
 import { Form, useZodForm } from 'src/components/shared/Form';
 import { gql, useMutation } from '@apollo/client';
 import { MoveExerciseAction } from './WorkoutExerciseActions';

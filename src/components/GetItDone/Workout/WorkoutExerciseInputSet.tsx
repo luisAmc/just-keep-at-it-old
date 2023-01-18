@@ -2,7 +2,7 @@ import { Button } from 'src/components/shared/Button';
 import { ExerciseType } from '@prisma/client';
 import { MostRecentCorrespondingSet } from './WorkoutUtils';
 import { NumberInput } from 'src/components/shared/NumberInput';
-import { TrashIcon } from '@heroicons/react/outline';
+import { TrashIcon } from '@heroicons/react/24/outline';
 import { useFormContext } from 'react-hook-form';
 import { useWorkoutExerciseContext } from './WorkoutExerciseContext';
 

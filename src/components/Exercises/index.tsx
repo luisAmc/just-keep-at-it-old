@@ -1,12 +1,16 @@
 import { gql, useQuery } from '@apollo/client';
-import { ChevronLeftIcon } from '@heroicons/react/outline';
-import { PlusCircleIcon } from '@heroicons/react/solid';
 import { Button } from '../shared/Button';
 import { Heading } from '../shared/Heading';
 import { Page } from '../shared/Page';
 import clsx from 'clsx';
 import { ExercisesQuery } from './__generated__/index.generated';
 import { getMuscleGroupColors } from 'src/utils/getMuscleGroupColors';
+import {
+  ChevronLeftIcon,
+  PencilSquareIcon,
+  PlusCircleIcon
+} from '@heroicons/react/24/outline';
+import { IconButton } from '../shared/IconButton';
 
 export const ExerciseInfoFragment = gql`
   fragment Exercise_exercise on Exercise {
@@ -64,6 +68,11 @@ export function Exercises() {
                 >
                   {exercise.muscleGroup ?? 'AEROBIC'}
                 </span>
+
+                <IconButton
+                  icon={PencilSquareIcon}
+                  href={`/exercises/${exercise.id}/edit`}
+                />
               </div>
             ))}
         </div>

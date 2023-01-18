@@ -1,5 +1,5 @@
 import { Button } from 'src/components/shared/Button';
-import { ChevronLeftIcon, TrashIcon } from '@heroicons/react/outline';
+import { ChevronLeftIcon, TrashIcon } from '@heroicons/react/24/outline';
 import { ConfirmationModal } from 'src/components/shared/ConfirmationModal';
 import { gql, useMutation } from '@apollo/client';
 import { Heading } from 'src/components/shared/Heading';

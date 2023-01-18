@@ -1,5 +1,5 @@
 import { useMutation, useQuery } from '@apollo/client';
-import { PlusCircleIcon, SparklesIcon } from '@heroicons/react/outline';
+import { PlusCircleIcon, SparklesIcon } from '@heroicons/react/24/outline';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { Button } from '../shared/Button';

@@ -4,9 +4,9 @@ import {
   ArrowUpIcon,
   ChevronDoubleDownIcon,
   ChevronDoubleUpIcon,
-  DotsVerticalIcon,
+  EllipsisVerticalIcon,
   TrashIcon
-} from '@heroicons/react/outline';
+} from '@heroicons/react/24/outline';
 import clsx from 'clsx';
 import { Fragment } from 'react';
 import { useWorkoutExerciseContext } from './WorkoutExerciseContext';
@@ -19,7 +19,7 @@ export function WorkoutExerciseActions() {
   return (
     <Menu as='div' className='relative inline-block text-left'>
       <Menu.Button className='inline-flex w-full justify-center rounded-full bg-slate-600 p-2 text-sm font-medium text-slate-200 hover:bg-opacity-80 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75'>
-        <DotsVerticalIcon className='w-4 h-4' />
+        <EllipsisVerticalIcon className='w-4 h-4' />
       </Menu.Button>
 
       <Transition.Child

@@ -19,7 +19,7 @@ export function WorkoutCard({ workout }: WorkoutCardProps) {
           : `/workouts/${workout.id}/get-it-done`
       }
     >
-      <div
+      <a
         className={clsx(
           'px-5 py-4 rounded-md hover:cursor-pointer transition hover:scale-[1.02]',
           isDone ? 'bg-brand-200 text-brand-900' : 'bg-slate-600 text-slate-200'
@@ -44,7 +44,7 @@ export function WorkoutCard({ workout }: WorkoutCardProps) {
         </div>
 
         <div className='flex justify-end text-sm'></div>
-      </div>
+      </a>
     </Link>
   );
 }

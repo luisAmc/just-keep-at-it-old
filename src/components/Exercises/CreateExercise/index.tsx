@@ -1,5 +1,5 @@
 import { gql, useMutation } from '@apollo/client';
-import { ChevronLeftIcon } from '@heroicons/react/outline';
+import { ChevronLeftIcon } from '@heroicons/react/24/outline';
 import { ExerciseType } from '@prisma/client';
 import { useRouter } from 'next/router';
 import { ErrorMessage } from '../../shared/ErrorMessage';

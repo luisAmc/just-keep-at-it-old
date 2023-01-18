@@ -1,9 +1,9 @@
 import {
-  DotsVerticalIcon,
-  LightningBoltIcon,
-  RefreshIcon,
+  EllipsisVerticalIcon,
+  BoltIcon,
+  ArrowPathIcon,
   TrashIcon
-} from '@heroicons/react/outline';
+} from '@heroicons/react/24/outline';
 import { ComponentType, Fragment } from 'react';
 import { ConfirmationModal } from 'src/components/shared/ConfirmationModal';
 import {
@@ -68,7 +68,7 @@ export function ViewWorkoutActions({ isDone }: ViewWorkoutActionsProps) {
   return (
     <Menu as='div' className='relative inline-block text-left'>
       <Menu.Button className='inline-flex w-full justify-center rounded-full bg-slate-500 px-2 py-2 text-sm font-medium text-white hover:bg-opacity-80 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75'>
-        <DotsVerticalIcon className='w-4 h-4' />
+        <EllipsisVerticalIcon className='w-4 h-4' />
       </Menu.Button>
 
       <Transition
@@ -85,7 +85,7 @@ export function ViewWorkoutActions({ isDone }: ViewWorkoutActionsProps) {
             <div className='px-1 py-1'>
               <ViewWorkoutActionItem
                 label='Comenzar'
-                icon={LightningBoltIcon}
+                icon={BoltIcon}
                 href={`/workouts/${workoutId}/get-it-done`}
               />
             </div>
@@ -95,7 +95,7 @@ export function ViewWorkoutActions({ isDone }: ViewWorkoutActionsProps) {
             <div className='px-1 py-1'>
               <ViewWorkoutActionItem
                 label='Repetir rutina'
-                icon={RefreshIcon}
+                icon={ArrowPathIcon}
                 onClick={() =>
                   doItAgain({
                     variables: {
