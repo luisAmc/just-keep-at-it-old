@@ -7,7 +7,11 @@ builder.prismaObject('User', {
     id: t.exposeID('id'),
     username: t.exposeString('username'),
     workoutTemplates: t.relation('workoutTemplates'),
-    exercises: t.relation('exercises'),
+    exercises: t.relation('exercises', {
+      query: {
+        orderBy: [{ muscleGroup: 'asc' }, { name: 'asc' }]
+      }
+    }),
     workoutsCount: t.relationCount('workouts'),
     workouts: t.relation('workouts', {
       args: {

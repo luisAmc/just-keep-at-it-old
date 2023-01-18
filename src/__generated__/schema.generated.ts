@@ -50,6 +50,11 @@ export type DoneExerciseSetInput = {
   reps: Scalars['Int'];
 };
 
+export type EditExerciseInput = {
+  exerciseId: Scalars['ID'];
+  name: Scalars['String'];
+};
+
 export type Exercise = {
   __typename?: 'Exercise';
   doneSessions: Array<WorkoutExercise>;
@@ -94,6 +99,7 @@ export type Mutation = {
   deleteWorkout: Workout;
   deleteWorkoutTemplate: WorkoutTemplate;
   doItAgain: Workout;
+  editExercise: Exercise;
   getWorkoutDone: Workout;
   login: User;
   signUp: User;
@@ -128,6 +134,11 @@ export type MutationDeleteWorkoutTemplateArgs = {
 
 export type MutationDoItAgainArgs = {
   workoutToCopyId: Scalars['ID'];
+};
+
+
+export type MutationEditExerciseArgs = {
+  input: EditExerciseInput;
 };
 
 

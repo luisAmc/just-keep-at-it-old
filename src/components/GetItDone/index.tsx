@@ -28,7 +28,8 @@ export function GetItDone() {
 
   return (
     <Page>
-      {loading && <Shimmer />} {workout && <Workout workout={workout} />}
+      {loading && <Shimmer />}
+      {workout && <Workout workout={workout} />}
     </Page>
   );
 }

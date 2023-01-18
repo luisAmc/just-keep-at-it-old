@@ -6,3 +6,10 @@ export type EditExerciseQueryVariables = Types.Exact<{
 
 
 export type EditExerciseQuery = { __typename?: 'Query', exercise: { __typename?: 'Exercise', name: string } };
+
+export type EditExerciseMutationVariables = Types.Exact<{
+  input: Types.EditExerciseInput;
+}>;
+
+
+export type EditExerciseMutation = { __typename?: 'Mutation', editExercise: { __typename?: 'Exercise', id: string } };

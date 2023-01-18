@@ -37,6 +37,11 @@ input DoneExerciseSetInput {
   reps: Int!
 }
 
+input EditExerciseInput {
+  exerciseId: ID!
+  name: String!
+}
+
 type Exercise {
   doneSessions(limit: Int! = 10): [WorkoutExercise!]!
   id: ID!
@@ -73,6 +78,7 @@ type Mutation {
   deleteWorkout(workoutId: ID!): Workout!
   deleteWorkoutTemplate(id: ID!): WorkoutTemplate!
   doItAgain(workoutToCopyId: ID!): Workout!
+  editExercise(input: EditExerciseInput!): Exercise!
   getWorkoutDone(input: GetWorkoutDoneInput!): Workout!
   login(input: LoginInput!): User!
   signUp(input: SignUpInput!): User!

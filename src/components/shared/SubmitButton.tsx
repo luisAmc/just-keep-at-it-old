@@ -1,4 +1,4 @@
-import { CheckCircleIcon } from '@heroicons/react/24/outline';
+import { CheckCircleIcon } from '@heroicons/react/24/solid';
 import { useFormContext } from 'react-hook-form';
 import { Button, Props } from './Button';
 
@@ -6,8 +6,6 @@ export function SubmitButton({ children, ...props }: Props) {
   const { formState } = useFormContext();
   return (
     <Button type='submit' {...props}>
-      <CheckCircleIcon className='w-4 h-4 mr-1' />
-
       {formState.isSubmitting && (
         <svg
           className='animate-spin -ml-1 mr-3 h-5 w-5 text-white'
@@ -30,6 +28,7 @@ export function SubmitButton({ children, ...props }: Props) {
           ></path>
         </svg>
       )}
+      <CheckCircleIcon className='w-4 h-4 mr-1' />
       {children}
     </Button>
   );
