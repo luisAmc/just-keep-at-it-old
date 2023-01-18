@@ -75,10 +75,7 @@ export function CreateExerciseForm() {
         />
       </Transition>
 
-      <SubmitButton>
-        <CheckCircleIcon className='w-4 h-4 mr-1' />
-        <span>Crear Ejercicio</span>
-      </SubmitButton>
+      <SubmitButton>Crear Ejercicio</SubmitButton>
     </>
   );
 }

@@ -1,5 +1,9 @@
 import { gql, useMutation, useQuery } from '@apollo/client';
-import { ChevronLeftIcon, PlusIcon, TrashIcon } from '@heroicons/react/24/outline';
+import {
+  ChevronLeftIcon,
+  PlusIcon,
+  TrashIcon
+} from '@heroicons/react/24/outline';
 import { useFieldArray } from 'react-hook-form';
 import { array, object, string, z } from 'zod';
 import { ExerciseInfoFragment } from '../../Exercises';
@@ -161,10 +165,7 @@ export function CreateWorkout() {
             <span>Añadir uno más</span>
           </Button>
 
-          <SubmitButton>
-            <CheckCircleIcon className='w-4 h-4 mr-1' />
-            <span>Ingresar</span>
-          </SubmitButton>
+          <SubmitButton>Ingresar</SubmitButton>
         </Form>
       </div>
     </Page>
