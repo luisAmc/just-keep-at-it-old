@@ -1,7 +1,7 @@
 import { gql, useMutation, useQuery } from '@apollo/client';
 import {
   ChevronLeftIcon,
-  ClipboardCopyIcon,
+  ClipboardDocumentIcon,
   PlusCircleIcon,
   SparklesIcon,
   TrashIcon
@@ -152,7 +152,7 @@ export function Templates() {
                     startFromTemplateModal.open();
                   }}
                 >
-                  <ClipboardCopyIcon className='w-3 h-3' />
+                  <ClipboardDocumentIcon className='w-3 h-3' />
                 </Button>
               </div>
 

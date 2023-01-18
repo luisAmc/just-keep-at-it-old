@@ -1,4 +1,4 @@
-import { SelectorIcon } from '@heroicons/react/24/outline';
+import { ChevronUpDownIcon } from '@heroicons/react/24/outline';
 import { Combobox, Transition } from '@headlessui/react';
 import { FieldError } from '../../shared/Form';
 import { Fragment, useState } from 'react';
@@ -52,7 +52,7 @@ export function SelectExercise({ label, name, options }: Props) {
             />
 
             <Combobox.Button className='absolute inset-y-0 right-0 flex items-center pr-2'>
-              <SelectorIcon
+              <ChevronUpDownIcon
                 className='h-5 w-5 text-slate-400'
                 aria-hidden='true'
               />
@@ -82,7 +82,9 @@ export function SelectExercise({ label, name, options }: Props) {
                       className={({ active }) =>
                         clsx(
                           'relative cursor-default select-none py-2 pl-3 pr-9',
-                          active && !isSelected && 'text-slate-800 bg-brand-200',
+                          active &&
+                            !isSelected &&
+                            'text-slate-800 bg-brand-200',
                           isSelected && 'text-white bg-brand-500'
                         )
                       }
