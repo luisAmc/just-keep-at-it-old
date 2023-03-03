@@ -21,7 +21,6 @@ export type CreateExerciseInput = {
 
 export type CreateWorkoutInput = {
   name: Scalars['String'];
-  workoutExercises: Array<ExerciseOptionInput>;
 };
 
 export type CreateWorkoutTemplateExerciseInput = {

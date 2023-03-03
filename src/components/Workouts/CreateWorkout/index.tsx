@@ -1,65 +1,27 @@
-import { gql, useMutation, useQuery } from '@apollo/client';
-import {
-  ChevronLeftIcon,
-  PlusIcon,
-  TrashIcon
-} from '@heroicons/react/24/outline';
-import { useFieldArray } from 'react-hook-form';
-import { array, object, string, z } from 'zod';
-import { ExerciseInfoFragment } from '../../Exercises';
-import { FieldError, Form, useZodForm } from '../../shared/Form';
-import { Input } from '../../shared/Input';
-import { SelectExercise } from './SelectExercise';
-import { SubmitButton } from '../../shared/SubmitButton';
+import { Button } from 'src/components/shared/Button';
+import { ChevronLeftIcon } from '@heroicons/react/24/outline';
 import {
   CreateWorkoutMutation,
-  CreateWorkoutMutationVariables,
-  CreateWorkoutQuery
+  CreateWorkoutMutationVariables
 } from './__generated__/index.generated';
 import { ErrorMessage } from 'src/components/shared/ErrorMessage';
-import { useRouter } from 'next/router';
-import { Page } from 'src/components/shared/Page';
+import { Form, useZodForm } from '../../shared/Form';
+import { gql, useMutation } from '@apollo/client';
 import { Heading } from 'src/components/shared/Heading';
-import { Button } from 'src/components/shared/Button';
-import { CheckCircleIcon } from '@heroicons/react/24/solid';
-import { useExercises } from 'src/components/Exercises/useExercises';
+import { Input } from '../../shared/Input';
+import { Page } from 'src/components/shared/Page';
+import { SubmitButton } from '../../shared/SubmitButton';
+import { useRouter } from 'next/router';
+import { z } from 'zod';
 
-export const query = gql`
-  query CreateWorkoutQuery {
-    viewer {
-      id
-      exercises {
-        ...Exercise_exercise
-      }
-    }
-  }
-  ${ExerciseInfoFragment}
-`;
-
-const CreateWorkoutSchema = object({
-  name: string().min(1, 'Ingrese el nombre de la rutina.'),
-  workoutExercises: array(
-    object({
-      label: string(),
-      value: string()
-    })
-  ).refine((data) => data.every((workoutExercise) => workoutExercise.value), {
-    message: 'Seleccione un valor en todos los campos.'
-  })
+const CreateWorkoutSchema = z.object({
+  name: z.string().min(1, 'Ingrese el nombre de la rutina.')
 });
 
 export function CreateWorkout() {
   const router = useRouter();
 
-  // TODO: Add loading state
-  const { data, loading } = useQuery<CreateWorkoutQuery>(query);
-
-  const form = useZodForm({
-    schema: CreateWorkoutSchema,
-    defaultValues: {
-      workoutExercises: [{ label: '', value: '' }]
-    }
-  });
+  const form = useZodForm({ schema: CreateWorkoutSchema });
 
   const [createWorkout, { error }] = useMutation<
     CreateWorkoutMutation,
@@ -85,7 +47,7 @@ export function CreateWorkout() {
         });
       },
       onCompleted(data) {
-        router.push(`/workouts/${data.createWorkout.id}`);
+        router.push(`/workouts/${data.createWorkout.id}/get-it-done`);
       }
     }
   );
@@ -93,26 +55,10 @@ export function CreateWorkout() {
   async function onSubmit(input: z.infer<typeof CreateWorkoutSchema>) {
     await createWorkout({
       variables: {
-        input: {
-          name: input.name,
-          workoutExercises: input.workoutExercises.map((exercise) => ({
-            id: exercise.value
-          }))
-        }
+        input: { name: input.name }
       }
     });
   }
-
-  const workoutExercises = useFieldArray({
-    control: form.control,
-    name: 'workoutExercises'
-  });
-
-  function appendWorkout() {
-    workoutExercises.append({ value: '', label: '' });
-  }
-
-  const exercises = useExercises(data?.viewer?.exercises);
 
   return (
     <Page>
@@ -132,40 +78,7 @@ export function CreateWorkout() {
 
           <Input {...form.register('name')} label='Nombre' />
 
-          <div>
-            <label>
-              <div>Ejercicios</div>
-
-              {workoutExercises.fields.map((field, index) => (
-                <div key={field.id} className='flex items-center space-x-2'>
-                  <div className='w-full'>
-                    <SelectExercise
-                      name={`workoutExercises.${index}`}
-                      options={exercises}
-                    />
-                  </div>
-
-                  {workoutExercises.fields.length > 1 && (
-                    <Button
-                      className='p-2.5 rounded-full bg-slate-700 text-slate-300'
-                      onClick={() => workoutExercises.remove(index)}
-                    >
-                      <TrashIcon className='w-4 h-4' />
-                    </Button>
-                  )}
-                </div>
-              ))}
-
-              <FieldError name='workoutExercises' />
-            </label>
-          </div>
-
-          <Button onClick={appendWorkout} variant='dashed' color='secondary'>
-            <PlusIcon className='w-4 h-4 mr-1' />
-            <span>Añadir uno más</span>
-          </Button>
-
-          <SubmitButton>Ingresar</SubmitButton>
+          <SubmitButton>Comenzar</SubmitButton>
         </Form>
       </div>
     </Page>

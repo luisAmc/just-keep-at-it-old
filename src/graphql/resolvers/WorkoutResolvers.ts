@@ -59,8 +59,7 @@ const ExerciseOptionInput = builder.inputType('ExerciseOptionInput', {
 
 const CreateWorkoutInput = builder.inputType('CreateWorkoutInput', {
   fields: (t) => ({
-    name: t.string(),
-    workoutExercises: t.field({ type: [ExerciseOptionInput] })
+    name: t.string()
   })
 });
 
@@ -75,16 +74,7 @@ builder.mutationField('createWorkout', (t) =>
         ...query,
         data: {
           userId: session!.userId,
-          name: input.name,
-          workoutExercises: {
-            createMany: {
-              data: input.workoutExercises.map((exercise, index) => ({
-                index: index,
-                userId: session!.userId,
-                exerciseId: exercise.id
-              }))
-            }
-          }
+          name: input.name
         }
       });
     }
