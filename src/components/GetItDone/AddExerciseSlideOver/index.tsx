@@ -1,30 +1,34 @@
-import { gql, useQuery } from '@apollo/client';
 import { Button } from 'src/components/shared/Button';
-import { SlideOver, SlideOverProps } from 'src/components/shared/SlideOver';
-import { useWorkoutContext } from '../Workout/WorkoutContext';
-import { ExerciseFragment } from '../Workout/WorkoutExercise';
-import { useExerciseCategories } from '../Workout/WorkoutUtils';
 import { ExerciseCategory } from './ExerciseCategory';
+import { ExerciseFragment } from '../Workout/WorkoutExercise';
+import { gql, useQuery } from '@apollo/client';
+import { SlideOver, SlideOverProps } from 'src/components/shared/SlideOver';
+import { useExerciseCategories } from '../Workout/WorkoutUtils';
+import { useWorkoutContext } from '../Workout/WorkoutContext';
 import { AddExerciseSlideOverQuery } from './__generated__/index.generated';
 
 interface Props extends Omit<SlideOverProps, 'title' | 'children'> {
   onConfirm(exerciseId: string): void;
 }
 
+export const AddExerciseSlideOverQuery_query = gql`
+  query AddExerciseSlideOverQuery {
+    viewer {
+      id
+      exercises {
+        ...WorkoutExercise_exercise
+      }
+    }
+  }
+  ${ExerciseFragment}
+`;
+
 export function AddExerciseSlideOver({ onConfirm, open, onClose }: Props) {
   const { addExercise } = useWorkoutContext();
 
-  const { data, loading } = useQuery<AddExerciseSlideOverQuery>(gql`
-    query AddExerciseSlideOverQuery {
-      viewer {
-        id
-        exercises {
-          ...WorkoutExercise_exercise
-        }
-      }
-    }
-    ${ExerciseFragment}
-  `);
+  const { data, loading } = useQuery<AddExerciseSlideOverQuery>(
+    AddExerciseSlideOverQuery_query
+  );
 
   const exerciseCategories = useExerciseCategories(data?.viewer?.exercises);
 
