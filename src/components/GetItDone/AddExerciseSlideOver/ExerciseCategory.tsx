@@ -85,9 +85,7 @@ export function ExerciseCategory({ category, onClick }: Props) {
                     ? ExerciseType.AEROBIC
                     : ExerciseType.STRENGTH,
                 muscleGroup:
-                  category.id === ExerciseType.AEROBIC
-                    ? undefined
-                    : ExerciseType.STRENGTH
+                  category.id === ExerciseType.AEROBIC ? undefined : category.id
               }
             }
           });
