@@ -6,7 +6,6 @@ input CreateExerciseInput {
 
 input CreateWorkoutInput {
   name: String!
-  workoutExercises: [ExerciseOptionInput!]!
 }
 
 input CreateWorkoutTemplateExerciseInput {

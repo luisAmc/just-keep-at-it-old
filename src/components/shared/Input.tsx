@@ -3,18 +3,26 @@ import { ComponentProps, ComponentType, forwardRef } from 'react';
 import { FieldError } from './Form';
 
 interface Props extends ComponentProps<'input'> {
+  hideLabel?: boolean;
   label?: string;
   color?: 'light' | 'dark';
   icon?: ComponentType<any>;
 }
 
 export const Input = forwardRef<HTMLInputElement, Props>(function Input(
-  { label, type = 'text', icon: Icon, color = 'dark', ...props },
+  {
+    label,
+    hideLabel = false,
+    type = 'text',
+    icon: Icon,
+    color = 'dark',
+    ...props
+  },
   ref
 ) {
   return (
     <label>
-      {label && (
+      {!hideLabel && label && (
         <div
           className={clsx('font-medium mb-1', {
             'text-slate-800': color === 'light',
