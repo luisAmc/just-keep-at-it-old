@@ -1,4 +1,4 @@
-import { ExerciseType, MuscleGroup, WorkoutStatus } from '@prisma/client';
+import { WorkoutStatus } from '@prisma/client';
 import { db } from 'src/utils/prisma';
 import { builder } from '../builder';
 
@@ -7,8 +7,17 @@ builder.prismaObject('Exercise', {
   fields: (t) => ({
     id: t.exposeID('id'),
     name: t.exposeString('name'),
-    type: t.exposeString('type'),
-    muscleGroup: t.exposeString('muscleGroup', { nullable: true }),
+    category: t.relation('category'),
+    type: t.string({
+      resolve: async ({ categoryId }) => {
+        const category = await db.exerciseCategory.findUnique({
+          where: { id: categoryId },
+          select: { type: true }
+        });
+
+        return category!.type;
+      }
+    }),
     lastSession: t.prismaField({
       type: 'WorkoutExercise',
       nullable: true,
@@ -63,8 +72,7 @@ builder.queryField('exercise', (t) =>
 const CreateExerciseInput = builder.inputType('CreateExerciseInput', {
   fields: (t) => ({
     name: t.string(),
-    type: t.string(),
-    muscleGroup: t.string({ required: false })
+    categoryId: t.id()
   })
 });
 
@@ -74,13 +82,22 @@ builder.mutationField('createExercise', (t) =>
     args: {
       input: t.arg({ type: CreateExerciseInput })
     },
-    resolve: (query, _parent, { input }, { session }) => {
+    resolve: async (query, _parent, { input }, { session }) => {
+      const category = await db.exerciseCategory.findFirstOrThrow({
+        where: {
+          id: input.categoryId,
+          userId: session!.userId
+        },
+        select: {
+          id: true
+        }
+      });
+
       return db.exercise.create({
         ...query,
         data: {
           name: input.name,
-          type: input.type as keyof typeof ExerciseType,
-          muscleGroup: input.muscleGroup as keyof typeof MuscleGroup,
+          categoryId: category.id,
           userId: session!.userId
         }
       });

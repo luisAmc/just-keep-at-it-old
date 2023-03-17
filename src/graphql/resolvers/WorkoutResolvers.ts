@@ -14,7 +14,7 @@ builder.prismaObject('Workout', {
     workoutExercises: t.relation('workoutExercises', {
       query: {
         orderBy: {
-          index: 'asc'
+          exerciseIndex: 'asc'
         }
       }
     })
@@ -167,7 +167,7 @@ const GetWorkoutDoneInput = builder.inputType('GetWorkoutDoneInput', {
         builder.inputType('DoneExerciseInput', {
           fields: (t) => ({
             id: t.id({ required: false }),
-            index: t.int(),
+            exerciseIndex: t.int(),
             exerciseId: t.id(),
             sets: t.field({
               type: [
@@ -219,11 +219,11 @@ builder.mutationField('getWorkoutDone', (t) =>
                 workoutId: input.workoutId,
                 exerciseId: workoutExercise.exerciseId,
                 userId: session!.userId,
-                index: workoutExercise.index,
+                exerciseIndex: workoutExercise.exerciseIndex,
                 sets: {
                   createMany: {
                     data: workoutExercise.sets.map((set, setIndex) => ({
-                      index: setIndex,
+                      setIndex: setIndex,
                       mins: set.mins,
                       distance: set.distance,
                       kcal: set.kcal,
@@ -265,7 +265,7 @@ builder.mutationField('doItAgain', (t) =>
         },
         include: {
           workoutExercises: {
-            select: { index: true, exerciseId: true }
+            select: { exerciseIndex: true, exerciseId: true }
           }
         }
       });
@@ -278,7 +278,7 @@ builder.mutationField('doItAgain', (t) =>
           workoutExercises: {
             createMany: {
               data: workoutToCopy.workoutExercises.map((workoutExercise) => ({
-                index: workoutExercise.index,
+                exerciseIndex: workoutExercise.exerciseIndex,
                 userId: session!.userId,
                 exerciseId: workoutExercise.exerciseId
               }))

@@ -4,11 +4,11 @@ builder.prismaObject('WorkoutExercise', {
   findUnique: (workoutExercise) => ({ id: workoutExercise.id }),
   fields: (t) => ({
     id: t.exposeID('id'),
-    index: t.exposeInt('index'),
+    exerciseIndex: t.exposeInt('exerciseIndex'),
     setsCount: t.relationCount('sets'),
     sets: t.relation('sets', {
       query: {
-        orderBy: { index: 'asc' }
+        orderBy: { setIndex: 'asc' }
       }
     }),
     workout: t.relation('workout'),
