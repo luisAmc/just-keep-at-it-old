@@ -6,15 +6,15 @@ import { SubmitButton } from 'src/components/shared/SubmitButton';
 import { useWorkoutContext } from './WorkoutContext';
 import { z } from 'zod';
 import {
-  WorkoutEditNameModalMutation,
-  WorkoutEditNameModalMutationVariables
-} from './__generated__/WorkoutEditNameModal.generated';
+  EditNameModalMutation,
+  EditNameModalMutationVariables
+} from './__generated__/EditNameModal.generated';
 
 const EditNameSchema = z.object({
   name: z.string().min(1, 'Ingrese el nuevo nombre.')
 });
 
-export function WorkoutEditNameModal({ open, onClose }: ModalProps) {
+export function EditNameModal({ open, onClose }: ModalProps) {
   const workout = useWorkoutContext();
 
   const form = useZodForm({
@@ -23,11 +23,11 @@ export function WorkoutEditNameModal({ open, onClose }: ModalProps) {
   });
 
   const [editWorkout] = useMutation<
-    WorkoutEditNameModalMutation,
-    WorkoutEditNameModalMutationVariables
+    EditNameModalMutation,
+    EditNameModalMutationVariables
   >(
     gql`
-      mutation WorkoutEditNameModalMutation($input: EditWorkoutInput!) {
+      mutation EditNameModalMutation($input: EditWorkoutInput!) {
         editWorkout(input: $input) {
           id
           name
