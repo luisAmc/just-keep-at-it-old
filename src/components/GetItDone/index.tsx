@@ -2,7 +2,7 @@ import { GetItDoneQuery } from './__generated__/index.generated';
 import { gql, useQuery } from '@apollo/client';
 import { Page } from '../shared/Page';
 import { useRouter } from 'next/router';
-import { Workout, WorkoutFragment } from './Workout/Workout';
+import { Workout, WorkoutFragment } from './Workout';
 
 export const query = gql`
   query GetItDoneQuery($workoutId: ID!) {

@@ -1,5 +1,5 @@
 import { gql } from '@apollo/client';
-import { Workout_Workout } from './__generated__/Workout.generated';
+import { Workout_Workout } from './__generated__/index.generated';
 import { WorkoutExerciseFragment } from './WorkoutExercise';
 import { WorkoutExercises } from './WorkoutExercises';
 import { WorkoutHeader } from './WorkoutHeader';

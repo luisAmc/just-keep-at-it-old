@@ -20,6 +20,7 @@ specifiers:
   '@types/react': ^18.0.28
   '@types/secure-password': ^3.1.1
   autoprefixer: ^10.4.14
+  class-variance-authority: ^0.4.0
   clsx: ^1.2.1
   concurrently: ^7.6.0
   date-fns: ^2.29.3
@@ -58,6 +59,7 @@ dependencies:
   '@pothos/plugin-scope-auth': 3.18.0_5mcava6kykpnolkb46hqdeap5u
   '@pothos/plugin-simple-objects': 3.6.7_5mcava6kykpnolkb46hqdeap5u
   '@prisma/client': 4.11.0_prisma@4.11.0
+  class-variance-authority: 0.4.0_typescript@4.9.5
   clsx: 1.2.1
   date-fns: 2.29.3
   graphql: 16.6.0
@@ -2789,6 +2791,17 @@ packages:
       readdirp: 3.6.0
     optionalDependencies:
       fsevents: 2.3.2
+
+  /class-variance-authority/0.4.0_typescript@4.9.5:
+    resolution: {integrity: sha512-74enNN8O9ZNieycac/y8FxqgyzZhZbxmCitAtAeUrLPlxjSd5zA7LfpprmxEcOmQBnaGs5hYhiSGnJ0mqrtBLQ==}
+    peerDependencies:
+      typescript: '>= 4.5.5 < 5'
+    peerDependenciesMeta:
+      typescript:
+        optional: true
+    dependencies:
+      typescript: 4.9.5
+    dev: false
 
   /clean-stack/2.2.0:
     resolution: {integrity: sha512-4diC9HaTE+KRAMWhDhrGOECgWZxoevMc5TlkObMqNSsVU62PYzXZ/SMTjzyGAFF1YusgxGcSWTEXBhp0CPwQ1A==}

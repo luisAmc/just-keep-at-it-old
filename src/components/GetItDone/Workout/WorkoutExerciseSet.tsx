@@ -1,10 +1,10 @@
-import { Button } from 'src/components/shared/Button';
 import { ExerciseType } from '@prisma/client';
 import { MostRecentCorrespondingSet } from './WorkoutUtils';
 import { NumberInput } from 'src/components/shared/NumberInput';
 import { TrashIcon } from '@heroicons/react/24/outline';
 import { useFormContext } from 'react-hook-form';
 import { useWorkoutExerciseContext } from './WorkoutExerciseContext';
+import { IconButton } from 'src/components/shared/IconButton';
 
 interface Props {
   index: number;
@@ -12,7 +12,7 @@ interface Props {
   onRemove(): void;
 }
 
-export function WorkoutExerciseInputSet({ type, index, onRemove }: Props) {
+export function WorkoutExerciseSet({ type, index, onRemove }: Props) {
   const workoutExercise = useWorkoutExerciseContext();
   const { control } = useFormContext();
 
@@ -56,12 +56,7 @@ export function WorkoutExerciseInputSet({ type, index, onRemove }: Props) {
         </div>
       </div>
 
-      <Button
-        onClick={onRemove}
-        className='p-2 rounded-full bg-slate-600 text-slate-200'
-      >
-        <TrashIcon className='w-4 h-4' />
-      </Button>
+      <IconButton onClick={onRemove} icon={TrashIcon} />
     </div>
   );
 }

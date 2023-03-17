@@ -1,6 +1,6 @@
 import { AddExerciseSlideOver } from '../AddExerciseSlideOver';
 import { Button } from 'src/components/shared/Button';
-import { CheckCircleIcon, PlusIcon } from '@heroicons/react/24/outline';
+import { PlusIcon } from '@heroicons/react/24/outline';
 import { Form, useZodForm } from 'src/components/shared/Form';
 import { gql, useMutation } from '@apollo/client';
 import { MoveExerciseAction } from './WorkoutExerciseActions';
@@ -141,27 +141,27 @@ export function WorkoutExercises() {
 
   return (
     <Form form={form} onSubmit={onSubmit}>
-      <div className='flex flex-col px-4 bg-slate-700 rounded-lg'>
+      <div className='flex flex-col space-y-2'>
         {workoutExercises.fields.map((field, i) => (
-          <WorkoutExercise
+          <div
             key={field.id}
-            index={i}
-            maxIndex={workoutExercises.fields.length - 1}
-            exerciseId={field.exerciseId}
-            onRemove={() => removeExercise(i)}
-            onMove={(action) => moveExercise(action, i)}
-            onSelect={(exerciseId) =>
-              exerciseSessionHistory.setExerciseId(exerciseId)
-            }
-          />
+            className='flex flex-col px-4 bg-slate-700 rounded-lg'
+          >
+            <WorkoutExercise
+              index={i}
+              maxIndex={workoutExercises.fields.length - 1}
+              exerciseId={field.exerciseId}
+              onRemove={() => removeExercise(i)}
+              onMove={(action) => moveExercise(action, i)}
+              onSelect={(exerciseId) =>
+                exerciseSessionHistory.setExerciseId(exerciseId)
+              }
+            />
+          </div>
         ))}
       </div>
 
-      <Button
-        variant='dashed'
-        color='secondary'
-        onClick={addExerciseSlideOver.open}
-      >
+      <Button variant='dashed' onClick={addExerciseSlideOver.open}>
         <PlusIcon className='w-4 h-4 mr-1' />
         <span>Añadir otro ejercicio</span>
       </Button>

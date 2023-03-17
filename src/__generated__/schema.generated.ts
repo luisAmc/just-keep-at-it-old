@@ -54,6 +54,11 @@ export type EditExerciseInput = {
   name: Scalars['String'];
 };
 
+export type EditWorkoutInput = {
+  name?: InputMaybe<Scalars['String']>;
+  workoutId: Scalars['ID'];
+};
+
 export type Exercise = {
   __typename?: 'Exercise';
   doneSessions: Array<WorkoutExercise>;
@@ -99,6 +104,7 @@ export type Mutation = {
   deleteWorkoutTemplate: WorkoutTemplate;
   doItAgain: Workout;
   editExercise: Exercise;
+  editWorkout: Workout;
   getWorkoutDone: Workout;
   login: User;
   signUp: User;
@@ -138,6 +144,11 @@ export type MutationDoItAgainArgs = {
 
 export type MutationEditExerciseArgs = {
   input: EditExerciseInput;
+};
+
+
+export type MutationEditWorkoutArgs = {
+  input: EditWorkoutInput;
 };
 
 

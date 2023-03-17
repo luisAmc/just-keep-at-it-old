@@ -1,8 +1,8 @@
 import { CheckCircleIcon } from '@heroicons/react/24/solid';
 import { useFormContext } from 'react-hook-form';
-import { Button, Props } from './Button';
+import { Button, ButtonProps } from './Button';
 
-export function SubmitButton({ children, ...props }: Props) {
+export function SubmitButton({ children, ...props }: ButtonProps) {
   const { formState } = useFormContext();
   return (
     <Button type='submit' {...props}>

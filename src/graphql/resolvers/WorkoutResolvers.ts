@@ -81,6 +81,44 @@ builder.mutationField('createWorkout', (t) =>
   })
 );
 
+const EditWorkoutInput = builder.inputType('EditWorkoutInput', {
+  fields: (t) => ({
+    workoutId: t.id(),
+    name: t.string({ required: false })
+  })
+});
+
+builder.mutationField('editWorkout', (t) =>
+  t.prismaField({
+    type: 'Workout',
+    args: {
+      input: t.arg({ type: EditWorkoutInput })
+    },
+    resolve: async (query, _parent, { input }, { session }) => {
+      const workout = await db.workout.findFirstOrThrow({
+        where: {
+          id: input.workoutId,
+          userId: session!.userId
+        },
+        select: {
+          id: true,
+          name: true
+        }
+      });
+
+      return await db.workout.update({
+        ...query,
+        where: {
+          id: workout.id
+        },
+        data: {
+          name: input.name ?? workout.name
+        }
+      });
+    }
+  })
+);
+
 builder.mutationField('deleteWorkout', (t) =>
   t.prismaField({
     type: 'Workout',

@@ -6,7 +6,6 @@ import {
   XMarkIcon
 } from '@heroicons/react/24/outline';
 import clsx from 'clsx';
-import { ComponentType } from 'react';
 import { Button } from './Button';
 import { Modal, ModalProps } from './Modal';
 
@@ -43,9 +42,9 @@ export function ConfirmationModal({
 
         <div className='text-center font-medium'>{children}</div>
 
-        <div className='mt-2 grid grid-cols-1 sm:grid-cols-2 gap-2'>
+        <div className='pt-4 grid grid-cols-1 sm:grid-cols-2 gap-2'>
           <Button
-            color={type === 'error' ? 'danger' : 'primary'}
+            variant={type === 'error' ? 'danger' : 'primary'}
             onClick={onConfirm}
           >
             {type === 'error' ? (
@@ -56,7 +55,7 @@ export function ConfirmationModal({
             <span>Aceptar</span>
           </Button>
 
-          <Button color='secondary' onClick={onClose}>
+          <Button variant='secondary' onClick={onClose}>
             <XMarkIcon className='w-4 h-4 mr-1' />
             <span>Cancelar</span>
           </Button>

@@ -1,5 +1,4 @@
 import { Dialog, Transition } from '@headlessui/react';
-import { XMarkIcon } from '@heroicons/react/24/solid';
 import clsx from 'clsx';
 import { Fragment, ReactNode, useState } from 'react';
 
@@ -28,7 +27,7 @@ export interface ModalProps {
 export function Modal({ title, open, onClose, children }: ModalProps) {
   return (
     <Transition show={open} as={Fragment}>
-      <Dialog onClose={onClose}>
+      <Dialog onClose={onClose} className='relative z-30'>
         <Transition.Child
           as={Fragment}
           enter='ease-out duration-300'
@@ -62,19 +61,11 @@ export function Modal({ title, open, onClose, children }: ModalProps) {
                   {title && (
                     <Dialog.Title
                       as='h3'
-                      className='text-xl font-medium leading-6 text-slate-50'
+                      className='text-xl leading-6 text-slate-50'
                     >
                       {title}
                     </Dialog.Title>
                   )}
-
-                  <button
-                    type='button'
-                    className='rounded-full bg-slate-600 text-slate-50 hover:text-slate-500 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2 focus:ring-offset-slate-400'
-                    onClick={onClose}
-                  >
-                    <XMarkIcon className='h-6 w-6' />
-                  </button>
                 </div>
 
                 <div className='mt-2'>{children}</div>
