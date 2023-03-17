@@ -1,11 +1,11 @@
 import { db } from '../src/utils/prisma';
-import { MuscleGroup } from '@prisma/client';
+import { ExerciseType } from '@prisma/client';
 import SecurePassword from 'secure-password';
 
 const securePassword = new SecurePassword();
 
-const AEROBIC_EXERCISE_COUNT = 5;
-const STRENGTH_EXERCISE_COUNT = 15;
+const CATEGORIES_COUNT = 3;
+const EXERCISE_COUNT = 3;
 
 async function main() {
   const user = await db.user.upsert({
@@ -17,32 +17,30 @@ async function main() {
     update: {}
   });
 
-  for (let i = 0; i < AEROBIC_EXERCISE_COUNT; i++) {
-    await db.exercise.create({
-      data: {
-        name: `aerobic-exercise-${i}`,
-        type: 'AEROBIC',
-        userId: user.id
-      }
-    });
-  }
+  for (let i = 0; i < CATEGORIES_COUNT; i++) {
+    const categoryName = `Category-${i}`;
 
-  const muscleGroups: MuscleGroup[] = [
-    'ARMS',
-    'SHOULDERS',
-    'CHEST',
-    'BACK',
-    'LEGS'
-  ];
-
-  for (let i = 0; i < STRENGTH_EXERCISE_COUNT; i++) {
-    await db.exercise.create({
-      data: {
-        name: `strength-exercise-${i}`,
-        type: 'STRENGTH',
-        muscleGroup: muscleGroups[i % 6],
-        userId: user.id
-      }
+    await db.exerciseCategory.upsert({
+      where: {
+        userId_name: {
+          userId: user.id,
+          name: categoryName
+        }
+      },
+      create: {
+        name: categoryName,
+        type: i === 0 ? ExerciseType.AEROBIC : ExerciseType.STRENGTH,
+        userId: user.id,
+        exercises: {
+          createMany: {
+            data: Array.from({ length: EXERCISE_COUNT }).map((_, i) => ({
+              name: `${categoryName} Exercise-${i}`,
+              userId: user.id
+            }))
+          }
+        }
+      },
+      update: {}
     });
   }
 }

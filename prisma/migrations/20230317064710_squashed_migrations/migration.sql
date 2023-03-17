@@ -1,8 +1,5 @@
 -- CreateEnum
-CREATE TYPE "ExerciseType" AS ENUM ('AEROBIC', 'STRENGTH');
-
--- CreateEnum
-CREATE TYPE "MuscleGroup" AS ENUM ('ARMS', 'SHOULDERS', 'CHEST', 'BACK', 'LEGS');
+CREATE TYPE "ExerciseType" AS ENUM ('STRENGTH', 'AEROBIC');
 
 -- CreateEnum
 CREATE TYPE "WorkoutStatus" AS ENUM ('DRAFTED', 'DONE');
@@ -30,13 +27,24 @@ CREATE TABLE "Session" (
 );
 
 -- CreateTable
+CREATE TABLE "ExerciseCategory" (
+    "id" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+    "name" TEXT NOT NULL,
+    "type" "ExerciseType" NOT NULL DEFAULT 'STRENGTH',
+    "userId" TEXT NOT NULL,
+
+    CONSTRAINT "ExerciseCategory_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
 CREATE TABLE "Exercise" (
     "id" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
     "name" TEXT NOT NULL,
-    "type" "ExerciseType" NOT NULL DEFAULT 'AEROBIC',
-    "muscleGroup" "MuscleGroup",
+    "categoryId" TEXT NOT NULL,
     "userId" TEXT NOT NULL,
 
     CONSTRAINT "Exercise_pkey" PRIMARY KEY ("id")
@@ -47,7 +55,8 @@ CREATE TABLE "WorkoutSet" (
     "id" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
-    "mins" INTEGER NOT NULL DEFAULT 0,
+    "setIndex" INTEGER NOT NULL,
+    "mins" DOUBLE PRECISION NOT NULL DEFAULT 0,
     "distance" DOUBLE PRECISION NOT NULL DEFAULT 0,
     "kcal" INTEGER NOT NULL DEFAULT 0,
     "lbs" DOUBLE PRECISION NOT NULL DEFAULT 0,
@@ -62,7 +71,7 @@ CREATE TABLE "WorkoutExercise" (
     "id" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
-    "index" INTEGER NOT NULL,
+    "exerciseIndex" INTEGER NOT NULL,
     "workoutId" TEXT,
     "exerciseId" TEXT NOT NULL,
     "userId" TEXT NOT NULL,
@@ -83,14 +92,46 @@ CREATE TABLE "Workout" (
     CONSTRAINT "Workout_pkey" PRIMARY KEY ("id")
 );
 
+-- CreateTable
+CREATE TABLE "WorkoutTemplate" (
+    "id" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+    "name" TEXT NOT NULL,
+    "userId" TEXT NOT NULL,
+
+    CONSTRAINT "WorkoutTemplate_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "ExerciseOnWorkoutTemplate" (
+    "id" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+    "index" INTEGER NOT NULL,
+    "exerciseId" TEXT NOT NULL,
+    "workoutTemplateId" TEXT,
+
+    CONSTRAINT "ExerciseOnWorkoutTemplate_pkey" PRIMARY KEY ("id")
+);
+
 -- CreateIndex
 CREATE UNIQUE INDEX "User_username_key" ON "User"("username");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "Exercise_userId_name_key" ON "Exercise"("userId", "name");
+CREATE UNIQUE INDEX "ExerciseCategory_userId_name_key" ON "ExerciseCategory"("userId", "name");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Exercise_categoryId_name_key" ON "Exercise"("categoryId", "name");
 
 -- AddForeignKey
 ALTER TABLE "Session" ADD CONSTRAINT "Session_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "ExerciseCategory" ADD CONSTRAINT "ExerciseCategory_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Exercise" ADD CONSTRAINT "Exercise_categoryId_fkey" FOREIGN KEY ("categoryId") REFERENCES "ExerciseCategory"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Exercise" ADD CONSTRAINT "Exercise_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -109,3 +150,12 @@ ALTER TABLE "WorkoutExercise" ADD CONSTRAINT "WorkoutExercise_userId_fkey" FOREI
 
 -- AddForeignKey
 ALTER TABLE "Workout" ADD CONSTRAINT "Workout_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "WorkoutTemplate" ADD CONSTRAINT "WorkoutTemplate_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "ExerciseOnWorkoutTemplate" ADD CONSTRAINT "ExerciseOnWorkoutTemplate_exerciseId_fkey" FOREIGN KEY ("exerciseId") REFERENCES "Exercise"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "ExerciseOnWorkoutTemplate" ADD CONSTRAINT "ExerciseOnWorkoutTemplate_workoutTemplateId_fkey" FOREIGN KEY ("workoutTemplateId") REFERENCES "WorkoutTemplate"("id") ON DELETE SET NULL ON UPDATE CASCADE;

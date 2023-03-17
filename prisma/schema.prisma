@@ -13,12 +13,14 @@ generator pothos {
 }
 
 model User {
-  id               String            @id @default(uuid())
-  createdAt        DateTime          @default(now())
-  updatedAt        DateTime          @updatedAt
-  username         String            @unique
-  hashedPassword   Bytes
-  session          Session[]
+  id             String    @id @default(uuid())
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+  username       String    @unique
+  hashedPassword Bytes
+  session        Session[]
+
+  categories       ExerciseCategory[]
   exercises        Exercise[]
   workoutExercises WorkoutExercise[]
   workouts         Workout[]
@@ -36,29 +38,18 @@ model Session {
 }
 
 enum ExerciseType {
-  AEROBIC
   STRENGTH
+  AEROBIC
 }
 
-enum MuscleGroup {
-  ARMS
-  SHOULDERS
-  CHEST
-  BACK
-  LEGS
-}
-
-model Exercise {
+model ExerciseCategory {
   id        String   @id @default(uuid())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  name        String
-  type        ExerciseType @default(AEROBIC)
-  muscleGroup MuscleGroup?
-
-  workoutExercises WorkoutExercise[]
-  workoutTemplates ExerciseOnWorkoutTemplate[]
+  name      String
+  type      ExerciseType @default(STRENGTH)
+  exercises Exercise[]
 
   user   User   @relation(fields: [userId], references: [id])
   userId String
@@ -66,17 +57,38 @@ model Exercise {
   @@unique([userId, name])
 }
 
+model Exercise {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  name String
+
+  category   ExerciseCategory @relation(fields: [categoryId], references: [id])
+  categoryId String
+
+  workoutExercises WorkoutExercise[]
+  workoutTemplates ExerciseOnWorkoutTemplate[]
+
+  user   User   @relation(fields: [userId], references: [id])
+  userId String
+
+  @@unique([categoryId, name])
+}
+
 model WorkoutSet {
   id        String   @id @default(uuid())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  index Int
+  setIndex Int
 
+  // Aerobic related
   mins     Float @default(0)
   distance Float @default(0)
   kcal     Int   @default(0)
 
+  // Strength related
   lbs  Float @default(0)
   reps Int   @default(0)
 
@@ -89,16 +101,18 @@ model WorkoutExercise {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  index Int
+  exerciseIndex Int
 
   sets WorkoutSet[]
 
-  workout    Workout? @relation(fields: [workoutId], references: [id])
-  workoutId  String?
+  workout   Workout? @relation(fields: [workoutId], references: [id])
+  workoutId String?
+
   exercise   Exercise @relation(fields: [exerciseId], references: [id])
   exerciseId String
-  user       User     @relation(fields: [userId], references: [id])
-  userId     String
+
+  user   User   @relation(fields: [userId], references: [id])
+  userId String
 }
 
 enum WorkoutStatus {
@@ -138,10 +152,10 @@ model ExerciseOnWorkoutTemplate {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  index      Int
-  
-  exercise   Exercise @relation(fields: [exerciseId], references: [id])
-  exerciseId String
+  index Int
+
+  exercise          Exercise         @relation(fields: [exerciseId], references: [id])
+  exerciseId        String
   workoutTemplate   WorkoutTemplate? @relation(fields: [workoutTemplateId], references: [id])
   workoutTemplateId String?
 }
