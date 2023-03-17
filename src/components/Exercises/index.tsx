@@ -1,18 +1,17 @@
-import { gql, useQuery } from '@apollo/client';
 import { Button } from '../shared/Button';
-import { Heading } from '../shared/Heading';
-import { Page } from '../shared/Page';
-import clsx from 'clsx';
 import { ExercisesQuery } from './__generated__/index.generated';
 import { getMuscleGroupColors } from 'src/utils/getMuscleGroupColors';
-import {
-  ChevronLeftIcon,
-  PencilSquareIcon,
-  PlusCircleIcon
-} from '@heroicons/react/24/outline';
+import { gql, useQuery } from '@apollo/client';
 import { IconButton } from '../shared/IconButton';
+import { Page } from '../shared/Page';
+import {
+  PencilSquareIcon,
+  PlusCircleIcon,
+  SparklesIcon
+} from '@heroicons/react/24/outline';
+import clsx from 'clsx';
 
-export const ExerciseInfoFragment = gql`
+export const ExerciseFragment = gql`
   fragment Exercise_exercise on Exercise {
     id
     name
@@ -21,38 +20,40 @@ export const ExerciseInfoFragment = gql`
   }
 `;
 
-export const query = gql`
+export const ExerciseCategoryFragment = gql`
+  fragment Exercise_exerciseCategory on ExerciseCategory {
+    id
+    name
+    type
+  }
+`;
+
+export const EXERCISES_QUERY = gql`
   query ExercisesQuery {
     viewer {
       id
+      exerciseCategories {
+        ...Exercise_exerciseCategory
+      }
       exercises {
         ...Exercise_exercise
       }
     }
   }
-  ${ExerciseInfoFragment}
+  ${ExerciseCategoryFragment}
+  ${ExerciseFragment}
 `;
 
 export function Exercises() {
-  const { data } = useQuery<ExercisesQuery>(query);
+  const { data } = useQuery<ExercisesQuery>(EXERCISES_QUERY);
 
   const exercises = data?.viewer?.exercises ?? [];
 
   return (
-    <Page>
+    <Page href='/' title='Ejercicios'>
       <div className='h-full flex flex-col space-y-4'>
-        <div className='flex items-center space-x-2'>
-          <Button href='/' className=''>
-            <div className='rounded-full bg-brand-300 text-brand-700 p-2 flex items-center justify-center'>
-              <ChevronLeftIcon className='w-4 h-4' />
-            </div>
-          </Button>
-
-          <Heading>Ejercicios</Heading>
-        </div>
-
-        <div className='bg-slate-700 flex flex-col px-3 divide-y divide-gray-600 rounded-lg'>
-          {exercises.length > 0 &&
+        <div className='bg-slate-700 text-slate-300 flex flex-col px-3 divide-y divide-gray-600 rounded-lg'>
+          {exercises.length > 0 ? (
             exercises.map((exercise) => (
               <div
                 key={exercise.id}
@@ -74,14 +75,22 @@ export function Exercises() {
                   href={`/exercises/${exercise.id}/edit`}
                 />
               </div>
-            ))}
+            ))
+          ) : (
+            <div className='flex flex-col items-center space-y-2 p-8'>
+              <SparklesIcon className='w-10 h-10' />
+              <p className='font-semibold text-sm'>
+                No se han creado ejercicios hasta el momento...
+              </p>
+            </div>
+          )}
         </div>
 
         <div className='flex-auto'></div>
 
-        <Button href='/exercises/create'>
+        <Button href='/exercises/category/create'>
           <PlusCircleIcon className='w-4 h-4 mr-1' />
-          <span>Añadir un ejercicio</span>
+          <span>Añadir una categoría</span>
         </Button>
       </div>
     </Page>

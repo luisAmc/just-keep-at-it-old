@@ -8,7 +8,7 @@ import {
 import { useRouter } from 'next/router';
 import { useFieldArray } from 'react-hook-form';
 import { z } from 'zod';
-import { ExerciseInfoFragment } from '../Exercises';
+import { ExerciseFragment } from '../Exercises';
 import { useExercises } from '../Exercises/useExercises';
 import { Button } from '../shared/Button';
 import { FieldError, Form, useZodForm } from '../shared/Form';
@@ -32,7 +32,7 @@ export const query = gql`
       }
     }
   }
-  ${ExerciseInfoFragment}
+  ${ExerciseFragment}
 `;
 
 export function CreateTemplate() {

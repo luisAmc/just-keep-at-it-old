@@ -8,7 +8,7 @@ import {
 } from '@heroicons/react/24/outline';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
-import { ExerciseInfoFragment } from '../Exercises';
+import { ExerciseFragment } from '../Exercises';
 import { Button } from '../shared/Button';
 import { ConfirmationModal } from '../shared/ConfirmationModal';
 import { Heading } from '../shared/Heading';
@@ -31,7 +31,7 @@ export const TemplateFragment = gql`
       }
     }
   }
-  ${ExerciseInfoFragment}
+  ${ExerciseFragment}
 `;
 
 export const query = gql`
