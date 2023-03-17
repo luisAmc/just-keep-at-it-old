@@ -27,7 +27,7 @@ export interface ModalProps {
 export function Modal({ title, open, onClose, children }: ModalProps) {
   return (
     <Transition show={open} as={Fragment}>
-      <Dialog onClose={onClose}>
+      <Dialog onClose={onClose} className='relative z-30'>
         <Transition.Child
           as={Fragment}
           enter='ease-out duration-300'

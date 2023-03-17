@@ -6,7 +6,7 @@ import { Heading } from 'src/components/shared/Heading';
 import { useModal } from 'src/components/shared/Modal';
 import { useRouter } from 'next/router';
 import { useWorkoutContext } from './WorkoutContext';
-import { EditNameModal } from './EditNameModal';
+import { WorkoutEditNameModal } from './WorkoutEditNameModal';
 
 export function WorkoutHeader() {
   const workout = useWorkoutContext();
@@ -44,7 +44,7 @@ export function WorkoutHeader() {
           <Heading>{workout.name}</Heading>
         </Button>
 
-        <EditNameModal {...editNameModal.props} />
+        <WorkoutEditNameModal {...editNameModal.props} />
       </div>
 
       <div>

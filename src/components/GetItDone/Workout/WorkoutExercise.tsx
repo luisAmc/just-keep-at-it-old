@@ -18,7 +18,7 @@ import {
   useWorkoutExerciseContext,
   WorkoutExerciseProvider
 } from './WorkoutExerciseContext';
-import { WorkoutExerciseInputSet } from './WorkoutExerciseInputSet';
+import { WorkoutExerciseSet } from './WorkoutExerciseSet';
 
 interface WorkoutExerciseProps {
   exerciseId: string;
@@ -32,7 +32,7 @@ interface WorkoutExerciseProps {
 export function WorkoutExercise(props: WorkoutExerciseProps) {
   return (
     <WorkoutExerciseProvider {...props}>
-      <div className='py-6'>
+      <div className='py-4'>
         <WorkoutExerciseInContext />
       </div>
     </WorkoutExerciseProvider>
@@ -78,13 +78,13 @@ function WorkoutExerciseInContext() {
           <>
             <div className='flex items-center space-x-4'>
               <div className='flex w-full justify-between'>
-                <button
+                <Button
                   type='button'
                   onClick={() => workoutExercise.onSelect(workoutExercise.id)}
-                  className='text-slate-200 hover:bg-white/5 px-2 py-1 rounded-lg transition'
+                  className='text-slate-200 hover:bg-white/10 px-2 py-1 rounded transition'
                 >
                   {workoutExercise.name}
-                </button>
+                </Button>
 
                 <Disclosure.Button className='flex items-center space-x-2 text-slate-200 hover:bg-white/5 px-2 py-1 rounded-lg transition'>
                   <span className='text-sm'>{sets.fields.length} sets</span>
@@ -100,7 +100,7 @@ function WorkoutExerciseInContext() {
 
             <Disclosure.Panel className='pt-4'>
               {sets.fields.map((field, index) => (
-                <WorkoutExerciseInputSet
+                <WorkoutExerciseSet
                   key={field.id}
                   index={index}
                   type={workoutExercise.type}
