@@ -143,9 +143,11 @@ export function WorkoutExercises() {
     <Form form={form} onSubmit={onSubmit}>
       <div className='flex flex-col space-y-2'>
         {workoutExercises.fields.map((field, i) => (
-          <div className='flex flex-col px-4 bg-slate-700 rounded-lg'>
+          <div
+            key={field.id}
+            className='flex flex-col px-4 bg-slate-700 rounded-lg'
+          >
             <WorkoutExercise
-              key={field.id}
               index={i}
               maxIndex={workoutExercises.fields.length - 1}
               exerciseId={field.exerciseId}
