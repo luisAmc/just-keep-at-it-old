@@ -157,11 +157,7 @@ export function WorkoutExercises() {
         ))}
       </div>
 
-      <Button
-        variant='dashed'
-        color='secondary'
-        onClick={addExerciseSlideOver.open}
-      >
+      <Button variant='dashed' onClick={addExerciseSlideOver.open}>
         <PlusIcon className='w-4 h-4 mr-1' />
         <span>Añadir otro ejercicio</span>
       </Button>

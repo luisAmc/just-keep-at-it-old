@@ -130,7 +130,7 @@ export function ExerciseCategory({ category, onClick }: Props) {
                 {creating ? (
                   <CreateExercise close={() => setCreating(false)} />
                 ) : (
-                  <Button color='secondary' onClick={() => setCreating(true)}>
+                  <Button variant='secondary' onClick={() => setCreating(true)}>
                     <PlusCircleIcon className='w-4 h-4 mr-1' />
                     Añadir uno nuevo
                   </Button>
@@ -156,8 +156,8 @@ function CreateExercise({ close }: CreateExerciseProps) {
       <Input autoFocus {...form.register('name')} label='Nombre' hideLabel />
 
       <div className='flex gap-x-2'>
-        <SubmitButton>Crear</SubmitButton>
-        <Button color='secondary' onClick={close}>
+        <SubmitButton>Añadir</SubmitButton>
+        <Button variant='secondary' onClick={close}>
           <XMarkIcon className='w-4 h-4 mr-1' />
           Cancelar
         </Button>

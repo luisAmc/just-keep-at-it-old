@@ -120,7 +120,7 @@ function WorkoutExerciseInContext() {
                   </span>
                 </button>
               ) : (
-                <Button color='secondary' onClick={addSet}>
+                <Button variant='secondary' onClick={addSet}>
                   <PlusIcon className='w-4 h-4 mr-1' />
                   <span>Añadir set</span>
                 </Button>

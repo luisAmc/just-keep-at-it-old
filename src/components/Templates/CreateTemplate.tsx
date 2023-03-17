@@ -145,7 +145,7 @@ export function CreateTemplate() {
           <FieldError name='exercises' />
         </label>
 
-        <Button onClick={addExercise} variant='dashed' color='secondary'>
+        <Button onClick={addExercise} variant='dashed'>
           <PlusIcon className='w-4 h-4 mr-1' />
           <span>Añadir uno más</span>
         </Button>

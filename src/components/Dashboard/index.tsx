@@ -55,12 +55,12 @@ export function Dashboard() {
           <Heading>Historial</Heading>
 
           <div className='flex items-center justify-center space-x-2'>
-            <Button size='small' href='/templates' color='secondary'>
+            <Button size='sm' href='/templates' variant='secondary'>
               <DocumentTextIcon className='w-4 h-4 mr-1' />
               <span>Bocetos</span>
             </Button>
 
-            <Button size='small' href='/exercises' color='secondary'>
+            <Button size='sm' href='/exercises' variant='secondary'>
               <QueueListIcon className='w-4 h-4 mr-1' />
               <span>Ejercicios</span>
             </Button>
@@ -93,7 +93,7 @@ export function Dashboard() {
       </Page>
 
       <div className='fixed bottom-6 right-4'>
-        <Button rounded floating onClick={newWorkoutSlideOver.open}>
+        <Button rounded variant='floating' onClick={newWorkoutSlideOver.open}>
           <PlusCircleIcon className='w-4 h-4 mr-1' />
           <span>Nueva rutina</span>
         </Button>

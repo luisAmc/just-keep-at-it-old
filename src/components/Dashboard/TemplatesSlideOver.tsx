@@ -88,7 +88,7 @@ export function TemplatesSlideOver(props: Props) {
             </div>
           ))}
 
-        <Button variant='dashed' color='secondary' href='/workouts/create'>
+        <Button variant='secondary' href='/workouts/create'>
           <PlusCircleIcon className='w-4 h-4 mr-1' />
           <span>Crear una nueva rutina</span>
         </Button>

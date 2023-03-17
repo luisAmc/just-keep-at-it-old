@@ -53,7 +53,7 @@ export function AddExerciseSlideOver({ onConfirm, open, onClose }: Props) {
       )}
 
       <div className='py-4'>
-        <Button href='/exercises/create' color='secondary' variant='dashed'>
+        <Button href='/exercises/create' variant='dashed'>
           ¿El ejercicio no está en la lista?
         </Button>
       </div>
