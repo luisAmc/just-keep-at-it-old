@@ -1,5 +1,11 @@
-import { createContext, ReactNode, useContext, useEffect } from 'react';
-import { Workout_Workout } from './__generated__/Workout.generated';
+import {
+  createContext,
+  ReactNode,
+  useContext,
+  useEffect,
+  useState
+} from 'react';
+import { Workout_Workout } from './__generated__/index.generated';
 import {
   WorkoutExercise_Exercise,
   WorkoutExercise_WorkoutExercise
@@ -9,16 +15,18 @@ interface ContextType {
   id: string;
   name: string;
   workoutExercises: Array<WorkoutExercise_WorkoutExercise>;
+  setName(newName: string): void;
   addExercise(workout: WorkoutExercise_Exercise): void;
   getExercise(exerciseId: string): WorkoutExercise_Exercise | undefined;
   getExerciseCache(): WorkoutExercise_Exercise[];
   setExerciseCache(alreadyEditedExercises: any[]): void;
 }
 
-const WorkoutContext = createContext<ContextType>({
+const WorkoutContext = createContext<ContextType | null>({
   id: '',
   name: '',
   workoutExercises: [],
+  setName: () => {},
   addExercise: () => {},
   getExercise: () => undefined,
   getExerciseCache: () => [],
@@ -36,11 +44,17 @@ export const WorkoutProvider = ({
   workout,
   children
 }: WorkoutProviderProps) => {
+  const [name, _setName] = useState(workout.name);
+
   useEffect(() => {
     for (const workoutExercise of workout.workoutExercises) {
       exerciseMap.set(workoutExercise.exercise.id, workoutExercise.exercise);
     }
   }, []);
+
+  const setName = (newName: string) => {
+    _setName(newName);
+  };
 
   const addExercise = (exercise: WorkoutExercise_Exercise) => {
     exerciseMap.set(exercise.id, exercise);
@@ -64,8 +78,9 @@ export const WorkoutProvider = ({
     <WorkoutContext.Provider
       value={{
         id: workout.id,
-        name: workout.name,
+        name: name,
         workoutExercises: workout.workoutExercises,
+        setName,
         addExercise,
         getExercise,
         getExerciseCache,
@@ -78,5 +93,13 @@ export const WorkoutProvider = ({
 };
 
 export function useWorkoutContext() {
-  return useContext(WorkoutContext);
+  const context = useContext(WorkoutContext);
+
+  if (!context) {
+    throw new Error(
+      '`useWorkoutContext` can only be used in a GetItDone component.'
+    );
+  }
+
+  return context;
 }

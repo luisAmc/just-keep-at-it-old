@@ -61,7 +61,7 @@ export function Modal({ title, open, onClose, children }: ModalProps) {
                   {title && (
                     <Dialog.Title
                       as='h3'
-                      className='text-xl font-medium leading-6 text-slate-50'
+                      className='text-xl leading-6 text-slate-50'
                     >
                       {title}
                     </Dialog.Title>

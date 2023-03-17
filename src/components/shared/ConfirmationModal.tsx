@@ -6,7 +6,6 @@ import {
   XMarkIcon
 } from '@heroicons/react/24/outline';
 import clsx from 'clsx';
-import { ComponentType } from 'react';
 import { Button } from './Button';
 import { Modal, ModalProps } from './Modal';
 

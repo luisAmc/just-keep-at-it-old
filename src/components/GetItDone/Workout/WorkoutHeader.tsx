@@ -6,11 +6,13 @@ import { Heading } from 'src/components/shared/Heading';
 import { useModal } from 'src/components/shared/Modal';
 import { useRouter } from 'next/router';
 import { useWorkoutContext } from './WorkoutContext';
+import { WorkoutEditNameModal } from './WorkoutEditNameModal';
 
 export function WorkoutHeader() {
   const workout = useWorkoutContext();
 
   const router = useRouter();
+  const editNameModal = useModal();
   const deleteModal = useModal();
 
   const [deleteWorkout] = useMutation(
@@ -38,7 +40,11 @@ export function WorkoutHeader() {
           </div>
         </Button>
 
-        <Heading>{workout.name}</Heading>
+        <Button variant='ghost' size='sm' onClick={editNameModal.open}>
+          <Heading>{workout.name}</Heading>
+        </Button>
+
+        <WorkoutEditNameModal {...editNameModal.props} />
       </div>
 
       <div>
