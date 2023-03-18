@@ -1,3 +1,4 @@
+import { ErrorMessage } from '../shared/ErrorMessage';
 import { ExerciseType } from '@prisma/client';
 import { Form, useZodForm } from 'src/components/shared/Form';
 import { gql, useMutation } from '@apollo/client';
@@ -7,6 +8,10 @@ import { RadioButtonGroup } from 'src/components/shared/RadioButton';
 import { SubmitButton } from 'src/components/shared/SubmitButton';
 import { useRouter } from 'next/router';
 import { z } from 'zod';
+import {
+  CreateExerciseCategoryMutation,
+  CreateExerciseCategoryMutationVariables
+} from './__generated__/CreateExerciseCategory.generated';
 
 const CreateExerciseCategorySchema = z.object({
   name: z.string().min(1, 'Ingrese el nombre.'),
@@ -23,7 +28,10 @@ export function CreateExerciseCategory() {
     }
   });
 
-  const [createCategory, { error }] = useMutation(
+  const [createCategory, { error }] = useMutation<
+    CreateExerciseCategoryMutation,
+    CreateExerciseCategoryMutationVariables
+  >(
     gql`
       mutation CreateExerciseCategoryMutation(
         $input: CreateExerciseCategoryInput!
@@ -55,6 +63,8 @@ export function CreateExerciseCategory() {
           })
         }
       >
+        <ErrorMessage title='Ocurrió un error...' error={error} />
+
         <Input
           {...form.register('name')}
           label='Ingrese el nombre'

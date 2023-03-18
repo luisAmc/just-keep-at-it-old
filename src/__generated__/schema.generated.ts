@@ -13,10 +13,14 @@ export type Scalars = {
   DateTime: string;
 };
 
-export type CreateExerciseInput = {
-  muscleGroup?: InputMaybe<Scalars['String']>;
+export type CreateExerciseCategoryInput = {
   name: Scalars['String'];
   type: Scalars['String'];
+};
+
+export type CreateExerciseInput = {
+  categoryId: Scalars['ID'];
+  name: Scalars['String'];
 };
 
 export type CreateWorkoutInput = {
@@ -25,7 +29,7 @@ export type CreateWorkoutInput = {
 
 export type CreateWorkoutTemplateExerciseInput = {
   exerciseId: Scalars['ID'];
-  index: Scalars['Int'];
+  exerciseIndex: Scalars['Int'];
 };
 
 export type CreateWorkoutTemplateInput = {
@@ -35,8 +39,8 @@ export type CreateWorkoutTemplateInput = {
 
 export type DoneExerciseInput = {
   exerciseId: Scalars['ID'];
+  exerciseIndex: Scalars['Int'];
   id?: InputMaybe<Scalars['ID']>;
-  index: Scalars['Int'];
   sets: Array<DoneExerciseSetInput>;
 };
 
@@ -61,10 +65,10 @@ export type EditWorkoutInput = {
 
 export type Exercise = {
   __typename?: 'Exercise';
+  category: ExerciseCategory;
   doneSessions: Array<WorkoutExercise>;
   id: Scalars['ID'];
   lastSession?: Maybe<WorkoutExercise>;
-  muscleGroup?: Maybe<Scalars['String']>;
   name: Scalars['String'];
   type: Scalars['String'];
 };
@@ -72,6 +76,14 @@ export type Exercise = {
 
 export type ExerciseDoneSessionsArgs = {
   limit?: Scalars['Int'];
+};
+
+export type ExerciseCategory = {
+  __typename?: 'ExerciseCategory';
+  exercises: Array<Exercise>;
+  id: Scalars['ID'];
+  name: Scalars['String'];
+  type: Scalars['String'];
 };
 
 export type ExerciseOnWorkoutTemplate = {
@@ -98,6 +110,7 @@ export type LoginInput = {
 export type Mutation = {
   __typename?: 'Mutation';
   createExercise: Exercise;
+  createExerciseCategory: ExerciseCategory;
   createWorkout: Workout;
   createWorkoutTemplate: WorkoutTemplate;
   deleteWorkout: Workout;
@@ -114,6 +127,11 @@ export type Mutation = {
 
 export type MutationCreateExerciseArgs = {
   input: CreateExerciseInput;
+};
+
+
+export type MutationCreateExerciseCategoryArgs = {
+  input: CreateExerciseCategoryInput;
 };
 
 
@@ -174,6 +192,7 @@ export type MutationStartWorkoutFromTemplateArgs = {
 export type Query = {
   __typename?: 'Query';
   exercise: Exercise;
+  exerciseCategories: Array<ExerciseCategory>;
   viewer?: Maybe<User>;
   workout: Workout;
   workoutTemplate: WorkoutTemplate;
@@ -203,6 +222,7 @@ export type SignUpInput = {
 
 export type User = {
   __typename?: 'User';
+  exerciseCategories: Array<ExerciseCategory>;
   exercises: Array<Exercise>;
   id: Scalars['ID'];
   username: Scalars['String'];
@@ -232,8 +252,8 @@ export type WorkoutExercise = {
   __typename?: 'WorkoutExercise';
   createdAt: Scalars['DateTime'];
   exercise: Exercise;
+  exerciseIndex: Scalars['Int'];
   id: Scalars['ID'];
-  index: Scalars['Int'];
   sets: Array<WorkoutSet>;
   setsCount: Scalars['Int'];
   workout: Workout;

@@ -34,7 +34,7 @@ export const query = gql`
       ...ViewWorkout_workout
       workoutExercises {
         id
-        index
+        exerciseIndex
         exercise {
           id
           name

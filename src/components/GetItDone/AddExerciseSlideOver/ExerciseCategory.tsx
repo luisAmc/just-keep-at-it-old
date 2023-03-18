@@ -19,7 +19,6 @@ import {
   ExerciseCategoryCreateMutation,
   ExerciseCategoryCreateMutationVariables
 } from './__generated__/ExerciseCategory.generated';
-import { ExerciseType } from '@prisma/client';
 import { ExerciseFragment } from '../Workout/WorkoutExercise';
 import { AddExerciseSlideOverQuery_query } from '.';
 import { useAutoAnimate } from '@formkit/auto-animate/react';
@@ -75,21 +74,22 @@ export function ExerciseCategory({ category, onClick }: Props) {
     <div>
       <Form
         form={form}
-        onSubmit={(input) => {
-          createExercise({
-            variables: {
-              input: {
-                name: input.name,
-                type:
-                  category.id === ExerciseType.AEROBIC
-                    ? ExerciseType.AEROBIC
-                    : ExerciseType.STRENGTH,
-                muscleGroup:
-                  category.id === ExerciseType.AEROBIC ? undefined : category.id
-              }
-            }
-          });
-        }}
+        // onSubmit={(input) => {
+        //   createExercise({
+        //     variables: {
+        //       input: {
+        //         name: input.name,
+        //         type:
+        //           category.id === ExerciseType.AEROBIC
+        //             ? ExerciseType.AEROBIC
+        //             : ExerciseType.STRENGTH,
+        //         muscleGroup:
+        //           category.id === ExerciseType.AEROBIC ? undefined : category.id
+        //       }
+        //     }
+        //   });
+        // }}
+        onSubmit={() => {}}
       >
         <Disclosure>
           {({ open }) => (

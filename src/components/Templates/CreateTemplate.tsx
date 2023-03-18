@@ -9,7 +9,7 @@ import { useRouter } from 'next/router';
 import { useFieldArray } from 'react-hook-form';
 import { z } from 'zod';
 import { ExerciseFragment } from '../Exercises';
-import { useExercises } from '../Exercises/useExercises';
+import { useExercises } from '../Exercises/useExerciseCategories';
 import { Button } from '../shared/Button';
 import { FieldError, Form, useZodForm } from '../shared/Form';
 import { Heading } from '../shared/Heading';

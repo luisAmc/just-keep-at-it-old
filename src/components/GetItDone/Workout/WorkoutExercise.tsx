@@ -158,7 +158,6 @@ export const ExerciseFragment = gql`
     id
     name
     type
-    muscleGroup
     lastSession {
       ...WorkoutExercise_lastSession
     }
@@ -169,7 +168,7 @@ export const ExerciseFragment = gql`
 export const WorkoutExerciseFragment = gql`
   fragment WorkoutExercise_workoutExercise on WorkoutExercise {
     id
-    index
+    exerciseIndex
     exercise {
       ...WorkoutExercise_exercise
     }

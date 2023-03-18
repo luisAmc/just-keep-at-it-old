@@ -27,7 +27,7 @@ export function RadioButtonGroup({
       <div className='font-medium text-slate-200 mb-1 leading-6'>{label}</div>
 
       <RadioGroup name={name} value={value} onChange={onChange}>
-        <div className='grid grid-cols-2 gap-x-4'>
+        <div className='grid grid-cols-2 gap-x-2'>
           {options.map((option) => (
             <RadioGroup.Option
               key={`ro-${option.value}`}
