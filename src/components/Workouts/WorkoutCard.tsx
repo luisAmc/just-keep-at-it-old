@@ -2,7 +2,7 @@ import { formatDate } from 'src/utils/transforms';
 import { WorkoutStatus } from '@prisma/client';
 import clsx from 'clsx';
 import Link from 'next/link';
-import { ViewWorkout_Workout } from '../Workouts/ViewWorkout/__generated__/index.generated';
+import { ViewWorkout_Workout } from './ViewWorkout/__generated__/index.generated';
 
 interface WorkoutCardProps {
   workout: ViewWorkout_Workout;

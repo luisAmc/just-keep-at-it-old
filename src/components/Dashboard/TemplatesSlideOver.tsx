@@ -1,8 +1,7 @@
 import { useMutation, useQuery } from '@apollo/client';
-import { PlusCircleIcon, SparklesIcon } from '@heroicons/react/24/outline';
+import { SparklesIcon } from '@heroicons/react/24/outline';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
-import { Button } from '../shared/Button';
 import { ConfirmationModal } from '../shared/ConfirmationModal';
 import { Heading } from '../shared/Heading';
 import { useModal } from '../shared/Modal';
@@ -13,6 +12,7 @@ import {
   TemplatesMutationVariables,
   TemplatesQuery
 } from '../Templates/__generated__/index.generated';
+import { NewWorkoutButton } from './NewWorkoutButton';
 
 type Props = Omit<SlideOverProps, 'title' | 'children'>;
 
@@ -88,10 +88,7 @@ export function TemplatesSlideOver(props: Props) {
             </div>
           ))}
 
-        <Button variant='secondary' href='/workouts/create'>
-          <PlusCircleIcon className='w-4 h-4 mr-1' />
-          <span>Crear una nueva rutina</span>
-        </Button>
+        <NewWorkoutButton />
       </div>
 
       <ConfirmationModal

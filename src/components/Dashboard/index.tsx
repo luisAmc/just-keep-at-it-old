@@ -11,7 +11,7 @@ import { Page } from '../shared/Page';
 import { useSlideOver } from '../shared/SlideOver';
 import { WorkoutInfoFragment } from '../Workouts/ViewWorkout';
 import { EmptyWorkouts } from './EmptyWorkouts';
-import { WorkoutCard } from './WorkoutCard';
+import { WorkoutCard } from '../Workouts/WorkoutCard';
 import {
   DashboardQuery,
   DashboardQueryVariables

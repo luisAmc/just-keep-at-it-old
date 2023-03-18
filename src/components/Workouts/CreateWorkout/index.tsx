@@ -76,7 +76,11 @@ export function CreateWorkout() {
         <Form form={form} onSubmit={onSubmit}>
           <ErrorMessage title='Ocurrió un error...' error={error} />
 
-          <Input {...form.register('name')} label='Nombre' />
+          <Input
+            {...form.register('name')}
+            label='Nombre de la rutina'
+            placeholder='Nombre...'
+          />
 
           <SubmitButton>Comenzar</SubmitButton>
         </Form>
