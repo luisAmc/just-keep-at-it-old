@@ -14,7 +14,7 @@ import {
 } from './__generated__/CreateExerciseCategory.generated';
 
 const CreateExerciseCategorySchema = z.object({
-  name: z.string().min(1, 'Ingrese el nombre.'),
+  name: z.string().trim().min(1, 'Ingrese el nombre.'),
   type: z.string().min(1, 'Seleccione el tipo.')
 });
 
