@@ -103,7 +103,7 @@ export function WorkoutExerciseList() {
     {
       onCompleted() {
         inLocalStorage.remove(workout.workoutId);
-        router.push(`/workouts/${workout.workoutId}`);
+        router.replace(`/workouts/${workout.workoutId}`);
       }
     }
   );
