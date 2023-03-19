@@ -42,13 +42,20 @@ export function EditExercise() {
   const [editExercise] = useMutation<
     EditExerciseMutation,
     EditExerciseMutationVariables
-  >(gql`
-    mutation EditExerciseMutation($input: EditExerciseInput!) {
-      editExercise(input: $input) {
-        id
+  >(
+    gql`
+      mutation EditExerciseMutation($input: EditExerciseInput!) {
+        editExercise(input: $input) {
+          id
+        }
+      }
+    `,
+    {
+      onCompleted() {
+        router.replace('/exercises');
       }
     }
-  `);
+  );
 
   const form = useZodForm({ schema: EditExerciseSchema });
 
