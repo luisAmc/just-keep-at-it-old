@@ -12,6 +12,7 @@ import { useFieldArray, useFormContext } from 'react-hook-form';
 import { useWorkoutExerciseContext } from './WorkoutExerciseContext';
 import { WorkoutExerciseActions } from './WorkoutExerciseActions';
 import { WorkoutExerciseSet } from './WorkoutExerciseSet';
+import { useAutoAnimate } from '@formkit/auto-animate/react';
 import clsx from 'clsx';
 
 export const WorkoutSetFragment = gql`
@@ -64,6 +65,8 @@ export const WorkoutExerciseFragment = gql`
 export function WorkoutExercise() {
   const workoutExercise = useWorkoutExerciseContext();
 
+  const [animateParent] = useAutoAnimate<HTMLDivElement>();
+
   const form = useFormContext();
 
   const sets = useFieldArray({
@@ -92,7 +95,7 @@ export function WorkoutExercise() {
   }
 
   return (
-    <div>
+    <div ref={animateParent}>
       <Disclosure defaultOpen={true}>
         {({ open }) => (
           <>

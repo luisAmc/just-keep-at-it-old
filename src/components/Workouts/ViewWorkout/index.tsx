@@ -88,14 +88,15 @@ export function ViewWorkout() {
 
           <div
             className={clsx(
-              'flex flex-col space-y-3 p-4 divide-y divide-slate-500 rounded-lg',
-              isDone
-                ? 'text-slate-200 bg-slate-600'
-                : 'text-amber-700 bg-amber-300'
+              'flex flex-col space-y-3',
+              isDone ? 'text-slate-200 ' : 'text-amber-700 bg-amber-300'
             )}
           >
             {workout.workoutExercises.map((workoutExercise) => (
-              <div key={workoutExercise.id} className={clsx('py-3')}>
+              <div
+                key={workoutExercise.id}
+                className='p-4 bg-slate-600 rounded-lg'
+              >
                 <div className='flex items-center justify-between'>
                   <h2 className='font-medium'>
                     {workoutExercise.exercise.name}
