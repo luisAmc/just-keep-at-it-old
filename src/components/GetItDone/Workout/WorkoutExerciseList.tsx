@@ -10,7 +10,10 @@ import { useSlideOver } from 'src/components/shared/SlideOver';
 import { SubmitButton } from 'src/components/shared/SubmitButton';
 import { z } from 'zod';
 import { AddExerciseSlideOver } from '../AddExerciseSlideOver';
-import { ExerciseSessionHistory, useExerciseSessionHistory } from '../ExerciseSessionHistory';
+import {
+  ExerciseSessionHistory,
+  useExerciseSessionHistory
+} from '../ExerciseSessionHistory';
 import {
   GetItDoneSchema,
   useDebouncedWorkout,
@@ -143,42 +146,46 @@ export function WorkoutExerciseList() {
   }
 
   return (
-    <Form form={form} onSubmit={onSubmit}>
-      <div className='flex flex-col space-y-2'>
-        {workoutExercises.fields.length ? (
-          workoutExercises.fields.map((field, i) => (
-            <div
-              key={field.id}
-              className='flex flex-col p-4 bg-slate-700 rounded-lg'
-            >
-              <WorkoutExerciseProvider
-                index={i}
-                maxIndex={workoutExercises.fields.length - 1}
-                exerciseId={(field as any).exerciseId}
-                onRemove={() => onRemove(i)}
-                onMove={(action) => onMove(action, i)}
-                onSelect={(exerciseId) =>
-                  exerciseSessionHistory.setExerciseId(exerciseId)
-                }
+    <>
+      <Form form={form} onSubmit={onSubmit}>
+        <div className='flex flex-col space-y-2'>
+          {workoutExercises.fields.length ? (
+            workoutExercises.fields.map((field, i) => (
+              <div
+                key={field.id}
+                className='flex flex-col p-4 bg-slate-700 rounded-lg'
               >
-                <WorkoutExercise />
-              </WorkoutExerciseProvider>
+                <WorkoutExerciseProvider
+                  index={i}
+                  maxIndex={workoutExercises.fields.length - 1}
+                  exerciseId={(field as any).exerciseId}
+                  onRemove={() => onRemove(i)}
+                  onMove={(action) => onMove(action, i)}
+                  onSelect={(exerciseId) =>
+                    exerciseSessionHistory.setExerciseId(exerciseId)
+                  }
+                >
+                  <WorkoutExercise />
+                </WorkoutExerciseProvider>
+              </div>
+            ))
+          ) : (
+            <div className='flex flex-col items-center space-y-2 p-8 bg-slate-700 rounded-md text-slate-300'>
+              <SparklesIcon className='w-10 h-10' />
+              <p className='font-semibold text-sm'>
+                La rutina no tiene ejercicios hasta el momento...
+              </p>
             </div>
-          ))
-        ) : (
-          <div className='flex flex-col items-center space-y-2 p-8 bg-slate-700 rounded-md text-slate-300'>
-            <SparklesIcon className='w-10 h-10' />
-            <p className='font-semibold text-sm'>
-              La rutina no tiene ejercicios hasta el momento...
-            </p>
-          </div>
-        )}
-      </div>
+          )}
+        </div>
 
-      <Button variant='dashed' onClick={addExerciseSlideOver.open}>
-        <PlusIcon className='w-4 h-4 mr-1' />
-        Añadir otro ejercicio
-      </Button>
+        <Button variant='dashed' onClick={addExerciseSlideOver.open}>
+          <PlusIcon className='w-4 h-4 mr-1' />
+          Añadir otro ejercicio
+        </Button>
+
+        <SubmitButton>Completar rutina</SubmitButton>
+      </Form>
 
       <AddExerciseSlideOver
         {...addExerciseSlideOver.props}
@@ -188,8 +195,6 @@ export function WorkoutExerciseList() {
       />
 
       <ExerciseSessionHistory {...exerciseSessionHistory.props} />
-
-      <SubmitButton>Completar rutina</SubmitButton>
-    </Form>
+    </>
   );
 }
