@@ -17,7 +17,7 @@ export function CategoryHeader() {
 
       <span
         className={clsx(
-          'bg-gray-600 px-2 py-0.5 inline-flex space-x-1 text-xs font-semibold rounded-full',
+          'px-2 py-0.5 inline-flex space-x-1 text-xs font-semibold rounded-full',
           type === ExerciseType.AEROBIC
             ? 'bg-sky-600 text-sky-50'
             : 'bg-rose-500 text-rose-50'

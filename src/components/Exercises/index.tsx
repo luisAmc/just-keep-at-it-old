@@ -4,7 +4,6 @@ import { gql, useQuery } from '@apollo/client';
 import { Page } from '../shared/Page';
 import { PlusCircleIcon } from '@heroicons/react/24/outline';
 import { ExerciseList } from './ExerciseList';
-import { SearchInput } from '../shared/SearchInput';
 
 export const ExerciseFragment = gql`
   fragment Exercise_exercise on Exercise {
@@ -45,9 +44,6 @@ export function Exercises() {
 
   return (
     <Page href='/' title='Ejercicios'>
-      {/* TODO: Query the categories/exercises */}
-      <SearchInput onChange={() => {}} />
-
       <ExerciseList categories={categories} />
 
       <Button href='/exercises/category/create'>

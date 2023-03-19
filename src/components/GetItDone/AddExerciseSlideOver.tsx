@@ -14,7 +14,7 @@ import { useState } from 'react';
 import { PlusCircleIcon, SparklesIcon } from '@heroicons/react/24/outline';
 import { CreateExercise } from 'src/components/Exercises/ExerciseList/CreateExercise';
 import { Button } from 'src/components/shared/Button';
-import { useWorkoutContext } from '../Workout/WorkoutContext';
+import { useWorkoutContext } from './Workout/WorkoutContext';
 
 interface Props extends Omit<SlideOverProps, 'title' | 'children'> {
   onConfirm(exerciseId: string): void;

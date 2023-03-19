@@ -20,7 +20,7 @@ builder.prismaObject('ExerciseOnWorkoutTemplate', {
   findUnique: (template) => ({ id: template.id }),
   fields: (t) => ({
     id: t.exposeID('id'),
-    index: t.exposeInt('exerciseIndex'),
+    exerciseIndex: t.exposeInt('exerciseIndex'),
     exercise: t.relation('exercise')
   })
 });

@@ -68,8 +68,8 @@ type ExerciseCategory {
 
 type ExerciseOnWorkoutTemplate {
   exercise: Exercise!
+  exerciseIndex: Int!
   id: ID!
-  index: Int!
 }
 
 input ExerciseOptionInput {

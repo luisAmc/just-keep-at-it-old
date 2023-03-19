@@ -89,8 +89,8 @@ export type ExerciseCategory = {
 export type ExerciseOnWorkoutTemplate = {
   __typename?: 'ExerciseOnWorkoutTemplate';
   exercise: Exercise;
+  exerciseIndex: Scalars['Int'];
   id: Scalars['ID'];
-  index: Scalars['Int'];
 };
 
 export type ExerciseOptionInput = {
