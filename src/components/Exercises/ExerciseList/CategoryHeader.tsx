@@ -12,7 +12,7 @@ export function CategoryHeader() {
   const { name, type } = useExerciseCategoryContext();
 
   return (
-    <div className='bg-white/5  rounded-t-lg px-5 py-3 flex items-center justify-between'>
+    <div className='bg-white/5  rounded-t-lg px-5 py-3 flex items-center justify-between border-b border-slate-600'>
       <Heading size='xl'>{name}</Heading>
 
       <span

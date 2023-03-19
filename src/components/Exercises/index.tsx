@@ -10,6 +10,7 @@ export const ExerciseFragment = gql`
   fragment Exercise_exercise on Exercise {
     id
     name
+    type
   }
 `;
 

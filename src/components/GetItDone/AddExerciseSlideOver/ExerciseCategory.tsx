@@ -4,8 +4,8 @@ import {
   XMarkIcon
 } from '@heroicons/react/24/outline';
 import { Disclosure } from '@headlessui/react';
-import { ExerciseCategoryType } from '../Workout/WorkoutUtils';
-import { WorkoutExercise_Exercise } from '../Workout/__generated__/WorkoutExercise.generated';
+import { ExerciseCategoryType } from '../workout.old/WorkoutUtils';
+import { WorkoutExercise_Exercise } from '../workout.old/__generated__/WorkoutExercise.generated';
 import { Button } from 'src/components/shared/Button';
 import { useState } from 'react';
 import { Form, useZodForm } from 'src/components/shared/Form';
@@ -19,8 +19,7 @@ import {
   ExerciseCategoryCreateMutation,
   ExerciseCategoryCreateMutationVariables
 } from './__generated__/ExerciseCategory.generated';
-import { ExerciseFragment } from '../Workout/WorkoutExercise';
-import { AddExerciseSlideOverQuery_query } from '.';
+import { ExerciseFragment } from '../workout.old/WorkoutExercise';
 import { useAutoAnimate } from '@formkit/auto-animate/react';
 
 interface Props {
@@ -65,8 +64,7 @@ export function ExerciseCategory({ category, onClick }: Props) {
       },
       onCompleted() {
         form.reset();
-      },
-      refetchQueries: [AddExerciseSlideOverQuery_query]
+      }
     }
   );
 

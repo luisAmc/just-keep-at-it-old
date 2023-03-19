@@ -87,10 +87,7 @@ export function ExerciseSessionHistory({
             </div>
 
             {sessions.map((session) => (
-              <div
-                key={session.id}
-                className='border rounded-lg border-slate-500 p-3'
-              >
+              <div key={session.id} className='rounded-lg bg-slate-700 p-3'>
                 <h3>{session.workout.name}</h3>
 
                 <div className='text-sm text-slate-400'>
@@ -167,10 +164,7 @@ function Shimmer() {
   return (
     <div className='animate-pulse flex flex-col space-y-4'>
       {Array.from({ length: 3 }).map((_, i) => (
-        <div
-          key={`shimmer-div-${i}`}
-          className='border rounded-lg border-slate-500 p-3'
-        >
+        <div key={`shimmer-div-${i}`} className='rounded-lg bg-slate-700 p-3'>
           <div className='flex flex-col space-y-2'>
             <div className='h-4 w-1/2 bg-slate-500 rounded-md'></div>
             <div className='h-3 w-3/4 bg-slate-600 rounded-md'></div>

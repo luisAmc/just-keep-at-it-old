@@ -1,23 +1,23 @@
-import { Button } from 'src/components/shared/Button';
-import { ChevronLeftIcon, TrashIcon } from '@heroicons/react/24/outline';
-import { ConfirmationModal } from 'src/components/shared/ConfirmationModal';
 import { gql, useMutation } from '@apollo/client';
+import { ChevronLeftIcon, TrashIcon } from '@heroicons/react/24/outline';
+import { useRouter } from 'next/router';
+import { Button } from 'src/components/shared/Button';
+import { ConfirmationModal } from 'src/components/shared/ConfirmationModal';
 import { Heading } from 'src/components/shared/Heading';
 import { useModal } from 'src/components/shared/Modal';
-import { useRouter } from 'next/router';
+import { EditNameModal } from './EditNameModal';
 import { useWorkoutContext } from './WorkoutContext';
-import { WorkoutEditNameModal } from './WorkoutEditNameModal';
 
 export function WorkoutHeader() {
-  const workout = useWorkoutContext();
-
   const router = useRouter();
+
+  const { name, workoutId } = useWorkoutContext();
   const editNameModal = useModal();
   const deleteModal = useModal();
 
   const [deleteWorkout] = useMutation(
     gql`
-      mutation GetItDoneDeleteMutation($workoutId: ID!) {
+      mutation WorkoutHeaderDeleteMutation($workoutId: ID!) {
         deleteWorkout(workoutId: $workoutId) {
           id
         }
@@ -25,7 +25,7 @@ export function WorkoutHeader() {
     `,
     {
       onCompleted() {
-        localStorage.removeItem(`workout-${workout.id}`);
+        localStorage.removeItem(`workout-${workoutId}`);
         router.replace('/');
       }
     }
@@ -35,16 +35,16 @@ export function WorkoutHeader() {
     <div className='flex items-center justify-between'>
       <div className='flex items-center space-x-2'>
         <Button href='/' className=''>
-          <div className='rounded-full bg-brand-400 text-brand-800 p-2 flex items-center justify-center'>
+          <div className='rounded-full bg-brand-300 text-brand-700 p-2 flex items-center justify-center'>
             <ChevronLeftIcon className='w-4 h-4' />
           </div>
         </Button>
 
         <Button variant='ghost' size='sm' onClick={editNameModal.open}>
-          <Heading>{workout.name}</Heading>
+          <Heading>{name}</Heading>
         </Button>
 
-        <WorkoutEditNameModal {...editNameModal.props} />
+        <EditNameModal {...editNameModal.props} />
       </div>
 
       <div>
@@ -60,7 +60,7 @@ export function WorkoutHeader() {
           onConfirm={() => {
             deleteWorkout({
               variables: {
-                workoutId: workout.id
+                workoutId: workoutId
               }
             });
           }}

@@ -3,7 +3,7 @@ import * as Types from '../../../__generated__/schema.generated';
 export type CreateTemplateQueryVariables = Types.Exact<{ [key: string]: never; }>;
 
 
-export type CreateTemplateQuery = { __typename?: 'Query', viewer?: { __typename?: 'User', id: string, exercises: Array<{ __typename?: 'Exercise', id: string, name: string }> } | null };
+export type CreateTemplateQuery = { __typename?: 'Query', viewer?: { __typename?: 'User', id: string, exercises: Array<{ __typename?: 'Exercise', id: string, name: string, type: string }> } | null };
 
 export type CreateTemplateMutationVariables = Types.Exact<{
   input: Types.CreateWorkoutTemplateInput;

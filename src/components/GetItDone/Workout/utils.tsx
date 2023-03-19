@@ -1,23 +1,22 @@
 import { ExerciseType } from '@prisma/client';
 import { useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
-import { z } from 'zod';
 import { useWorkoutContext } from './WorkoutContext';
 import { useWorkoutExerciseContext } from './WorkoutExerciseContext';
-import { WorkoutExercise_Exercise } from './__generated__/WorkoutExercise.generated';
+import { z } from 'zod';
 
-const numberShape = z.string().or(z.literal('')).optional().transform(Number);
+const NumberShape = z.string().or(z.literal('')).optional().transform(Number);
 
 const SetSchema = z.object({
   id: z.string().optional(),
-  mins: numberShape,
-  distance: numberShape,
-  kcal: numberShape,
-  reps: numberShape,
-  lbs: numberShape
+  mins: NumberShape,
+  distance: NumberShape,
+  kcal: NumberShape,
+  reps: NumberShape,
+  lbs: NumberShape
 });
 
-export const WorkoutExercisesSchema = z.object({
+export const GetItDoneSchema = z.object({
   workoutExercises: z.array(
     z.object({
       exerciseId: z.string(),
@@ -29,7 +28,7 @@ export const WorkoutExercisesSchema = z.object({
 export function MostRecentCorrespondingSet({ index }: { index: number }) {
   const workoutExercise = useWorkoutExerciseContext();
 
-  const fieldName = `${workoutExercise.fieldName}.sets.${index}`;
+  const fieldName = `${workoutExercise.formFieldName}.sets.${index}`;
   const form = useFormContext();
 
   const correspondingSet = workoutExercise.mostRecentSession?.sets[index];
@@ -75,34 +74,6 @@ export function MostRecentCorrespondingSet({ index }: { index: number }) {
   return null;
 }
 
-export type ExerciseCategoryType = {
-  id: string;
-  name: string;
-  exercises: Array<WorkoutExercise_Exercise>;
-};
-
-export function useExerciseCategories(exercises?: WorkoutExercise_Exercise[]) {
-  if (!exercises || !exercises.length) return [];
-
-  const categories = exercises.reduce((categories, exercise) => {
-    const categoryKey = exercise.muscleGroup ?? ExerciseType.AEROBIC;
-
-    const category = categories.get(categoryKey) ?? {
-      id: categoryKey,
-      // name: getCategoryName(categoryKey),
-      exercises: []
-    };
-
-    category.exercises.push(exercise);
-
-    categories.set(categoryKey, category);
-
-    return categories;
-  }, new Map<string, ExerciseCategoryType>());
-
-  return Array.from(categories.values());
-}
-
 export function useDebouncedWorkout<T>(workoutString: T) {
   const [debouncedWorkout, setdebouncedWorkout] = useState(workoutString);
 
@@ -120,10 +91,10 @@ export function useDebouncedWorkout<T>(workoutString: T) {
 }
 
 export function useWorkoutInLocalStorage<T>() {
-  const { getExerciseCache } = useWorkoutContext();
+  const { getCache } = useWorkoutContext();
 
   const save = (workoutId: string, workout: T) => {
-    const cache = getExerciseCache();
+    const cache = getCache();
 
     localStorage.setItem(
       `workout-${workoutId}`,

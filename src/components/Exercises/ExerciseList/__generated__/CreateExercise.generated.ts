@@ -5,4 +5,4 @@ export type CreateExerciseMutationVariables = Types.Exact<{
 }>;
 
 
-export type CreateExerciseMutation = { __typename?: 'Mutation', createExercise: { __typename?: 'Exercise', id: string, category: { __typename?: 'ExerciseCategory', id: string, name: string, type: string, exercises: Array<{ __typename?: 'Exercise', id: string, name: string }> } } };
+export type CreateExerciseMutation = { __typename?: 'Mutation', createExercise: { __typename?: 'Exercise', id: string, category: { __typename?: 'ExerciseCategory', id: string, name: string, type: string, exercises: Array<{ __typename?: 'Exercise', id: string, name: string, type: string }> } } };

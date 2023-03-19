@@ -1,69 +1,79 @@
 import { ExerciseType } from '@prisma/client';
-import { createContext, ReactNode, useContext } from 'react';
+import { createContext, useContext, type ReactNode } from 'react';
 import { useWorkoutContext } from './WorkoutContext';
-import { MoveExerciseAction } from './WorkoutExerciseActions';
-import { WorkoutExercise_LastSession } from './__generated__/WorkoutExercise.generated';
+import {
+  WorkoutExercise_Exercise,
+  WorkoutExercise_LastSession
+} from './__generated__/WorkoutExercise.generated';
 
-interface ContextType {
-  id: string;
-  name: string;
-  type: ExerciseType;
-  fieldName: string;
+export type MoveExerciseOption = 'up' | 'down' | 'first' | 'last';
+
+interface WorkoutExerciseContextType extends WorkoutExercise_Exercise {
+  index: number;
+  formFieldName: string;
   isFirst: boolean;
   isLast: boolean;
   mostRecentSession?: WorkoutExercise_LastSession;
   onRemove: () => void;
-  onMove: (action: MoveExerciseAction) => void;
+  onMove: (action: MoveExerciseOption) => void;
   onSelect: (exerciseId: string) => void;
 }
 
-const WorkoutExerciseContext = createContext<ContextType>({
-  id: '',
-  name: '',
-  type: ExerciseType.AEROBIC,
-  fieldName: '',
-  isFirst: false,
-  isLast: false,
-  mostRecentSession: undefined,
-  onRemove: () => {},
-  onMove: () => {},
-  onSelect: () => {}
-});
+const WorkoutExerciseContext = createContext<
+  WorkoutExerciseContextType | undefined
+>(undefined);
 
-interface ProviderProps {
-  exerciseId: string;
+interface WorkoutExerciseProviderProps {
   index: number;
   maxIndex: number;
+  exerciseId: string;
   onRemove: () => void;
-  onMove: (action: MoveExerciseAction) => void;
+  onMove: (action: MoveExerciseOption) => void;
   onSelect: (exerciseId: string) => void;
   children: ReactNode;
 }
 
-export const WorkoutExerciseProvider = (props: ProviderProps) => {
+export const WorkoutExerciseProvider = ({
+  index,
+  maxIndex,
+  exerciseId,
+  onRemove,
+  onMove,
+  onSelect,
+  children
+}: WorkoutExerciseProviderProps) => {
   const { getExercise } = useWorkoutContext();
-  const exerciseInContext = getExercise(props.exerciseId);
+  const exercise = getExercise(exerciseId);
 
   return (
     <WorkoutExerciseContext.Provider
       value={{
-        id: props.exerciseId,
-        name: exerciseInContext?.name ?? '',
-        type: exerciseInContext?.type as ExerciseType,
-        fieldName: `workoutExercises.${props.index}`,
-        isFirst: props.index === 0,
-        isLast: props.index === props.maxIndex,
-        mostRecentSession: exerciseInContext?.lastSession ?? undefined,
-        onRemove: props.onRemove,
-        onMove: props.onMove,
-        onSelect: props.onSelect
+        index,
+        id: exerciseId,
+        name: exercise?.name ?? '',
+        type: exercise?.type as ExerciseType,
+        formFieldName: `workoutExercises.${index}`,
+        isFirst: index === 0,
+        isLast: index === maxIndex,
+        mostRecentSession: exercise?.lastSession ?? undefined,
+        onRemove,
+        onMove,
+        onSelect
       }}
     >
-      {props.children}
+      {children}
     </WorkoutExerciseContext.Provider>
   );
 };
 
 export function useWorkoutExerciseContext() {
-  return useContext(WorkoutExerciseContext);
+  const context = useContext(WorkoutExerciseContext);
+
+  if (!context) {
+    throw new Error(
+      '`useWorkoutExerciseContext` can only be used inside a WorkoutExercise component.'
+    );
+  }
+
+  return context;
 }

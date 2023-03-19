@@ -1,39 +1,40 @@
-import { AddExerciseSlideOver } from '../AddExerciseSlideOver';
-import { Button } from 'src/components/shared/Button';
-import { PlusIcon } from '@heroicons/react/24/outline';
-import { Form, useZodForm } from 'src/components/shared/Form';
 import { gql, useMutation } from '@apollo/client';
-import { MoveExerciseAction } from './WorkoutExerciseActions';
-import { SubmitButton } from 'src/components/shared/SubmitButton';
-import {
-  useDebouncedWorkout,
-  WorkoutExercisesSchema,
-  useWorkoutInLocalStorage
-} from './WorkoutUtils';
+import { PlusIcon, SparklesIcon } from '@heroicons/react/24/outline';
+import { ExerciseType } from '@prisma/client';
+import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import { useFieldArray, useWatch } from 'react-hook-form';
+import { Button } from 'src/components/shared/Button';
+import { Form, useZodForm } from 'src/components/shared/Form';
 import { useSlideOver } from 'src/components/shared/SlideOver';
+import { SubmitButton } from 'src/components/shared/SubmitButton';
+import { z } from 'zod';
+import { AddExerciseSlideOver } from '../AddExerciseSlideOver';
+import { ExerciseSessionHistory, useExerciseSessionHistory } from '../ExerciseSessionHistory';
+import {
+  GetItDoneSchema,
+  useDebouncedWorkout,
+  useWorkoutInLocalStorage
+} from './utils';
 import { useWorkoutContext } from './WorkoutContext';
 import { WorkoutExercise } from './WorkoutExercise';
-import { z } from 'zod';
-import router from 'next/router';
 import {
-  WorkoutExercisesMutation,
-  WorkoutExercisesMutationVariables
-} from './__generated__/WorkoutExercises.generated';
-import { ExerciseType } from '@prisma/client';
+  MoveExerciseOption,
+  WorkoutExerciseProvider
+} from './WorkoutExerciseContext';
 import {
-  ExerciseSessionHistory,
-  useExerciseSessionHistory
-} from '../ExerciseSessionHistory';
+  WorkoutExerciseListMutation,
+  WorkoutExerciseListMutationVariables
+} from './__generated__/WorkoutExerciseList.generated';
 
-export function WorkoutExercises() {
+export function WorkoutExerciseList() {
+  const router = useRouter();
+
   const workout = useWorkoutContext();
-
   const addExerciseSlideOver = useSlideOver();
   const exerciseSessionHistory = useExerciseSessionHistory();
 
-  const form = useZodForm({ schema: WorkoutExercisesSchema });
+  const form = useZodForm({ schema: GetItDoneSchema });
 
   const workoutExercises = useFieldArray({
     control: form.control,
@@ -44,17 +45,19 @@ export function WorkoutExercises() {
   const workoutState = useWatch({ control: form.control });
 
   useEffect(() => {
-    const alreadyEditedWorkout = localStorage.getItem(`workout-${workout.id}`);
+    const alreadyEditedWorkout = localStorage.getItem(
+      `workout-${workout.workoutId}`
+    );
 
     if (alreadyEditedWorkout) {
       const fromLocalStorage = JSON.parse(alreadyEditedWorkout);
 
       form.reset(fromLocalStorage.form);
-      workout.setExerciseCache(fromLocalStorage.exerciseCache ?? []);
+      workout.setCache(fromLocalStorage.exerciseCache ?? []);
     } else {
       form.reset({
         workoutExercises: workout.workoutExercises
-          .sort((a, b) => a.index - b.index)
+          .sort((a, b) => a.exerciseIndex - b.exerciseIndex)
           .map((workoutExercise) => ({
             exerciseId: workoutExercise.exercise.id,
             sets: []
@@ -66,14 +69,14 @@ export function WorkoutExercises() {
   const debouncedWorkoutState = useDebouncedWorkout(workoutState);
 
   useEffect(() => {
-    inLocalStorage.save(workout.id, debouncedWorkoutState);
+    inLocalStorage.save(workout.workoutId, debouncedWorkoutState);
   }, [debouncedWorkoutState]);
 
-  function removeExercise(index: number) {
+  function onRemove(index: number) {
     workoutExercises.remove(index);
   }
 
-  function moveExercise(action: MoveExerciseAction, index: number) {
+  function onMove(action: MoveExerciseOption, index: number) {
     if (action === 'first') {
       workoutExercises.move(index, 0);
     } else if (action === 'last') {
@@ -84,11 +87,11 @@ export function WorkoutExercises() {
   }
 
   const [getWorkoutDone] = useMutation<
-    WorkoutExercisesMutation,
-    WorkoutExercisesMutationVariables
+    WorkoutExerciseListMutation,
+    WorkoutExerciseListMutationVariables
   >(
     gql`
-      mutation WorkoutExercisesMutation($input: GetWorkoutDoneInput!) {
+      mutation WorkoutExerciseListMutation($input: GetWorkoutDoneInput!) {
         getWorkoutDone(input: $input) {
           id
         }
@@ -96,13 +99,13 @@ export function WorkoutExercises() {
     `,
     {
       onCompleted() {
-        inLocalStorage.remove(workout.id);
-        router.push(`/workouts/${workout.id}`);
+        inLocalStorage.remove(workout.workoutId);
+        router.push(`/workouts/${workout.workoutId}`);
       }
     }
   );
 
-  async function onSubmit(input: z.infer<typeof WorkoutExercisesSchema>) {
+  async function onSubmit(input: z.infer<typeof GetItDoneSchema>) {
     const nonEmptyWorkoutExercises = [];
 
     for (let i = 0; i < input.workoutExercises.length; i++) {
@@ -119,7 +122,7 @@ export function WorkoutExercises() {
 
         if (nonEmptySets.length > 0) {
           nonEmptyWorkoutExercises.push({
-            index: i,
+            exerciseIndex: i,
             exerciseId: workoutExercise.exerciseId,
             sets: nonEmptySets
           });
@@ -131,7 +134,7 @@ export function WorkoutExercises() {
       getWorkoutDone({
         variables: {
           input: {
-            workoutId: workout.id,
+            workoutId: workout.workoutId,
             workoutExercises: nonEmptyWorkoutExercises
           }
         }
@@ -142,28 +145,39 @@ export function WorkoutExercises() {
   return (
     <Form form={form} onSubmit={onSubmit}>
       <div className='flex flex-col space-y-2'>
-        {workoutExercises.fields.map((field, i) => (
-          <div
-            key={field.id}
-            className='flex flex-col px-4 bg-slate-700 rounded-lg'
-          >
-            <WorkoutExercise
-              index={i}
-              maxIndex={workoutExercises.fields.length - 1}
-              exerciseId={field.exerciseId}
-              onRemove={() => removeExercise(i)}
-              onMove={(action) => moveExercise(action, i)}
-              onSelect={(exerciseId) =>
-                exerciseSessionHistory.setExerciseId(exerciseId)
-              }
-            />
+        {workoutExercises.fields.length ? (
+          workoutExercises.fields.map((field, i) => (
+            <div
+              key={field.id}
+              className='flex flex-col p-4 bg-slate-700 rounded-lg'
+            >
+              <WorkoutExerciseProvider
+                index={i}
+                maxIndex={workoutExercises.fields.length - 1}
+                exerciseId={(field as any).exerciseId}
+                onRemove={() => onRemove(i)}
+                onMove={(action) => onMove(action, i)}
+                onSelect={(exerciseId) =>
+                  exerciseSessionHistory.setExerciseId(exerciseId)
+                }
+              >
+                <WorkoutExercise />
+              </WorkoutExerciseProvider>
+            </div>
+          ))
+        ) : (
+          <div className='flex flex-col items-center space-y-2 p-8 bg-slate-700 rounded-md text-slate-300'>
+            <SparklesIcon className='w-10 h-10' />
+            <p className='font-semibold text-sm'>
+              La rutina no tiene ejercicios hasta el momento...
+            </p>
           </div>
-        ))}
+        )}
       </div>
 
       <Button variant='dashed' onClick={addExerciseSlideOver.open}>
         <PlusIcon className='w-4 h-4 mr-1' />
-        <span>Añadir otro ejercicio</span>
+        Añadir otro ejercicio
       </Button>
 
       <AddExerciseSlideOver
@@ -175,7 +189,7 @@ export function WorkoutExercises() {
 
       <ExerciseSessionHistory {...exerciseSessionHistory.props} />
 
-      <SubmitButton>Completar</SubmitButton>
+      <SubmitButton>Completar rutina</SubmitButton>
     </Form>
   );
 }
