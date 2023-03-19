@@ -9,7 +9,7 @@ builder.prismaObject('WorkoutTemplate', {
     exercises: t.relation('exercises', {
       query: {
         orderBy: {
-          index: 'asc'
+          exerciseIndex: 'asc'
         }
       }
     })
@@ -20,7 +20,7 @@ builder.prismaObject('ExerciseOnWorkoutTemplate', {
   findUnique: (template) => ({ id: template.id }),
   fields: (t) => ({
     id: t.exposeID('id'),
-    index: t.exposeInt('index'),
+    exerciseIndex: t.exposeInt('exerciseIndex'),
     exercise: t.relation('exercise')
   })
 });
@@ -64,7 +64,7 @@ const CreateWorkoutTemplateInput = builder.inputType(
         type: [
           builder.inputType('CreateWorkoutTemplateExerciseInput', {
             fields: (t) => ({
-              index: t.int(),
+              exerciseIndex: t.int(),
               exerciseId: t.id()
             })
           })
@@ -89,7 +89,7 @@ builder.mutationField('createWorkoutTemplate', (t) =>
           exercises: {
             createMany: {
               data: input.exercises.map((exercise) => ({
-                index: exercise.index,
+                exerciseIndex: exercise.exerciseIndex,
                 exerciseId: exercise.exerciseId
               }))
             }
@@ -151,7 +151,7 @@ builder.mutationField('startWorkoutFromTemplate', (t) =>
           exercises: {
             select: {
               exerciseId: true,
-              index: true
+              exerciseIndex: true
             }
           }
         }
@@ -164,9 +164,9 @@ builder.mutationField('startWorkoutFromTemplate', (t) =>
           name: template.name,
           workoutExercises: {
             createMany: {
-              data: template.exercises.map(({ exerciseId, index }) => ({
+              data: template.exercises.map(({ exerciseId, exerciseIndex }) => ({
                 userId: session!.userId,
-                index,
+                exerciseIndex: exerciseIndex,
                 exerciseId
               }))
             }

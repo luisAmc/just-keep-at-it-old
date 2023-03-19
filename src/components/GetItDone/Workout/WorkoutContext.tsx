@@ -1,37 +1,22 @@
-import {
-  createContext,
-  ReactNode,
-  useContext,
-  useEffect,
-  useState
-} from 'react';
+import { createContext, useContext, useEffect, useState, type ReactNode } from 'react';
 import { Workout_Workout } from './__generated__/index.generated';
 import {
   WorkoutExercise_Exercise,
   WorkoutExercise_WorkoutExercise
 } from './__generated__/WorkoutExercise.generated';
 
-interface ContextType {
-  id: string;
+interface WorkoutContextType {
+  workoutId: string;
   name: string;
+  setName: (newName: string) => void;
   workoutExercises: Array<WorkoutExercise_WorkoutExercise>;
-  setName(newName: string): void;
-  addExercise(workout: WorkoutExercise_Exercise): void;
-  getExercise(exerciseId: string): WorkoutExercise_Exercise | undefined;
-  getExerciseCache(): WorkoutExercise_Exercise[];
-  setExerciseCache(alreadyEditedExercises: any[]): void;
+  addExercise: (exercise: WorkoutExercise_Exercise) => void;
+  getExercise: (exerciseId: string) => WorkoutExercise_Exercise | undefined;
+  getCache: () => WorkoutExercise_Exercise[];
+  setCache: (exercises: any) => void;
 }
 
-const WorkoutContext = createContext<ContextType | null>({
-  id: '',
-  name: '',
-  workoutExercises: [],
-  setName: () => {},
-  addExercise: () => {},
-  getExercise: () => undefined,
-  getExerciseCache: () => [],
-  setExerciseCache: () => {}
-});
+const WorkoutContext = createContext<WorkoutContextType | undefined>(undefined);
 
 interface WorkoutProviderProps {
   workout: Workout_Workout;
@@ -44,17 +29,13 @@ export const WorkoutProvider = ({
   workout,
   children
 }: WorkoutProviderProps) => {
-  const [name, _setName] = useState(workout.name);
+  const [name, setName] = useState(workout.name);
 
   useEffect(() => {
     for (const workoutExercise of workout.workoutExercises) {
       exerciseMap.set(workoutExercise.exercise.id, workoutExercise.exercise);
     }
   }, []);
-
-  const setName = (newName: string) => {
-    _setName(newName);
-  };
 
   const addExercise = (exercise: WorkoutExercise_Exercise) => {
     exerciseMap.set(exercise.id, exercise);
@@ -64,12 +45,12 @@ export const WorkoutProvider = ({
     return exerciseMap.get(exerciseId);
   };
 
-  const getExerciseCache = () => {
+  const getCache = () => {
     return Array.from(exerciseMap.values());
   };
 
-  const setExerciseCache = (alreadyEditedExercises: any[]) => {
-    for (const exercise of alreadyEditedExercises) {
+  const setCache = (exercises: any[]) => {
+    for (const exercise of exercises) {
       exerciseMap.set(exercise.id, exercise);
     }
   };
@@ -77,14 +58,14 @@ export const WorkoutProvider = ({
   return (
     <WorkoutContext.Provider
       value={{
-        id: workout.id,
-        name: name,
+        workoutId: workout.id,
         workoutExercises: workout.workoutExercises,
+        name,
         setName,
         addExercise,
         getExercise,
-        getExerciseCache,
-        setExerciseCache
+        getCache,
+        setCache
       }}
     >
       {children}

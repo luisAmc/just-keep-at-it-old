@@ -1,10 +1,10 @@
 import { ExerciseType } from '@prisma/client';
-import { MostRecentCorrespondingSet } from './WorkoutUtils';
 import { NumberInput } from 'src/components/shared/NumberInput';
 import { TrashIcon } from '@heroicons/react/24/outline';
 import { useFormContext } from 'react-hook-form';
 import { useWorkoutExerciseContext } from './WorkoutExerciseContext';
 import { IconButton } from 'src/components/shared/IconButton';
+import { MostRecentCorrespondingSet } from './utils';
 
 interface Props {
   index: number;
@@ -16,7 +16,7 @@ export function WorkoutExerciseSet({ type, index, onRemove }: Props) {
   const workoutExercise = useWorkoutExerciseContext();
   const { control } = useFormContext();
 
-  const fieldName = `${workoutExercise.fieldName}.sets.${index}`;
+  const formFieldName = `${workoutExercise.formFieldName}.sets.${index}`;
 
   return (
     <div className='flex items-center justify-center py-2 gap-x-6'>
@@ -25,26 +25,26 @@ export function WorkoutExerciseSet({ type, index, onRemove }: Props) {
           {type === ExerciseType.AEROBIC ? (
             <>
               <NumberInput
-                {...control.register(`${fieldName}.mins`)}
+                {...control.register(`${formFieldName}.mins`)}
                 label='mins'
               />
               <NumberInput
-                {...control.register(`${fieldName}.distance`)}
+                {...control.register(`${formFieldName}.distance`)}
                 label='dist'
               />
               <NumberInput
-                {...control.register(`${fieldName}.kcal`)}
+                {...control.register(`${formFieldName}.kcal`)}
                 label='kcal'
               />
             </>
           ) : (
             <>
               <NumberInput
-                {...control.register(`${fieldName}.lbs`)}
+                {...control.register(`${formFieldName}.lbs`)}
                 label='lbs'
               />
               <NumberInput
-                {...control.register(`${fieldName}.reps`)}
+                {...control.register(`${formFieldName}.reps`)}
                 label='reps'
               />
             </>

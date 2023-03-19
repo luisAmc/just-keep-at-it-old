@@ -69,6 +69,7 @@ export function LoginForm() {
             <Input
               {...form.register('username')}
               autoFocus
+              autoCapitalize='off'
               icon={UserIcon}
               placeholder='Usuario'
               color='light'

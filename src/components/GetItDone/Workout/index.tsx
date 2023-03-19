@@ -1,9 +1,7 @@
 import { gql } from '@apollo/client';
-import { Workout_Workout } from './__generated__/index.generated';
 import { WorkoutExerciseFragment } from './WorkoutExercise';
-import { WorkoutExercises } from './WorkoutExercises';
+import { WorkoutExerciseList } from './WorkoutExerciseList';
 import { WorkoutHeader } from './WorkoutHeader';
-import { WorkoutProvider } from './WorkoutContext';
 
 export const WorkoutFragment = gql`
   fragment Workout_workout on Workout {
@@ -20,17 +18,11 @@ export const WorkoutFragment = gql`
   ${WorkoutExerciseFragment}
 `;
 
-interface WorkoutProps {
-  workout: Workout_Workout;
-}
-
-export function Workout({ workout }: WorkoutProps) {
+export function Workout() {
   return (
-    <WorkoutProvider workout={workout}>
-      <div className='h-full flex flex-col space-y-4'>
-        <WorkoutHeader />
-        <WorkoutExercises />
-      </div>
-    </WorkoutProvider>
+    <div className='h-full flex flex-col space-y-4'>
+      <WorkoutHeader />
+      <WorkoutExerciseList />
+    </div>
   );
 }

@@ -88,6 +88,12 @@ export function createApolloClient({ initialState, headers }: ClientOptions) {
         typePolicies: {
           User: {
             fields: {
+              exerciseCategories: {
+                keyArgs: ['id'],
+                merge(existing = [], incoming) {
+                  return [...existing, ...incoming];
+                }
+              },
               exercises: {
                 keyArgs: ['id'],
                 merge(existing = [], incoming) {

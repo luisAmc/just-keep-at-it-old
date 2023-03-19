@@ -1,6 +1,5 @@
 import { gql, useMutation, useQuery } from '@apollo/client';
 import {
-  CheckCircleIcon,
   ChevronLeftIcon,
   PlusIcon,
   TrashIcon
@@ -8,19 +7,21 @@ import {
 import { useRouter } from 'next/router';
 import { useFieldArray } from 'react-hook-form';
 import { z } from 'zod';
-import { ExerciseInfoFragment } from '../Exercises';
-import { useExercises } from '../Exercises/useExercises';
+import { ExerciseFragment, EXERCISES_QUERY } from '../Exercises';
+import {
+  ExercisesQuery,
+  Exercise_ExerciseCategory
+} from '../Exercises/__generated__/index.generated';
 import { Button } from '../shared/Button';
 import { FieldError, Form, useZodForm } from '../shared/Form';
 import { Heading } from '../shared/Heading';
 import { Input } from '../shared/Input';
 import { Page } from '../shared/Page';
 import { SubmitButton } from '../shared/SubmitButton';
-import { SelectExercise } from '../Workouts/CreateWorkout/SelectExercise';
+import { SelectExercise } from './SelectExercise';
 import {
   CreateTemplateMutation,
-  CreateTemplateMutationVariables,
-  CreateTemplateQuery
+  CreateTemplateMutationVariables
 } from './__generated__/CreateTemplate.generated';
 
 export const query = gql`
@@ -32,14 +33,25 @@ export const query = gql`
       }
     }
   }
-  ${ExerciseInfoFragment}
+  ${ExerciseFragment}
 `;
+
+const CreateTemplateSchema = z.object({
+  name: z.string().min(1, 'Ingrese el nombre'),
+  exercises: z.array(
+    z.object({
+      label: z.string(),
+      value: z.string()
+    })
+  )
+});
 
 export function CreateTemplate() {
   const router = useRouter();
 
-  const { data } = useQuery<CreateTemplateQuery>(query);
-  const exercises = useExercises(data?.viewer?.exercises);
+  const { data, loading } = useQuery<ExercisesQuery>(EXERCISES_QUERY);
+
+  const exercises = useExercises(data?.viewer?.exerciseCategories);
 
   const form = useZodForm({
     schema: CreateTemplateSchema,
@@ -96,7 +108,7 @@ export function CreateTemplate() {
         input: {
           name: input.name,
           exercises: input.exercises.map((exercise, i) => ({
-            index: i,
+            exerciseIndex: i,
             exerciseId: exercise.value
           }))
         }
@@ -156,12 +168,21 @@ export function CreateTemplate() {
   );
 }
 
-const CreateTemplateSchema = z.object({
-  name: z.string().min(1, 'Ingrese el nombre'),
-  exercises: z.array(
-    z.object({
-      label: z.string(),
-      value: z.string()
-    })
-  )
-});
+function useExercises(categories: Exercise_ExerciseCategory[] | undefined) {
+  if (!categories || !categories.length) return [];
+
+  const exercises: Array<{ label: string; value: string; category: string }> =
+    [];
+
+  for (const category of categories) {
+    exercises.push(
+      ...category.exercises.map((exercise) => ({
+        value: exercise.id,
+        label: exercise.name,
+        category: category.name
+      }))
+    );
+  }
+
+  return exercises;
+}

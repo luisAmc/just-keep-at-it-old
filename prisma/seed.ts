@@ -1,11 +1,65 @@
 import { db } from '../src/utils/prisma';
-import { MuscleGroup } from '@prisma/client';
+import { ExerciseType } from '@prisma/client';
 import SecurePassword from 'secure-password';
 
 const securePassword = new SecurePassword();
 
-const AEROBIC_EXERCISE_COUNT = 5;
-const STRENGTH_EXERCISE_COUNT = 15;
+const SEED_CATEGORIES = [
+  {
+    name: 'Aerobics',
+    type: ExerciseType.AEROBIC,
+    exercises: ['Treadmill', 'Cycling']
+  },
+  {
+    name: 'Arms',
+    type: ExerciseType.STRENGTH,
+    exercises: [
+      'Bicep Curl (Dumbell)',
+      'Preacher Curl (Barbell)',
+      'Preacher Curl (Machine)',
+      'Single Arm Preacher Curl',
+      'Tricep Extension (Cable)',
+      'Tricep Extension (Machine)'
+    ]
+  },
+  {
+    name: 'Shoulders',
+    type: ExerciseType.STRENGTH,
+    exercises: ['Shoulder Press', 'Lateral Raises (Machine)', 'Rear Delt Fly']
+  },
+  {
+    name: 'Chest',
+    type: ExerciseType.STRENGTH,
+    exercises: [
+      'Bench Press (Machine)',
+      'Incline Bench Press (Machine)',
+      'Decline Cable Press'
+    ]
+  },
+  {
+    name: 'Back',
+    type: ExerciseType.STRENGTH,
+    exercises: [
+      'Seated Row',
+      'Seated Row (Unilateral)',
+      'Lat Pulldown',
+      'Front Pulldown'
+    ]
+  },
+  {
+    name: 'Legs',
+    type: ExerciseType.STRENGTH,
+    exercises: [
+      'Leg Press',
+      'Leg Extensions',
+      'Hamstring Curls',
+      'Adductors (Close)',
+      'Abductors (Open)',
+      'Calf Extensions',
+      'Kick Backs'
+    ]
+  }
+];
 
 async function main() {
   const user = await db.user.upsert({
@@ -17,32 +71,28 @@ async function main() {
     update: {}
   });
 
-  for (let i = 0; i < AEROBIC_EXERCISE_COUNT; i++) {
-    await db.exercise.create({
-      data: {
-        name: `aerobic-exercise-${i}`,
-        type: 'AEROBIC',
-        userId: user.id
-      }
-    });
-  }
-
-  const muscleGroups: MuscleGroup[] = [
-    'ARMS',
-    'SHOULDERS',
-    'CHEST',
-    'BACK',
-    'LEGS'
-  ];
-
-  for (let i = 0; i < STRENGTH_EXERCISE_COUNT; i++) {
-    await db.exercise.create({
-      data: {
-        name: `strength-exercise-${i}`,
-        type: 'STRENGTH',
-        muscleGroup: muscleGroups[i % 6],
-        userId: user.id
-      }
+  for (const category of SEED_CATEGORIES) {
+    await db.exerciseCategory.upsert({
+      where: {
+        userId_name: {
+          userId: user.id,
+          name: category.name
+        }
+      },
+      create: {
+        userId: user.id,
+        name: category.name,
+        type: category.type,
+        exercises: {
+          createMany: {
+            data: category.exercises.map((exerciseName) => ({
+              userId: user.id,
+              name: exerciseName
+            }))
+          }
+        }
+      },
+      update: {}
     });
   }
 }

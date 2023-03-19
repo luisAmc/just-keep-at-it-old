@@ -30,6 +30,7 @@ export interface ButtonProps
   extends VariantProps<typeof buttonStyles>,
     ButtonOrLinkProps {
   rounded?: boolean;
+  loading?: boolean;
 }
 
 export const Button = ({

@@ -7,11 +7,9 @@ import {
   EllipsisVerticalIcon,
   TrashIcon
 } from '@heroicons/react/24/outline';
-import clsx from 'clsx';
 import { Fragment } from 'react';
 import { useWorkoutExerciseContext } from './WorkoutExerciseContext';
-
-export type MoveExerciseAction = 'up' | 'down' | 'first' | 'last';
+import clsx from 'clsx';
 
 export function WorkoutExerciseActions() {
   const { isFirst, isLast, onRemove, onMove } = useWorkoutExerciseContext();
