@@ -110,19 +110,22 @@ function Shimmer() {
   return (
     <div className='animate-pulse flex flex-col space-y-4'>
       {Array.from({ length: 3 }).map((_, i) => (
-        <div key={`shimmer-div-${i}`} className='rounded-lg bg-slate-700 p-3'>
+        <div
+          key={`shimmer-div-${i}`}
+          className='rounded-lg bg-slate-700 px-5 py-4'
+        >
           <div className='flex flex-col space-y-2'>
             <div className='flex items-center justify-between'>
               <div className='h-4 w-40 bg-slate-500 rounded-md'></div>
               <div className='h-3 w-20 bg-slate-600 rounded-md'></div>
             </div>
 
-            {/* Spacer */}
-            <div></div>
-
-            <div className='h-4 w-3/5 bg-slate-500 rounded-md'></div>
-            <div className='h-4 w-3/5 bg-slate-500 rounded-md'></div>
-            <div className='h-4 w-3/5 bg-slate-500 rounded-md'></div>
+            <div className='h-3 w-52 bg-slate-500 rounded-md'></div>
+            <div className='h-3 w-52 bg-slate-500 rounded-md'></div>
+            <div className='h-3 w-52 bg-slate-500 rounded-md'></div>
+            <div className='h-3 w-52 bg-slate-500 rounded-md'></div>
+            <div className='h-3 w-52 bg-slate-500 rounded-md'></div>
+            <div className='h-3 w-52 bg-slate-500 rounded-md'></div>
           </div>
         </div>
       ))}
