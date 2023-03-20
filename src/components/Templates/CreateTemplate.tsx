@@ -7,7 +7,8 @@ import {
 import { useRouter } from 'next/router';
 import { useFieldArray } from 'react-hook-form';
 import { z } from 'zod';
-import { ExerciseFragment, EXERCISES_QUERY } from '../Exercises';
+import {  EXERCISES_QUERY } from '../Exercises';
+import { ExerciseFragment } from '../Exercises/ViewExercise';
 import {
   ExercisesQuery,
   Exercise_ExerciseCategory
@@ -29,7 +30,7 @@ export const query = gql`
     viewer {
       id
       exercises {
-        ...Exercise_exercise
+        ...ViewExercise_exercise
       }
     }
   }

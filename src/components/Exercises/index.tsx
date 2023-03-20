@@ -4,14 +4,7 @@ import { gql, useQuery } from '@apollo/client';
 import { Page } from '../shared/Page';
 import { PlusCircleIcon } from '@heroicons/react/24/outline';
 import { ExerciseList } from './ExerciseList';
-
-export const ExerciseFragment = gql`
-  fragment Exercise_exercise on Exercise {
-    id
-    name
-    type
-  }
-`;
+import { ExerciseFragment } from './ViewExercise';
 
 export const ExerciseCategoryFragment = gql`
   fragment Exercise_exerciseCategory on ExerciseCategory {
@@ -19,7 +12,7 @@ export const ExerciseCategoryFragment = gql`
     name
     type
     exercises {
-      ...Exercise_exercise
+      ...ViewExercise_exercise
     }
   }
 `;

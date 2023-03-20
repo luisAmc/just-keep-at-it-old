@@ -6,7 +6,8 @@ import { Form, useZodForm } from 'src/components/shared/Form';
 import { Input } from 'src/components/shared/Input';
 import { SubmitButton } from 'src/components/shared/SubmitButton';
 import { z } from 'zod';
-import { ExerciseCategoryFragment, ExerciseFragment } from '..';
+import { ExerciseCategoryFragment } from '..';
+import { ExerciseFragment } from '../ViewExercise';
 import { useExerciseCategoryContext } from './useExerciseCategoryContext';
 import {
   CreateExerciseMutation,

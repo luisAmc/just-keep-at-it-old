@@ -8,7 +8,7 @@ import {
 } from '@heroicons/react/24/outline';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
-import { ExerciseFragment } from '../Exercises';
+import { ExerciseFragment } from '../Exercises/ViewExercise';
 import { Button } from '../shared/Button';
 import { ConfirmationModal } from '../shared/ConfirmationModal';
 import { Heading } from '../shared/Heading';
@@ -27,7 +27,7 @@ export const TemplateFragment = gql`
     name
     exercises {
       exercise {
-        ...Exercise_exercise
+        ...ViewExercise_exercise
       }
     }
   }
