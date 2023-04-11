@@ -103,13 +103,15 @@ export function WorkoutExercise() {
               <div className='w-full flex items-center justify-between'>
                 <Button
                   onClick={() => workoutExercise.onSelect(workoutExercise.id)}
-                  className='text-slate-200 hover:bg-white/10 px-2 py-1 rounded transition'
+                  className='text-slate-200 hover:bg-white/10 px-2 py-1 rounded transition text-left'
                 >
                   {workoutExercise.name}
                 </Button>
 
                 <Disclosure.Button className='flex items-center space-x-2 text-slate-200 hover:bg-white/5 px-2 py-1 rounded-lg transition'>
-                  <span className='text-sm'>{sets.fields.length} sets</span>
+                  <span className='text-sm whitespace-nowrap'>
+                    {sets.fields.length} sets
+                  </span>
 
                   <ChevronUpIcon
                     className={clsx('w-4 h-4', open && 'transform rotate-180')}
