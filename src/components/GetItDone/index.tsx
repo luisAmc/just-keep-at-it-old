@@ -2,8 +2,13 @@ import { gql, useQuery } from '@apollo/client';
 import { WorkoutProvider } from './Workout/WorkoutContext';
 import { Page } from '../shared/Page';
 import { useRouter } from 'next/router';
-import { Workout, WorkoutFragment } from './Workout';
 import { GetItDoneQuery } from './__generated__/index.generated';
+import { WorkoutFragment } from './Workout';
+import dynamic from 'next/dynamic';
+
+const { Workout } = {
+  Workout: dynamic(() => import('./Workout').then((mod) => mod.Workout))
+};
 
 export const query = gql`
   query GetItDoneQuery($workoutId: ID!) {
@@ -21,7 +26,7 @@ export function GetItDone() {
 
   const { data, loading } = useQuery<GetItDoneQuery>(query, {
     variables: { workoutId },
-    fetchPolicy: 'no-cache',
+    // fetchPolicy: 'no-cache',
     skip: !router.isReady
   });
 
