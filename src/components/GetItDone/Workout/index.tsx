@@ -1,7 +1,14 @@
 import { gql } from '@apollo/client';
 import { WorkoutExerciseFragment } from './WorkoutExercise';
-import { WorkoutExerciseList } from './WorkoutExerciseList';
-import { WorkoutHeader } from './WorkoutHeader';
+import dynamic from 'next/dynamic';
+
+const WorkoutHeader = dynamic(
+  import('./WorkoutHeader').then((mod) => mod.WorkoutHeader)
+);
+
+const WorkoutExerciseList = dynamic(
+  import('./WorkoutExerciseList').then((mod) => mod.WorkoutExerciseList)
+);
 
 export const WorkoutFragment = gql`
   fragment Workout_workout on Workout {
