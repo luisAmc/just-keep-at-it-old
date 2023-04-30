@@ -1,5 +1,6 @@
 import { ApolloProvider } from '@apollo/client';
 import { AppProps } from 'next/app';
+import { NProgress } from 'src/components/NProgress';
 import { useApollo } from 'src/utils/apollo';
 import Head from 'next/head';
 import '../styles.css';
@@ -13,6 +14,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         <title>Just keep at it!</title>
       </Head>
       <ApolloProvider client={client}>
+        <NProgress />
         <Component {...pageProps} />
       </ApolloProvider>
     </>
