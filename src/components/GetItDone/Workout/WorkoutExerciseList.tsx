@@ -29,6 +29,7 @@ import {
   WorkoutExerciseListMutation,
   WorkoutExerciseListMutationVariables
 } from './__generated__/WorkoutExerciseList.generated';
+import { motion } from 'framer-motion';
 
 export function WorkoutExerciseList() {
   const router = useRouter();
@@ -151,8 +152,10 @@ export function WorkoutExerciseList() {
         <div className='flex flex-col space-y-2'>
           {workoutExercises.fields.length ? (
             workoutExercises.fields.map((field, i) => (
-              <div
+              <motion.div
+                layout
                 key={field.id}
+                transition={{ type: 'spring', damping: 30, stiffness: 250 }}
                 className='flex flex-col p-4 bg-slate-700 rounded-lg'
               >
                 <WorkoutExerciseProvider
@@ -167,7 +170,7 @@ export function WorkoutExerciseList() {
                 >
                   <WorkoutExercise />
                 </WorkoutExerciseProvider>
-              </div>
+              </motion.div>
             ))
           ) : (
             <div className='flex flex-col items-center space-y-2 p-8 bg-slate-700 rounded-md text-slate-300'>

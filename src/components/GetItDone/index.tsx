@@ -26,7 +26,7 @@ export function GetItDone() {
 
   const { data, loading } = useQuery<GetItDoneQuery>(query, {
     variables: { workoutId },
-    // fetchPolicy: 'no-cache',
+    fetchPolicy: 'no-cache',
     skip: !router.isReady
   });
 
