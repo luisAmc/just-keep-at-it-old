@@ -19,6 +19,7 @@ export const NumberInput = forwardRef<HTMLInputElement, Props>(
           inputMode='decimal'
           step='any'
           placeholder='0'
+          onFocus={(e) => e.target.select()}
           {...props}
         />
 
