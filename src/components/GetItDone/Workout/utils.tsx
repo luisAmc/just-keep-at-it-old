@@ -89,25 +89,3 @@ export function useDebouncedWorkout<T>(workoutString: T) {
 
   return debouncedWorkout;
 }
-
-export function useWorkoutInLocalStorage<T>() {
-  const { getCache } = useWorkoutContext();
-
-  const save = (workoutId: string, workout: T) => {
-    const cache = getCache();
-
-    localStorage.setItem(
-      `workout-${workoutId}`,
-      JSON.stringify({ form: workout, exerciseCache: cache })
-    );
-  };
-
-  const remove = (workoutId: string) => {
-    localStorage.removeItem(`workout-${workoutId}`);
-  };
-
-  return {
-    save,
-    remove
-  };
-}

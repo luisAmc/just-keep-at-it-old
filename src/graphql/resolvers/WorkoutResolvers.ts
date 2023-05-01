@@ -212,29 +212,28 @@ builder.mutationField('getWorkoutDone', (t) =>
           where: { workoutId: input.workoutId }
         });
 
-        input.workoutExercises.forEach(
-          async (workoutExercise) =>
-            await db.workoutExercise.create({
-              data: {
-                workoutId: input.workoutId,
-                exerciseId: workoutExercise.exerciseId,
-                userId: session!.userId,
-                exerciseIndex: workoutExercise.exerciseIndex,
-                sets: {
-                  createMany: {
-                    data: workoutExercise.sets.map((set, setIndex) => ({
-                      setIndex: setIndex,
-                      mins: set.mins,
-                      distance: set.distance,
-                      kcal: set.kcal,
-                      lbs: set.lbs,
-                      reps: set.reps
-                    }))
-                  }
+        for (const workoutExercise of input.workoutExercises) {
+          await db.workoutExercise.create({
+            data: {
+              workoutId: input.workoutId,
+              exerciseId: workoutExercise.exerciseId,
+              userId: session!.userId,
+              exerciseIndex: workoutExercise.exerciseIndex,
+              sets: {
+                createMany: {
+                  data: workoutExercise.sets.map((set, setIndex) => ({
+                    setIndex: setIndex,
+                    mins: set.mins,
+                    distance: set.distance,
+                    kcal: set.kcal,
+                    lbs: set.lbs,
+                    reps: set.reps
+                  }))
                 }
               }
-            })
-        );
+            }
+          });
+        }
 
         return db.workout.update({
           where: {
@@ -248,6 +247,50 @@ builder.mutationField('getWorkoutDone', (t) =>
       });
 
       return workout;
+    }
+  })
+);
+
+builder.mutationField('partialSave', (t) =>
+  t.boolean({
+    args: {
+      input: t.arg({ type: GetWorkoutDoneInput })
+    },
+    resolve: async (_parent, { input }, { session }) => {
+      const done = await db.$transaction(async (db) => {
+        await db.workoutExercise.deleteMany({
+          where: { workoutId: input.workoutId }
+        });
+
+        // This part is exactly the same as the `getItDone` mutation
+        // Could be extracted to a function?
+        for (const workoutExercise of input.workoutExercises) {
+          await db.workoutExercise.create({
+            data: {
+              workoutId: input.workoutId,
+              exerciseId: workoutExercise.exerciseId,
+              userId: session!.userId,
+              exerciseIndex: workoutExercise.exerciseIndex,
+              sets: {
+                createMany: {
+                  data: workoutExercise.sets.map((set, setIndex) => ({
+                    setIndex: setIndex,
+                    mins: set.mins,
+                    distance: set.distance,
+                    kcal: set.kcal,
+                    lbs: set.lbs,
+                    reps: set.reps
+                  }))
+                }
+              }
+            }
+          });
+        }
+
+        return true;
+      });
+
+      return done;
     }
   })
 );

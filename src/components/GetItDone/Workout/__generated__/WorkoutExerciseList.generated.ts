@@ -6,3 +6,10 @@ export type WorkoutExerciseListMutationVariables = Types.Exact<{
 
 
 export type WorkoutExerciseListMutation = { __typename?: 'Mutation', getWorkoutDone: { __typename?: 'Workout', id: string } };
+
+export type PartialSaveMutationVariables = Types.Exact<{
+  input: Types.GetWorkoutDoneInput;
+}>;
+
+
+export type PartialSaveMutation = { __typename?: 'Mutation', partialSave: boolean };
