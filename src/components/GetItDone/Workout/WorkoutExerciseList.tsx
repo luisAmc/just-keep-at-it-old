@@ -2,7 +2,7 @@ import { gql, useMutation } from '@apollo/client';
 import { PlusIcon, SparklesIcon } from '@heroicons/react/24/outline';
 import { ExerciseType } from '@prisma/client';
 import { useRouter } from 'next/router';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useFieldArray, useWatch } from 'react-hook-form';
 import { Button } from 'src/components/shared/Button';
 import { Form, useZodForm } from 'src/components/shared/Form';
@@ -34,6 +34,7 @@ import { motion } from 'framer-motion';
 export function WorkoutExerciseList() {
   const router = useRouter();
 
+  const [isSetupDone, setIsSetupDone] = useState(false);
   const workout = useWorkoutContext();
   const addExerciseSlideOver = useSlideOver();
   const exerciseSessionHistory = useExerciseSessionHistory();
@@ -47,48 +48,6 @@ export function WorkoutExerciseList() {
 
   const inLocalStorage = useWorkoutInLocalStorage();
   const workoutState = useWatch({ control: form.control });
-
-  useEffect(() => {
-    const alreadyEditedWorkout = localStorage.getItem(
-      `workout-${workout.workoutId}`
-    );
-
-    if (alreadyEditedWorkout) {
-      const fromLocalStorage = JSON.parse(alreadyEditedWorkout);
-
-      form.reset(fromLocalStorage.form);
-      workout.setCache(fromLocalStorage.exerciseCache ?? []);
-    } else {
-      form.reset({
-        workoutExercises: workout.workoutExercises
-          .sort((a, b) => a.exerciseIndex - b.exerciseIndex)
-          .map((workoutExercise) => ({
-            exerciseId: workoutExercise.exercise.id,
-            sets: []
-          }))
-      });
-    }
-  }, []);
-
-  const debouncedWorkoutState = useDebouncedWorkout(workoutState);
-
-  useEffect(() => {
-    inLocalStorage.save(workout.workoutId, debouncedWorkoutState);
-  }, [debouncedWorkoutState]);
-
-  function onRemove(index: number) {
-    workoutExercises.remove(index);
-  }
-
-  function onMove(action: MoveExerciseOption, index: number) {
-    if (action === 'first') {
-      workoutExercises.move(index, 0);
-    } else if (action === 'last') {
-      workoutExercises.move(index, workoutExercises.fields.length - 1);
-    } else {
-      workoutExercises.move(index, index + (action === 'up' ? -1 : 1));
-    }
-  }
 
   const [getWorkoutDone] = useMutation<
     WorkoutExerciseListMutation,
@@ -108,6 +67,76 @@ export function WorkoutExerciseList() {
       }
     }
   );
+
+  const [partialSave] = useMutation(gql`
+    mutation PartialSaveMutation($input: GetWorkoutDoneInput!) {
+      partialSave(input: $input)
+    }
+  `);
+
+  useEffect(() => {
+    form.reset({
+      workoutExercises: workout.workoutExercises
+        .sort((a, b) => a.exerciseIndex - b.exerciseIndex)
+        .map((workoutExercise) => ({
+          exerciseId: workoutExercise.exercise.id,
+          sets: workoutExercise.sets.map((set) => ({
+            mins: set.mins?.toString() ?? '',
+            distance: set.distance?.toString() ?? '',
+            kcal: set.kcal?.toString() ?? '',
+            reps: set.reps?.toString() ?? '',
+            lbs: set.lbs?.toString() ?? ''
+          }))
+        })) as any
+      // In this case using `any` should be safe
+      //
+      // The object structure should be the same as the zod schema,
+      // but because the schema expects the set's values to be of type `number`
+      // it wouldn't match the form input's type (`string`).
+    });
+
+    setIsSetupDone(true);
+  }, []);
+
+  const debouncedWorkoutState = useDebouncedWorkout(workoutState);
+
+  useEffect(() => {
+    if (isSetupDone) {
+      inLocalStorage.save(workout.workoutId, debouncedWorkoutState);
+
+      const input = GetItDoneSchema.parse(form.getValues());
+
+      const nonEmptyWorkoutExercises = input.workoutExercises.map((we, i) => ({
+        exerciseIndex: i,
+        exerciseId: we.exerciseId,
+        sets: we.sets
+      }));
+
+      partialSave({
+        variables: {
+          input: {
+            workoutId: workout.workoutId,
+            workoutExercises: nonEmptyWorkoutExercises
+          }
+        }
+      });
+      // }
+    }
+  }, [debouncedWorkoutState]);
+
+  function onRemove(index: number) {
+    workoutExercises.remove(index);
+  }
+
+  function onMove(action: MoveExerciseOption, index: number) {
+    if (action === 'first') {
+      workoutExercises.move(index, 0);
+    } else if (action === 'last') {
+      workoutExercises.move(index, workoutExercises.fields.length - 1);
+    } else {
+      workoutExercises.move(index, index + (action === 'up' ? -1 : 1));
+    }
+  }
 
   async function onSubmit(input: z.infer<typeof GetItDoneSchema>) {
     const nonEmptyWorkoutExercises = [];

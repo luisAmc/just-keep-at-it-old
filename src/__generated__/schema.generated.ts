@@ -120,6 +120,7 @@ export type Mutation = {
   editWorkout: Workout;
   getWorkoutDone: Workout;
   login: User;
+  partialSave: Scalars['Boolean'];
   signUp: User;
   startWorkoutFromTemplate: Workout;
 };
@@ -177,6 +178,11 @@ export type MutationGetWorkoutDoneArgs = {
 
 export type MutationLoginArgs = {
   input: LoginInput;
+};
+
+
+export type MutationPartialSaveArgs = {
+  input: GetWorkoutDoneInput;
 };
 
 
