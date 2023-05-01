@@ -14,11 +14,7 @@ import {
   ExerciseSessionHistory,
   useExerciseSessionHistory
 } from '../ExerciseSessionHistory';
-import {
-  GetItDoneSchema,
-  useDebouncedWorkout,
-  useWorkoutInLocalStorage
-} from './utils';
+import { GetItDoneSchema, useDebouncedWorkout } from './utils';
 import { useWorkoutContext } from './WorkoutContext';
 import { WorkoutExercise } from './WorkoutExercise';
 import {
@@ -46,7 +42,6 @@ export function WorkoutExerciseList() {
     name: 'workoutExercises'
   });
 
-  const inLocalStorage = useWorkoutInLocalStorage();
   const workoutState = useWatch({ control: form.control });
 
   const [getWorkoutDone] = useMutation<
@@ -62,7 +57,6 @@ export function WorkoutExerciseList() {
     `,
     {
       onCompleted() {
-        inLocalStorage.remove(workout.workoutId);
         router.replace(`/workouts/${workout.workoutId}`);
       }
     }
@@ -102,21 +96,21 @@ export function WorkoutExerciseList() {
 
   useEffect(() => {
     if (isSetupDone) {
-      inLocalStorage.save(workout.workoutId, debouncedWorkoutState);
+      const parsedValues = GetItDoneSchema.parse(form.getValues());
 
-      const input = GetItDoneSchema.parse(form.getValues());
-
-      const nonEmptyWorkoutExercises = input.workoutExercises.map((we, i) => ({
-        exerciseIndex: i,
-        exerciseId: we.exerciseId,
-        sets: we.sets
-      }));
+      const workoutExercisesInput = parsedValues.workoutExercises.map(
+        (we, i) => ({
+          exerciseIndex: i,
+          exerciseId: we.exerciseId,
+          sets: we.sets
+        })
+      );
 
       partialSave({
         variables: {
           input: {
             workoutId: workout.workoutId,
-            workoutExercises: nonEmptyWorkoutExercises
+            workoutExercises: workoutExercisesInput
           }
         }
       });

@@ -25,7 +25,6 @@ export function WorkoutHeader() {
     `,
     {
       onCompleted() {
-        localStorage.removeItem(`workout-${workoutId}`);
         router.replace('/');
       }
     }
