@@ -20,7 +20,7 @@ import 'src/graphql/resolvers';
 const schema = builder.toSchema({});
 
 fs.writeFileSync(
-  './src/graphql/schema.graphql',
+  'src/graphql/schema.graphql',
   printSchema(lexicographicSortSchema(schema))
 );
 
