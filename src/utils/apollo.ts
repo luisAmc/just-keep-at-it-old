@@ -113,6 +113,22 @@ export function createApolloClient({ initialState, headers }: ClientOptions) {
                 }
               }
             }
+          },
+          Exercise: {
+            fields: {
+              sessions: {
+                keyArgs: ['id'],
+                merge(existing = [], incoming) {
+                  return [...existing, ...incoming];
+                }
+              },
+              doneSessions: {
+                keyArgs: ['id'],
+                merge(existing = [], incoming) {
+                  return [...existing, ...incoming];
+                }
+              }
+            }
           }
         }
       })

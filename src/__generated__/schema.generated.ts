@@ -67,15 +67,25 @@ export type Exercise = {
   __typename?: 'Exercise';
   category: ExerciseCategory;
   doneSessions: Array<WorkoutExercise>;
+  doneSessionsCount: Scalars['Int'];
   id: Scalars['ID'];
   lastSession?: Maybe<WorkoutExercise>;
   name: Scalars['String'];
+  sessions: Array<WorkoutExercise>;
+  sessionsCount: Scalars['Int'];
   type: Scalars['String'];
 };
 
 
 export type ExerciseDoneSessionsArgs = {
   limit?: Scalars['Int'];
+  offset?: Scalars['Int'];
+};
+
+
+export type ExerciseSessionsArgs = {
+  limit?: Scalars['Int'];
+  offset?: Scalars['Int'];
 };
 
 export type ExerciseCategory = {

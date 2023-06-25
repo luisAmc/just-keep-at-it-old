@@ -39,7 +39,7 @@ export function CategoryExerciseList() {
             <div className='flex space-x-2'>
               <IconButton
                 icon={ChartBarIcon}
-                href={`/exercises/${exercise.id}/edit`}
+                href={`/exercises/${exercise.id}/history`}
               />
 
               <IconButton

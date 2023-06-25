@@ -52,10 +52,13 @@ input EditWorkoutInput {
 
 type Exercise {
   category: ExerciseCategory!
-  doneSessions(limit: Int! = 10): [WorkoutExercise!]!
+  doneSessions(limit: Int! = 10, offset: Int! = 0): [WorkoutExercise!]!
+  doneSessionsCount: Int!
   id: ID!
   lastSession: WorkoutExercise
   name: String!
+  sessions(limit: Int! = 5, offset: Int! = 0): [WorkoutExercise!]!
+  sessionsCount: Int!
   type: String!
 }
 
