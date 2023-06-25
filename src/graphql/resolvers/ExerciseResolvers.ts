@@ -33,16 +33,46 @@ builder.prismaObject('Exercise', {
         });
       }
     }),
+    sessionsCount: t.relationCount('workoutExercises'),
+    sessions: t.relation('workoutExercises', {
+      args: {
+        offset: t.arg.int({ defaultValue: 0 }),
+        limit: t.arg.int({ defaultValue: 5 })
+      },
+      query: ({ offset, limit }) => ({
+        skip: offset,
+        take: limit,
+        orderBy: {
+          updatedAt: 'desc'
+        }
+      })
+    }),
+    doneSessionsCount: t.int({
+      resolve: async ({ id }) => {
+        const doneSessions = await db.workoutExercise.findMany({
+          where: {
+            exerciseId: id,
+            workout: {
+              status: { equals: WorkoutStatus.DONE }
+            }
+          }
+        });
+
+        return doneSessions.length;
+      }
+    }),
     doneSessions: t.relation('workoutExercises', {
       args: {
+        offset: t.arg.int({ defaultValue: 0 }),
         limit: t.arg.int({ defaultValue: 10 })
       },
-      query: ({ limit }) => ({
+      query: ({ offset, limit }) => ({
         where: {
           workout: {
             status: { equals: WorkoutStatus.DONE }
           }
         },
+        skip: offset,
         take: limit,
         orderBy: {
           updatedAt: 'desc'
