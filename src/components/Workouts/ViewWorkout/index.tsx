@@ -73,6 +73,7 @@ export function ViewWorkout() {
           >
             {workout.workoutExercises.map((workoutExercise) => (
               <ViewWorkoutExercise
+                key={workoutExercise.id}
                 workoutExercise={workoutExercise}
                 isDone={isDone}
               />
