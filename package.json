@@ -3,8 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "concurrently -c green.bold,blue.bold 'pnpm dev:next' 'pnpm dev:codegen'",
+    "dev": "concurrently -c green.bold,blue.bold,red.bold 'pnpm:dev:docker' 'pnpm:dev:next' 'pnpm:dev:codegen'",
     "dev:codegen": "pnpm run codegen:graphql --watch './src/**/*.ts'",
+    "dev:docker": "docker compose up",
     "dev:next": "next dev",
     "build": "next build",
     "start": "next start",
