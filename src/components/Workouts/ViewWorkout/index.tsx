@@ -1,58 +1,37 @@
 import { Button } from 'src/components/shared/Button';
 import { ChevronLeftIcon, BoltIcon } from '@heroicons/react/24/outline';
-import { ExerciseType, WorkoutStatus } from '@prisma/client';
+import { WorkoutStatus } from '@prisma/client';
 import { gql, useQuery } from '@apollo/client';
 import { Heading } from 'src/components/shared/Heading';
 import { Page } from 'src/components/shared/Page';
 import { useRouter } from 'next/router';
 import { ViewWorkoutActions } from './ViewWorkoutActions';
 import { WorkoutQuery } from './__generated__/index.generated';
+import {
+  ViewWorkoutExercise,
+  WorkoutExerciseInfoFragment
+} from './ViewWorkoutExercise';
+import { WorkoutBaseInfoFragment } from '../WorkoutCard';
 import clsx from 'clsx';
 
-export const WorkoutInfoFragment = gql`
+export const WorkoutFragment = gql`
   fragment ViewWorkout_workout on Workout {
-    id
-    name
-    status
-    completedAt
-    createdAt
-    workoutExercisesCount
+    ...WorkoutCard_workout
     workoutExercises {
-      id
-      exercise {
-        id
-        name
-      }
-      setsCount
+      ...ViewWorkoutExercise_workoutExercise
     }
   }
+  ${WorkoutBaseInfoFragment}
+  ${WorkoutExerciseInfoFragment}
 `;
 
 export const query = gql`
   query WorkoutQuery($id: ID!) {
     workout(id: $id) {
       ...ViewWorkout_workout
-      workoutExercises {
-        id
-        exerciseIndex
-        exercise {
-          id
-          name
-          type
-        }
-        setsCount
-        sets {
-          id
-          mins
-          distance
-          kcal
-          lbs
-          reps
-        }
-      }
     }
   }
-  ${WorkoutInfoFragment}
+  ${WorkoutFragment}
 `;
 
 export function ViewWorkout() {
@@ -71,12 +50,12 @@ export function ViewWorkout() {
       {loading && <div>Cargando...</div>}
 
       {workout && (
-        <div className='h-full flex flex-col space-y-4'>
-          <div className='flex items-center justify-between'>
-            <div className='flex items-center space-x-2'>
-              <Button href='/' className=''>
-                <div className='rounded-full bg-brand-300 text-brand-700 p-2 flex items-center justify-center'>
-                  <ChevronLeftIcon className='w-4 h-4' />
+        <div className="flex h-full flex-col space-y-4">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-2">
+              <Button href="/" className="">
+                <div className="flex items-center justify-center rounded-full bg-brand-300 p-2 text-brand-700">
+                  <ChevronLeftIcon className="h-4 w-4" />
                 </div>
               </Button>
 
@@ -89,107 +68,26 @@ export function ViewWorkout() {
           <div
             className={clsx(
               'flex flex-col space-y-3',
-              isDone ? 'text-slate-200 ' : 'text-amber-700 bg-amber-300'
+              isDone ? 'text-slate-200 ' : 'bg-amber-300 text-amber-700'
             )}
           >
             {workout.workoutExercises.map((workoutExercise) => (
-              <div
+              <ViewWorkoutExercise
                 key={workoutExercise.id}
-                className='p-4 bg-slate-600 rounded-lg'
-              >
-                <div className='flex items-center justify-between'>
-                  <h2 className='font-medium'>
-                    {workoutExercise.exercise.name}
-                  </h2>
-
-                  {isDone && (
-                    <span className='font-bold text-xs'>
-                      {workoutExercise.setsCount} sets
-                    </span>
-                  )}
-                </div>
-
-                {isDone && (
-                  <div>
-                    {workoutExercise.sets.map((set) => (
-                      <div
-                        key={set.id}
-                        className='flex items-center justify-center'
-                      >
-                        {workoutExercise.exercise.type ===
-                        ExerciseType.AEROBIC ? (
-                          <AerobicSet
-                            mins={set.mins}
-                            distance={set.distance}
-                            kcal={set.kcal}
-                          />
-                        ) : (
-                          <StrengthSet lbs={set.lbs} reps={set.reps} />
-                        )}
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </div>
+                workoutExercise={workoutExercise}
+                isDone={isDone}
+              />
             ))}
           </div>
 
           {!isDone && (
             <Button href={`/workouts/${router.query.workoutId}/get-it-done`}>
-              <BoltIcon className='mr-1 w-4 h-4' />
+              <BoltIcon className="mr-1 h-4 w-4" />
               <span>Comenzar</span>
             </Button>
           )}
         </div>
       )}
     </Page>
-  );
-}
-
-interface AerobicSetProps {
-  mins?: number | null;
-  distance?: number | null;
-  kcal?: number | null;
-}
-
-function AerobicSet({ mins, distance, kcal }: AerobicSetProps) {
-  return (
-    <div className='grid grid-cols-3 gap-6'>
-      <span>
-        <span className='text-2xl font-medium'>{mins}</span>
-        <span className='ml-1'>mins</span>
-      </span>
-
-      <span>
-        <span className='text-2xl font-medium'>{distance}</span>
-        <span className='ml-1'>dist</span>
-      </span>
-
-      <span>
-        <span className='text-2xl font-medium'>{kcal}</span>
-        <span className='ml-1'>kcal</span>
-      </span>
-    </div>
-  );
-}
-
-interface StrengthSetProps {
-  lbs?: number | null;
-  reps?: number | null;
-}
-
-function StrengthSet({ lbs, reps }: StrengthSetProps) {
-  return (
-    <div className='grid grid-cols-2 gap-6'>
-      <span>
-        <span className='text-2xl font-medium'>{lbs}</span>
-        <span className='ml-1'>lbs</span>
-      </span>
-
-      <span>
-        <span className='text-2xl font-medium'>{reps}</span>
-        <span className='ml-1'>reps</span>
-      </span>
-    </div>
   );
 }

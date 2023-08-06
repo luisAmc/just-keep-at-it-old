@@ -9,9 +9,8 @@ import { Heading } from '../shared/Heading';
 import { InfiniteList } from '../shared/InfiniteList';
 import { Page } from '../shared/Page';
 import { useSlideOver } from '../shared/SlideOver';
-import { WorkoutInfoFragment } from '../Workouts/ViewWorkout';
 import { EmptyWorkouts } from './EmptyWorkouts';
-import { WorkoutCard } from '../Workouts/WorkoutCard';
+import { WorkoutBaseInfoFragment, WorkoutCard } from '../Workouts/WorkoutCard';
 import {
   DashboardQuery,
   DashboardQueryVariables
@@ -28,11 +27,11 @@ const DASHBOARD_QUERY = gql`
       id
       workoutsCount
       workouts(offset: $offset, limit: $limit) {
-        ...ViewWorkout_workout
+        ...WorkoutCard_workout
       }
     }
   }
-  ${WorkoutInfoFragment}
+  ${WorkoutBaseInfoFragment}
 `;
 
 export function Dashboard() {
@@ -51,17 +50,17 @@ export function Dashboard() {
   return (
     <>
       <Page>
-        <div className='flex items-center justify-between space-x-4'>
+        <div className="flex items-center justify-between space-x-4">
           <Heading>Historial</Heading>
 
-          <div className='flex items-center justify-center space-x-2'>
-            <Button size='sm' href='/templates' variant='secondary'>
-              <DocumentTextIcon className='w-4 h-4 mr-1' />
+          <div className="flex items-center justify-center space-x-2">
+            <Button size="sm" href="/templates" variant="secondary">
+              <DocumentTextIcon className="mr-1 h-4 w-4" />
               <span>Bocetos</span>
             </Button>
 
-            <Button size='sm' href='/exercises' variant='secondary'>
-              <QueueListIcon className='w-4 h-4 mr-1' />
+            <Button size="sm" href="/exercises" variant="secondary">
+              <QueueListIcon className="mr-1 h-4 w-4" />
               <span>Ejercicios</span>
             </Button>
           </div>
@@ -85,7 +84,7 @@ export function Dashboard() {
                 })
               }
             >
-              <div className='flex flex-col space-y-4'>
+              <div className="flex flex-col space-y-4">
                 {workouts.map((workout) => (
                   <WorkoutCard key={workout.id} workout={workout} />
                 ))}
@@ -93,9 +92,9 @@ export function Dashboard() {
             </InfiniteList>
           ))}
 
-        <div className='fixed bottom-6 right-4'>
-          <Button rounded variant='floating' onClick={newWorkoutSlideOver.open}>
-            <PlusCircleIcon className='w-4 h-4 mr-1' />
+        <div className="fixed bottom-6 right-4">
+          <Button rounded variant="floating" onClick={newWorkoutSlideOver.open}>
+            <PlusCircleIcon className="mr-1 h-4 w-4" />
             <span>Nueva rutina</span>
           </Button>
         </div>
@@ -108,24 +107,24 @@ export function Dashboard() {
 
 function Shimmer() {
   return (
-    <div className='animate-pulse flex flex-col space-y-4'>
+    <div className="flex animate-pulse flex-col space-y-4">
       {Array.from({ length: 3 }).map((_, i) => (
         <div
           key={`shimmer-div-${i}`}
-          className='rounded-lg bg-slate-700 px-5 py-4'
+          className="rounded-lg bg-slate-700 px-5 py-4"
         >
-          <div className='flex flex-col space-y-2'>
-            <div className='flex items-center justify-between'>
-              <div className='h-4 w-40 bg-slate-500 rounded-md'></div>
-              <div className='h-3 w-20 bg-slate-600 rounded-md'></div>
+          <div className="flex flex-col space-y-2">
+            <div className="flex items-center justify-between">
+              <div className="h-4 w-40 rounded-md bg-slate-500"></div>
+              <div className="h-3 w-20 rounded-md bg-slate-600"></div>
             </div>
 
-            <div className='h-3 w-52 bg-slate-500 rounded-md'></div>
-            <div className='h-3 w-52 bg-slate-500 rounded-md'></div>
-            <div className='h-3 w-52 bg-slate-500 rounded-md'></div>
-            <div className='h-3 w-52 bg-slate-500 rounded-md'></div>
-            <div className='h-3 w-52 bg-slate-500 rounded-md'></div>
-            <div className='h-3 w-52 bg-slate-500 rounded-md'></div>
+            <div className="h-3 w-52 rounded-md bg-slate-500"></div>
+            <div className="h-3 w-52 rounded-md bg-slate-500"></div>
+            <div className="h-3 w-52 rounded-md bg-slate-500"></div>
+            <div className="h-3 w-52 rounded-md bg-slate-500"></div>
+            <div className="h-3 w-52 rounded-md bg-slate-500"></div>
+            <div className="h-3 w-52 rounded-md bg-slate-500"></div>
           </div>
         </div>
       ))}

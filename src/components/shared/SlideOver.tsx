@@ -53,8 +53,8 @@ export function SlideOver({ title, open, onClose, children }: SlideOverProps) {
                 leaveTo='translate-x-full'
               >
                 <Dialog.Panel className='pointer-events-auto w-screen max-w-md h-full'>
-                  <div className='flex h-full flex-col overflow-y-scroll bg-slate-800 shadow-xl'>
-                    <div className='top-0 sticky z-20 bg-slate-800/70 backdrop-blur-sm px-4 sm:px-6 pt-6 pb-4'>
+                  <div className='flex h-full flex-col overflow-y-scroll bg-slate-700 shadow-xl'>
+                    <div className='top-0 sticky z-20 bg-slate-700/70 backdrop-blur-sm px-4 sm:px-6 pt-6 pb-4'>
                       <div className='flex items-start justify-between'>
                         <Dialog.Title className='text-lg font-medium text-slate-200'>
                           {title}
