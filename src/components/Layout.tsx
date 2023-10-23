@@ -58,7 +58,7 @@ export function Layout({ children }: LayoutProps) {
         </nav>
       )}
 
-      <div className="relative flex flex-1 flex-col gap-y-4 px-4 pb-4">
+      <div className="relative flex flex-1 flex-col gap-y-4 px-2 pb-2">
         {children}
       </div>
     </div>
