@@ -1,5 +1,6 @@
 import { GetServerSideProps } from 'next';
-import { Home, query } from 'src/components/Home';
+import { Home } from 'src/components/Home';
+import { query } from 'src/components/Layout';
 import { preloadQuery } from 'src/utils/apollo';
 import { authenticatedRoute } from 'src/utils/redirects';
 

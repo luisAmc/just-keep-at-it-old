@@ -28,15 +28,15 @@ export function AddExerciseSlideOver({ onConfirm, open, onClose }: Props) {
   const categories = data?.viewer?.exerciseCategories ?? [];
 
   return (
-    <SlideOver title='Anadir un ejercicio' open={open} onClose={onClose}>
+    <SlideOver title="Anadir un ejercicio" open={open} onClose={onClose}>
       {loading && <div>Cargando...</div>}
 
       {data && (
-        <div className='flex flex-col space-y-4 pb-4'>
+        <div className="flex flex-col space-y-4 pb-4">
           {categories.map((category) => (
             <div
               key={category.id}
-              className='bg-slate-700 text-slate-300 flex rounded-lg flex-col'
+              className="flex flex-col rounded-lg bg-brand-100 shadow-sm"
             >
               <ExerciseCategoryProvider category={category}>
                 <CategoryHeader />
@@ -67,35 +67,35 @@ function ExerciseList({ addExerciseToWorkout }: ExerciseListProps) {
   const [creatingExercise, setCreatingExercise] = useState(false);
 
   return (
-    <div className='flex flex-col divide-y divide-slate-600'>
+    <div className="flex flex-col divide-brand-300">
       {exercises.length > 0 ? (
         exercises.map((exercise) => (
           <button
             key={exercise.id}
             onClick={() => addExerciseToWorkout(exercise)}
-            className='px-5 py-3 flex items-center justify-between group hover:bg-white/5'
+            className="group flex items-center justify-between px-5 py-3 hover:bg-white/20"
           >
-            <div className='flex items-center space-x-2'>
-              <span className='text-sm'>{exercise.name}</span>
+            <div className="flex items-center space-x-2">
+              <span className="">{exercise.name}</span>
 
-              <span className='hidden group-hover:flex items-center justify-center'>
-                <span className='rounded-full bg-slate-300 p-1'></span>
+              <span className="hidden items-center justify-center group-hover:flex">
+                <span className="rounded-full bg-brand-600 p-1"></span>
               </span>
             </div>
           </button>
         ))
       ) : (
-        <div className='flex flex-col items-center space-y-2 p-6 bg-slate-700 rounded-md text-slate-300'>
-          <SparklesIcon className='w-8 h-8' />
-          <p className='text-sm'>No hay ejercicios en esta categoría...</p>
+        <div className="flex flex-col items-center space-y-2 rounded-md bg-slate-700 p-6 text-slate-300">
+          <SparklesIcon className="h-8 w-8" />
+          <p className="text-sm">No hay ejercicios en esta categoría...</p>
         </div>
       )}
 
       {creatingExercise ? (
         <CreateExercise onClose={() => setCreatingExercise(false)} />
       ) : (
-        <Button variant='secondary' onClick={() => setCreatingExercise(true)}>
-          <PlusCircleIcon className='w-4 h-4 mr-1' />
+        <Button variant="secondary" onClick={() => setCreatingExercise(true)}>
+          <PlusCircleIcon className="mr-1 h-4 w-4" />
           <span>Añadir un ejercicio</span>
         </Button>
       )}

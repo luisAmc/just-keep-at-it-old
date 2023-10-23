@@ -99,22 +99,22 @@ export function WorkoutExercise() {
       <Disclosure defaultOpen={true}>
         {({ open }) => (
           <>
-            <div className='flex items-center space-x-4'>
-              <div className='w-full flex items-center justify-between'>
+            <div className="flex items-center space-x-4">
+              <div className="flex w-full items-center justify-between">
                 <Button
                   onClick={() => workoutExercise.onSelect(workoutExercise.id)}
-                  className='text-slate-200 hover:bg-white/10 px-2 py-1 rounded transition text-left'
+                  className="rounded px-2 py-1 text-left transition hover:bg-white/10"
                 >
                   {workoutExercise.name}
                 </Button>
 
-                <Disclosure.Button className='flex items-center space-x-2 text-slate-200 hover:bg-white/5 px-2 py-1 rounded-lg transition'>
-                  <span className='text-sm whitespace-nowrap'>
+                <Disclosure.Button className="flex items-center space-x-2 rounded-lg px-2 py-1 transition hover:bg-white/5">
+                  <span className="whitespace-nowrap text-sm">
                     {sets.fields.length} sets
                   </span>
 
                   <ChevronUpIcon
-                    className={clsx('w-4 h-4', open && 'transform rotate-180')}
+                    className={clsx('h-4 w-4', open && 'rotate-180 transform')}
                   />
                 </Disclosure.Button>
               </div>
@@ -122,7 +122,7 @@ export function WorkoutExercise() {
               <WorkoutExerciseActions />
             </div>
 
-            <Disclosure.Panel className='pt-4'>
+            <Disclosure.Panel className="pt-4">
               {sets.fields.map((field, index) => (
                 <WorkoutExerciseSet
                   key={field.id}
@@ -134,18 +134,18 @@ export function WorkoutExercise() {
 
               {sets.fields.length === 0 ? (
                 <button
-                  type='button'
-                  className='w-full flex flex-col items-center justify-center py-5 text-slate-500 border-2 border-dashed border-slate-600 group hover:border-slate-300 rounded-lg'
+                  type="button"
+                  className="group flex w-full flex-col items-center justify-center rounded-lg border-2 border-dashed border-brand-600 py-5 text-brand-500 hover:border-brand-300"
                   onClick={addSet}
                 >
-                  <SparklesIcon className='w-6 h-6 group-hover:text-slate-200' />
-                  <span className='font-semibold group-hover:text-slate-200'>
+                  <SparklesIcon className="h-6 w-6 group-hover:text-brand-700" />
+                  <span className="font-semibold group-hover:text-brand-700">
                     Comenzar
                   </span>
                 </button>
               ) : (
-                <Button variant='secondary' onClick={addSet}>
-                  <PlusIcon className='w-4 h-4 mr-1' />
+                <Button variant="ghost" onClick={addSet}>
+                  <PlusIcon className="mr-1 h-4 w-4" />
                   <span>Añadir set</span>
                 </Button>
               )}

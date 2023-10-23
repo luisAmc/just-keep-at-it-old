@@ -2,13 +2,8 @@ import { ExerciseType } from '@prisma/client';
 import { gql } from '@apollo/client';
 import { ViewWorkoutExercise_WorkoutExercise } from './__generated__/ViewWorkoutExercise.generated';
 
-interface WorkoutExerciseProps {
-  workoutExercise: ViewWorkoutExercise_WorkoutExercise;
-  isDone: boolean;
-}
-
-export const WorkoutExerciseInfoFragment = gql`
-  fragment ViewWorkoutExercise_workoutExercise on WorkoutExercise {
+export const ViewWorkoutExerciseBasicFragment = gql`
+  fragment ViewWorkoutExercise_workoutExerciseBasic on WorkoutExercise {
     id
     exercise {
       id
@@ -16,41 +11,53 @@ export const WorkoutExerciseInfoFragment = gql`
       type
     }
     setsCount
-    sets {
-      id
-      mins
-      distance
-      kcal
-      lbs
-      reps
-    }
   }
 `;
 
-export function ViewWorkoutExercise({
-  workoutExercise,
-  isDone
-}: WorkoutExerciseProps) {
+export const ViewWorkoutExerciseSetFragment = gql`
+  fragment ViewWorkoutExercise_workoutSet on WorkoutSet {
+    id
+    mins
+    distance
+    kcal
+    lbs
+    reps
+  }
+`;
+
+export const ViewWorkoutExerciseFragment = gql`
+  fragment ViewWorkoutExercise_workoutExercise on WorkoutExercise {
+    ...ViewWorkoutExercise_workoutExerciseBasic
+    sets {
+      ...ViewWorkoutExercise_workoutSet
+    }
+  }
+  ${ViewWorkoutExerciseBasicFragment}
+  ${ViewWorkoutExerciseSetFragment}
+`;
+
+interface WorkoutExerciseProps {
+  workoutExercise: ViewWorkoutExercise_WorkoutExercise;
+}
+
+export function ViewWorkoutExercise({ workoutExercise }: WorkoutExerciseProps) {
   const isAerobic = workoutExercise.exercise.type === ExerciseType.AEROBIC;
 
   return (
-    <section className="rounded-lg bg-slate-600 p-4">
+    <section className="p-4 rounded-lg bg-brand-300">
       <header className="flex items-center justify-between">
         <h2 className="font-medium">{workoutExercise.exercise.name}</h2>
 
-        {isDone && (
-          <span className="text-xs font-bold">
-            {workoutExercise.setsCount} sets
-          </span>
-        )}
+        <span className="text-xs font-bold">
+          {workoutExercise.setsCount} sets
+        </span>
       </header>
 
-      {isDone &&
-        workoutExercise.sets.map((set) => (
-          <div key={set.id} className="flex items-center justify-center">
-            {isAerobic ? <AerobicSet {...set} /> : <StrengthSet {...set} />}
-          </div>
-        ))}
+      {workoutExercise.sets.map((set) => (
+        <div key={set.id} className="flex items-center justify-center">
+          {isAerobic ? <AerobicSet {...set} /> : <StrengthSet {...set} />}
+        </div>
+      ))}
     </section>
   );
 }

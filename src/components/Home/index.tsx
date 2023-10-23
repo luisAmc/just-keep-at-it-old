@@ -1,30 +1,15 @@
-import { gql, useQuery } from '@apollo/client';
+import { useQuery } from '@apollo/client';
 import { LoginForm } from '../Auth/LoginForm';
 import { Dashboard } from '../Dashboard';
-import { HomeQuery } from './__generated__/index.generated';
-
-export const query = gql`
-  query HomeQuery {
-    viewer {
-      id
-      username
-    }
-  }
-`;
+import { LayoutQuery } from '../__generated__/Layout.generated';
+import { query } from '../Layout';
 
 export function Home() {
-  const { data, loading, error } = useQuery<HomeQuery>(query);
+  const { data } = useQuery<LayoutQuery>(query);
 
-  return (
-    <div>
-      {data &&
-        (data.viewer ? (
-          <div>
-            <Dashboard />
-          </div>
-        ) : (
-          <LoginForm />
-        ))}
-    </div>
-  );
+  if (data?.viewer) {
+    return <Dashboard />;
+  }
+
+  return <LoginForm />;
 }

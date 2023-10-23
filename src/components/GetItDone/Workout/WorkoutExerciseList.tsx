@@ -172,14 +172,14 @@ export function WorkoutExerciseList() {
   return (
     <>
       <Form form={form} onSubmit={onSubmit}>
-        <div className='flex flex-col space-y-2'>
+        <div className="flex flex-col space-y-2">
           {workoutExercises.fields.length ? (
             workoutExercises.fields.map((field, i) => (
               <motion.div
                 layout
                 key={field.id}
                 transition={{ type: 'spring', damping: 30, stiffness: 250 }}
-                className='flex flex-col p-4 bg-slate-700 rounded-lg'
+                className="flex flex-col rounded-lg bg-brand-200 p-4"
               >
                 <WorkoutExerciseProvider
                   index={i}
@@ -196,17 +196,17 @@ export function WorkoutExerciseList() {
               </motion.div>
             ))
           ) : (
-            <div className='flex flex-col items-center space-y-2 p-8 bg-slate-700 rounded-md text-slate-300'>
-              <SparklesIcon className='w-10 h-10' />
-              <p className='font-semibold text-sm'>
+            <div className="flex flex-col items-center space-y-2 rounded-md bg-brand-700 p-8">
+              <SparklesIcon className="h-10 w-10" />
+              <p className="text-sm font-semibold">
                 La rutina no tiene ejercicios hasta el momento...
               </p>
             </div>
           )}
         </div>
 
-        <Button variant='dashed' onClick={addExerciseSlideOver.open}>
-          <PlusIcon className='w-4 h-4 mr-1' />
+        <Button variant="outline" onClick={addExerciseSlideOver.open}>
+          <PlusIcon className="mr-1 h-4 w-4" />
           Añadir otro ejercicio
         </Button>
 

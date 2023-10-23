@@ -27,31 +27,31 @@ export interface ModalProps {
 export function Modal({ title, open, onClose, children }: ModalProps) {
   return (
     <Transition show={open} as={Fragment}>
-      <Dialog onClose={onClose} className='relative z-30'>
+      <Dialog onClose={onClose} className="relative z-30">
         <Transition.Child
           as={Fragment}
-          enter='ease-out duration-300'
-          enterFrom='opacity-0'
-          enterTo='opacity-100'
-          leave='ease-in duration-200'
-          leaveFrom='opacity-100'
-          leaveTo='opacity-0'
+          enter="ease-out duration-300"
+          enterFrom="opacity-0"
+          enterTo="opacity-100"
+          leave="ease-in duration-200"
+          leaveFrom="opacity-100"
+          leaveTo="opacity-0"
         >
-          <div className='fixed inset-0 bg-black bg-opacity-40' />
+          <div className="fixed inset-0 bg-black bg-opacity-40" />
         </Transition.Child>
 
         <Transition.Child
           as={Fragment}
-          enter='ease-out duration-300'
-          enterFrom='opacity-0 scale-95'
-          enterTo='opacity-100 scale-100'
-          leave='ease-in duration-200'
-          leaveFrom='opacity-100 scale-100'
-          leaveTo='opacity-0 scale-95'
+          enter="ease-out duration-300"
+          enterFrom="opacity-0 scale-95"
+          enterTo="opacity-100 scale-100"
+          leave="ease-in duration-200"
+          leaveFrom="opacity-100 scale-100"
+          leaveTo="opacity-0 scale-95"
         >
-          <div className='fixed inset-0 overflow-y-auto'>
-            <div className='min-h-full flex items-center justify-center p-4 text-center'>
-              <Dialog.Panel className='flex flex-col space-y-4 w-full max-w-md transform rounded-xl bg-slate-600 p-6 text-left align-middle shadow-xl transition-all'>
+          <div className="fixed inset-0 overflow-y-auto">
+            <div className="flex min-h-full items-center justify-center p-4 text-center">
+              <Dialog.Panel className="flex w-full max-w-md transform flex-col space-y-4 rounded-xl bg-white p-6 text-left align-middle shadow-xl transition-all">
                 <div
                   className={clsx(
                     'flex items-center',
@@ -59,16 +59,13 @@ export function Modal({ title, open, onClose, children }: ModalProps) {
                   )}
                 >
                   {title && (
-                    <Dialog.Title
-                      as='h3'
-                      className='text-xl leading-6 text-slate-50'
-                    >
+                    <Dialog.Title as="h3" className="text-xl leading-6">
                       {title}
                     </Dialog.Title>
                   )}
                 </div>
 
-                <div className='mt-2'>{children}</div>
+                <div className="mt-2">{children}</div>
               </Dialog.Panel>
             </div>
           </div>

@@ -42,16 +42,21 @@ export function LoginForm() {
   );
 
   return (
-    <div className='flex items-center justify-center mx-2 mt-4 sm:mt-6'>
-      <div className='relative mx-auto max-w-md w-full px-1'>
-        <div className='absolute hidden sm:block bg-white/[.15] inset-0 -rotate-[3deg] rounded-xl'></div>
+    <div className="mx-2 mt-4 flex flex-1 items-center justify-center sm:mt-6">
+      <div className="relative mx-auto w-full max-w-md">
+        <div className="absolute inset-0 hidden -rotate-[3deg] rounded-xl bg-white/[.15] sm:block"></div>
 
-        <div className='relative h-full bg-white/[0.8] px-8 py-10 rounded-xl'>
-          <div className='flex items-center justify-center'>
-            <Image src='/images/login.png' width={222} height={250} />
+        <div className="relative h-full rounded-xl bg-white/[0.8]">
+          <div className="flex items-center justify-center">
+            <Image
+              src="/images/login.png"
+              width={222}
+              height={250}
+              alt="login illustration"
+            />
           </div>
 
-          <div className='pb-6'></div>
+          <div className="pb-6"></div>
 
           <Form
             form={form}
@@ -66,38 +71,38 @@ export function LoginForm() {
               })
             }
           >
-            <ErrorMessage title='Error de ingreso' error={error} />
+            <ErrorMessage title="Error de ingreso" error={error} />
 
             <Input
               {...form.register('username')}
               autoFocus
-              autoCapitalize='off'
+              autoCapitalize="off"
               icon={UserIcon}
-              placeholder='Usuario'
-              color='light'
+              placeholder="Usuario"
+              color="light"
             />
 
             <Input
               {...form.register('password')}
               icon={LockClosedIcon}
-              type='password'
-              placeholder='Contraseña'
-              color='light'
+              type="password"
+              placeholder="Contraseña"
+              color="light"
             />
 
             <SubmitButton>Ingresar</SubmitButton>
           </Form>
 
-          <div className='mt-4 flex justify-end'>
-            <Link href='/auth/signup'>Crear cuenta</Link>
+          <div className="mt-4 flex justify-end">
+            <Link href="/auth/signup">Crear cuenta</Link>
           </div>
 
-          <p className='text-center text-xs text-slate-900 font-medium mt-4'>
+          <p className="mt-4 text-center text-xs font-medium">
             Illustration by{' '}
-            <a href='https://icons8.com/illustrations/author/HzkZD6h9f9qm'>
+            <a href="https://icons8.com/illustrations/author/HzkZD6h9f9qm">
               AsIa Vitalyevna
             </a>{' '}
-            from <a href='https://icons8.com/illustrations'>Ouch!</a>
+            from <a href="https://icons8.com/illustrations">Ouch!</a>
           </p>
         </div>
       </div>

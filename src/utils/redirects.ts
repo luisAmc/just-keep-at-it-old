@@ -39,6 +39,6 @@ export async function authenticatedRoute(
   }
 
   return {
-    props: {}
+    props: { session }
   };
 }

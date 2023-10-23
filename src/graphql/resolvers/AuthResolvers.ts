@@ -1,8 +1,9 @@
 import { ExerciseType } from '@prisma/client';
 import { authenticateUser, hashPassword } from 'src/utils/auth';
 import { db } from 'src/utils/prisma';
-import { createSession } from 'src/utils/sessions';
+import { createSession, removeSession } from 'src/utils/sessions';
 import { builder } from '../builder';
+import { Result } from './ResultResolvers';
 
 const LoginInput = builder.inputType('LoginInput', {
   fields: (t) => ({
@@ -27,6 +28,16 @@ builder.mutationField('login', (t) =>
       await createSession(ironSession, user);
 
       return user;
+    }
+  })
+);
+
+builder.mutationField('logout', (t) =>
+  t.field({
+    type: Result,
+    resolve: async (_parent, _args, { ironSession, session }) => {
+      await removeSession(ironSession, session);
+      return Result.SUCCESS;
     }
   })
 );

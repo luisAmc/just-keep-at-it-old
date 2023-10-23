@@ -1,10 +1,3 @@
-import {
-  EllipsisVerticalIcon,
-  BoltIcon,
-  ArrowPathIcon,
-  TrashIcon
-} from '@heroicons/react/24/outline';
-import { ComponentType, Fragment } from 'react';
 import { ConfirmationModal } from 'src/components/shared/ConfirmationModal';
 import {
   DeleteWorkoutMutation,
@@ -12,20 +5,22 @@ import {
   DoItAgainMutation,
   DoItAgainMutationVariables
 } from './__generated__/ViewWorkoutActions.generated';
+import { Dropdown, DropdownItem } from 'src/components/shared/Dropdown';
+import {
+  EllipsisVerticalIcon,
+  ArrowPathIcon,
+  TrashIcon
+} from '@heroicons/react/24/outline';
 import { gql, useMutation } from '@apollo/client';
-import { Menu, Transition } from '@headlessui/react';
+import { Menu } from '@headlessui/react';
 import { useModal } from 'src/components/shared/Modal';
 import { useRouter } from 'next/router';
 import clsx from 'clsx';
 
-interface ViewWorkoutActionsProps {
-  isDone: boolean;
-}
-
-export function ViewWorkoutActions({ isDone }: ViewWorkoutActionsProps) {
+export function ViewWorkoutActions() {
   const router = useRouter();
   const workoutId = router.query.workoutId as string;
-  
+
   const deleteModal = useModal();
 
   const [doItAgain] = useMutation<
@@ -40,8 +35,8 @@ export function ViewWorkoutActions({ isDone }: ViewWorkoutActionsProps) {
       }
     `,
     {
-      onCompleted() {
-        router.push('/');
+      onCompleted(data) {
+        router.push(`/workouts/${data.doItAgain.id}/get-it-done`);
       }
     }
   );
@@ -65,66 +60,41 @@ export function ViewWorkoutActions({ isDone }: ViewWorkoutActionsProps) {
   );
 
   return (
-    <Menu as='div' className='relative inline-block text-left'>
-      <Menu.Button className='inline-flex w-full justify-center rounded-full bg-slate-500 px-2 py-2 text-sm font-medium text-white hover:bg-opacity-80 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75'>
-        <EllipsisVerticalIcon className='w-4 h-4' />
-      </Menu.Button>
-
-      <Transition
-        as={Fragment}
-        enter='transition ease-out duration-100'
-        enterFrom='transform opacity-0 scale-95'
-        enterTo='transform opacity-100 scale-100'
-        leave='transition ease-in duration-75'
-        leaveFrom='transform opacity-100 scale-100'
-        leaveTo='transform opacity-0 scale-95'
+    <>
+      <Dropdown
+        direction="right"
+        trigger={<EllipsisVerticalIcon className="h-6 w-6" />}
       >
-        <Menu.Items className='absolute right-0 mt-2 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none'>
-          {!isDone && (
-            <div className='px-1 py-1'>
-              <ViewWorkoutActionItem
-                label='Comenzar'
-                icon={BoltIcon}
-                href={`/workouts/${workoutId}/get-it-done`}
-              />
-            </div>
-          )}
+        <DropdownItem
+          label="Repetir rutina"
+          icon={ArrowPathIcon}
+          onClick={() =>
+            doItAgain({
+              variables: {
+                workoutToCopyId: workoutId
+              }
+            })
+          }
+        />
 
-          {isDone && (
-            <div className='px-1 py-1'>
-              <ViewWorkoutActionItem
-                label='Repetir rutina'
-                icon={ArrowPathIcon}
-                onClick={() =>
-                  doItAgain({
-                    variables: {
-                      workoutToCopyId: workoutId
-                    }
-                  })
-                }
-              />
-            </div>
-          )}
-
-          <div className='px-1 py-1'>
-            <Menu.Item>
-              {({ active }) => (
-                <button
-                  type='button'
-                  onClick={deleteModal.open}
-                  className={clsx(
-                    'group flex w-full items-center rounded-md px-2 py-2 text-sm',
-                    active ? 'bg-red-500 text-white' : 'text-red-500'
-                  )}
-                >
-                  <TrashIcon className='mr-2 w-4 h-4' />
-                  <span>Borrar</span>
-                </button>
-              )}
-            </Menu.Item>
-          </div>
-        </Menu.Items>
-      </Transition>
+        <div className="p-1">
+          <Menu.Item>
+            {({ active }) => (
+              <button
+                type="button"
+                onClick={deleteModal.open}
+                className={clsx(
+                  'group flex w-full items-center rounded-md px-2 py-2 text-sm',
+                  active ? 'bg-red-500 text-white' : 'text-red-500'
+                )}
+              >
+                <TrashIcon className="mr-2 h-4 w-4" />
+                <span>Borrar</span>
+              </button>
+            )}
+          </Menu.Item>
+        </div>
+      </Dropdown>
 
       <ConfirmationModal
         {...deleteModal.props}
@@ -138,51 +108,6 @@ export function ViewWorkoutActions({ isDone }: ViewWorkoutActionsProps) {
       >
         ¿Está seguro de borrar la rutina?
       </ConfirmationModal>
-    </Menu>
-  );
-}
-
-interface ViewWorkoutActionItemProps {
-  label: string;
-  icon: ComponentType<any>;
-  onClick?(): void;
-  href?: string;
-}
-
-function ViewWorkoutActionItem({
-  label,
-  icon: Icon,
-  onClick,
-  href
-}: ViewWorkoutActionItemProps) {
-  return (
-    <Menu.Item>
-      {({ active }) =>
-        href ? (
-          <a
-            href={href}
-            className={clsx(
-              'group flex w-full items-center rounded-md p-2 text-sm',
-              active ? 'bg-brand-500 text-white' : 'text-slate-900'
-            )}
-          >
-            <Icon className='mr-2 w-4 h-4' />
-            <span>{label}</span>
-          </a>
-        ) : (
-          <button
-            type='button'
-            onClick={onClick}
-            className={clsx(
-              'group flex w-full items-center rounded-md p-2 text-sm',
-              active ? 'bg-brand-500 text-white' : 'text-slate-900'
-            )}
-          >
-            <Icon className='mr-2 w-4 h-4' />
-            <span>{label}</span>
-          </button>
-        )
-      }
-    </Menu.Item>
+    </>
   );
 }

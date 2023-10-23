@@ -3,13 +3,30 @@
 @tailwind utilities;
 
 :root {
-  --doc-height: 100%;
+  --doc-height: 100dvh;
+  --color-brand-100: theme(colors.brand.100);
+  --color-brand-200: theme(colors.brand.200);
+  --color-brand-300: theme(colors.brand.300);
+  --color-brand-400: theme(colors.brand.400);
+  --color-brand-500: theme(colors.brand.500);
+  --color-brand-600: theme(colors.brand.600);
+  --color-brand-700: theme(colors.brand.700);
+  --color-brand-800: theme(colors.brand.800);
+  --color-brand-900: theme(colors.brand.900);
+  --color-brand-950: theme(colors.brand.950);
 }
 
 html,
 body {
-  @apply bg-slate-800 text-slate-200 font-sans antialiased;
+  @apply bg-white font-sans antialiased;
   height: var(--doc-height);
+  scroll-behavior: smooth;
+}
+
+@layer base {
+  body {
+    @apply text-brand-900;
+  }
 }
 
 @layer utilities {
@@ -24,5 +41,21 @@ body {
   @apply pointer-events-none z-50;
 }
 #nprogress .bar {
-  @apply bg-brand-500 fixed z-50 top-0 left-0 w-full h-0.5;
+  @apply fixed left-0 top-0 z-50 h-0.5 w-full bg-brand-500;
+}
+
+.lantern-card::before {
+  @apply absolute select-none rounded-lg opacity-0 transition-opacity duration-300 hover:opacity-100;
+  background: radial-gradient(
+    800px circle at var(--x) var(--y),
+    var(--color-brand-500),
+    transparent 40%
+      /* var(--color-brand-100) 0,
+    var(--color-brand-200) 25%,
+    var(--color-brand-300) 50%,
+    transparent 80% */
+  );
+  z-index: -1;
+  content: '';
+  inset: -1px;
 }

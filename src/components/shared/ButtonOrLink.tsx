@@ -27,7 +27,7 @@ export function ButtonOrLink({
           )}`
         : href!;
 
-    return <Link href={finalHref}>{content}</Link>;
+    return <Link legacyBehavior href={finalHref}>{content}</Link>;
   }
 
   return content;
