@@ -56,7 +56,6 @@ export function ViewWorkout() {
   });
 
   const workout = data?.workout ?? null;
-  const isDone = workout?.status === WorkoutStatus.DONE;
 
   return (
     <>

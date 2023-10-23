@@ -2,7 +2,7 @@ export function MountainsSVG() {
   return (
     <svg
       version="1.1"
-      viewBox="0 0 1920 1410"
+      viewBox="0 0 1920 1370"
       xmlns="http://www.w3.org/2000/svg"
       className="absolute bottom-0 left-1/2 h-full -translate-x-1/2"
     >

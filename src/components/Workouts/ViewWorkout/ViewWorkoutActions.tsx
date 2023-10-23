@@ -12,10 +12,8 @@ import {
   TrashIcon
 } from '@heroicons/react/24/outline';
 import { gql, useMutation } from '@apollo/client';
-import { Menu } from '@headlessui/react';
 import { useModal } from 'src/components/shared/Modal';
 import { useRouter } from 'next/router';
-import clsx from 'clsx';
 
 export function ViewWorkoutActions() {
   const router = useRouter();
@@ -35,8 +33,8 @@ export function ViewWorkoutActions() {
       }
     `,
     {
-      onCompleted(data) {
-        router.push(`/workouts/${data.doItAgain.id}/get-it-done`);
+      onCompleted() {
+        router.push(`/`);
       }
     }
   );
@@ -77,23 +75,12 @@ export function ViewWorkoutActions() {
           }
         />
 
-        <div className="p-1">
-          <Menu.Item>
-            {({ active }) => (
-              <button
-                type="button"
-                onClick={deleteModal.open}
-                className={clsx(
-                  'group flex w-full items-center rounded-md px-2 py-2 text-sm',
-                  active ? 'bg-red-500 text-white' : 'text-red-500'
-                )}
-              >
-                <TrashIcon className="mr-2 h-4 w-4" />
-                <span>Borrar</span>
-              </button>
-            )}
-          </Menu.Item>
-        </div>
+        <DropdownItem
+          variant="danger"
+          label="Borrar"
+          icon={TrashIcon}
+          onClick={deleteModal.open}
+        />
       </Dropdown>
 
       <ConfirmationModal

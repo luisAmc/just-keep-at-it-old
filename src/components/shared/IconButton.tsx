@@ -1,5 +1,8 @@
-import { ComponentType } from 'react';
+import { ComponentType, ReactNode } from 'react';
 import { ButtonOrLink, ButtonOrLinkProps } from './ButtonOrLink';
+import { twMerge } from 'tailwind-merge';
+import { buttonStyles } from './Button';
+import clsx from 'clsx';
 
 interface Props extends ButtonOrLinkProps {
   icon: ComponentType<any>;
@@ -8,11 +11,16 @@ interface Props extends ButtonOrLinkProps {
 export function IconButton({ icon: Icon, ...props }: Props) {
   return (
     <ButtonOrLink
-      type='button'
-      className='bg-slate-600 hover:opacity-80 inline-flex items-center justify-center rounded-full p-2 active:bg-slate-600'
+      type="button"
+      className={twMerge(
+        clsx(
+          buttonStyles({ variant: 'ghost' }),
+          'inline-block rounded-full p-0.5'
+        )
+      )}
       {...props}
     >
-      <Icon className='w-4 h-4' />
+      <Icon />
     </ButtonOrLink>
   );
 }

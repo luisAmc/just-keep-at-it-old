@@ -15,7 +15,7 @@ export const Input = forwardRef<HTMLInputElement, Props>(function Input(
     hideLabel = false,
     type = 'text',
     icon: Icon,
-    color = 'dark',
+    color = 'light',
     ...props
   },
   ref
@@ -25,8 +25,8 @@ export const Input = forwardRef<HTMLInputElement, Props>(function Input(
       {!hideLabel && label && (
         <div
           className={clsx('font-medium mb-1', {
-            'text-slate-800': color === 'light',
-            'text-slate-200': color === 'dark'
+            'text-brand-800': color === 'light',
+            'text-brand-200': color === 'dark'
           })}
         >
           {label}
@@ -37,8 +37,8 @@ export const Input = forwardRef<HTMLInputElement, Props>(function Input(
         className={clsx(
           'w-full flex items-center rounded-lg border-2 border-transparent transition focus-within:border-brand-600 overflow-hidden',
           {
-            'text-slate-700 bg-white focus-within:bg-white': color === 'light',
-            'text-slate-200 bg-slate-800': color === 'dark'
+            'text-brand-700 bg-white focus-within:bg-white': color === 'light',
+            'text-brand-200 bg-brand-800': color === 'dark'
           }
         )}
       >
