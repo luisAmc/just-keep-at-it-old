@@ -1,12 +1,14 @@
 import { gql, useMutation } from '@apollo/client';
 import { ChevronLeftIcon, TrashIcon } from '@heroicons/react/24/outline';
 import { useRouter } from 'next/router';
-import { Button } from 'src/components/shared/Button';
+import { Button, buttonStyles } from 'src/components/shared/Button';
 import { ConfirmationModal } from 'src/components/shared/ConfirmationModal';
 import { Heading } from 'src/components/shared/Heading';
 import { useModal } from 'src/components/shared/Modal';
 import { EditNameModal } from './EditNameModal';
 import { useWorkoutContext } from './WorkoutContext';
+import { twMerge } from 'tailwind-merge';
+import clsx from 'clsx';
 
 export function WorkoutHeader() {
   const router = useRouter();
@@ -32,25 +34,24 @@ export function WorkoutHeader() {
 
   return (
     <div className="flex items-center justify-between">
-      <div>
-        <Button variant="ghost" size="sm">
+      <div className="flex items-center gap-x-1">
+        <div className="grid place-items-center">
+          <Button
+            href="/"
+            className={twMerge(
+              clsx(buttonStyles(), 'inline-block rounded-full p-0.5')
+            )}
+          >
+            <ChevronLeftIcon className="h-6 w-6" />
+          </Button>
+        </div>
+
+        <Button variant="ghost" size="sm" onClick={editNameModal.open}>
           {<Heading>{name}</Heading>}
-        </Button>
-      </div>
-
-      {/* <div className='flex items-center space-x-2'>
-        <Button href='/' className=''>
-          <div className='rounded-full bg-brand-300 text-brand-700 p-2 flex items-center justify-center'>
-            <ChevronLeftIcon className='w-4 h-4' />
-          </div>
-        </Button>
-
-        <Button variant='ghost' size='sm' onClick={editNameModal.open}>
-          <Heading>{name}</Heading>
         </Button>
 
         <EditNameModal {...editNameModal.props} />
-      </div> */}
+      </div>
 
       <div>
         <Button

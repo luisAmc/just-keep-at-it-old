@@ -1,4 +1,3 @@
-import { Menu } from '@headlessui/react';
 import {
   ArrowDownIcon,
   ArrowUpIcon,
@@ -9,7 +8,6 @@ import {
 } from '@heroicons/react/24/outline';
 import { useWorkoutExerciseContext } from './WorkoutExerciseContext';
 import { Dropdown, DropdownItem } from 'src/components/shared/Dropdown';
-import clsx from 'clsx';
 
 export function WorkoutExerciseActions() {
   const { isFirst, isLast, onRemove, onMove } = useWorkoutExerciseContext();
@@ -47,23 +45,12 @@ export function WorkoutExerciseActions() {
         disabled={isLast}
       />
 
-      <div className="p-1">
-        <Menu.Item>
-          {({ active }) => (
-            <button
-              type="button"
-              onClick={onRemove}
-              className={clsx(
-                'group flex w-full items-center rounded-md px-2 py-2 text-sm',
-                active ? 'bg-red-500 text-white' : 'text-red-500'
-              )}
-            >
-              <TrashIcon className="mr-2 h-4 w-4" />
-              <span>Remover ejercicio</span>
-            </button>
-          )}
-        </Menu.Item>
-      </div>
+      <DropdownItem
+        variant="danger"
+        label="Remover ejercicio"
+        icon={TrashIcon}
+        onClick={onRemove}
+      />
     </Dropdown>
   );
 }

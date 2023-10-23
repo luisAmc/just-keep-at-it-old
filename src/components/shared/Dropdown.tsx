@@ -2,6 +2,7 @@ import { buttonStyles } from './Button';
 import { ComponentType, Fragment, ReactNode } from 'react';
 import { Menu, Transition } from '@headlessui/react';
 import { twMerge } from 'tailwind-merge';
+import { Link } from './Link';
 import clsx from 'clsx';
 
 interface DropdownProps {
@@ -39,7 +40,7 @@ export function Dropdown({
       >
         <Menu.Items
           className={clsx(
-            'z-20 absolute mt-2 w-56 origin-top-right divide-y divide-brand-100 rounded-md bg-white shadow-xl ring-1 ring-black ring-opacity-5 focus:outline-none',
+            'absolute z-20 mt-2 w-56 origin-top-right divide-y divide-brand-100 rounded-md bg-white shadow-xl ring-1 ring-black ring-opacity-5 focus:outline-none',
             direction === 'left' ? 'left-0' : 'right-0'
           )}
         >
@@ -51,6 +52,7 @@ export function Dropdown({
 }
 
 interface DropdownItemProps {
+  variant?: 'default' | 'danger';
   label: string;
   href?: string;
   onClick?: () => void;
@@ -59,6 +61,7 @@ interface DropdownItemProps {
 }
 
 export function DropdownItem({
+  variant = 'default',
   label,
   href,
   onClick,
@@ -71,17 +74,21 @@ export function DropdownItem({
         {({ active, disabled }) => {
           const className = clsx(
             'flex w-full items-center rounded-md px-3 py-2.5 text-sm',
-            active && 'bg-brand-400',
+            variant === 'danger' && 'text-red-500',
+            active && {
+              'bg-brand-400': variant === 'default',
+              'bg-red-500 text-white': variant === 'danger'
+            },
             disabled && 'text-brand-300 cursor-not-allowed'
           );
 
           return href ? (
-            <a href={href} className={className}>
+            <Link href={href} className={className}>
               <Icon className="mr-1 h-4 w-4" />
               <span>{label}</span>
-            </a>
+            </Link>
           ) : (
-            <button onClick={onClick} className={className}>
+            <button type="button" onClick={onClick} className={className}>
               <Icon className="mr-1 h-4 w-4" />
               <span>{label}</span>
             </button>

@@ -47,9 +47,9 @@ export function TemplatesSlideOver(props: Props) {
   });
 
   return (
-    <SlideOver title='Nueva rutina' {...props}>
-      <div className='flex flex-col space-y-4'>
-        <Heading size='xl'>¿Crear una con un boceto?</Heading>
+    <SlideOver title="Nueva rutina" {...props}>
+      <div className="flex flex-col space-y-4">
+        <Heading size="xl">¿Crear una con un boceto?</Heading>
 
         {loading && <div>Cargando...</div>}
 
@@ -57,33 +57,33 @@ export function TemplatesSlideOver(props: Props) {
           (templates.length > 0 ? (
             templates.map((template) => (
               <button
-                type='button'
+                type="button"
                 key={template.id}
-                className='text-left bg-slate-700 px-5 py-4 rounded-md hover:scale-[1.02]'
+                className="rounded-md bg-brand-700 px-5 py-4 text-left hover:scale-[1.02]"
                 onClick={() => {
                   setSelectedTemplateId(template.id);
                   startFromTemplateModal.open();
                 }}
               >
-                <Heading size='lg'>{template.name}</Heading>
+                <Heading size="lg">{template.name}</Heading>
 
-                <div className='text-slate-400'>
+                <div className="text-brand-400">
                   {template.exercises.map(({ exercise }, i) => (
                     <div
                       key={exercise.id}
-                      className='flex items-center space-x-2'
+                      className="flex items-center space-x-2"
                     >
-                      <span className='text-sm'>{exercise.name}</span>
+                      <span className="text-sm">{exercise.name}</span>
                     </div>
                   ))}
                 </div>
               </button>
             ))
           ) : (
-            <div className='bg-slate-700 divide-slate-700 rounded-lg flex flex-col px-4 py-6'>
-              <div className='flex flex-col items-center space-y-3 rounded-md text-slate-400'>
-                <SparklesIcon className='w-8 h-8' />
-                <p className='font-semibold text-sm'>No hay bocetos...</p>
+            <div className="flex flex-col divide-brand-700 rounded-lg bg-brand-100 px-4 py-6">
+              <div className="flex flex-col items-center space-y-3 rounded-md text-brand-500">
+                <SparklesIcon className="h-8 w-8" />
+                <p className="text-sm font-semibold">No hay bocetos...</p>
               </div>
             </div>
           ))}
@@ -93,7 +93,7 @@ export function TemplatesSlideOver(props: Props) {
 
       <ConfirmationModal
         {...startFromTemplateModal.props}
-        type='warning'
+        type="warning"
         onConfirm={() => {
           startWorkoutFromTemplate({
             variables: {

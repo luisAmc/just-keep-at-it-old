@@ -60,6 +60,7 @@ export function WorkoutExerciseSet({ type, index, onRemove }: Props) {
 
       <div className="py-1">
         <button
+          type="button"
           onClick={onRemove}
           className={twMerge(
             clsx(

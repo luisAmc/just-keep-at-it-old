@@ -179,7 +179,7 @@ export function WorkoutExerciseList() {
                 layout
                 key={field.id}
                 transition={{ type: 'spring', damping: 30, stiffness: 250 }}
-                className="flex flex-col rounded-lg bg-brand-200 p-4"
+                className="flex flex-col rounded-lg bg-brand-100 p-4"
               >
                 <WorkoutExerciseProvider
                   index={i}
@@ -196,10 +196,10 @@ export function WorkoutExerciseList() {
               </motion.div>
             ))
           ) : (
-            <div className="flex flex-col items-center space-y-2 rounded-md bg-brand-700 p-8">
+            <div className="flex flex-col items-center space-y-2 rounded-md bg-brand-100 p-8 text-brand-500">
               <SparklesIcon className="h-10 w-10" />
               <p className="text-sm font-semibold">
-                La rutina no tiene ejercicios hasta el momento...
+                La rutina no tiene ejercicios...
               </p>
             </div>
           )}

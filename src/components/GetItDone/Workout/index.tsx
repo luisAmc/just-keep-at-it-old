@@ -27,7 +27,7 @@ export const WorkoutFragment = gql`
 
 export function Workout() {
   return (
-    <div className="rounded-lg bg-brand-100 p-4">
+    <div className="rounded-lg bg-brand-50 p-4">
       <WorkoutHeader />
       <div className="mt-4"></div>
       <WorkoutExerciseList />

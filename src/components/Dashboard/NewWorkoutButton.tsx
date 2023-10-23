@@ -34,7 +34,7 @@ export function NewWorkoutButton() {
   );
 
   return (
-    <Button variant='secondary' onClick={() => createWorkout()}>
+    <Button variant='outline' onClick={() => createWorkout()}>
       {loading && (
         <svg
           className='animate-spin -ml-1 mr-3 h-5 w-5 text-white'
