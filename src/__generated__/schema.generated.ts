@@ -130,6 +130,7 @@ export type Mutation = {
   editWorkout: Workout;
   getWorkoutDone: Workout;
   login: User;
+  logout: Result;
   partialSave: Scalars['Boolean'];
   signUp: User;
   startWorkoutFromTemplate: Workout;
@@ -230,6 +231,10 @@ export type QueryWorkoutArgs = {
 export type QueryWorkoutTemplateArgs = {
   id: Scalars['ID'];
 };
+
+export enum Result {
+  Success = 'SUCCESS'
+}
 
 export type SignUpInput = {
   password: Scalars['String'];

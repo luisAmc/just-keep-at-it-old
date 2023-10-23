@@ -1,67 +1,88 @@
+import { CheckCircleIcon } from '@heroicons/react/24/outline';
 import { formatDate } from 'src/utils/transforms';
-import { gql } from '@apollo/client';
-import { WorkoutCard_Workout } from './__generated__/WorkoutCard.generated';
+import {
+  motion,
+  useMotionTemplate,
+  type MotionStyle,
+  type MotionValue,
+  useMotionValue
+} from 'framer-motion';
+import { type MouseEvent } from 'react';
+import { ViewWorkout_WorkoutBasic } from './ViewWorkout/__generated__/index.generated';
 import { WorkoutStatus } from '@prisma/client';
 import clsx from 'clsx';
 import Link from 'next/link';
 
 interface WorkoutCardProps {
-  workout: WorkoutCard_Workout;
+  workout: ViewWorkout_WorkoutBasic;
 }
 
-export const WorkoutBaseInfoFragment = gql`
-  fragment WorkoutCard_workout on Workout {
-    id
-    name
-    status
-    createdAt
-    workoutExercises {
-      id
-      exercise {
-        id
-        name
-        type
-      }
-      setsCount
-    }
-  }
-`;
+type WrapperStyle = MotionStyle & {
+  '--x': MotionValue<string>;
+  '--y': MotionValue<string>;
+};
 
 export function WorkoutCard({ workout }: WorkoutCardProps) {
   const isDone = workout.status === WorkoutStatus.DONE;
 
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+
+  function handleMouseMove({ currentTarget, clientX, clientY }: MouseEvent) {
+    const { left, top } = currentTarget.getBoundingClientRect();
+    mouseX.set(clientX - left);
+    mouseY.set(clientY - top);
+  }
+
   return (
-    <Link
-      href={
-        isDone
-          ? `/workouts/${workout.id}`
-          : `/workouts/${workout.id}/get-it-done`
-      }
-    >
-      <a
-        className={clsx(
-          'rounded-md px-5 py-4 transition hover:scale-[1.02] hover:cursor-pointer',
-          isDone ? 'bg-brand-200 text-brand-900' : 'bg-slate-600 text-slate-200'
-        )}
+    <>
+      <Link
+        passHref
+        href={
+          isDone
+            ? `/workouts/${workout.id}`
+            : `/workouts/${workout.id}/get-it-done`
+        }
       >
-        <header className="flex items-center justify-between">
-          <h2 className="font-medium">{workout.name}</h2>
+        <motion.div
+          onMouseMove={handleMouseMove}
+          className={clsx(
+            'lantern-card relative cursor-pointer select-none rounded-lg border border-brand-700 p-6 text-sm drop-shadow-sm',
+            isDone
+              ? 'border-transparent bg-brand-300 bg-gradient-to-br from-brand-300 to-brand-400 text-brand-950'
+              : 'text-brand-950'
+          )}
+          style={
+            {
+              '--x': useMotionTemplate`${mouseX}px`,
+              '--y': useMotionTemplate`${mouseY}px`
+            } as WrapperStyle
+          }
+        >
+          {isDone}
 
-          <span className="text-xs font-medium">
-            {formatDate(workout.createdAt)}
-          </span>
-        </header>
-
-        <section className="text-sm">
-          {workout.workoutExercises.map((workoutExercise) => (
-            <div key={workoutExercise.id}>
-              {workoutExercise.setsCount > 0 &&
-                `${workoutExercise.setsCount}x `}
-              {workoutExercise.exercise.name}
+          <header className="flex flex-col">
+            <div className="flex items-center gap-x-1">
+              <h2 className="text-lg font-medium">{workout.name}</h2>
+              {isDone && <CheckCircleIcon className="h-4 w-4" />}
             </div>
-          ))}
-        </section>
-      </a>
-    </Link>
+
+            <span className="font-medium capitalize">
+              {formatDate(workout.createdAt, 'EEEE, dd MMM')}
+            </span>
+          </header>
+
+          <section className="mt-2">
+            {workout.workoutExercises.map((workoutExercise) => (
+              <div key={workoutExercise.id}>
+                {workoutExercise.setsCount > 0 &&
+                  `${workoutExercise.setsCount}x `}
+                {workoutExercise.exercise.name}
+              </div>
+            ))}
+          </section>
+        </motion.div>
+      </Link>
+    </>
   );
 }

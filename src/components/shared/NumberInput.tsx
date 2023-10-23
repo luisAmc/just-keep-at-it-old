@@ -8,22 +8,22 @@ interface Props extends ComponentProps<'input'> {
 export const NumberInput = forwardRef<HTMLInputElement, Props>(
   function NumberInput({ label, ...props }, ref) {
     return (
-      <label className='flex flex-col items-center justify-center'>
+      <label className="flex flex-col items-center justify-center">
         <input
           className={clsx(
-            'w-16 py-0.5 justify-center text-xl text-center text-slate-200  bg-slate-800 outline-none appearance-none',
-            'focus:border-brand-600 rounded-md border-2 border-transparent focus:ring-brand-500',
-            'disabled:opacity-60 disabled:bg-gray-500 disabled:bg-opacity-20'
+            'w-16 appearance-none justify-center bg-brand-300 py-0.5 text-center text-xl outline-none',
+            'rounded-md border-2 border-transparent focus:border-brand-600 focus:ring-brand-500',
+            'disabled:bg-gray-500 disabled:bg-opacity-20 disabled:opacity-60 placeholder:text-brand-500'
           )}
           ref={ref}
-          inputMode='decimal'
-          step='any'
-          placeholder='0'
+          inputMode="decimal"
+          step="any"
+          placeholder="0"
           onFocus={(e) => e.target.select()}
           {...props}
         />
 
-        <div className='text-sm font-medium text-slate-200 ml-1'>{label}</div>
+        <div className="ml-1 text-sm font-medium">{label}</div>
       </label>
     );
   }

@@ -44,7 +44,7 @@ export function MostRecentCorrespondingSet({ index }: { index: number }) {
         <div className='flex items-start'>
           <button
             type='button'
-            className='text-slate-400 hover:bg-white/5 px-2 py-1 rounded-lg transition'
+            className='hover:bg-white/5 px-2 py-1 rounded-lg transition'
             onClick={() =>
               copySetToCurrentWorkout(
                 correspondingSet.lbs,

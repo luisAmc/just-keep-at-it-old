@@ -9,7 +9,7 @@ interface Props {
 export function Heading({ size = '3xl', children }: Props) {
   return (
     <h1
-      className={clsx('text-slate-200',{
+      className={clsx({
         'text-lg': size === 'lg',
         'text-xl': size === 'xl',
         'text-2xl': size === '2xl',

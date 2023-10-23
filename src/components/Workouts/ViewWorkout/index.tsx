@@ -1,28 +1,41 @@
-import { Button } from 'src/components/shared/Button';
-import { ChevronLeftIcon, BoltIcon } from '@heroicons/react/24/outline';
 import { WorkoutStatus } from '@prisma/client';
 import { gql, useQuery } from '@apollo/client';
 import { Heading } from 'src/components/shared/Heading';
-import { Page } from 'src/components/shared/Page';
 import { useRouter } from 'next/router';
 import { ViewWorkoutActions } from './ViewWorkoutActions';
-import { WorkoutQuery } from './__generated__/index.generated';
+import {
+  ViewWorkout_Workout,
+  WorkoutQuery
+} from './__generated__/index.generated';
 import {
   ViewWorkoutExercise,
-  WorkoutExerciseInfoFragment
+  ViewWorkoutExerciseBasicFragment,
+  ViewWorkoutExerciseFragment
 } from './ViewWorkoutExercise';
-import { WorkoutBaseInfoFragment } from '../WorkoutCard';
-import clsx from 'clsx';
+import { ViewWorkoutShimmer } from './ViewWorkoutShimmer';
+
+export const WorkoutBasicFragment = gql`
+  fragment ViewWorkout_workoutBasic on Workout {
+    id
+    name
+    status
+    createdAt
+    workoutExercises {
+      ...ViewWorkoutExercise_workoutExerciseBasic
+    }
+  }
+  ${ViewWorkoutExerciseBasicFragment}
+`;
 
 export const WorkoutFragment = gql`
   fragment ViewWorkout_workout on Workout {
-    ...WorkoutCard_workout
+    ...ViewWorkout_workoutBasic
     workoutExercises {
       ...ViewWorkoutExercise_workoutExercise
     }
   }
-  ${WorkoutBaseInfoFragment}
-  ${WorkoutExerciseInfoFragment}
+  ${WorkoutBasicFragment}
+  ${ViewWorkoutExerciseFragment}
 `;
 
 export const query = gql`
@@ -46,48 +59,30 @@ export function ViewWorkout() {
   const isDone = workout?.status === WorkoutStatus.DONE;
 
   return (
-    <Page>
-      {loading && <div>Cargando...</div>}
+    <>
+      {loading && <ViewWorkoutShimmer />}
+      {workout && <Workout workout={workout} />}
+    </>
+  );
+}
 
-      {workout && (
-        <div className="flex h-full flex-col space-y-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-2">
-              <Button href="/" className="">
-                <div className="flex items-center justify-center rounded-full bg-brand-300 p-2 text-brand-700">
-                  <ChevronLeftIcon className="h-4 w-4" />
-                </div>
-              </Button>
+interface WorkoutProps {
+  workout: ViewWorkout_Workout;
+}
 
-              <Heading>{workout.name}</Heading>
-            </div>
+function Workout({ workout }: WorkoutProps) {
+  return (
+    <div className="rounded-lg bg-brand-500/20 p-4">
+      <div className="flex items-center justify-between">
+        <Heading>{workout.name}</Heading>
+        <ViewWorkoutActions />
+      </div>
 
-            <ViewWorkoutActions isDone={isDone} />
-          </div>
-
-          <div
-            className={clsx(
-              'flex flex-col space-y-3',
-              isDone ? 'text-slate-200 ' : 'bg-amber-300 text-amber-700'
-            )}
-          >
-            {workout.workoutExercises.map((workoutExercise) => (
-              <ViewWorkoutExercise
-                key={workoutExercise.id}
-                workoutExercise={workoutExercise}
-                isDone={isDone}
-              />
-            ))}
-          </div>
-
-          {!isDone && (
-            <Button href={`/workouts/${router.query.workoutId}/get-it-done`}>
-              <BoltIcon className="mr-1 h-4 w-4" />
-              <span>Comenzar</span>
-            </Button>
-          )}
-        </div>
-      )}
-    </Page>
+      <div className="mt-4 flex flex-col gap-y-2">
+        {workout.workoutExercises.map((we) => (
+          <ViewWorkoutExercise key={we.id} workoutExercise={we} />
+        ))}
+      </div>
+    </div>
   );
 }

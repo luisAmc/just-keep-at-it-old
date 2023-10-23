@@ -31,8 +31,14 @@ export function WorkoutHeader() {
   );
 
   return (
-    <div className='flex items-center justify-between'>
-      <div className='flex items-center space-x-2'>
+    <div className="flex items-center justify-between">
+      <div>
+        <Button variant="ghost" size="sm">
+          {<Heading>{name}</Heading>}
+        </Button>
+      </div>
+
+      {/* <div className='flex items-center space-x-2'>
         <Button href='/' className=''>
           <div className='rounded-full bg-brand-300 text-brand-700 p-2 flex items-center justify-center'>
             <ChevronLeftIcon className='w-4 h-4' />
@@ -44,14 +50,14 @@ export function WorkoutHeader() {
         </Button>
 
         <EditNameModal {...editNameModal.props} />
-      </div>
+      </div> */}
 
       <div>
         <Button
           onClick={deleteModal.open}
-          className='p-2 rounded-full bg-rose-500 text-rose-300 focus:outline-none focus:ring-2 focus:ring-offset-white focus:ring-offset-1 hover:bg-opacity-80'
+          className="rounded-full bg-rose-500 p-2 text-rose-300 hover:bg-opacity-80 focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-offset-white"
         >
-          <TrashIcon className='w-4 h-4' />
+          <TrashIcon className="h-4 w-4" />
         </Button>
 
         <ConfirmationModal
