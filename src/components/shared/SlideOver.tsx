@@ -1,6 +1,9 @@
 import { Dialog, Transition } from '@headlessui/react';
 import { XMarkIcon } from '@heroicons/react/24/outline';
+import clsx from 'clsx';
 import { Fragment, ReactNode, useState } from 'react';
+import { twMerge } from 'tailwind-merge';
+import { buttonStyles } from './Button';
 
 export function useSlideOver() {
   const [open, setOpen] = useState(false);
@@ -59,12 +62,18 @@ export function SlideOver({ title, open, onClose, children }: SlideOverProps) {
                         <Dialog.Title className="text-lg font-medium">
                           {title}
                         </Dialog.Title>
-                        
+
                         <div className="ml-3 flex h-7 items-center">
                           <button
                             type="button"
-                            className="rounded-md bg-slate-700 text-slate-200 hover:opacity-80 focus:outline-none focus:ring-2 focus:ring-brand-500"
                             onClick={onClose}
+                            className={twMerge(
+                              clsx(
+                                buttonStyles({ variant: 'ghost' }),
+                                'inline-block rounded-full p-0.5'
+                              )
+                            )}
+                            // className="rounded-md bg-slate-700 text-slate-200 hover:opacity-80 focus:outline-none focus:ring-2 focus:ring-brand-500"
                           >
                             <XMarkIcon className="h-6 w-6" aria-hidden="true" />
                           </button>

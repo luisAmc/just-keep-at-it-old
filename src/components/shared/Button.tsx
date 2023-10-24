@@ -2,7 +2,10 @@ import { ButtonOrLink, ButtonOrLinkProps } from './ButtonOrLink';
 import { cva, VariantProps } from 'class-variance-authority';
 
 export const buttonStyles = cva(
-  'w-full text-sm appearance-none inline-flex items-center justify-center relative rounded hover:bg-opacity-80 transition-opacity',
+  [
+    'w-full text-sm appearance-none inline-flex items-center justify-center relative rounded hover:bg-opacity-80 transition-opacity',
+    'disabled:opacity-60 disabled:pointer-events-none'
+  ],
   {
     variants: {
       variant: {

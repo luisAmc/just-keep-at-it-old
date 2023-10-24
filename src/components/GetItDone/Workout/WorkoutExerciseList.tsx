@@ -62,7 +62,7 @@ export function WorkoutExerciseList() {
     }
   );
 
-  const [partialSave] = useMutation(gql`
+  const [partialSave, { loading: isPartialSaving }] = useMutation(gql`
     mutation PartialSaveMutation($input: GetWorkoutDoneInput!) {
       partialSave(input: $input)
     }
@@ -210,7 +210,9 @@ export function WorkoutExerciseList() {
           Añadir otro ejercicio
         </Button>
 
-        <SubmitButton>Completar rutina</SubmitButton>
+        <SubmitButton loading={isPartialSaving} disabled={isPartialSaving}>
+          {isPartialSaving ? 'Guardando los cambios' : 'Completar rutina'}
+        </SubmitButton>
       </Form>
 
       <AddExerciseSlideOver
