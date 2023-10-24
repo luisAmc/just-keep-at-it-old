@@ -44,7 +44,7 @@ export function ViewWorkoutExercise({ workoutExercise }: WorkoutExerciseProps) {
   const isAerobic = workoutExercise.exercise.type === ExerciseType.AEROBIC;
 
   return (
-    <section className="p-4 rounded-lg bg-brand-300">
+    <section className="p-4 rounded-lg bg-brand-100">
       <header className="flex items-center justify-between">
         <h2 className="font-medium">{workoutExercise.exercise.name}</h2>
 

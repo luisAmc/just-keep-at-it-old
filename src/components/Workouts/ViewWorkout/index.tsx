@@ -71,7 +71,7 @@ interface WorkoutProps {
 
 function Workout({ workout }: WorkoutProps) {
   return (
-    <div className="rounded-lg bg-brand-500/20 p-4">
+    <div className="rounded-lg bg-brand-50 p-4">
       <div className="flex items-center justify-between">
         <Heading>{workout.name}</Heading>
         <ViewWorkoutActions />

@@ -24,7 +24,7 @@ export const Input = forwardRef<HTMLInputElement, Props>(function Input(
     <label>
       {!hideLabel && label && (
         <div
-          className={clsx('font-medium mb-1', {
+          className={clsx('mb-1 font-medium', {
             'text-brand-800': color === 'light',
             'text-brand-200': color === 'dark'
           })}
@@ -35,22 +35,22 @@ export const Input = forwardRef<HTMLInputElement, Props>(function Input(
 
       <div
         className={clsx(
-          'w-full flex items-center rounded-lg border-2 border-transparent transition focus-within:border-brand-600 overflow-hidden',
+          'flex w-full items-center overflow-hidden rounded-lg border-2 border-solid border-slate-200 transition focus-within:border-brand-600',
           {
-            'text-brand-700 bg-white focus-within:bg-white': color === 'light',
-            'text-brand-200 bg-brand-800': color === 'dark'
+            'bg-white text-brand-700 focus-within:bg-white': color === 'light',
+            'bg-brand-800 text-brand-200': color === 'dark'
           }
         )}
       >
-        {Icon && <Icon className='w-4 h-4 ml-4' />}
+        {Icon && <Icon className="ml-4 h-4 w-4" />}
 
         <input
           placeholder={`${label}...`}
           ref={ref}
           type={type}
           className={clsx(
-            'bg-transparent w-full rounded-lg px-4 py-2 focus:outline-none',
-            'disabled:opacity-60 disabled:bg-gray-500 disabled:bg-opacity-20'
+            'w-full rounded-lg bg-transparent px-4 py-2 focus:outline-none',
+            'disabled:bg-gray-500 disabled:bg-opacity-20 disabled:opacity-60'
           )}
           {...props}
         />

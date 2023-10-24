@@ -32,38 +32,37 @@ export function SelectExercise({ name, options }: Props) {
   return (
     <label>
       <Combobox value={value} onChange={onChange}>
-        <div className='relative mt-1'>
-          <div className='relative'>
+        <div className="relative mt-1">
+          <div className="relative">
             <Combobox.Input
-              placeholder='Seleccione una opción...'
+              placeholder="Seleccione una opción..."
               onChange={(event) => setQuery(event.target.value)}
-              displayValue={(option: typeof options[0]) =>
+              displayValue={(option: (typeof options)[0]) =>
                 option ? option.label : ''
               }
               className={clsx(
-                'bg-slate-800 relative w-full border border-transparent rounded-lg shadow-sm pl-3 pr-10 py-2 text-left cursor-default focus:outline-none focus:border-2 focus:ring-brand-500 focus:border-brand-600',
-                value ? 'text-slate-300' : 'text-slate-700'
+                'relative w-full cursor-default rounded-lg border-2 border-solid border-slate-200 bg-white py-2 pl-3 pr-10 text-left text-brand-700 focus:border-2 focus:border-brand-600 focus:outline-none focus:ring-brand-500'
               )}
             />
 
-            <Combobox.Button className='absolute inset-y-0 right-0 flex items-center pr-2'>
+            <Combobox.Button className="absolute inset-y-0 right-0 flex items-center pr-2">
               <ChevronUpDownIcon
-                className='h-5 w-5 text-slate-400'
-                aria-hidden='true'
+                className="h-5 w-5 text-brand-400"
+                aria-hidden="true"
               />
             </Combobox.Button>
           </div>
 
           <Transition
             as={Fragment}
-            leave='transition ease-in duration-100'
-            leaveFrom='opacity-100'
-            leaveTo='opacity-0'
+            leave="transition ease-in duration-100"
+            leaveFrom="opacity-100"
+            leaveTo="opacity-0"
             afterLeave={() => setQuery('')}
           >
-            <Combobox.Options className='absolute z-20 mt-1 w-full bg-slate-700 shadow-lg max-h-60 rounded-md py-1 text-base ring-1 ring-black ring-opacity-5 overflow-auto focus:outline-none sm:text-sm'>
+            <Combobox.Options className="absolute z-20 mt-1 max-h-60 w-full overflow-auto rounded-lg border border-brand-300 bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
               {filteredOptions.length === 0 && query !== '' ? (
-                <div className='relative cursor-default select-none py-2 px-4 text-slate-700'>
+                <div className="relative cursor-default select-none px-4 py-2 text-brand-700">
                   No se encontró un ejercicio.
                 </div>
               ) : (
@@ -76,15 +75,15 @@ export function SelectExercise({ name, options }: Props) {
                       value={option}
                       className={({ active }) =>
                         clsx(
-                          'relative cursor-default select-none py-2 px-3 ',
+                          'relative cursor-default select-none px-3 py-2 ',
                           active &&
                             !isSelected &&
-                            'text-slate-800 bg-brand-200',
-                          isSelected && 'text-white bg-brand-500'
+                            'bg-brand-200 text-brand-800',
+                          isSelected && 'bg-brand-500 text-white'
                         )
                       }
                     >
-                      <div className='flex items-center justify-between space-x-2 mr-3'>
+                      <div className="mr-3 flex items-center justify-between space-x-2">
                         <span
                           className={clsx(
                             'block truncate',
@@ -96,20 +95,20 @@ export function SelectExercise({ name, options }: Props) {
 
                         <span
                           className={clsx(
-                            'bg-gray-600 px-2 py-0.5 inline-flex space-x-1 text-xs font-semibold rounded-full text-slate-300'
+                            'inline-flex space-x-1 rounded-full bg-gray-600 px-2 py-0.5 text-xs font-semibold text-brand-300'
                           )}
                         >
                           {option.category}
                         </span>
                       </div>
 
-                      <span className='absolute inset-y-0 right-0 flex items-center'>
+                      <span className="absolute inset-y-0 right-0 flex items-center">
                         <CheckCircleIcon
                           className={clsx(
                             'h-5 w-5',
                             isSelected ? 'text-white' : 'text-transparent'
                           )}
-                          aria-hidden='true'
+                          aria-hidden="true"
                         />
                       </span>
                     </Combobox.Option>

@@ -47,7 +47,7 @@ export function WorkoutHeader() {
         </div>
 
         <Button variant="ghost" size="sm" onClick={editNameModal.open}>
-          {<Heading>{name}</Heading>}
+          <Heading size='2xl'>{name}</Heading>
         </Button>
 
         <EditNameModal {...editNameModal.props} />
@@ -56,9 +56,9 @@ export function WorkoutHeader() {
       <div>
         <Button
           onClick={deleteModal.open}
-          className="rounded-full bg-rose-500 p-2 text-rose-300 hover:bg-opacity-80 focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-offset-white"
+          className="rounded-full bg-rose-500 p-1 text-rose-200 hover:bg-opacity-80 focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-offset-white"
         >
-          <TrashIcon className="h-4 w-4" />
+          <TrashIcon className="h-5 w-5" />
         </Button>
 
         <ConfirmationModal

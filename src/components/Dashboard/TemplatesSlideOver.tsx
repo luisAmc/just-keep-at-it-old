@@ -59,7 +59,7 @@ export function TemplatesSlideOver(props: Props) {
               <button
                 type="button"
                 key={template.id}
-                className="rounded-md bg-brand-700 px-5 py-4 text-left hover:scale-[1.02]"
+                className="rounded-md bg-brand-100 px-5 py-4 text-left"
                 onClick={() => {
                   setSelectedTemplateId(template.id);
                   startFromTemplateModal.open();
@@ -67,7 +67,7 @@ export function TemplatesSlideOver(props: Props) {
               >
                 <Heading size="lg">{template.name}</Heading>
 
-                <div className="text-brand-400">
+                <div>
                   {template.exercises.map(({ exercise }, i) => (
                     <div
                       key={exercise.id}

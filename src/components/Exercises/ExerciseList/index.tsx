@@ -13,7 +13,7 @@ export function ExerciseList({ categories }: ExerciseListProps) {
       {categories.map((category) => (
         <div
           key={category.id}
-          className='bg-slate-700 text-slate-300 flex rounded-lg flex-col'
+          className='bg-brand-100 text-brand-700 flex rounded-lg flex-col'
         >
           <ExerciseCategoryProvider category={category}>
             <CategoryHeader />

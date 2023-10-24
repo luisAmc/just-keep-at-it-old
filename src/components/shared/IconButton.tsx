@@ -13,10 +13,7 @@ export function IconButton({ icon: Icon, ...props }: Props) {
     <ButtonOrLink
       type="button"
       className={twMerge(
-        clsx(
-          buttonStyles({ variant: 'ghost' }),
-          'inline-block rounded-full p-0.5'
-        )
+        clsx(buttonStyles(), 'inline-block rounded-full p-0.5')
       )}
       {...props}
     >
