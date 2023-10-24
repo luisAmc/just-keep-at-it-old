@@ -104,19 +104,19 @@ export function Templates() {
   const templates = data?.viewer?.workoutTemplates ?? [];
 
   return (
-    <Page>
-      <div className='flex items-center space-x-2'>
-        <Button href='/' className=''>
-          <div className='rounded-full bg-brand-300 text-brand-700 p-2 flex items-center justify-center'>
-            <ChevronLeftIcon className='w-4 h-4' />
+    <>
+      <div className="flex items-center space-x-2">
+        <Button href="/" className="">
+          <div className="flex items-center justify-center rounded-full bg-brand-300 p-2 text-brand-700">
+            <ChevronLeftIcon className="h-4 w-4" />
           </div>
         </Button>
 
         <Heading>Bocetos</Heading>
       </div>
 
-      <Button href='/templates/create'>
-        <PlusCircleIcon className='w-4 h-4 mr-1' />
+      <Button href="/templates/create">
+        <PlusCircleIcon className="mr-1 h-4 w-4" />
         <span>Crear un boceto nuevo</span>
       </Button>
 
@@ -124,57 +124,55 @@ export function Templates() {
         templates.map((template) => (
           <div
             key={template.id}
-            className='bg-slate-700 px-5 py-4 rounded-md flex'
+            className="flex rounded-md bg-brand-100 px-5 py-4"
           >
-            <div className='flex-1'>
-              <div className='flex items-center justify-between'>
-                <Heading size='lg'>{template.name}</Heading>
-              </div>
+            <div className="flex-1">
+              <Heading size="lg">{template.name}</Heading>
 
-              <div className='text-slate-400'>
+              <div>
                 {template.exercises.map(({ exercise }, i) => (
                   <div
                     key={exercise.id}
-                    className='flex items-center space-x-2'
+                    className="flex items-center space-x-2"
                   >
-                    <span className='text-sm'>{exercise.name}</span>
+                    <span className="text-sm">{exercise.name}</span>
                   </div>
                 ))}
               </div>
             </div>
 
-            <div className='flex flex-col justify-evenly'>
+            <div className="flex flex-col justify-evenly">
               <div>
                 <Button
-                  className='p-2 rounded-full bg-slate-600 text-slate-300 hover:bg-opacity-50'
+                  className="rounded-full bg-brand-400 p-2 hover:bg-opacity-50"
                   onClick={() => {
                     setSelectedTemplateId(template.id);
                     startFromTemplateModal.open();
                   }}
                 >
-                  <ClipboardDocumentIcon className='w-3 h-3' />
+                  <ClipboardDocumentIcon className="h-5 w-5" />
                 </Button>
               </div>
 
               <div>
                 <Button
-                  className='p-2 rounded-full bg-slate-600 text-slate-300 hover:bg-opacity-50'
+                  className="rounded-full bg-brand-400 p-2 hover:bg-opacity-50"
                   onClick={() => {
                     setSelectedTemplateId(template.id);
                     deleteTemplateModal.open();
                   }}
                 >
-                  <TrashIcon className='w-3 h-3' />
+                  <TrashIcon className="h-5 w-5" />
                 </Button>
               </div>
             </div>
           </div>
         ))
       ) : (
-        <div className='bg-slate-700 divide-slate-700 rounded-lg flex flex-col px-4 py-4'>
-          <div className='flex flex-col items-center space-y-4 py-12 rounded-md text-slate-500'>
-            <SparklesIcon className='w-10 h-10' />
-            <p className='font-semibold text-sm'>
+        <div className="flex flex-col divide-brand-700 rounded-lg bg-brand-100 px-4 py-4">
+          <div className="flex flex-col items-center space-y-4 rounded-md py-12 text-brand-500">
+            <SparklesIcon className="h-10 w-10" />
+            <p className="text-sm font-semibold">
               No hay bocetos creados hasta el momento...
             </p>
           </div>
@@ -183,7 +181,7 @@ export function Templates() {
 
       <ConfirmationModal
         {...startFromTemplateModal.props}
-        type='warning'
+        type="warning"
         onConfirm={() => {
           startWorkoutFromTemplate({
             variables: {
@@ -207,6 +205,6 @@ export function Templates() {
       >
         ¿Está seguro de borrar el boceto?
       </ConfirmationModal>
-    </Page>
+    </>
   );
 }

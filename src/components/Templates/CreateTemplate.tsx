@@ -12,17 +12,18 @@ import {
   ExercisesQuery,
   Exercise_ExerciseCategory
 } from '../Exercises/__generated__/index.generated';
-import { Button } from '../shared/Button';
+import { Button, buttonStyles } from '../shared/Button';
 import { FieldError, Form, useZodForm } from '../shared/Form';
 import { Heading } from '../shared/Heading';
 import { Input } from '../shared/Input';
-import { Page } from '../shared/Page';
 import { SubmitButton } from '../shared/SubmitButton';
 import { SelectExercise } from './SelectExercise';
 import {
   CreateTemplateMutation,
   CreateTemplateMutationVariables
 } from './__generated__/CreateTemplate.generated';
+import { twMerge } from 'tailwind-merge';
+import clsx from 'clsx';
 
 export const query = gql`
   query CreateTemplateQuery {
@@ -117,11 +118,11 @@ export function CreateTemplate() {
   }
 
   return (
-    <Page>
-      <div className='flex items-center space-x-2'>
-        <Button href='/templates' className=''>
-          <div className='rounded-full bg-brand-300 text-brand-700 p-2 flex items-center justify-center'>
-            <ChevronLeftIcon className='w-4 h-4' />
+    <>
+      <div className="flex items-center space-x-2">
+        <Button href="/templates" className="">
+          <div className="flex items-center justify-center rounded-full bg-brand-300 p-2 text-brand-700">
+            <ChevronLeftIcon className="h-4 w-4" />
           </div>
         </Button>
 
@@ -129,14 +130,14 @@ export function CreateTemplate() {
       </div>
 
       <Form form={form} onSubmit={onSubmit}>
-        <Input {...form.register('name')} label='Nombre' />
+        <Input {...form.register('name')} label="Nombre" />
 
         <label>
           <div>Ejercicios</div>
 
           {exercisesFields.fields.map((field, index) => (
-            <div key={field.id} className='flex items-center space-x-2'>
-              <div className='w-full'>
+            <div key={field.id} className="flex items-center space-x-2">
+              <div className="w-full">
                 <SelectExercise
                   name={`exercises.${index}`}
                   options={exercises}
@@ -144,27 +145,35 @@ export function CreateTemplate() {
               </div>
 
               {exercisesFields.fields.length > 1 && (
-                <Button
-                  className='p-2.5 rounded-full bg-slate-700 text-slate-300'
-                  onClick={() => removeExercise(index)}
-                >
-                  <TrashIcon className='w-4 h-4' />
-                </Button>
+                <div>
+                  <button
+                    type="button"
+                    onClick={() => removeExercise(index)}
+                    className={twMerge(
+                      clsx(
+                        buttonStyles({ variant: 'ghost' }),
+                        'inline-block rounded-full p-0.5'
+                      )
+                    )}
+                  >
+                    <TrashIcon className="h-5 w-5" />
+                  </button>
+                </div>
               )}
             </div>
           ))}
 
-          <FieldError name='exercises' />
+          <FieldError name="exercises" />
         </label>
 
-        <Button onClick={addExercise} variant='dashed'>
-          <PlusIcon className='w-4 h-4 mr-1' />
+        <Button onClick={addExercise} variant="outline">
+          <PlusIcon className="mr-1 h-4 w-4" />
           <span>Añadir uno más</span>
         </Button>
 
         <SubmitButton>Ingresar</SubmitButton>
       </Form>
-    </Page>
+    </>
   );
 }
 
