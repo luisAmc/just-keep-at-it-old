@@ -49,7 +49,7 @@ export function TemplatesSlideOver(props: Props) {
   return (
     <SlideOver title="Nueva rutina" {...props}>
       <div className="flex flex-col space-y-4">
-        <Heading size="xl">¿Crear una con un boceto?</Heading>
+        <Heading size="xl">¿Usar un boceto?</Heading>
 
         {loading && <div>Cargando...</div>}
 
