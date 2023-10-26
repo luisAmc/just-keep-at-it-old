@@ -197,6 +197,17 @@ builder.mutationField('getWorkoutDone', (t) =>
       input: t.arg({ type: GetWorkoutDoneInput })
     },
     resolve: async (_query, _parent, { input }, { session }) => {
+      const workoutDraft = await db.workout.findUniqueOrThrow({
+        where: { id: input.workoutId },
+        select: {
+          status: true
+        }
+      });
+
+      if (workoutDraft.status === WorkoutStatus.DONE) {
+        throw new Error('La rutina ya habia sido completada anteriormente.');
+      }
+
       const workout = await db.$transaction(async (db) => {
         /**
          * Remove old exercises
@@ -257,6 +268,17 @@ builder.mutationField('partialSave', (t) =>
       input: t.arg({ type: GetWorkoutDoneInput })
     },
     resolve: async (_parent, { input }, { session }) => {
+      const workout = await db.workout.findUniqueOrThrow({
+        where: { id: input.workoutId },
+        select: {
+          status: true
+        }
+      });
+
+      if (workout.status === WorkoutStatus.DONE) {
+        return false;
+      }
+
       const done = await db.$transaction(async (db) => {
         await db.workoutExercise.deleteMany({
           where: { workoutId: input.workoutId }

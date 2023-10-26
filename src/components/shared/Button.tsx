@@ -35,7 +35,6 @@ export interface ButtonProps
   extends VariantProps<typeof buttonStyles>,
     ButtonOrLinkProps {
   rounded?: boolean;
-  loading?: boolean;
 }
 
 export const Button = ({
@@ -47,9 +46,9 @@ export const Button = ({
 }: ButtonProps) => {
   return (
     <ButtonOrLink
+      type={type || 'button'}
       className={buttonStyles({ variant, size })}
       {...props}
-      type={type || 'button'}
     />
   );
 };
