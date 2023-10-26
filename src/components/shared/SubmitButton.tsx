@@ -2,11 +2,19 @@ import { CheckCircleIcon } from '@heroicons/react/24/solid';
 import { useFormContext } from 'react-hook-form';
 import { Button, ButtonProps } from './Button';
 
-export function SubmitButton({ children, ...props }: ButtonProps) {
+interface SubmitButtonProps extends ButtonProps {
+  loading?: boolean;
+}
+
+export function SubmitButton({
+  children,
+  loading = false,
+  ...props
+}: SubmitButtonProps) {
   const { formState } = useFormContext();
   return (
     <Button type="submit" {...props}>
-      {(formState.isSubmitting || props.loading) && (
+      {(formState.isSubmitting || loading) && (
         <svg
           className="-ml-1 mr-3 h-5 w-5 animate-spin text-white"
           xmlns="http://www.w3.org/2000/svg"

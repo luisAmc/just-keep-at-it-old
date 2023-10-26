@@ -70,7 +70,7 @@ export function TemplatesSlideOver(props: Props) {
                 <div>
                   {template.exercises.map(({ exercise }, i) => (
                     <div
-                      key={exercise.id}
+                      key={`${exercise.id}-${i}`}
                       className="flex items-center space-x-2"
                     >
                       <span className="text-sm">{exercise.name}</span>
