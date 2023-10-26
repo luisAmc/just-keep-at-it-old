@@ -49,7 +49,7 @@ export function LoginForm() {
         <div className="relative h-full rounded-xl bg-white/[0.8]">
           <div className="flex items-center justify-center">
             <Image
-              src="/images/login.png"
+              src="/images/login.webp"
               width={222}
               height={250}
               alt="login illustration"

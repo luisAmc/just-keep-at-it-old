@@ -19,7 +19,7 @@ const TemplatesSlideOver = dynamic(() =>
   import('./TemplatesSlideOver').then((mod) => mod.TemplatesSlideOver)
 );
 
-const DASHBOARD_QUERY = gql`
+export const DASHBOARD_QUERY = gql`
   query DashboardQuery($offset: Int, $limit: Int) {
     viewer {
       id

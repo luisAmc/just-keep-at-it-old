@@ -1,6 +1,5 @@
 import { GetServerSideProps } from 'next';
-import { Home } from 'src/components/Home';
-import { query } from 'src/components/Layout';
+import { DASHBOARD_QUERY, Dashboard } from 'src/components/Dashboard';
 import { preloadQuery } from 'src/utils/apollo';
 import { authenticatedRoute } from 'src/utils/redirects';
 
@@ -10,7 +9,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     return auth;
   }
 
-  return preloadQuery(ctx, { query });
+  return preloadQuery(ctx, { query: DASHBOARD_QUERY });
 };
 
-export default Home;
+export default Dashboard;
