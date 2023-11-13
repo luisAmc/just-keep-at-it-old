@@ -1,6 +1,5 @@
 import { gql, useQuery } from '@apollo/client';
 import { WorkoutProvider } from './Workout/WorkoutContext';
-import { Page } from '../shared/Page';
 import { useRouter } from 'next/router';
 import { GetItDoneQuery } from './__generated__/index.generated';
 import { WorkoutFragment } from './Workout';

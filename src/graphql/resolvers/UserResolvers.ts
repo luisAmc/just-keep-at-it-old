@@ -1,5 +1,7 @@
 import { db } from 'src/utils/prisma';
 import { builder } from '../builder';
+import { WorkoutStatus } from '@prisma/client';
+import { addWeeks, format, startOfDay, startOfWeek } from 'date-fns';
 
 builder.prismaObject('User', {
   findUnique: (user) => ({ id: user.id }),
@@ -48,6 +50,38 @@ builder.queryField('viewer', (t) =>
           id: session.userId
         }
       });
+    }
+  })
+);
+
+builder.queryField('workedDays', (t) =>
+  t.field({
+    type: ['DateTime'],
+    resolve: async (_parent, _args, { session }) => {
+      const today = new Date();
+      const weekStart = startOfWeek(today);
+      const start = addWeeks(weekStart, -2);
+
+      const completedWorkouts = await db.workout.findMany({
+        where: {
+          userId: session!.userId,
+          status: WorkoutStatus.DONE,
+          completedAt: {
+            gte: start
+          }
+        },
+        select: {
+          completedAt: true
+        }
+      });
+
+      const workedDays = new Map<String, Date>();
+      for (const workout of completedWorkouts) {
+        const key = format(workout.completedAt!, 'yyyy-MM-dd');
+        workedDays.set(key, startOfDay(workout.completedAt!));
+      }
+
+      return Array.from(workedDays.values());
     }
   })
 );
