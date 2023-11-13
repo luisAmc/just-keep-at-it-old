@@ -7,6 +7,7 @@ import {
 } from '@apollo/client';
 import { GetServerSidePropsContext, GetServerSidePropsResult } from 'next';
 import { useMemo } from 'react';
+import { LAYOUT_QUERY } from 'src/components/Layout';
 
 export interface SessionProps {
   props: {
@@ -28,7 +29,9 @@ export async function preloadQuery(
 
   try {
     await Promise.all(
-      queries.map((queryOptions) => client.query(queryOptions))
+      [...queries, { query: LAYOUT_QUERY }].map((queryOptions) =>
+        client.query(queryOptions)
+      )
     );
 
     return {

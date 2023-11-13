@@ -14,7 +14,7 @@ interface LayoutProps {
   children: React.ReactNode;
 }
 
-export const query = gql`
+export const LAYOUT_QUERY = gql`
   query LayoutQuery {
     viewer {
       id
@@ -25,7 +25,7 @@ export const query = gql`
 
 export function Layout({ children }: LayoutProps) {
   const authRedirect = useAuthRedirect();
-  const { data } = useQuery<LayoutQuery>(query);
+  const { data } = useQuery<LayoutQuery>(LAYOUT_QUERY);
 
   const [logout] = useMutation(
     gql`
