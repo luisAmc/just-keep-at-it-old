@@ -2,8 +2,8 @@ import { buttonStyles } from './Button';
 import { ComponentType, Fragment, ReactNode } from 'react';
 import { Menu, Transition } from '@headlessui/react';
 import { twMerge } from 'tailwind-merge';
-import { Link } from './Link';
 import clsx from 'clsx';
+import Link from 'next/link';
 
 interface DropdownProps {
   direction?: 'left' | 'right';

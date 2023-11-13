@@ -132,7 +132,7 @@ export function Templates() {
               <div>
                 {template.exercises.map(({ exercise }, i) => (
                   <div
-                    key={exercise.id}
+                    key={`${template.id}-exercise-${i}`}
                     className="flex items-center space-x-2"
                   >
                     <span className="text-sm">{exercise.name}</span>
