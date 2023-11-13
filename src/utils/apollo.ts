@@ -88,52 +88,52 @@ export function createApolloClient({ initialState, headers }: ClientOptions) {
         }
       }),
       cache: new InMemoryCache({
-        typePolicies: {
-          User: {
-            fields: {
-              exerciseCategories: {
-                keyArgs: false,
-                merge(existing = [], incoming) {
-                  return [...existing, ...incoming];
-                }
-              },
-              exercises: {
-                keyArgs: false,
-                merge(existing = [], incoming) {
-                  return [...existing, ...incoming];
-                }
-              },
-              workouts: {
-                keyArgs: false,
-                merge(existing = [], incoming) {
-                  return [...existing, ...incoming];
-                }
-              },
-              workoutTemplates: {
-                keyArgs: false,
-                merge(existing = [], incoming) {
-                  return [...existing, ...incoming];
-                }
-              }
-            }
-          },
-          Exercise: {
-            fields: {
-              sessions: {
-                keyArgs: ['id'],
-                merge(existing = [], incoming) {
-                  return [...existing, ...incoming];
-                }
-              },
-              doneSessions: {
-                keyArgs: ['id'],
-                merge(existing = [], incoming) {
-                  return [...existing, ...incoming];
-                }
-              }
-            }
-          }
-        }
+        // typePolicies: {
+        //   User: {
+        //     fields: {
+        //       exerciseCategories: {
+        //         keyArgs: false,
+        //         merge(existing = [], incoming) {
+        //           return [...existing, ...incoming];
+        //         }
+        //       },
+        //       exercises: {
+        //         keyArgs: false,
+        //         merge(existing = [], incoming) {
+        //           return [...existing, ...incoming];
+        //         }
+        //       },
+        //       workouts: {
+        //         keyArgs: false,
+        //         merge(existing = [], incoming) {
+        //           return [...existing, ...incoming];
+        //         }
+        //       },
+        //       workoutTemplates: {
+        //         keyArgs: false,
+        //         merge(existing = [], incoming) {
+        //           return [...existing, ...incoming];
+        //         }
+        //       }
+        //     }
+        //   },
+        //   Exercise: {
+        //     fields: {
+        //       sessions: {
+        //         keyArgs: ['id'],
+        //         merge(existing = [], incoming) {
+        //           return [...existing, ...incoming];
+        //         }
+        //       },
+        //       doneSessions: {
+        //         keyArgs: ['id'],
+        //         merge(existing = [], incoming) {
+        //           return [...existing, ...incoming];
+        //         }
+        //       }
+        //     }
+        //   }
+        // }
       })
     });
   }

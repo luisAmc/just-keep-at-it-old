@@ -211,7 +211,6 @@ export type Query = {
   exercise: Exercise;
   exerciseCategories: Array<ExerciseCategory>;
   viewer?: Maybe<User>;
-  workedDays: Array<Scalars['DateTime']>;
   workout: Workout;
   workoutTemplate: WorkoutTemplate;
   workoutTemplates: Array<WorkoutTemplate>;
@@ -248,6 +247,7 @@ export type User = {
   exercises: Array<Exercise>;
   id: Scalars['ID'];
   username: Scalars['String'];
+  workedDays: Array<Scalars['DateTime']>;
   workoutTemplates: Array<WorkoutTemplate>;
   workouts: Array<Workout>;
   workoutsCount: Scalars['Int'];
