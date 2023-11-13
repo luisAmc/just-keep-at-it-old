@@ -24,6 +24,7 @@ export const WorkoutBasicFragment = gql`
     name
     status
     createdAt
+    completedAt
     workoutExercises {
       ...ViewWorkoutExercise_workoutExerciseBasic
     }

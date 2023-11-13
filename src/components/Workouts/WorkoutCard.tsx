@@ -67,8 +67,14 @@ export function WorkoutCard({ workout }: WorkoutCardProps) {
               {isDone && <CheckCircleIcon className="h-4 w-4" />}
             </div>
 
-            <span className="font-medium capitalize">
-              {formatDate(workout.createdAt, 'EEEE, dd MMM')}
+            <span className="itmes-center flex gap-x-1 text-xs">
+              <span>{isDone ? 'Finalizado el' : 'Creado el'}</span>
+              <span className="font-medium capitalize">
+                {formatDate(
+                  isDone ? workout.completedAt! : workout.createdAt,
+                  'EEEE, dd MMM h:mm aaaa'
+                )}
+              </span>
             </span>
           </header>
 
