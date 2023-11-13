@@ -50,11 +50,11 @@ export function Calendar({ markedDays }: CalendarProps) {
             'flex flex-col items-center justify-center rounded-lg border p-1.5',
             isSameDay(today, pivot)
               ? 'border-brand-300 bg-brand-800 text-brand-50'
-              : 'border-transparent bg-white/[15%] text-brand-950'
+              : 'border-transparent bg-white/[15%]'
           )}
         >
           {specialDays.has(formattedPivot) ? (
-            <CheckIcon className="h-3.5 w-3.5 stroke-[4px]" />
+            <CheckIcon className="h-3.5 w-3.5 stroke-[3px]" />
           ) : (
             <MinusIcon className="h-3.5 w-3.5 stroke-[0.5px]" />
           )}

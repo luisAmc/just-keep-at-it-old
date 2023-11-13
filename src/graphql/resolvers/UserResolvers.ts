@@ -1,7 +1,7 @@
 import { db } from 'src/utils/prisma';
 import { builder } from '../builder';
 import { WorkoutStatus } from '@prisma/client';
-import { addWeeks, format, startOfDay, startOfWeek } from 'date-fns';
+import { addWeeks, startOfWeek } from 'date-fns';
 
 builder.prismaObject('User', {
   findUnique: (user) => ({ id: user.id }),
@@ -51,15 +51,7 @@ builder.prismaObject('User', {
           }
         });
 
-        const workedDays = new Map<String, Date>();
-        for (const workout of completedWorkouts) {
-          const key = format(workout.completedAt!, 'yyyy-MM-dd');
-          workedDays.set(key, startOfDay(workout.completedAt!));
-        }
-
-        console.log({ workedDays });
-
-        return Array.from(workedDays.values());
+        return completedWorkouts.map((workout) => workout.completedAt!);
       }
     })
   })
