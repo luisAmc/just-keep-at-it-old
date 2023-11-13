@@ -13,6 +13,7 @@ import { MountainsSVG } from './MountainsSVG';
 import { useSlideOver } from '../shared/SlideOver';
 import { WorkoutCard } from '../Workouts/WorkoutCard';
 import { WorkoutBasicFragment } from '../Workouts/ViewWorkout';
+import { Calendar } from '../shared/Calendar';
 
 import dynamic from 'next/dynamic';
 const TemplatesSlideOver = dynamic(() =>
@@ -28,6 +29,7 @@ export const DASHBOARD_QUERY = gql`
         ...ViewWorkout_workoutBasic
       }
     }
+    workedDays
   }
   ${WorkoutBasicFragment}
 `;
@@ -47,7 +49,10 @@ export function Dashboard() {
 
   return (
     <>
-      <NewWorkoutCard onClick={newWorkoutSlideOver.open} />
+      <NewWorkoutCard
+        markedDays={data?.workedDays ?? []}
+        onClick={newWorkoutSlideOver.open}
+      />
 
       <div></div>
 
@@ -79,48 +84,33 @@ export function Dashboard() {
           </InfiniteList>
         ))}
 
-      {/* <div className="fixed bottom-6 right-4">
-        <Button rounded variant="floating" onClick={newWorkoutSlideOver.open}>
-          <PlusCircleIcon className="mr-1 h-4 w-4" />
-          <span>Nueva rutina</span>
-        </Button>
-      </div> */}
-
-      {/* <div className="absolute bottom-0 left-0 right-0 mt-3 flex">
-        <Button href="/templates" variant="outline">
-          <DocumentTextIcon className="mr-1 h-4 w-4" />
-          <span>Bocetos</span>
-        </Button>
-
-        <Button href="/exercises" variant="outline">
-          <QueueListIcon className="mr-1 h-4 w-4" />
-          <span>Ejercicios</span>
-        </Button>
-      </div> */}
-
       <TemplatesSlideOver {...newWorkoutSlideOver.props} />
     </>
   );
 }
 
 interface NewWorkoutCardProps {
+  markedDays: Array<string>;
   onClick: () => void;
 }
 
-function NewWorkoutCard({ onClick }: NewWorkoutCardProps) {
+function NewWorkoutCard({ markedDays, onClick }: NewWorkoutCardProps) {
   const currentDate = formatDate(new Date(), 'EEEE, dd MMMM');
 
   return (
-    <div className="relative h-[25rem] overflow-hidden rounded-lg bg-gradient-to-b from-brand-300 to-brand-100 p-6 pb-8 pt-8 shadow-sm">
+    <div className="relative flex flex-col gap-y-4  overflow-hidden rounded-lg bg-gradient-to-b from-brand-300 to-brand-100 p-6 pb-8 pt-8 shadow-sm">
       <MountainsSVG />
 
-      <div className="relative text-3xl font-semibold tracking-tight">
-        ¿Una nueva rútina?
+      <div>
+        <div className="relative text-3xl font-semibold tracking-tight">
+          ¿Una nueva rútina?
+        </div>
+        <div className="relative capitalize">{currentDate}</div>
       </div>
 
-      <div className="relative capitalize">{currentDate}</div>
+      <Calendar markedDays={markedDays ?? []} />
 
-      <div className="absolute bottom-8 right-6 flex justify-end">
+      <div className="relative flex justify-end">
         <button
           className="flex items-center space-x-2 border-b border-transparent text-brand-50 hover:border-brand-50"
           onClick={onClick}

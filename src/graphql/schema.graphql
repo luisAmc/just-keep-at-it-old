@@ -111,6 +111,7 @@ type Query {
   exercise(id: ID!): Exercise!
   exerciseCategories: [ExerciseCategory!]!
   viewer: User
+  workedDays: [DateTime!]!
   workout(id: ID!): Workout!
   workoutTemplate(id: ID!): WorkoutTemplate!
   workoutTemplates: [WorkoutTemplate!]!

@@ -12,6 +12,7 @@ import {
   LoginMutation,
   LoginMutationVariables
 } from './__generated__/LoginForm.generated';
+import { useEffect } from 'react';
 
 const LoginSchema = object({
   username: string().min(1, 'Ingrese el nombre de usuario.'),
@@ -23,23 +24,22 @@ export function LoginForm() {
 
   const form = useZodForm({ schema: LoginSchema });
 
-  const [login, { error }] = useMutation<LoginMutation, LoginMutationVariables>(
-    gql`
-      mutation LoginMutation($input: LoginInput!) {
-        login(input: $input) {
-          id
-        }
-      }
-    `,
-    {
-      onCompleted() {
-        authRedirect();
-      },
-      onError() {
-        form.reset();
+  const [login, { data, error }] = useMutation<
+    LoginMutation,
+    LoginMutationVariables
+  >(gql`
+    mutation LoginMutation($input: LoginInput!) {
+      login(input: $input) {
+        id
       }
     }
-  );
+  `);
+
+  useEffect(() => {
+    if (data) {
+      authRedirect();
+    }
+  }, [data, authRedirect]);
 
   return (
     <div className="mx-2 mt-4 flex flex-1 items-center justify-center sm:mt-6">

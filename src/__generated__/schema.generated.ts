@@ -211,6 +211,7 @@ export type Query = {
   exercise: Exercise;
   exerciseCategories: Array<ExerciseCategory>;
   viewer?: Maybe<User>;
+  workedDays: Array<Scalars['DateTime']>;
   workout: Workout;
   workoutTemplate: WorkoutTemplate;
   workoutTemplates: Array<WorkoutTemplate>;

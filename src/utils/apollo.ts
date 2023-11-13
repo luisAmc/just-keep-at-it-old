@@ -92,25 +92,25 @@ export function createApolloClient({ initialState, headers }: ClientOptions) {
           User: {
             fields: {
               exerciseCategories: {
-                keyArgs: ['id'],
+                keyArgs: false,
                 merge(existing = [], incoming) {
                   return [...existing, ...incoming];
                 }
               },
               exercises: {
-                keyArgs: ['id'],
+                keyArgs: false,
                 merge(existing = [], incoming) {
                   return [...existing, ...incoming];
                 }
               },
               workouts: {
-                keyArgs: ['id'],
+                keyArgs: false,
                 merge(existing = [], incoming) {
                   return [...existing, ...incoming];
                 }
               },
               workoutTemplates: {
-                keyArgs: ['id'],
+                keyArgs: false,
                 merge(existing = [], incoming) {
                   return [...existing, ...incoming];
                 }
