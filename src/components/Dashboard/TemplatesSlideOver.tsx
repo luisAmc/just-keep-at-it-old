@@ -13,6 +13,7 @@ import {
   TemplatesQuery
 } from '../Templates/__generated__/index.generated';
 import { NewWorkoutButton } from './NewWorkoutButton';
+import { DASHBOARD_QUERY } from '.';
 
 type Props = Omit<SlideOverProps, 'title' | 'children'>;
 
@@ -30,17 +31,7 @@ export function TemplatesSlideOver(props: Props) {
     TemplatesMutation,
     TemplatesMutationVariables
   >(startWorkoutFromTemplateMutation, {
-    update(cache, { data }) {
-      if (!data?.startWorkoutFromTemplate) return;
-
-      cache.modify({
-        fields: {
-          workouts(existingWorkouts = []) {
-            return [data.startWorkoutFromTemplate, ...existingWorkouts];
-          }
-        }
-      });
-    },
+    refetchQueries: [DASHBOARD_QUERY, 'DashboardQuery'],
     onCompleted(data) {
       router.push(`/workouts/${data.startWorkoutFromTemplate.id}/get-it-done`);
     }
