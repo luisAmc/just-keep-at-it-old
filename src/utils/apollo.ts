@@ -88,6 +88,34 @@ export function createApolloClient({ initialState, headers }: ClientOptions) {
         }
       }),
       cache: new InMemoryCache({
+        typePolicies: {
+          User: {
+            fields: {
+              workouts: {
+                keyArgs: ['id'],
+                merge(existing = [], incoming) {
+                  return [...existing, ...incoming];
+                }
+              }
+            }
+          },
+          Exercise: {
+            fields: {
+              sessions: {
+                keyArgs: false,
+                merge(existing = [], incoming) {
+                  return [...existing, ...incoming];
+                }
+              },
+              doneSessions: {
+                keyArgs: false,
+                merge(existing = [], incoming) {
+                  return [...existing, ...incoming];
+                }
+              }
+            }
+          }
+        }
         // typePolicies: {
         //   User: {
         //     fields: {
@@ -117,22 +145,22 @@ export function createApolloClient({ initialState, headers }: ClientOptions) {
         //       }
         //     }
         //   },
-        //   Exercise: {
-        //     fields: {
-        //       sessions: {
-        //         keyArgs: ['id'],
-        //         merge(existing = [], incoming) {
-        //           return [...existing, ...incoming];
-        //         }
-        //       },
-        //       doneSessions: {
-        //         keyArgs: ['id'],
-        //         merge(existing = [], incoming) {
-        //           return [...existing, ...incoming];
-        //         }
+        // Exercise: {
+        //   fields: {
+        //     sessions: {
+        //       keyArgs: ['id'],
+        //       merge(existing = [], incoming) {
+        //         return [...existing, ...incoming];
+        //       }
+        //     },
+        //     doneSessions: {
+        //       keyArgs: ['id'],
+        //       merge(existing = [], incoming) {
+        //         return [...existing, ...incoming];
         //       }
         //     }
         //   }
+        // }
         // }
       })
     });
