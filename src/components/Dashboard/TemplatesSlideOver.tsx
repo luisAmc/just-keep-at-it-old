@@ -14,6 +14,7 @@ import {
   TemplatesSlideOverMutation,
   TemplatesSlideOverMutationVariables
 } from './__generated__/TemplatesSlideOver.generated';
+import { DASHBOARD_QUERY } from '.';
 
 type Props = Omit<SlideOverProps, 'title' | 'children'>;
 
@@ -40,17 +41,7 @@ export function TemplatesSlideOver(props: Props) {
       ${WorkoutBasicFragment}
     `,
     {
-      update(cache, { data }) {
-        if (!data?.startWorkoutFromTemplate) return;
-
-        cache.modify({
-          fields: {
-            workouts(existingWorkouts = []) {
-              return [data.startWorkoutFromTemplate, ...existingWorkouts];
-            }
-          }
-        });
-      },
+      refetchQueries: [DASHBOARD_QUERY],
       onCompleted(data) {
         router.push(
           `/workouts/${data.startWorkoutFromTemplate.id}/get-it-done`

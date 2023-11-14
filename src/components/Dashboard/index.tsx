@@ -95,8 +95,6 @@ interface NewWorkoutCardProps {
 }
 
 function NewWorkoutCard({ markedDays, onClick }: NewWorkoutCardProps) {
-  const currentDate = formatDate(new Date(), 'EEEE, dd MMMM');
-
   return (
     <div className="relative flex flex-col gap-y-4  overflow-hidden rounded-lg bg-gradient-to-b from-brand-300 to-brand-100 p-6 pb-8 pt-8 shadow-sm">
       <MountainsSVG />
@@ -105,7 +103,9 @@ function NewWorkoutCard({ markedDays, onClick }: NewWorkoutCardProps) {
         <div className="relative text-3xl font-semibold tracking-tight">
           ¿Una nueva rútina?
         </div>
-        <div className="relative capitalize">{currentDate}</div>
+        <div className="relative capitalize">
+          {formatDate(new Date(), 'EEEE, dd MMMM')}
+        </div>
       </div>
 
       <Calendar markedDays={markedDays ?? []} />
