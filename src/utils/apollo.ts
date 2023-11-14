@@ -92,7 +92,7 @@ export function createApolloClient({ initialState, headers }: ClientOptions) {
           User: {
             fields: {
               workouts: {
-                keyArgs: ['id'],
+                keyArgs: false,
                 merge(existing = [], incoming) {
                   return [...existing, ...incoming];
                 }

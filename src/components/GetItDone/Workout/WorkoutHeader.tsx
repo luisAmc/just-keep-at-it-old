@@ -1,4 +1,4 @@
-import { gql, useMutation } from '@apollo/client';
+import { Reference, gql, useMutation } from '@apollo/client';
 import { ChevronLeftIcon, TrashIcon } from '@heroicons/react/24/outline';
 import { useRouter } from 'next/router';
 import { Button, buttonStyles } from 'src/components/shared/Button';
@@ -8,6 +8,10 @@ import { useModal } from 'src/components/shared/Modal';
 import { EditNameModal } from './EditNameModal';
 import { useWorkoutContext } from './WorkoutContext';
 import { twMerge } from 'tailwind-merge';
+import {
+  WorkoutHeaderDeleteMutation,
+  WorkoutHeaderDeleteMutationVariables
+} from './__generated__/WorkoutHeader.generated';
 import clsx from 'clsx';
 
 export function WorkoutHeader() {
@@ -17,7 +21,10 @@ export function WorkoutHeader() {
   const editNameModal = useModal();
   const deleteModal = useModal();
 
-  const [deleteWorkout] = useMutation(
+  const [deleteWorkout] = useMutation<
+    WorkoutHeaderDeleteMutation,
+    WorkoutHeaderDeleteMutationVariables
+  >(
     gql`
       mutation WorkoutHeaderDeleteMutation($workoutId: ID!) {
         deleteWorkout(workoutId: $workoutId) {
@@ -26,6 +33,18 @@ export function WorkoutHeader() {
       }
     `,
     {
+      update(cache, { data }) {
+        cache.modify({
+          fields: {
+            workouts(existingWorkouts, { readField }) {
+              return existingWorkouts.filter(
+                (workoutRef: Reference) =>
+                  data!.deleteWorkout.id !== readField('id', workoutRef)
+              );
+            }
+          }
+        });
+      },
       onCompleted() {
         router.replace('/');
       }
@@ -47,7 +66,7 @@ export function WorkoutHeader() {
         </div>
 
         <Button variant="ghost" size="sm" onClick={editNameModal.open}>
-          <Heading size='2xl'>{name}</Heading>
+          <Heading size="2xl">{name}</Heading>
         </Button>
 
         <EditNameModal {...editNameModal.props} />

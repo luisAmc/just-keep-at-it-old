@@ -11,7 +11,7 @@ import {
   ArrowPathIcon,
   TrashIcon
 } from '@heroicons/react/24/outline';
-import { gql, useMutation } from '@apollo/client';
+import { Reference, gql, useMutation } from '@apollo/client';
 import { useModal } from 'src/components/shared/Modal';
 import { useRouter } from 'next/router';
 
@@ -51,6 +51,18 @@ export function ViewWorkoutActions() {
       }
     `,
     {
+      update(cache, { data }) {
+        cache.modify({
+          fields: {
+            workouts(existingWorkouts, { readField }) {
+              return existingWorkouts.filter(
+                (workoutRef: Reference) =>
+                  data!.deleteWorkout.id !== readField('id', workoutRef)
+              );
+            }
+          }
+        });
+      },
       onCompleted() {
         router.replace('/');
       }

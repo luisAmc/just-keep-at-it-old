@@ -13,7 +13,6 @@ import { Button } from '../shared/Button';
 import { ConfirmationModal } from '../shared/ConfirmationModal';
 import { Heading } from '../shared/Heading';
 import { useModal } from '../shared/Modal';
-import { Page } from '../shared/Page';
 import {
   TemplatesDeleteMutation,
   TemplatesMutation,
