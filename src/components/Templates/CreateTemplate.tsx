@@ -86,17 +86,7 @@ export function CreateTemplate() {
       }
     `,
     {
-      update(cache, { data }) {
-        if (!data?.createWorkoutTemplate) return;
-
-        cache.modify({
-          fields: {
-            workoutTemplates(existingTemplates = []) {
-              return [data.createWorkoutTemplate, ...existingTemplates];
-            }
-          }
-        });
-      },
+      refetchQueries: ['TemplatesQuery'],
       onCompleted() {
         router.push(`/templates`);
       }

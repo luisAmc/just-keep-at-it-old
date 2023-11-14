@@ -1,4 +1,4 @@
-import { Reference, gql, useMutation } from '@apollo/client';
+import { gql, useMutation } from '@apollo/client';
 import { ChevronLeftIcon, TrashIcon } from '@heroicons/react/24/outline';
 import { useRouter } from 'next/router';
 import { Button, buttonStyles } from 'src/components/shared/Button';
@@ -13,6 +13,7 @@ import {
   WorkoutHeaderDeleteMutationVariables
 } from './__generated__/WorkoutHeader.generated';
 import clsx from 'clsx';
+import { DASHBOARD_QUERY } from 'src/components/Dashboard';
 
 export function WorkoutHeader() {
   const router = useRouter();
@@ -33,18 +34,7 @@ export function WorkoutHeader() {
       }
     `,
     {
-      update(cache, { data }) {
-        cache.modify({
-          fields: {
-            workouts(existingWorkouts, { readField }) {
-              return existingWorkouts.filter(
-                (workoutRef: Reference) =>
-                  data!.deleteWorkout.id !== readField('id', workoutRef)
-              );
-            }
-          }
-        });
-      },
+      refetchQueries: [DASHBOARD_QUERY],
       onCompleted() {
         router.replace('/');
       }

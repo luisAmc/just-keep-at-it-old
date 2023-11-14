@@ -66,17 +66,7 @@ export function Templates() {
     TemplatesMutation,
     TemplatesMutationVariables
   >(startWorkoutFromTemplateMutation, {
-    update(cache, { data }) {
-      if (!data?.startWorkoutFromTemplate) return;
-
-      cache.modify({
-        fields: {
-          workouts(existingWorkouts = []) {
-            return [data.startWorkoutFromTemplate, ...existingWorkouts];
-          }
-        }
-      });
-    },
+    refetchQueries: [query],
     onCompleted(data) {
       router.push(`/workouts/${data.startWorkoutFromTemplate.id}/get-it-done`);
     }
