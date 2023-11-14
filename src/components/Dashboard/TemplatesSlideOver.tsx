@@ -1,4 +1,4 @@
-import { useMutation, useQuery } from '@apollo/client';
+import { gql, useMutation, useQuery } from '@apollo/client';
 import { SparklesIcon } from '@heroicons/react/24/outline';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
@@ -6,14 +6,14 @@ import { ConfirmationModal } from '../shared/ConfirmationModal';
 import { Heading } from '../shared/Heading';
 import { useModal } from '../shared/Modal';
 import { SlideOver, SlideOverProps } from '../shared/SlideOver';
-import { query, startWorkoutFromTemplateMutation } from '../Templates';
-import {
-  TemplatesMutation,
-  TemplatesMutationVariables,
-  TemplatesQuery
-} from '../Templates/__generated__/index.generated';
+import { query } from '../Templates';
+import { TemplatesQuery } from '../Templates/__generated__/index.generated';
 import { NewWorkoutButton } from './NewWorkoutButton';
-import { DASHBOARD_QUERY } from '.';
+import { WorkoutBasicFragment } from '../Workouts/ViewWorkout';
+import {
+  TemplatesSlideOverMutation,
+  TemplatesSlideOverMutationVariables
+} from './__generated__/TemplatesSlideOver.generated';
 
 type Props = Omit<SlideOverProps, 'title' | 'children'>;
 
@@ -28,14 +28,36 @@ export function TemplatesSlideOver(props: Props) {
   const templates = data?.viewer?.workoutTemplates ?? [];
 
   const [startWorkoutFromTemplate] = useMutation<
-    TemplatesMutation,
-    TemplatesMutationVariables
-  >(startWorkoutFromTemplateMutation, {
-    refetchQueries: [DASHBOARD_QUERY, 'DashboardQuery'],
-    onCompleted(data) {
-      router.push(`/workouts/${data.startWorkoutFromTemplate.id}/get-it-done`);
+    TemplatesSlideOverMutation,
+    TemplatesSlideOverMutationVariables
+  >(
+    gql`
+      mutation TemplatesSlideOverMutation($id: ID!) {
+        startWorkoutFromTemplate(id: $id) {
+          ...ViewWorkout_workoutBasic
+        }
+      }
+      ${WorkoutBasicFragment}
+    `,
+    {
+      update(cache, { data }) {
+        if (!data?.startWorkoutFromTemplate) return;
+
+        cache.modify({
+          fields: {
+            workouts(existingWorkouts = []) {
+              return [data.startWorkoutFromTemplate, ...existingWorkouts];
+            }
+          }
+        });
+      },
+      onCompleted(data) {
+        router.push(
+          `/workouts/${data.startWorkoutFromTemplate.id}/get-it-done`
+        );
+      }
     }
-  });
+  );
 
   return (
     <SlideOver title="Nueva rutina" {...props}>
@@ -93,7 +115,7 @@ export function TemplatesSlideOver(props: Props) {
           });
         }}
       >
-        ¿Comenzar una rutina apartir de este boceto?
+        ¿Crear una rutina apartir de este boceto?
       </ConfirmationModal>
     </SlideOver>
   );
