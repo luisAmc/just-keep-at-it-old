@@ -73,6 +73,17 @@ jobs:
         shell: bash
         run: echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
 
+      - name: Cache Node modules
+        uses: actions/cache@v3
+        with:
+          # npm cache files are stored in `~/.npm` on Linux/macOS
+          # yarn cache files are stored in `~/.cache/yarn`
+          # pnpm cache files are stored in `~/.pnpm-store`
+          path: ${{ env.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+
       - name: ESLint
         run: pnpm lint
 
@@ -98,6 +109,17 @@ jobs:
           version: 8
           run_install: false
 
+      - name: Cache Node modules
+        uses: actions/cache@v3
+        with:
+          # npm cache files are stored in `~/.npm` on Linux/macOS
+          # yarn cache files are stored in `~/.cache/yarn`
+          # pnpm cache files are stored in `~/.pnpm-store`
+          path: ${{ env.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+
       - name: Typescript
         run: pnpm typecheck
 
@@ -122,6 +144,17 @@ jobs:
         with:
           version: 8
           run_install: false
+
+      - name: Cache Node modules
+        uses: actions/cache@v3
+        with:
+          # npm cache files are stored in `~/.npm` on Linux/macOS
+          # yarn cache files are stored in `~/.cache/yarn`
+          # pnpm cache files are stored in `~/.pnpm-store`
+          path: ${{ env.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
 
       - name: Create local environment
         run: cp .env.test .env
