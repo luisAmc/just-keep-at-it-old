@@ -1,38 +1,35 @@
 import { CheckCircleIcon } from '@heroicons/react/24/outline';
+import { cn } from 'src/utils/cn';
 import { formatDate } from 'src/utils/transforms';
-import {
-  motion,
-  useMotionTemplate,
-  type MotionStyle,
-  type MotionValue,
-  useMotionValue
-} from 'framer-motion';
-import { type MouseEvent } from 'react';
-import { ViewWorkout_WorkoutBasic } from './ViewWorkout/__generated__/index.generated';
+import { gql } from '@apollo/client';
+import { WorkoutCard_Workout } from './__generated__/WorkoutCard.generated';
 import { WorkoutStatus } from '@prisma/client';
-import clsx from 'clsx';
 import Link from 'next/link';
 
 interface WorkoutCardProps {
-  workout: ViewWorkout_WorkoutBasic;
+  workout: WorkoutCard_Workout;
 }
 
-type WrapperStyle = MotionStyle & {
-  '--x': MotionValue<string>;
-  '--y': MotionValue<string>;
-};
+export const WorkoutCardFragment = gql`
+  fragment WorkoutCard_workout on Workout {
+    id
+    name
+    status
+    createdAt
+    completedAt
+    workoutExercises {
+      id
+      setsCount
+      exercise {
+        id
+        name
+      }
+    }
+  }
+`;
 
 export function WorkoutCard({ workout }: WorkoutCardProps) {
   const isDone = workout.status === WorkoutStatus.DONE;
-
-  const mouseX = useMotionValue(0);
-  const mouseY = useMotionValue(0);
-
-  function handleMouseMove({ currentTarget, clientX, clientY }: MouseEvent) {
-    const { left, top } = currentTarget.getBoundingClientRect();
-    mouseX.set(clientX - left);
-    mouseY.set(clientY - top);
-  }
 
   return (
     <>
@@ -44,23 +41,12 @@ export function WorkoutCard({ workout }: WorkoutCardProps) {
             : `/workouts/${workout.id}/get-it-done`
         }
       >
-        <motion.div
-          onMouseMove={handleMouseMove}
-          className={clsx(
-            'lantern-card relative cursor-pointer select-none rounded-lg border border-brand-700 p-6 text-sm drop-shadow-sm',
-            isDone
-              ? 'border-transparent bg-brand-300 bg-gradient-to-br from-brand-300 to-brand-400 text-brand-950'
-              : 'text-brand-950'
+        <div
+          className={cn(
+            'cursor-pointer select-none rounded-lg border-2 border-brand-400 p-6 text-sm shadow-sm transition-[padding] hover:pl-8 hover:shadow-lg',
+            isDone && 'bg-brand-200'
           )}
-          style={
-            {
-              '--x': useMotionTemplate`${mouseX}px`,
-              '--y': useMotionTemplate`${mouseY}px`
-            } as WrapperStyle
-          }
         >
-          {isDone}
-
           <header className="flex flex-col">
             <div className="flex items-center gap-x-1">
               <h2 className="text-lg font-medium">{workout.name}</h2>
@@ -87,7 +73,7 @@ export function WorkoutCard({ workout }: WorkoutCardProps) {
               </div>
             ))}
           </section>
-        </motion.div>
+        </div>
       </Link>
     </>
   );

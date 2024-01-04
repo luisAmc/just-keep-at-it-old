@@ -9,12 +9,12 @@ import { SlideOver, SlideOverProps } from '../shared/SlideOver';
 import { query } from '../Templates';
 import { TemplatesQuery } from '../Templates/__generated__/index.generated';
 import { NewWorkoutButton } from './NewWorkoutButton';
-import { WorkoutBasicFragment } from '../Workouts/ViewWorkout';
 import {
   TemplatesSlideOverMutation,
   TemplatesSlideOverMutationVariables
 } from './__generated__/TemplatesSlideOver.generated';
 import { DASHBOARD_QUERY } from '.';
+import { WorkoutCardFragment } from '../Workouts/WorkoutCard';
 
 type Props = Omit<SlideOverProps, 'title' | 'children'>;
 
@@ -35,10 +35,10 @@ export function TemplatesSlideOver(props: Props) {
     gql`
       mutation TemplatesSlideOverMutation($id: ID!) {
         startWorkoutFromTemplate(id: $id) {
-          ...ViewWorkout_workoutBasic
+          ...WorkoutCard_workout
         }
       }
-      ${WorkoutBasicFragment}
+      ${WorkoutCardFragment}
     `,
     {
       refetchQueries: [DASHBOARD_QUERY],

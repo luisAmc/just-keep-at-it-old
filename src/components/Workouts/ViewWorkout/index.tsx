@@ -1,4 +1,3 @@
-import { WorkoutStatus } from '@prisma/client';
 import { gql, useQuery } from '@apollo/client';
 import { Heading } from 'src/components/shared/Heading';
 import { useRouter } from 'next/router';
@@ -14,12 +13,11 @@ import {
 } from './ViewWorkoutExercise';
 import { ViewWorkoutShimmer } from './ViewWorkoutShimmer';
 import { Button, buttonStyles } from 'src/components/shared/Button';
-import { twMerge } from 'tailwind-merge';
-import clsx from 'clsx';
 import { ChevronLeftIcon } from '@heroicons/react/24/outline';
+import { cn } from 'src/utils/cn';
 
-export const WorkoutBasicFragment = gql`
-  fragment ViewWorkout_workoutBasic on Workout {
+export const WorkoutFragment = gql`
+  fragment ViewWorkout_workout on Workout {
     id
     name
     status
@@ -28,18 +26,11 @@ export const WorkoutBasicFragment = gql`
     workoutExercises {
       ...ViewWorkoutExercise_workoutExerciseBasic
     }
-  }
-  ${ViewWorkoutExerciseBasicFragment}
-`;
-
-export const WorkoutFragment = gql`
-  fragment ViewWorkout_workout on Workout {
-    ...ViewWorkout_workoutBasic
     workoutExercises {
       ...ViewWorkoutExercise_workoutExercise
     }
   }
-  ${WorkoutBasicFragment}
+  ${ViewWorkoutExerciseBasicFragment}
   ${ViewWorkoutExerciseFragment}
 `;
 
@@ -82,9 +73,7 @@ function Workout({ workout }: WorkoutProps) {
           <div className="grid place-items-center">
             <Button
               href="/"
-              className={twMerge(
-                clsx(buttonStyles(), 'inline-block rounded-full p-0.5')
-              )}
+              className={cn(buttonStyles(), 'inline-block rounded-full p-0.5')}
             >
               <ChevronLeftIcon className="h-6 w-6" />
             </Button>

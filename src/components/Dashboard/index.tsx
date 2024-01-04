@@ -1,9 +1,10 @@
+import { ArrowRightIcon } from '@heroicons/react/24/outline';
+import { Calendar } from '../shared/Calendar';
 import {
   DashboardQuery,
   DashboardQueryVariables
 } from './__generated__/index.generated';
 import { DashboardShimmer } from './DashboardShimmer';
-import { ArrowRightIcon } from '@heroicons/react/24/outline';
 import { EmptyWorkouts } from './EmptyWorkouts';
 import { formatDate } from 'src/utils/transforms';
 import { gql, useQuery } from '@apollo/client';
@@ -11,9 +12,7 @@ import { Heading } from '../shared/Heading';
 import { InfiniteList } from '../shared/InfiniteList';
 import { MountainsSVG } from './MountainsSVG';
 import { useSlideOver } from '../shared/SlideOver';
-import { WorkoutCard } from '../Workouts/WorkoutCard';
-import { WorkoutBasicFragment } from '../Workouts/ViewWorkout';
-import { Calendar } from '../shared/Calendar';
+import { WorkoutCard, WorkoutCardFragment } from '../Workouts/WorkoutCard';
 
 import dynamic from 'next/dynamic';
 const TemplatesSlideOver = dynamic(() =>
@@ -27,11 +26,11 @@ export const DASHBOARD_QUERY = gql`
       workedDays
       workoutsCount
       workouts(offset: $offset, limit: $limit) {
-        ...ViewWorkout_workoutBasic
+        ...WorkoutCard_workout
       }
     }
   }
-  ${WorkoutBasicFragment}
+  ${WorkoutCardFragment}
 `;
 
 export function Dashboard() {
@@ -76,7 +75,7 @@ export function Dashboard() {
               })
             }
           >
-            <div className="flex flex-col space-y-2">
+            <div className="flex flex-col gap-y-2">
               {workouts.map((workout) => (
                 <WorkoutCard key={workout.id} workout={workout} />
               ))}
@@ -116,7 +115,7 @@ function NewWorkoutCard({ markedDays, onClick }: NewWorkoutCardProps) {
           onClick={onClick}
         >
           <span className="text-xl">Comenzar</span>
-          <ArrowRightIcon className="h-6 w-6" />
+          <ArrowRightIcon className="size-6" />
         </button>
       </div>
     </div>
