@@ -1,5 +1,5 @@
 import { format } from 'date-fns';
-import esLocale from 'date-fns/locale/es';
+import { es as esLocale } from 'date-fns/locale/es';
 
 export function formatDate(
   givenDate: string | Date,

@@ -1,6 +1,11 @@
 import { db } from './prisma';
 import { addSeconds, differenceInSeconds } from 'date-fns';
-import { getIronSession, IronSession, IronSessionOptions } from 'iron-session';
+import {
+  getIronSession,
+  IronSession,
+  IronSessionData,
+  SessionOptions
+} from 'iron-session';
 import { IncomingMessage, ServerResponse } from 'http';
 import { Session, User } from '@prisma/client';
 
@@ -20,7 +25,7 @@ if (!process.env.COOKIE_SECRET) {
 // The session will automatically renew when there's < 25% of it validity period
 const SESSION_TTL = 6 * 3600;
 
-const sessionOptions: IronSessionOptions = {
+const sessionOptions: SessionOptions = {
   password: { 1: process.env.COOKIE_SECRET as string },
   cookieName: 'session.info',
   ttl: SESSION_TTL,
@@ -32,7 +37,10 @@ const sessionOptions: IronSessionOptions = {
   }
 };
 
-export async function createSession(ironSession: IronSession, user: User) {
+export async function createSession(
+  ironSession: IronSession<IronSessionData>,
+  user: User
+) {
   const session = await db.session.create({
     data: {
       userId: user.id,
@@ -48,7 +56,7 @@ export async function createSession(ironSession: IronSession, user: User) {
 }
 
 export async function removeSession(
-  ironSession: IronSession,
+  ironSession: IronSession<IronSessionData>,
   session?: Session | null
 ) {
   ironSession.destroy();
@@ -62,7 +70,7 @@ export async function removeSession(
 
 interface CachedSession {
   session: Session | null;
-  ironSession: IronSession;
+  ironSession: IronSession<IronSessionData>;
 }
 
 const sessionCache = new WeakMap<IncomingMessage, CachedSession>();
@@ -77,7 +85,11 @@ export async function resolveSession(
     return cacheSession;
   }
 
-  const ironSession = await getIronSession(req, res, sessionOptions);
+  const ironSession = await getIronSession<IronSessionData>(
+    req,
+    res,
+    sessionOptions
+  );
 
   const sessionID = ironSession.sessionID;
 

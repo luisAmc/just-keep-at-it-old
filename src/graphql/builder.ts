@@ -1,6 +1,6 @@
 import { db } from 'src/utils/prisma';
 import { IncomingMessage, OutgoingMessage } from 'http';
-import { IronSession } from 'iron-session';
+import { IronSession, IronSessionData } from 'iron-session';
 import { Session } from '@prisma/client';
 import PrismaPlugin from '@pothos/plugin-prisma';
 import SchemaBuilder from '@pothos/core';
@@ -11,14 +11,14 @@ import type PrismaTypes from '@pothos/plugin-prisma/generated';
 export interface Context {
   req: IncomingMessage;
   res: OutgoingMessage;
-  ironSession: IronSession;
+  ironSession: IronSession<IronSessionData>;
   session?: Session | null;
 }
 
 export function createGraphQLContext(
   req: IncomingMessage,
   res: OutgoingMessage,
-  ironSession: IronSession,
+  ironSession: IronSession<IronSessionData>,
   session?: Session | null
 ): Context {
   return { req, res, ironSession, session };
