@@ -49,7 +49,7 @@ export function Dashboard() {
     (data?.viewer?.workoutsCount ?? 0) > (data?.viewer?.workouts.length ?? 0);
 
   return (
-    <>
+    <div className="relative flex flex-1 flex-col gap-y-4 px-2 pb-2">
       <NewWorkoutCard
         markedDays={data?.viewer?.workedDays ?? []}
         onClick={newWorkoutSlideOver.open}
@@ -86,7 +86,7 @@ export function Dashboard() {
         ))}
 
       <TemplatesSlideOver {...newWorkoutSlideOver.props} />
-    </>
+    </div>
   );
 }
 

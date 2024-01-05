@@ -1,8 +1,8 @@
 import * as Types from '../../../__generated__/schema.generated';
 
 export type DashboardQueryVariables = Types.Exact<{
-  offset?: Types.InputMaybe<Types.Scalars['Int']>;
-  limit?: Types.InputMaybe<Types.Scalars['Int']>;
+  offset?: Types.InputMaybe<Types.Scalars['Int']['input']>;
+  limit?: Types.InputMaybe<Types.Scalars['Int']['input']>;
 }>;
 
 

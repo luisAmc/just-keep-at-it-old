@@ -59,3 +59,19 @@ body {
   content: '';
   inset: -1px;
 }
+
+@keyframes swaying {
+  0%,
+  100% {
+    transform: rotate(5deg);
+    animation-timing-function: ease-in-out;
+  }
+  50% {
+    transform: rotate(-5deg);
+    animation-timing-function: ease-in-out;
+  }
+}
+
+.animate-swaying {
+  animation: swaying 2.5s infinite;
+}

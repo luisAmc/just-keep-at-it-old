@@ -1,7 +1,7 @@
 import * as Types from '../../../../__generated__/schema.generated';
 
 export type WorkoutHeaderDeleteMutationVariables = Types.Exact<{
-  workoutId: Types.Scalars['ID'];
+  workoutId: Types.Scalars['ID']['input'];
 }>;
 
 

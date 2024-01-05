@@ -1,7 +1,7 @@
 import * as Types from '../../../__generated__/schema.generated';
 
 export type TemplatesSlideOverMutationVariables = Types.Exact<{
-  id: Types.Scalars['ID'];
+  id: Types.Scalars['ID']['input'];
 }>;
 
 

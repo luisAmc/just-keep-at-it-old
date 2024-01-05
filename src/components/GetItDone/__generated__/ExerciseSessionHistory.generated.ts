@@ -1,8 +1,8 @@
 import * as Types from '../../../__generated__/schema.generated';
 
 export type ExerciseSessionHistoryQueryVariables = Types.Exact<{
-  id: Types.Scalars['ID'];
-  limit?: Types.InputMaybe<Types.Scalars['Int']>;
+  id: Types.Scalars['ID']['input'];
+  limit?: Types.InputMaybe<Types.Scalars['Int']['input']>;
 }>;
 
 
