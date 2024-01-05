@@ -1,20 +1,12 @@
-import { gql, useQuery } from '@apollo/client';
+import { useQuery } from '@apollo/client';
 import { Dashboard } from './Dashboard';
 import { LoginForm } from './Auth/LoginForm';
-import { HomeQuery } from './__generated__/Home.generated';
 import { AnimatePresence, motion } from 'framer-motion';
-
-export const query = gql`
-  query HomeQuery {
-    viewer {
-      id
-      username
-    }
-  }
-`;
+import { LayoutQuery } from './__generated__/Layout.generated';
+import { LAYOUT_QUERY } from './Layout';
 
 export function Home() {
-  const { data } = useQuery<HomeQuery>(query);
+  const { data } = useQuery<LayoutQuery>(LAYOUT_QUERY);
 
   return (
     <>
