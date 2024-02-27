@@ -1,6 +1,7 @@
 import {
   ArrowDownIcon,
   ArrowUpIcon,
+  ArrowsRightLeftIcon,
   ChevronDoubleDownIcon,
   ChevronDoubleUpIcon,
   EllipsisVerticalIcon,
@@ -10,13 +11,20 @@ import { useWorkoutExerciseContext } from './WorkoutExerciseContext';
 import { Dropdown, DropdownItem } from 'src/components/shared/Dropdown';
 
 export function WorkoutExerciseActions() {
-  const { isFirst, isLast, onRemove, onMove } = useWorkoutExerciseContext();
+  const { isFirst, isLast, onChange, onRemove, onMove } =
+    useWorkoutExerciseContext();
 
   return (
     <Dropdown
       direction="right"
       trigger={<EllipsisVerticalIcon className="h-6 w-6" />}
     >
+      <DropdownItem
+        label="Cambiar ejercicio"
+        icon={ArrowsRightLeftIcon}
+        onClick={() => onChange()}
+      />
+
       <DropdownItem
         label="Mover al inicio"
         icon={ChevronDoubleUpIcon}

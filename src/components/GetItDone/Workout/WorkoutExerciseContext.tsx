@@ -14,6 +14,7 @@ interface WorkoutExerciseContextType extends WorkoutExercise_Exercise {
   isFirst: boolean;
   isLast: boolean;
   mostRecentSession?: WorkoutExercise_LastSession;
+  onChange: () => void;
   onRemove: () => void;
   onMove: (action: MoveExerciseOption) => void;
   onSelect: (exerciseId: string) => void;
@@ -27,6 +28,7 @@ interface WorkoutExerciseProviderProps {
   index: number;
   maxIndex: number;
   exerciseId: string;
+  onChange: () => void;
   onRemove: () => void;
   onMove: (action: MoveExerciseOption) => void;
   onSelect: (exerciseId: string) => void;
@@ -37,6 +39,7 @@ export const WorkoutExerciseProvider = ({
   index,
   maxIndex,
   exerciseId,
+  onChange,
   onRemove,
   onMove,
   onSelect,
@@ -56,6 +59,7 @@ export const WorkoutExerciseProvider = ({
         isFirst: index === 0,
         isLast: index === maxIndex,
         mostRecentSession: exercise?.lastSession ?? undefined,
+        onChange,
         onRemove,
         onMove,
         onSelect

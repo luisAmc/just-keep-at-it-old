@@ -16,11 +16,41 @@ import { CreateExercise } from 'src/components/Exercises/ExerciseList/CreateExer
 import { Button } from 'src/components/shared/Button';
 import { useWorkoutContext } from './Workout/WorkoutContext';
 
-interface Props extends Omit<SlideOverProps, 'title' | 'children'> {
-  onConfirm(exerciseId: string): void;
+type ACTION_TYPE =
+  | { type: 'addExercise' }
+  | { type: 'changeExercise'; changeIndex: number };
+
+export function useAddExerciseSlideOver() {
+  const [action, setAction] = useState<ACTION_TYPE | null>(null);
+
+  return {
+    open: (action: ACTION_TYPE) => {
+      setAction(action);
+    },
+    close: () => setAction(null),
+    props: {
+      action: action,
+      open: action !== null,
+      onClose() {
+        setAction(null);
+      }
+    }
+  };
 }
 
-export function AddExerciseSlideOver({ onConfirm, open, onClose }: Props) {
+interface Props extends Omit<SlideOverProps, 'title' | 'children'> {
+  action: ACTION_TYPE | null;
+  onConfirm(exerciseId: string): void;
+  onChange(exerciseId: string, exerciseIndex: number): void;
+}
+
+export function AddExerciseSlideOver({
+  action,
+  open,
+  onConfirm,
+  onChange,
+  onClose
+}: Props) {
   const { addExercise } = useWorkoutContext();
 
   const { data, loading } = useQuery<ExercisesQuery>(EXERCISES_QUERY);
@@ -43,9 +73,19 @@ export function AddExerciseSlideOver({ onConfirm, open, onClose }: Props) {
 
                 <ExerciseList
                   addExerciseToWorkout={(clickedExercise) => {
-                    addExercise(clickedExercise);
-                    onConfirm(clickedExercise.id);
-                    onClose();
+                    if (!action) {
+                      return;
+                    }
+
+                    if (action.type === 'addExercise') {
+                      addExercise(clickedExercise);
+                      onConfirm(clickedExercise.id);
+                      onClose();
+                    } else if (action.type === 'changeExercise') {
+                      addExercise(clickedExercise);
+                      onChange(clickedExercise.id, action.changeIndex);
+                      onClose();
+                    }
                   }}
                 />
               </ExerciseCategoryProvider>

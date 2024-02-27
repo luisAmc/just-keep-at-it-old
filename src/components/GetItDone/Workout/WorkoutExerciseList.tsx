@@ -6,10 +6,12 @@ import { useEffect, useState } from 'react';
 import { useFieldArray, useWatch } from 'react-hook-form';
 import { Button } from 'src/components/shared/Button';
 import { Form, useZodForm } from 'src/components/shared/Form';
-import { useSlideOver } from 'src/components/shared/SlideOver';
 import { SubmitButton } from 'src/components/shared/SubmitButton';
 import { z } from 'zod';
-import { AddExerciseSlideOver } from '../AddExerciseSlideOver';
+import {
+  AddExerciseSlideOver,
+  useAddExerciseSlideOver
+} from '../AddExerciseSlideOver';
 import {
   ExerciseSessionHistory,
   useExerciseSessionHistory
@@ -31,8 +33,9 @@ export function WorkoutExerciseList() {
   const router = useRouter();
 
   const [isSetupDone, setIsSetupDone] = useState(false);
+
   const workout = useWorkoutContext();
-  const addExerciseSlideOver = useSlideOver();
+  const addExerciseSlideOver = useAddExerciseSlideOver();
   const exerciseSessionHistory = useExerciseSessionHistory();
 
   const form = useZodForm({ schema: GetItDoneSchema });
@@ -117,6 +120,10 @@ export function WorkoutExerciseList() {
     }
   }, [debouncedWorkoutState]);
 
+  function onChange(index: number) {
+    addExerciseSlideOver.open({ type: 'changeExercise', changeIndex: index });
+  }
+
   function onRemove(index: number) {
     workoutExercises.remove(index);
   }
@@ -184,6 +191,7 @@ export function WorkoutExerciseList() {
                   index={i}
                   maxIndex={workoutExercises.fields.length - 1}
                   exerciseId={(field as any).exerciseId}
+                  onChange={() => onChange(i)}
                   onRemove={() => onRemove(i)}
                   onMove={(action) => onMove(action, i)}
                   onSelect={(exerciseId) =>
@@ -204,7 +212,10 @@ export function WorkoutExerciseList() {
           )}
         </div>
 
-        <Button variant="outline" onClick={addExerciseSlideOver.open}>
+        <Button
+          variant="outline"
+          onClick={() => addExerciseSlideOver.open({ type: 'addExercise' })}
+        >
           <PlusIcon className="mr-1 h-4 w-4" />
           Añadir otro ejercicio
         </Button>
@@ -218,6 +229,10 @@ export function WorkoutExerciseList() {
         {...addExerciseSlideOver.props}
         onConfirm={(exerciseId) => {
           workoutExercises.append({ exerciseId, sets: [] });
+        }}
+        onChange={(exerciseId, exerciseIndex) => {
+          workoutExercises.remove(exerciseIndex);
+          workoutExercises.insert(exerciseIndex, { exerciseId, sets: [] });
         }}
       />
 
