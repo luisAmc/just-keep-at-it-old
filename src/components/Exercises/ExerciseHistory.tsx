@@ -43,7 +43,7 @@ export function ExerciseHistory() {
     (data?.exercise.doneSessions.length ?? 0);
 
   return (
-    <Page href='/exercises' title='Historial'>
+    <Page href="/exercises" title="Historial">
       {loading && <div>Cargnado...</div>}
 
       {!loading &&
@@ -62,60 +62,60 @@ export function ExerciseHistory() {
               })
             }
           >
-            <div className='flex flex-col space-y-4'>
+            <div className="flex flex-col space-y-4">
               {doneSessions.map((doneSession) => (
                 <div
                   key={doneSession.id}
-                  className='rounded-lg bg-slate-700 p-3'
+                  className="rounded-lg bg-brand-100 p-3"
                 >
                   <h3>{doneSession.workout.name}</h3>
 
-                  <div className='text-sm text-slate-400'>
+                  <div className="text-sm text-brand-700">
                     {formatDate(
                       doneSession.workout.completedAt!,
                       "dd MMMM yy 'a las' h:mm a"
                     )}
                   </div>
 
-                  <div className='pt-2'></div>
+                  <div className="pt-2"></div>
 
                   {doneSession.sets.map((set, i) => (
-                    <div key={set.id} className='flex items-center space-x-3'>
-                      <span className='text-sm'>{i + 1}.</span>
+                    <div key={set.id} className="flex items-center space-x-3">
+                      <span className="text-sm">{i + 1}.</span>
 
                       {isAerobic ? (
                         <div>
                           <span>
-                            <span className='text-base'>{set.mins}</span>
-                            <span className='text-xs'>mins</span>
+                            <span className="text-base">{set.mins}</span>
+                            <span className="text-xs">mins</span>
                           </span>
 
-                          <span className='text-slate-400 text-sm'>x</span>
+                          <span className="text-sm text-brand-400">x</span>
 
                           <span>
-                            <span className='text-base'>{set.distance}</span>
-                            <span className='text-xs'>dist</span>
+                            <span className="text-base">{set.distance}</span>
+                            <span className="text-xs">dist</span>
                           </span>
 
-                          <span className='text-slate-400 text-sm'>x</span>
+                          <span className="text-sm text-brand-400">x</span>
 
                           <span>
-                            <span className='text-base'>{set.kcal}</span>
-                            <span className='text-xs'>kcal</span>
+                            <span className="text-base">{set.kcal}</span>
+                            <span className="text-xs">kcal</span>
                           </span>
                         </div>
                       ) : (
                         <div>
                           <span>
-                            <span className='text-base'>{set.lbs}</span>
-                            <span className='text-xs'>lbs</span>
+                            <span className="text-base">{set.lbs}</span>
+                            <span className="text-xs">lbs</span>
                           </span>
 
-                          <span className='text-slate-400 text-sm'>x</span>
+                          <span className="text-sm text-brand-400">x</span>
 
                           <span>
-                            <span className='text-base'>{set.reps}</span>
-                            <span className='text-xs'>reps</span>
+                            <span className="text-base">{set.reps}</span>
+                            <span className="text-xs">reps</span>
                           </span>
                         </div>
                       )}
