@@ -4,7 +4,7 @@ export function MountainsSVG() {
       version="1.1"
       viewBox="0 0 1920 1370"
       xmlns="http://www.w3.org/2000/svg"
-      className="absolute bottom-0 left-1/2 h-full -translate-x-1/2"
+      className="absolute bottom-0 left-1/2 w-full -translate-x-1/2 translate-y-16"
     >
       <defs>
         <linearGradient id="lightGradient" x1="0%" y1="0%" x2="100%" y2="100%">
