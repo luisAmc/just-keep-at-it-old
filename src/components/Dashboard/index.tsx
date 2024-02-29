@@ -22,7 +22,6 @@ export const DASHBOARD_QUERY = gql`
   query DashboardQuery($offset: Int, $limit: Int) {
     viewer {
       id
-      workedDays
       workoutsCount
       workouts(offset: $offset, limit: $limit) {
         ...WorkoutCard_workout

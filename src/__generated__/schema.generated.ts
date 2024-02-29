@@ -249,7 +249,6 @@ export type User = {
   exercises: Array<Exercise>;
   id: Scalars['ID']['output'];
   username: Scalars['String']['output'];
-  workedDays: Array<Scalars['DateTime']['output']>;
   workoutTemplates: Array<WorkoutTemplate>;
   workouts: Array<Workout>;
   workoutsCount: Scalars['Int']['output'];

@@ -131,7 +131,6 @@ type User {
   exercises: [Exercise!]!
   id: ID!
   username: String!
-  workedDays: [DateTime!]!
   workoutTemplates: [WorkoutTemplate!]!
   workouts(limit: Int! = 5, offset: Int! = 0): [Workout!]!
   workoutsCount: Int!
