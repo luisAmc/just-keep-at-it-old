@@ -7,7 +7,6 @@ import {
 } from '@heroicons/react/24/outline';
 import { useState } from 'react';
 import { Button } from 'src/components/shared/Button';
-import { IconButton } from 'src/components/shared/IconButton';
 import { CreateExercise } from './CreateExercise';
 import { useExerciseCategoryContext } from './useExerciseCategoryContext';
 
@@ -18,23 +17,14 @@ export function CategoryExerciseList() {
   const [animateParent] = useAutoAnimate<HTMLDivElement>();
 
   return (
-    <div
-      ref={animateParent}
-      className="flex flex-col divide-y divide-brand-400"
-    >
+    <div ref={animateParent} className="flex flex-col gap-y-1 p-2">
       {exercises.length > 0 ? (
         exercises.map((exercise) => (
           <div
             key={exercise.id}
-            className="group flex items-center justify-between px-5 py-3"
+            className="flex items-center justify-between rounded-lg bg-brand-200 px-4 py-3 hover:bg-brand-300"
           >
-            <div className="flex items-center space-x-2">
-              <span className="text-sm">{exercise.name}</span>
-
-              <span className="hidden items-center justify-center group-hover:flex">
-                <span className="rounded-full bg-slate-300 p-1"></span>
-              </span>
-            </div>
+            <div className="text-sm">{exercise.name}</div>
 
             <div className="flex space-x-2">
               <Button

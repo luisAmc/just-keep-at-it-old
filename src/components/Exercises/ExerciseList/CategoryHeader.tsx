@@ -12,12 +12,12 @@ export function CategoryHeader() {
   const { name, type } = useExerciseCategoryContext();
 
   return (
-    <div className='bg-white/5 rounded-t-lg px-5 py-3 flex items-center justify-between'>
-      <Heading size='xl'>{name}</Heading>
+    <div className="flex items-center justify-between rounded-t-lg bg-white/5 px-5 py-3">
+      <Heading size="2xl">{name}</Heading>
 
       <span
         className={clsx(
-          'px-2 py-0.5 inline-flex space-x-1 text-xs font-semibold rounded-full',
+          'inline-flex space-x-1 rounded-full px-2 py-0.5 text-xs font-semibold',
           type === ExerciseType.AEROBIC
             ? 'bg-sky-600 text-sky-50'
             : 'bg-rose-500 text-rose-50'

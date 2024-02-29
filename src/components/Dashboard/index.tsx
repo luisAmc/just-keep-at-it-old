@@ -1,5 +1,4 @@
 import { ArrowRightIcon } from '@heroicons/react/24/outline';
-import { Calendar } from '../shared/Calendar';
 import {
   DashboardQuery,
   DashboardQueryVariables
@@ -50,10 +49,7 @@ export function Dashboard() {
 
   return (
     <div className="relative flex flex-1 flex-col gap-y-4 px-2 pb-2">
-      <NewWorkoutCard
-        markedDays={data?.viewer?.workedDays ?? []}
-        onClick={newWorkoutSlideOver.open}
-      />
+      <NewWorkoutCard onClick={newWorkoutSlideOver.open} />
 
       <div></div>
 
@@ -91,13 +87,12 @@ export function Dashboard() {
 }
 
 interface NewWorkoutCardProps {
-  markedDays: Array<string>;
   onClick: () => void;
 }
 
-function NewWorkoutCard({ markedDays, onClick }: NewWorkoutCardProps) {
+function NewWorkoutCard({ onClick }: NewWorkoutCardProps) {
   return (
-    <div className="relative flex flex-col gap-y-4  overflow-hidden rounded-lg bg-gradient-to-b from-brand-300 to-brand-100 p-6 pb-8 pt-8 shadow-sm">
+    <div className="relative flex h-52 flex-col gap-y-4 overflow-hidden rounded-lg bg-gradient-to-b from-brand-300 to-brand-100 p-6 pb-8 pt-8 shadow-sm">
       <MountainsSVG />
 
       <div>
@@ -109,11 +104,9 @@ function NewWorkoutCard({ markedDays, onClick }: NewWorkoutCardProps) {
         </div>
       </div>
 
-      <Calendar markedDays={markedDays ?? []} />
-
-      <div className="relative flex justify-end">
+      <div className="absolute bottom-8 right-8 flex justify-end">
         <button
-          className="flex items-center space-x-2 border-b border-transparent text-brand-50 hover:border-brand-50"
+          className="flex items-center space-x-2 border-b border-transparent text-brand-50"
           onClick={onClick}
         >
           <span className="text-xl">Comenzar</span>
