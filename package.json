@@ -44,6 +44,7 @@
     "graphql-helix": "^1.13.0",
     "iron-session": "^8.0.1",
     "next": "14.0.4",
+    "next-pwa": "^5.6.0",
     "nprogress": "^0.2.0",
     "prettier-plugin-tailwindcss": "^0.5.10",
     "react": "18.2.0",
