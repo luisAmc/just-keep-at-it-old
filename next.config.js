@@ -5,10 +5,7 @@ const withPWA = require('next-pwa')({
   register: true,
   skipWaiting: true,
   runtimeCaching,
-  disable: process.env.NODE_ENV !== 'production',
-  workboxOptions: {
-    disableDevLogs: true
-  }
+  disable: process.env.NODE_ENV !== 'production'
 });
 
 const nextConfig = {
