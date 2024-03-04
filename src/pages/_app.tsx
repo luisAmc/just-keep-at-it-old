@@ -14,7 +14,7 @@ function MyApp({ Component, pageProps }: AppProps) {
       <Head>
         <link rel="manifest" href="/manifest.json" />
         <link rel="apple-touch-icon" href="/icon-512x512.png" />
-        <meta name="theme-color" content="#14b8a6" />
+        <meta name="theme-color" content="#ffffff" />
 
         <title>Just keep at it!</title>
       </Head>
