@@ -21,9 +21,9 @@ if (!process.env.COOKIE_SECRET) {
   );
 }
 
-// The session will be valid for six hours
+// The session will be valid for 15 days
 // The session will automatically renew when there's < 25% of it validity period
-const SESSION_TTL = 6 * 3600;
+const SESSION_TTL = 15 * 24 * 3600;
 
 const sessionOptions: SessionOptions = {
   password: { 1: process.env.COOKIE_SECRET as string },
