@@ -93,8 +93,26 @@ export function createApolloClient({ initialState, headers }: ClientOptions) {
             fields: {
               workouts: {
                 keyArgs: false,
-                merge(existing = [], incoming) {
-                  return [...existing, ...incoming];
+                merge(existing = [], incoming = [], { readField }) {
+                  const merged = [...existing];
+
+                  const ids = new Set();
+                  
+                  existing.forEach((workout: { id: string }) => {
+                    const workoutId = readField('id', workout);
+                    ids.add(workoutId);
+                  });
+
+                  incoming.forEach((workout: { id: string }) => {
+                    const workoutId = readField('id', workout);
+
+                    if (!ids.has(workoutId)) {
+                      ids.add(workoutId);
+                      merged.push(workout);
+                    }
+                  });
+
+                  return merged;
                 }
               }
             }
@@ -116,52 +134,6 @@ export function createApolloClient({ initialState, headers }: ClientOptions) {
             }
           }
         }
-        // typePolicies: {
-        //   User: {
-        //     fields: {
-        //       exerciseCategories: {
-        //         keyArgs: false,
-        //         merge(existing = [], incoming) {
-        //           return [...existing, ...incoming];
-        //         }
-        //       },
-        //       exercises: {
-        //         keyArgs: false,
-        //         merge(existing = [], incoming) {
-        //           return [...existing, ...incoming];
-        //         }
-        //       },
-        //       workouts: {
-        //         keyArgs: false,
-        //         merge(existing = [], incoming) {
-        //           return [...existing, ...incoming];
-        //         }
-        //       },
-        //       workoutTemplates: {
-        //         keyArgs: false,
-        //         merge(existing = [], incoming) {
-        //           return [...existing, ...incoming];
-        //         }
-        //       }
-        //     }
-        //   },
-        // Exercise: {
-        //   fields: {
-        //     sessions: {
-        //       keyArgs: ['id'],
-        //       merge(existing = [], incoming) {
-        //         return [...existing, ...incoming];
-        //       }
-        //     },
-        //     doneSessions: {
-        //       keyArgs: ['id'],
-        //       merge(existing = [], incoming) {
-        //         return [...existing, ...incoming];
-        //       }
-        //     }
-        //   }
-        // }
-        // }
       })
     });
   }
