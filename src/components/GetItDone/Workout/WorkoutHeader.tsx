@@ -13,7 +13,6 @@ import {
   WorkoutHeaderDeleteMutationVariables
 } from './__generated__/WorkoutHeader.generated';
 import clsx from 'clsx';
-import { DASHBOARD_QUERY } from 'src/components/Dashboard';
 
 export function WorkoutHeader() {
   const router = useRouter();
@@ -34,9 +33,17 @@ export function WorkoutHeader() {
       }
     `,
     {
-      refetchQueries: [DASHBOARD_QUERY],
+      update(cache) {
+        const deletedWorkoutId = cache.identify({
+          __typename: 'Workout',
+          id: workoutId
+        });
+
+        cache.evict({ id: deletedWorkoutId });
+        cache.gc();
+      },
       onCompleted() {
-        router.replace('/');
+        router.push('/');
       }
     }
   );
