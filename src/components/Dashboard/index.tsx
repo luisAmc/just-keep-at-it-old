@@ -37,9 +37,7 @@ export function Dashboard() {
   const { data, loading, fetchMore } = useQuery<
     DashboardQuery,
     DashboardQueryVariables
-  >(DASHBOARD_QUERY, {
-    fetchPolicy: 'network-only'
-  });
+  >(DASHBOARD_QUERY);
 
   const workouts = data?.viewer?.workouts ?? [];
 
