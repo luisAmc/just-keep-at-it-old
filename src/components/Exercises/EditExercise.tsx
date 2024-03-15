@@ -11,6 +11,7 @@ import {
   EditExerciseMutationVariables,
   EditExerciseQuery
 } from './__generated__/EditExercise.generated';
+import { EXERCISES_QUERY } from '.';
 
 export const query = gql`
   query EditExerciseQuery($id: ID!) {
@@ -51,6 +52,7 @@ export function EditExercise() {
       }
     `,
     {
+      refetchQueries: [EXERCISES_QUERY],
       onCompleted() {
         router.replace('/exercises');
       }
@@ -61,7 +63,7 @@ export function EditExercise() {
 
   return (
     <>
-      <Page title='Editar ejercicio' href='/exercises'>
+      <Page title="Editar ejercicio" href="/exercises">
         <Form
           form={form}
           onSubmit={async (input) =>
@@ -75,7 +77,7 @@ export function EditExercise() {
             })
           }
         >
-          <Input {...form.register('name')} label='Nombre' />
+          <Input {...form.register('name')} label="Nombre" />
 
           <SubmitButton>Editar</SubmitButton>
         </Form>

@@ -97,7 +97,31 @@ export function createApolloClient({ initialState, headers }: ClientOptions) {
                   const merged = [...existing];
 
                   const ids = new Set();
-                  
+
+                  existing.forEach((workout: { id: string }) => {
+                    const workoutId = readField('id', workout);
+                    ids.add(workoutId);
+                  });
+
+                  incoming.forEach((workout: { id: string }) => {
+                    const workoutId = readField('id', workout);
+
+                    if (!ids.has(workoutId)) {
+                      ids.add(workoutId);
+                      merged.push(workout);
+                    }
+                  });
+
+                  return merged;
+                }
+              },
+              exercises: {
+                keyArgs: false,
+                merge(existing = [], incoming = [], { readField }) {
+                  const merged = [...existing];
+
+                  const ids = new Set();
+
                   existing.forEach((workout: { id: string }) => {
                     const workoutId = readField('id', workout);
                     ids.add(workoutId);
