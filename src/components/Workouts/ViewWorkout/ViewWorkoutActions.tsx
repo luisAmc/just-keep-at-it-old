@@ -14,6 +14,7 @@ import {
 import { gql, useMutation } from '@apollo/client';
 import { useModal } from 'src/components/shared/Modal';
 import { useRouter } from 'next/router';
+import { DASHBOARD_QUERY } from 'src/components/Dashboard';
 
 export function ViewWorkoutActions() {
   const router = useRouter();
@@ -33,6 +34,7 @@ export function ViewWorkoutActions() {
       }
     `,
     {
+      refetchQueries: [DASHBOARD_QUERY],
       onCompleted(data) {
         router.push(`/workouts/${data.doItAgain.id}/get-it-done`);
       }
