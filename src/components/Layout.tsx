@@ -4,7 +4,7 @@ import {
   IdentificationIcon,
   QueueListIcon
 } from '@heroicons/react/24/outline';
-import { Dropdown, DropdownItem } from './shared/Dropdown';
+import { Dropdown, DropdownGroup, DropdownItem } from './shared/Dropdown';
 import { gql, useMutation, useQuery } from '@apollo/client';
 import { LayoutQuery } from './__generated__/Layout.generated';
 import { Link } from './shared/Link';
@@ -55,24 +55,28 @@ export function Layout({ children }: LayoutProps) {
             direction="right"
             trigger={<IdentificationIcon className="h-6 w-6" />}
           >
-            <DropdownItem
-              label="Bocetos"
-              href="/templates"
-              icon={DocumentTextIcon}
-            />
+            <DropdownGroup>
+              <DropdownItem
+                label="Bocetos"
+                href="/templates"
+                icon={DocumentTextIcon}
+              />
 
-            <DropdownItem
-              label="Ejercicios"
-              href="/exercises"
-              icon={QueueListIcon}
-            />
+              <DropdownItem
+                label="Ejercicios"
+                href="/exercises"
+                icon={QueueListIcon}
+              />
+            </DropdownGroup>
 
-            <DropdownItem
-              variant="danger"
-              label="Cerrar sesión"
-              onClick={logout}
-              icon={ArrowLeftOnRectangleIcon}
-            />
+            <DropdownGroup>
+              <DropdownItem
+                variant="danger"
+                label="Cerrar sesión"
+                onClick={logout}
+                icon={ArrowLeftOnRectangleIcon}
+              />
+            </DropdownGroup>
           </Dropdown>
         </nav>
       )}

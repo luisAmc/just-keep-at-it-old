@@ -1,9 +1,9 @@
 import { buttonStyles } from './Button';
-import { ComponentType, Fragment, ReactNode } from 'react';
+import { ComponentType, Fragment, type ReactNode } from 'react';
 import { Menu, Transition } from '@headlessui/react';
 import { twMerge } from 'tailwind-merge';
-import clsx from 'clsx';
 import Link from 'next/link';
+import { cn } from 'src/utils/cn';
 
 interface DropdownProps {
   direction?: 'left' | 'right';
@@ -20,7 +20,7 @@ export function Dropdown({
     <Menu as="div" className="relative inline-block text-left">
       <Menu.Button
         className={twMerge(
-          clsx(
+          cn(
             buttonStyles({ variant: 'ghost' }),
             'inline-block rounded-full p-0.5'
           )
@@ -39,8 +39,8 @@ export function Dropdown({
         leaveTo="transform opacity-0 scale-95"
       >
         <Menu.Items
-          className={clsx(
-            'absolute z-20 mt-2 w-56 origin-top-right divide-y divide-brand-100 rounded-md bg-white shadow-xl ring-1 ring-black ring-opacity-5 focus:outline-none',
+          className={cn(
+            'absolute z-20 mt-2 w-56 origin-top-right divide-y divide-gray-200 rounded-md bg-white shadow-xl ring-1 ring-black ring-opacity-5 focus:outline-none',
             direction === 'left' ? 'left-0' : 'right-0'
           )}
         >
@@ -69,32 +69,46 @@ export function DropdownItem({
   disabled = false
 }: DropdownItemProps) {
   return (
-    <div className="p-1">
-      <Menu.Item disabled={disabled}>
-        {({ active, disabled }) => {
-          const className = clsx(
-            'flex w-full items-center rounded-md px-3 py-2.5 text-sm',
-            variant === 'danger' && 'text-red-500',
-            active && {
-              'bg-brand-400': variant === 'default',
-              'bg-red-500 text-white': variant === 'danger'
-            },
-            disabled && 'text-brand-300 cursor-not-allowed'
-          );
+    <Menu.Item disabled={disabled}>
+      {({ active, disabled }) => {
+        const className = cn(
+          'flex w-full items-center rounded-md px-3 py-2.5 text-sm',
+          variant === 'danger' && 'text-red-600',
+          active && 'bg-gray-100',
+          disabled && 'text-gray-300 cursor-not-allowed'
+        );
 
-          return href ? (
-            <Link href={href} className={className}>
-              <Icon className="mr-1 h-4 w-4" />
-              <span>{label}</span>
-            </Link>
-          ) : (
-            <button type="button" onClick={onClick} className={className}>
-              <Icon className="mr-1 h-4 w-4" />
-              <span>{label}</span>
-            </button>
-          );
-        }}
-      </Menu.Item>
+        return href ? (
+          <Link href={href} className={className}>
+            <Icon className="mr-1 h-4 w-4" />
+            <span>{label}</span>
+          </Link>
+        ) : (
+          <button type="button" onClick={onClick} className={className}>
+            <Icon className="mr-1 h-4 w-4" />
+            <span>{label}</span>
+          </button>
+        );
+      }}
+    </Menu.Item>
+  );
+}
+
+interface DropdownGroupProps {
+  title?: string;
+  children: ReactNode;
+}
+
+export function DropdownGroup({ title, children }: DropdownGroupProps) {
+  return (
+    <div className="p-1">
+      {title && (
+        <div className="px-2 py-1.5 text-xs font-medium text-brand-700">
+          {title}
+        </div>
+      )}
+
+      {children}
     </div>
   );
 }

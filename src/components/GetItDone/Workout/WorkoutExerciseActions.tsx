@@ -8,7 +8,11 @@ import {
   TrashIcon
 } from '@heroicons/react/24/outline';
 import { useWorkoutExerciseContext } from './WorkoutExerciseContext';
-import { Dropdown, DropdownItem } from 'src/components/shared/Dropdown';
+import {
+  Dropdown,
+  DropdownGroup,
+  DropdownItem
+} from 'src/components/shared/Dropdown';
 
 export function WorkoutExerciseActions() {
   const { isFirst, isLast, onChange, onRemove, onMove } =
@@ -19,46 +23,52 @@ export function WorkoutExerciseActions() {
       direction="right"
       trigger={<EllipsisVerticalIcon className="h-6 w-6" />}
     >
-      <DropdownItem
-        label="Cambiar ejercicio"
-        icon={ArrowsRightLeftIcon}
-        onClick={() => onChange()}
-      />
+      <DropdownGroup title="Cambio">
+        <DropdownItem
+          label="Cambiar ejercicio"
+          icon={ArrowsRightLeftIcon}
+          onClick={() => onChange()}
+        />
+      </DropdownGroup>
 
-      <DropdownItem
-        label="Mover al inicio"
-        icon={ChevronDoubleUpIcon}
-        onClick={() => onMove('first')}
-        disabled={isFirst}
-      />
+      <DropdownGroup title="Ubicación">
+        <DropdownItem
+          label="Mover al inicio"
+          icon={ChevronDoubleUpIcon}
+          onClick={() => onMove('first')}
+          disabled={isFirst}
+        />
 
-      <DropdownItem
-        label="Mover arriba"
-        icon={ArrowUpIcon}
-        onClick={() => onMove('up')}
-        disabled={isFirst}
-      />
+        <DropdownItem
+          label="Mover arriba"
+          icon={ArrowUpIcon}
+          onClick={() => onMove('up')}
+          disabled={isFirst}
+        />
 
-      <DropdownItem
-        label="Mover abajo"
-        icon={ArrowDownIcon}
-        onClick={() => onMove('down')}
-        disabled={isLast}
-      />
+        <DropdownItem
+          label="Mover abajo"
+          icon={ArrowDownIcon}
+          onClick={() => onMove('down')}
+          disabled={isLast}
+        />
 
-      <DropdownItem
-        label="Mover al final"
-        icon={ChevronDoubleDownIcon}
-        onClick={() => onMove('last')}
-        disabled={isLast}
-      />
+        <DropdownItem
+          label="Mover al final"
+          icon={ChevronDoubleDownIcon}
+          onClick={() => onMove('last')}
+          disabled={isLast}
+        />
+      </DropdownGroup>
 
-      <DropdownItem
-        variant="danger"
-        label="Remover ejercicio"
-        icon={TrashIcon}
-        onClick={onRemove}
-      />
+      <DropdownGroup title="Peligro">
+        <DropdownItem
+          variant="danger"
+          label="Remover ejercicio"
+          icon={TrashIcon}
+          onClick={onRemove}
+        />
+      </DropdownGroup>
     </Dropdown>
   );
 }
