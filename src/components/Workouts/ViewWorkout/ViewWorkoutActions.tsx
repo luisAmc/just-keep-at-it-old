@@ -33,8 +33,8 @@ export function ViewWorkoutActions() {
       }
     `,
     {
-      onCompleted() {
-        router.push(`/`);
+      onCompleted(data) {
+        router.push(`/workouts/${data.doItAgain.id}/get-it-done`);
       }
     }
   );
