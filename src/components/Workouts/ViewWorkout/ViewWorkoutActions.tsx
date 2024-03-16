@@ -15,6 +15,7 @@ import { gql, useMutation } from '@apollo/client';
 import { useModal } from 'src/components/shared/Modal';
 import { useRouter } from 'next/router';
 import { DASHBOARD_QUERY } from 'src/components/Dashboard';
+import toast from 'react-hot-toast';
 
 export function ViewWorkoutActions() {
   const router = useRouter();
@@ -36,6 +37,8 @@ export function ViewWorkoutActions() {
     {
       refetchQueries: [DASHBOARD_QUERY],
       onCompleted(data) {
+        toast.success('¡Rútina creada!');
+
         router.push(`/workouts/${data.doItAgain.id}/get-it-done`);
       }
     }
@@ -63,6 +66,8 @@ export function ViewWorkoutActions() {
         cache.gc();
       },
       onCompleted() {
+        toast.success('Rútina eliminada.');
+
         router.push('/');
       }
     }
