@@ -20,7 +20,16 @@ function MyApp({ Component, pageProps }: AppProps) {
         <title>Just keep at it!</title>
       </Head>
       <ApolloProvider client={client}>
-        <Toaster position="top-center" />
+        <Toaster
+          position="top-center"
+          toastOptions={{
+            style: {
+              padding: '1rem 1.5rem',
+              background: 'var(--positive-toast)'
+            }
+          }}
+        />
+
         <NProgress />
         <Layout>
           <Component {...pageProps} />
