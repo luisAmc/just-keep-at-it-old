@@ -1,9 +1,22 @@
 import { buttonStyles } from './Button';
-import { ComponentType, Fragment, type ReactNode } from 'react';
-import { Menu, Transition } from '@headlessui/react';
+import { ComponentType, useState, type ReactNode } from 'react';
+import { Menu } from '@headlessui/react';
 import { twMerge } from 'tailwind-merge';
 import Link from 'next/link';
 import { cn } from 'src/utils/cn';
+import {
+  FloatingFocusManager,
+  FloatingPortal,
+  flip,
+  offset,
+  shift,
+  useClick,
+  useDismiss,
+  useFloating,
+  useInteractions,
+  useRole,
+  useTransitionStyles
+} from '@floating-ui/react';
 
 interface DropdownProps {
   direction?: 'left' | 'right';
@@ -11,14 +24,31 @@ interface DropdownProps {
   children: ReactNode;
 }
 
-export function Dropdown({
-  direction = 'left',
-  trigger,
-  children
-}: DropdownProps) {
+export function Dropdown({ trigger, children }: DropdownProps) {
+  const [open, setOpen] = useState(false);
+
+  const { refs, context, floatingStyles } = useFloating({
+    placement: 'bottom-end',
+    open,
+    onOpenChange: setOpen,
+    middleware: [offset(4), flip(), shift({ padding: 4 })]
+  });
+
+  const { getReferenceProps, getFloatingProps } = useInteractions([
+    useClick(context),
+    useRole(context),
+    useDismiss(context)
+  ]);
+
+  const { styles: transitionStyles } = useTransitionStyles(context, {
+    duration: 100,
+    initial: { opacity: 0 }
+  });
+
   return (
     <Menu as="div" className="relative inline-block text-left">
       <Menu.Button
+        {...getReferenceProps({ ref: refs.setReference })}
         className={twMerge(
           cn(
             buttonStyles({ variant: 'ghost' }),
@@ -29,24 +59,25 @@ export function Dropdown({
         {trigger}
       </Menu.Button>
 
-      <Transition
-        as={Fragment}
-        enter="transition ease-out duration-100"
-        enterFrom="transform opacity-0 scale-95"
-        enterTo="transform opacity-100 scale-100"
-        leave="transition ease-in duration-75"
-        leaveFrom="transform opacity-100 scale-100"
-        leaveTo="transform opacity-0 scale-95"
-      >
-        <Menu.Items
-          className={cn(
-            'absolute z-20 mt-2 w-56 origin-top-right divide-y divide-gray-200 rounded-md bg-white shadow-xl ring-1 ring-black ring-opacity-5 focus:outline-none',
-            direction === 'left' ? 'left-0' : 'right-0'
-          )}
-        >
-          {children}
-        </Menu.Items>
-      </Transition>
+      <FloatingPortal>
+        {open && (
+          <FloatingFocusManager context={context}>
+            <div
+              ref={refs.setFloating}
+              className={cn(
+                'absolute right-0 z-20 mt-2 w-56 origin-top-right divide-y divide-gray-200 rounded-md bg-white shadow-xl ring-1 ring-black ring-opacity-5 focus:outline-none'
+              )}
+              style={{
+                ...transitionStyles,
+                ...floatingStyles
+              }}
+              {...getFloatingProps()}
+            >
+              <Menu.Items>{children}</Menu.Items>
+            </div>
+          </FloatingFocusManager>
+        )}
+      </FloatingPortal>
     </Menu>
   );
 }

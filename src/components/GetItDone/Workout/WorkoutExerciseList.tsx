@@ -28,6 +28,7 @@ import {
   WorkoutExerciseListMutationVariables
 } from './__generated__/WorkoutExerciseList.generated';
 import { motion } from 'framer-motion';
+import toast from 'react-hot-toast';
 
 export function WorkoutExerciseList() {
   const router = useRouter();
@@ -61,6 +62,7 @@ export function WorkoutExerciseList() {
     {
       onCompleted() {
         router.replace(`/workouts/${workout.workoutId}`);
+        toast.success('¡Rútina completada!');
       }
     }
   );

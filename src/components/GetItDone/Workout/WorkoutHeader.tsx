@@ -13,6 +13,7 @@ import {
   WorkoutHeaderDeleteMutationVariables
 } from './__generated__/WorkoutHeader.generated';
 import clsx from 'clsx';
+import toast from 'react-hot-toast';
 
 export function WorkoutHeader() {
   const router = useRouter();
@@ -43,6 +44,8 @@ export function WorkoutHeader() {
         cache.gc();
       },
       onCompleted() {
+        toast.success('Rútina eliminada.');
+
         router.push('/');
       }
     }

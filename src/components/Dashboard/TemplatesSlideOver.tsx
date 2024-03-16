@@ -15,6 +15,7 @@ import {
 } from './__generated__/TemplatesSlideOver.generated';
 import { DASHBOARD_QUERY } from '.';
 import { WorkoutCardFragment } from '../Workouts/WorkoutCard';
+import toast from 'react-hot-toast';
 
 type Props = Omit<SlideOverProps, 'title' | 'children'>;
 
@@ -43,6 +44,8 @@ export function TemplatesSlideOver(props: Props) {
     {
       refetchQueries: [DASHBOARD_QUERY],
       onCompleted(data) {
+        toast.success('¡Rútina creada!');
+
         router.push(
           `/workouts/${data.startWorkoutFromTemplate.id}/get-it-done`
         );
