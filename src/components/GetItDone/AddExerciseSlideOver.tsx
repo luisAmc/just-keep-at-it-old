@@ -107,20 +107,16 @@ function ExerciseList({ addExerciseToWorkout }: ExerciseListProps) {
   const [creatingExercise, setCreatingExercise] = useState(false);
 
   return (
-    <div className="flex flex-col divide-brand-300">
+    <div className="p-2">
       {exercises.length > 0 ? (
         exercises.map((exercise) => (
           <button
             key={exercise.id}
             onClick={() => addExerciseToWorkout(exercise)}
-            className="group flex items-center justify-between px-5 py-3 hover:bg-white/20"
+            className="w-full rounded-md p-3 hover:bg-brand-300"
           >
-            <div className="flex items-center space-x-2">
+            <div className="flex items-center space-x-2 text-sm">
               <span className="">{exercise.name}</span>
-
-              <span className="hidden items-center justify-center group-hover:flex">
-                <span className="rounded-full bg-brand-600 p-1"></span>
-              </span>
             </div>
           </button>
         ))
