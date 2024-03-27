@@ -44,8 +44,6 @@ export function TemplatesSlideOver(props: Props) {
     {
       refetchQueries: [DASHBOARD_QUERY],
       onCompleted(data) {
-        toast.success('¡Rútina creada!');
-
         router.push(
           `/workouts/${data.startWorkoutFromTemplate.id}/get-it-done`
         );
@@ -102,11 +100,18 @@ export function TemplatesSlideOver(props: Props) {
         {...startFromTemplateModal.props}
         type="warning"
         onConfirm={() => {
-          startWorkoutFromTemplate({
-            variables: {
-              id: selectedTemplateId
+          toast.promise(
+            startWorkoutFromTemplate({
+              variables: {
+                id: selectedTemplateId
+              }
+            }),
+            {
+              loading: 'Creando rútina...',
+              success: '¡Rútina creada!',
+              error: 'No se pudo creada la rutina.'
             }
-          });
+          );
         }}
       >
         ¿Crear una rutina apartir de este boceto?

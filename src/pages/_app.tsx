@@ -23,10 +23,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         <Toaster
           position="top-center"
           toastOptions={{
-            style: {
-              padding: '1rem 1.5rem',
-              background: 'var(--positive-toast)'
-            }
+            style: { padding: '1rem 1.5rem' }
           }}
         />
 

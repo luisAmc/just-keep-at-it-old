@@ -29,15 +29,22 @@ export function NewWorkoutButton() {
         }
       },
       onCompleted(data) {
-        toast.success('¡Rútina creada!');
-
         router.replace(`/workouts/${data.createWorkout.id}/get-it-done`);
       }
     }
   );
 
   return (
-    <Button variant="outline" onClick={() => createWorkout()}>
+    <Button
+      variant="outline"
+      onClick={() =>
+        toast.promise(createWorkout(), {
+          loading: 'Creando rútina...',
+          success: '¡Rútina creada!',
+          error: 'No se pudo creada la rútina.'
+        })
+      }
+    >
       {loading && (
         <svg
           className="-ml-1 mr-3 h-5 w-5 animate-spin text-white"

@@ -37,8 +37,6 @@ export function ViewWorkoutActions() {
     {
       refetchQueries: [DASHBOARD_QUERY],
       onCompleted(data) {
-        toast.success('¡Rútina creada!');
-
         router.push(`/workouts/${data.doItAgain.id}/get-it-done`);
       }
     }
@@ -66,8 +64,6 @@ export function ViewWorkoutActions() {
         cache.gc();
       },
       onCompleted() {
-        toast.success('Rútina eliminada.');
-
         router.push('/');
       }
     }
@@ -83,11 +79,18 @@ export function ViewWorkoutActions() {
           label="Repetir rutina"
           icon={ArrowPathIcon}
           onClick={() =>
-            doItAgain({
-              variables: {
-                workoutToCopyId: workoutId
+            toast.promise(
+              doItAgain({
+                variables: {
+                  workoutToCopyId: workoutId
+                }
+              }),
+              {
+                loading: 'Creando rútina...',
+                success: '¡Rútina creada!',
+                error: 'No se pudo creada la rútina.'
               }
-            })
+            )
           }
         />
 
@@ -102,14 +105,21 @@ export function ViewWorkoutActions() {
       <ConfirmationModal
         {...deleteModal.props}
         onConfirm={() => {
-          deleteCommit({
-            variables: {
-              workoutId: workoutId
+          toast.promise(
+            deleteCommit({
+              variables: {
+                workoutId: workoutId
+              }
+            }),
+            {
+              loading: 'Borrando rútina...',
+              success: '¡Rútina borrada!',
+              error: 'No se pudo borrar la rútina.'
             }
-          });
+          );
         }}
       >
-        ¿Está seguro de borrar la rutina?
+        ¿Está seguro de borrar la rútina?
       </ConfirmationModal>
     </>
   );

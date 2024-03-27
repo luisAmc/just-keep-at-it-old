@@ -62,7 +62,6 @@ export function WorkoutExerciseList() {
     {
       onCompleted() {
         router.replace(`/workouts/${workout.workoutId}`);
-        toast.success('¡Rútina completada!');
       }
     }
   );
@@ -166,14 +165,21 @@ export function WorkoutExerciseList() {
     }
 
     if (nonEmptyWorkoutExercises.length > 0) {
-      getWorkoutDone({
-        variables: {
-          input: {
-            workoutId: workout.workoutId,
-            workoutExercises: nonEmptyWorkoutExercises
+      toast.promise(
+        getWorkoutDone({
+          variables: {
+            input: {
+              workoutId: workout.workoutId,
+              workoutExercises: nonEmptyWorkoutExercises
+            }
           }
+        }),
+        {
+          loading: 'Completando rútina...',
+          success: '¡Rútina completada!',
+          error: 'No se pudo completar la rútina.'
         }
-      });
+      );
     }
   }
 
@@ -208,7 +214,7 @@ export function WorkoutExerciseList() {
             <div className="flex flex-col items-center space-y-2 rounded-md bg-brand-100 p-8 text-brand-500">
               <SparklesIcon className="h-10 w-10" />
               <p className="text-sm font-semibold">
-                La rutina no tiene ejercicios...
+                La rútina no tiene ejercicios...
               </p>
             </div>
           )}

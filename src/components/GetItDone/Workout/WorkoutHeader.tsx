@@ -44,8 +44,6 @@ export function WorkoutHeader() {
         cache.gc();
       },
       onCompleted() {
-        toast.success('Rútina eliminada.');
-
         router.push('/');
       }
     }
@@ -83,14 +81,21 @@ export function WorkoutHeader() {
         <ConfirmationModal
           {...deleteModal.props}
           onConfirm={() => {
-            deleteWorkout({
-              variables: {
-                workoutId: workoutId
+            toast.promise(
+              deleteWorkout({
+                variables: {
+                  workoutId: workoutId
+                }
+              }),
+              {
+                loading: 'Borrando rútina...',
+                success: '¡Rútina borrada!',
+                error: 'No se pudo borrar la rútina.'
               }
-            });
+            );
           }}
         >
-          ¿Está seguro de borrar la rutina?
+          ¿Está seguro de borrar la rútina?
         </ConfirmationModal>
       </div>
     </div>
